@@ -1,0 +1,183 @@
+<p-card class="cardContainer" #cardContainer>
+  <div class="full-height">
+    <p-blockUI class="ui-blockui" [blocked]="blocked"></p-blockUI>
+    <div class="row">
+      <div class="col-md-10"></div>
+      <div class="col-md-2">TUNIS, le {{ dat }}</div>
+    </div>
+    &nbsp;
+    <p-progressSpinner class="center" *ngIf="blocked"></p-progressSpinner>
+    <div class="row">
+      <div class="col-md-auto">
+        Date :
+      </div>
+      <div class="col-md-2">
+        <p-calendar
+          [(ngModel)]="date"
+          dateFormat="dd/mm/yy"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          yearRange="1980:2050"
+          showButtonBar="true"
+          [locale]="tn"
+          [disabled]="afficherClicked"
+        ></p-calendar>
+      </div>
+
+      <div class="col-md-auto">
+        Client :
+      </div>
+      <div class="col-md-5">
+        <ng-select
+          id="client"
+          [items]="clients"
+          bindLabel="deno"
+          [(ngModel)]="selectedClient"
+          [disabled]="afficherClicked"
+          (change)="onClientSelect()"
+          (keyup.enter)="onClientSelect()"
+          style="width: 60%;"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-2">
+        <button
+          id="btOk"
+          color="primary"
+          class="mat-raised-button mat-primary"
+          ng-reflect-color="primary"
+          (click)="afficher($event)"
+          [hidden]="afficherClicked"
+        >
+          Ok
+        </button>
+      </div>
+    </div>
+    &nbsp;
+    <div>
+      <p-panel header="Identification Client" *ngIf="IdentifClientVisible">
+        <div class="row">
+          <div class="col-md-1">
+            Code :
+          </div>
+          <div class="col-md-2">
+            <h5>{{ selectedClient.code }}</h5>
+          </div>
+          <div class="col-md-1">
+            Nom :
+          </div>
+          <div class="col-md-4">
+            <h5>{{ selectedClient.deno }}</h5>
+          </div>
+          <div class="col-md-2">
+            Remise :
+          </div>
+          <div class="col-md-2">
+            <h5>{{ selectedClient.marque }}&nbsp;%</h5>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row">
+          <div class="col-md-1">
+            Code TVA :
+          </div>
+          <div class="col-md-2">
+            <h5>{{ selectedClient.codeTva }}</h5>
+          </div>
+          <div class="col-md-5"></div>
+          <div class="col-md-2">
+            Exonore (O/N) :
+          </div>
+          <div class="col-md-2">
+            <h5>{{ selectedClient.exonor }}</h5>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row">
+          <div class="col-md-3">
+            Type de Client (Revendeur/Consomateur) :
+          </div>
+          <div class="col-md-5">
+            <h5>{{ selectedClient.typeComm }}</h5>
+          </div>
+          <div class="col-md-2">
+            Facturation par :
+          </div>
+          <div class="col-md-2">
+            <h5>{{ factPar }}</h5>
+          </div>
+        </div>
+      </p-panel>
+      &nbsp;
+      <p-panel *ngIf="gridVisible">
+        <div class="row">
+          <div class="col-md-10">
+            <ejs-grid
+              #gridFact
+              id="gridFact"
+              [dataSource]="factures"
+              height="180"
+              gridLines="Both"
+              [editSettings]="editSettings"
+              [rowHeight]="30"
+              allowResizing= 'true'
+            >
+              <e-columns>
+                <e-column
+                  field="code"
+                  headerText="CLIENT"
+                  textAlign="Left"
+                  width="85"
+                >
+                </e-column>
+                <e-column
+                  field="deno"
+                  headerText="NOM DE CLIENT"
+                  width="200"
+                ></e-column>
+                <e-column
+                  field="combine"
+                  headerText="Bon de Livraison"
+                  textAlign="Left"
+                  width="120"
+                  *ngIf="!parCmd"
+                ></e-column>
+                <e-column
+                  field="ref"
+                  headerText="COMMANDE"
+                  textAlign="Left"
+                  width="120"
+                  *ngIf="parCmd"
+                ></e-column>
+                <e-column
+                  type="checkbox"
+                  headerText="Calculer? (O/N)"
+                  width="40"
+                ></e-column>
+              </e-columns>
+            </ejs-grid>
+          </div>
+          <div class="col-md-2">
+            <button
+              color="primary"
+              class="mat-raised-button mat-primary"
+              ng-reflect-color="primary"
+              (click)="calculer()"
+            >
+              Calculer
+            </button>
+          </div>
+        </div>
+      </p-panel>
+    </div>
+  </div>
+</p-card>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

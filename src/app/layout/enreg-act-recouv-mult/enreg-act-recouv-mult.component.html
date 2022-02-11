@@ -1,0 +1,251 @@
+<div class="enregactrecouv">
+ 
+    <div class="row">
+      <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-6">
+                <p>ACTION EFFECTUEE LE </p>
+              </div>
+              <div class="col-md-2"> 
+                  <p-calendar [(ngModel)]="date" [minDate]="mindate" [maxDate]="maxdate"  id="dat" dateFormat="dd/mm/yy" ></p-calendar>
+                </div>
+                <div class="col-md-4"> </div>
+        </div>
+      </div>
+      <div class="col-md-8"></div>
+    </div>
+      <div class="row">
+          <div class="col-md-2">
+         <h5 style="color: blue;">TYPE ACTION</h5>
+         </div>
+         <div class="col-md-10"></div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+          <div class="row">
+              <div class="col-md-1">
+                <p-radioButton name="groupname" value="Envoi du relevé"[(ngModel)]="selectedValue"></p-radioButton>
+              </div>
+              <div class="col-md-5">
+                <p >Envoi du relevé</p>
+              </div>
+              <div class="col-md-6"></div>
+              </div>
+          </div>
+          <div class="col-md-8"> </div>
+         
+        </div> 
+       <div class="row">
+          <div class="col-md-4">
+              <div class="row">
+                  <div class="col-md-1">
+                      <p-radioButton name="groupname" value="Envoi d-une Première Relance de reglement" [(ngModel)]="selectedValue"></p-radioButton>
+                    </div>
+                  <div class="col-md-11">
+                    <p >Envoi d'une Première Relance de reglement</p>
+                  </div>
+                  
+                  </div>
+              </div>
+              <div class="col-md-8"> </div>
+             
+        
+       </div>
+      
+      <div class="row">
+        <div class="col-md-4">
+          <div class="row">
+              <div class="col-md-1">
+                  <p-radioButton name="groupname" value="Envoi d-une Seconde Relance de reglement" [(ngModel)]="selectedValue"></p-radioButton>
+                  </div>          
+                  <div class="col-md-11">
+                  <p >Envoi d'une Seconde Relance de reglement</p>
+                  </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row" *ngIf="btnSelectClients"> 
+          <button pButton type="button"  label="Selectionner Les Clients" id="aff" (click)="Afficher()"></button>
+        </div>
+        </div>
+        <div class="col-md-4"></div>
+       </div>
+    <div class="row">
+      <div class="col-md-5">
+          <div class="row">
+              <div class="col-md-9">
+              <h3 style="color: blue;">Clients Non Séléctionnés</h3>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="row">
+                  <div class="col-md-11">
+                <mat-form-field>
+                  <input matInput id='code5' type="search" (focus)="focusCode1()" (keypress)="OnChercheCode1($event,this.code5)"    (keyup)="OnChercheCode1($event,this.code5)"  [(ngModel)]="this.code5"  placeholder=" Recherche par code " />
+                </mat-form-field>
+                  </div>
+                  <div class="col-md-1"></div>
+                </div>
+                </div>
+                &nbsp;
+                <div class="col-md-4">
+                  <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8">
+                  <mat-form-field>
+                    <input matInput type="search" (focus)="focusDeno1()"  (keypress)="OnChercherDeno1($event,deno1)"  (keyup)="OnChercherDeno1($event,deno1)" [(ngModel)]="this.deno1"  placeholder=" Recherche par libéllé " />
+                  </mat-form-field>
+                </div>
+                
+                  </div>
+              </div>
+                <div class="col-md-4"></div>
+            </div>
+
+            <div class="row">
+              <!--[sortSettings]="sortSettings"-->
+              <div class="col-md-11">
+               
+                                <ejs-grid #grid   
+                                (recordDoubleClick)="Doubleclick($event)"
+                                [dataSource]="tabclientsselectionnesgrid1" 
+                                 gridLines='Both'
+                                (rowSelected)="rowSelected($event)" height="200" width="500" 
+                                
+                                [selectedRowIndex]="0"
+                                rowHeight='40'
+                                 allowResizing= 'true'
+                                  >
+                                <e-columns>
+                                  <e-column field="code" headerText="CODE" width="120"  BackgroundColor="Gray" ></e-column>
+                                  <e-column field="deno" headerText="Désignation" width="250"></e-column>
+                              </e-columns>
+                          </ejs-grid> 
+              </div>
+                              <div class="col-md-1"> </div>                                   
+            </div>
+           
+
+
+            
+           
+            
+      </div>
+      
+      <div class="col-md-2">
+        <br> <br><br> <br><br>
+         <br><br> 
+         
+         
+         <br>
+         <span style="font-size: 20px;">&nbsp;&nbsp; &nbsp;&nbsp; --->> </span><br>
+         <span style="font-size: 20px;">&nbsp;&nbsp; &nbsp;&nbsp; <<--- </span><br>
+         
+         <span style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;Double Click </span><br>
+         
+        
+      </div>
+      
+      <div class="col-md-5">
+          <div class="row">
+              <div class="col-md-9">
+              <h3 style="color: blue;">Clients Séléctionnés</h3>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="row">
+                  <div class="col-md-11">
+                <mat-form-field>
+                  <input matInput type="search" (focus)="focusCode2()" (keypress)="OnChercheCode2($event,this.code2)"   (keyup)="OnChercheCode2($event,this.code2)" [(ngModel)]="this.code2"  placeholder=" Recherche par code " />
+                </mat-form-field>
+                  </div>
+                  <div class="col-md-1"></div>
+                </div>
+                </div>
+                &nbsp;
+                <div class="col-md-4">
+                  <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8">
+                  <mat-form-field>
+                    <input matInput type="search" (focus)="focusDeno2()" (keypress)="OnChercheDeno2($event,deno2)"  (keyup)="OnChercheDeno2($event,deno2)" [(ngModel)]="this.deno2"  placeholder=" Recherche par libéllé " />
+                  </mat-form-field>
+                </div>
+                
+                  </div>
+              </div>
+                <div class="col-md-4"></div>
+            </div>
+            <div class="row">
+             <!-- [sortSettings]="sortSettings"-->
+              <div class="col-md-11">
+               
+                <ejs-grid #gridSelctionnee   
+               
+                [dataSource]="tabclientsselectionnesgrid2" 
+                (recordDoubleClick)="DoubleclickK($event)"
+                 gridLines='Both'
+                (rowSelected)="rowSelected2($event)" height="200" width="500" 
+               
+                [selectedRowIndex]="0"
+                
+                 rowHeight='40'
+                allowResizing= 'true'
+                  >
+                <e-columns>
+                  <e-column field="code" headerText="CODE" width="120"  BackgroundColor="Gray" ></e-column>
+                  <e-column field="deno" headerText="Désignation" width="250"></e-column>
+              </e-columns>
+          </ejs-grid> 
+                
+                  
+              </div>
+                              <div class="col-md-1"> </div>                                   
+            </div>
+            <div class="row">
+              <div class="col-md-1">      
+               
+              </div>                
+              
+          </div>
+            <div class="row">
+                <div class="col-md-8">   </div>                
+                <div class="col-md-4" *ngIf="btnvalider">
+                 
+                    <button style="margin: 1%;" pButton  type="button" label="Valider" (click)="ajouterAction($event)" ></button>             
+
+                </div>
+            </div>
+           
+            <div class="row">
+                <div class="col-md-9"> 
+                 
+                    <p-toast key="k" [style]="{ marginTop: '220px' }" position="top-center">   
+                      </p-toast>     
+                </div>                
+                <div class="col-md-3"></div>
+            </div>
+           
+            
+            <div class="row">
+                <div class="col-md-9">                         
+                    <p-toast key="k2" [style]="{ marginTop: '220px' }" position="top-center">
+                    </p-toast>    
+                </div>                
+                <div class="col-md-3"></div>
+            </div>
+      </div>
+    </div>
+  
+</div>
+
+
+
+
+<p-overlayPanel #op appendTo="body" [dismissable]='false'  [showCloseIcon]="true"  [style]="{'text-align': 'center', 'font-size':'14px' ,'background-color': ' #f8b7bd'}" >
+  <span style="width: 138%;"> {{msgerror}} </span>
+</p-overlayPanel> 

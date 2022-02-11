@@ -1,0 +1,439 @@
+<br />
+<div class="row">
+  <div class="col-md-1">Début :</div>
+  <div class="col-md-2">
+    <p-calendar
+      [locale]="tn"
+      [(ngModel)]="datedebut"
+     
+      [monthNavigator]="true"
+      [minDate]="minDate" [maxDate]="maxDate"
+      dateFormat="dd/mm/yy "
+      [disabled]="disabledDate"
+    >
+    </p-calendar>
+  </div>
+  <div class="col-md-1">Fin :</div>
+  <div class="col-md-2">
+    <p-calendar
+      [locale]="tn"
+      [(ngModel)]="datefin"
+     
+      [monthNavigator]="true"
+      [minDate]="minDate" [maxDate]="maxDate"
+      dateFormat="dd/mm/yy "
+      [disabled]="disabledDate"
+    >
+    </p-calendar>
+  </div>
+  <div class="col-md-2">
+    <div>
+      <button
+        pButton
+        type="button"
+        id="btAfficher"
+        label="Afficher"
+        *ngIf="afficherbtn"
+        (click)="afficher($event)"
+        class="ui-button-raised"
+      ></button>
+    </div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+
+<br />
+
+  <div class="row" *ngIf="affichGrid" style="margin-top: 1%">
+    <div class="col-md-12">
+      <ejs-grid
+        #gridVend
+        id="gridVend"
+        [sortSettings]="initialSort"
+        [allowSorting]="true"
+        gridLines="Both"
+        [allowResizing]="true"
+        width="100%"
+        appendTo="body"
+        (mouseup)="annulerSelection()"
+        (mousewheel)="annulerSelection()"
+        [dataSource]="vendeurs"
+        [selectedRowIndex]="0"
+        (rowSelected)="rowSelected()"
+        height="280"
+        rowHeight="40"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          <e-column field="deno" headerText="Nom" width="13%"></e-column>
+          <e-column
+            field="caM"
+            headerTextAlign="left"
+            textAlign="Right"
+            format="N3"
+            width="9%"
+            headerText="Objectif/Mois"
+            [customAttributes]="customAttributes"
+          >
+          </e-column>
+          <e-column
+            width="9%"
+            field="caA"
+            headerTextAlign="left"
+            textAlign="Right"
+            format="N3"
+            headerText="Objectif/period"
+         
+          >
+          </e-column>
+          <e-column
+            field="ca"
+            headerTextAlign="left"
+            textAlign="Right"
+            format="N3"
+            width="9%"
+            headerText="CA Realisé"
+           
+          >
+          </e-column>
+          <e-column
+            width="5%"
+            headerTextAlign="left"
+            field="pourc"
+            textAlign="Right"
+            format="N2"
+            headerText="%"
+          
+          >
+          </e-column>
+          <e-column
+            field="caR"
+            headerTextAlign="left"
+            textAlign="Right"
+            format="N3"
+            headerText="CA Rev"
+            width="9%"
+      
+          >
+          </e-column>
+          <e-column
+            field="caC"
+            headerTextAlign="left"
+            headerText="CA Cons"
+            textAlign="Right"
+            format="N3"
+            width="9%"
+          
+          >
+          </e-column>
+          <e-column
+          field="caFour1"
+          headerTextAlign="left"
+          [headerText]="nfour1"
+          textAlign="Right"
+          format="N3"
+          width="8%"
+          [customAttributes]="customAttributes"
+        >
+          </e-column>
+          <e-column
+            field="caFour2"
+            headerTextAlign="left"
+            [headerText]="nfour2"
+            textAlign="Right"
+            format="N3"
+            width="8%"
+            [customAttributes]="customAttributes"
+          >
+          </e-column>
+        </e-columns>
+        <e-aggregates>
+          <e-aggregate>
+            <e-columns>
+              <e-column field="caM" type="sum" format="N3">
+                <ng-template #footerTemplate let-vendeurs
+                  >{{ vendeurs.sum }} DT</ng-template
+                >
+              </e-column>
+              <e-column field="caA" type="sum" format="N3">
+                <ng-template #footerTemplate let-vendeurs
+                  >{{ vendeurs.sum }} DT</ng-template
+                >
+              </e-column>
+              <e-column field="ca" type="sum" format="N3">
+                <ng-template #footerTemplate let-vendeurs
+                  >{{ vendeurs.sum }} DT</ng-template
+                >
+              </e-column>
+              <e-column field="pourc" type="sum" format="N2">
+                <ng-template #footerTemplate let-vendeurs
+                  >{{ vendeurs.sum }} %</ng-template
+                >
+              </e-column>
+              <e-column field="caR" type="sum" format="N3">
+                <ng-template #footerTemplate let-vendeurs
+                  >{{ vendeurs.sum }} DT</ng-template
+                >
+              </e-column>
+              <e-column field="caC" type="sum" format="N3">
+                <ng-template #footerTemplate let-vendeurs
+                  >{{ vendeurs.sum }} DT</ng-template
+                >
+              </e-column>
+              <e-column field="caFour1" type="sum" format="N3">
+                <ng-template #footerTemplate let-vendeurs
+                  >{{ vendeurs.sum }} DT</ng-template
+                >
+              </e-column>
+              <e-column field="caFour2" type="sum" format="N3">
+                <ng-template #footerTemplate let-vendeurs
+                  >{{ vendeurs.sum }} DT</ng-template
+                >
+              </e-column>
+            </e-columns>
+          </e-aggregate>
+        </e-aggregates>
+      </ejs-grid>
+    </div>
+  </div>
+<br>
+  <div class="row" *ngIf="affichGrid">
+    <div class="col-md-11"></div>
+    <div class="col-md-1">
+      <button
+        style="margin-left: 11px"
+        
+        pButton
+        type="button"
+        (click)="genererExcel()"
+        label="Excel"
+        class="ui-button-raised"
+      ></button>
+    </div>
+  </div>
+
+<br />
+<div class="row" *ngIf="affichGrid === true">
+  <div class="col-md-3">
+    <p-panel header="Répartition du CA par">
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupname1"
+            value="client"
+            [(ngModel)]="selectedValue"
+            label="Client"
+            [disabled]="readOnly"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupname1"
+            value="sousfamille"
+            [(ngModel)]="selectedValue"
+            label="Sous Famille"
+            [disabled]="readOnly"
+          ></p-radioButton>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupname1"
+            value="fournisseur"
+            [(ngModel)]="selectedValue"
+            label="Fournisseur"
+            [disabled]="readOnly"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupname1"
+            value="zone"
+            [(ngModel)]="selectedValue"
+            label="Zone"
+            [disabled]="readOnly"
+          ></p-radioButton>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupname1"
+            value="article"
+            [(ngModel)]="selectedValue"
+            label="Article"
+            [disabled]="readOnly"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupname1"
+            value="secteur"
+            [(ngModel)]="selectedValue"
+            label="Secteur"
+            [disabled]="readOnly"
+          ></p-radioButton>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            [disabled]="readOnly"
+            name="groupname1"
+            value="famille"
+            [(ngModel)]="selectedValue"
+            label="Famille"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupname1"
+            value="representant"
+            [(ngModel)]="selectedValue"
+            label="Representant"
+            [disabled]="readOnly"
+          ></p-radioButton>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-3">
+          <button
+            [hidden]="!disab"
+            pButton
+            type="button"
+            id="affichbt2"
+            (click)="afficher2($event)"
+            label="Afficher"
+            class="ui-button-raised"
+          ></button>
+        </div>
+        <div class="col-md-7"></div>
+      </div>
+    </p-panel>
+  </div>
+  <div class="col-md-9">
+    <div class="row" *ngIf="affichGrid2 === true" style="margin-top: 1%">
+      <div class="col-md-12">
+        <ejs-grid
+          #grid2
+          [dataSource]="listeCAVendeur"
+          gridLines="Both"
+          [allowResizing]="true"
+          width="100%"
+          height="160"
+        [rowHeight]="10"
+        >
+          <e-columns>
+            <e-column field="code" headerText="Code" width="6%"></e-column>
+            <e-column
+              field="designation"
+              headerText="Design"
+              width="14%"
+            ></e-column>
+            <e-column
+              field="va"
+              width="10%"
+              headerText="Va"
+              headerTextAlign="left"
+              [customAttributes]="customAttributes"
+            >
+              <ng-template #template let-listeCAVendeur>
+                <p style="text-align: right">{{ listeCAVendeur.va }}</p>
+              </ng-template>
+            </e-column>
+            <e-column
+              width="11%"
+              field="canr"
+              headerTextAlign="left"
+              headerText="Canr"
+              [customAttributes]="customAttributes"
+            >
+              <ng-template #template let-listeCAVendeur>
+                <p style="text-align: right">{{ listeCAVendeur.canr }}</p>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="mtr"
+              headerTextAlign="left"
+              width="9%"
+              headerText="Mtr"
+              [customAttributes]="customAttributes"
+            >
+              <ng-template #template let-listeCAVendeur>
+                <p style="text-align: right">{{ listeCAVendeur.mtr }}</p>
+              </ng-template>
+            </e-column>
+            <e-column
+              width="9%"
+              headerTextAlign="left"
+              field="car"
+              headerText="Car"
+              [customAttributes]="customAttributes"
+            >
+              <ng-template #template let-listeCAVendeur>
+                <p style="text-align: right">{{ listeCAVendeur.car }}</p>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="mrg"
+              headerText="Mrg"
+              headerTextAlign="left"
+              width="9%"
+              [customAttributes]="customAttributes"
+            >
+              <ng-template #template let-listeCAVendeur>
+                <p style="text-align: right">{{ listeCAVendeur.mrg }}</p>
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<div class="row">
+  <div class="col-md-2">
+    <button
+      *ngIf="btnNvPeriod"
+      pButton
+      type="button"
+      (click)="Nouvperiode()"
+      label="Nouvelle periode"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-9"></div>
+  <div class="col-md-1">
+    <button
+      *ngIf="affichGrid2 === true"
+      pButton
+      id="excel2"
+      type="button"
+      (click)="genererExcel2()"
+      label="Excel"
+      class="ui-button-raised"
+    ></button>
+  </div>
+</div>
+
+<p-overlayPanel
+  #opp
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  id="opp"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{ msgerror }} </span>
+</p-overlayPanel>

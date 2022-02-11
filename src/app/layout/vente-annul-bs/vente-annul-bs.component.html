@@ -1,0 +1,99 @@
+
+  
+   
+
+
+
+              <div class="row">
+                          
+                <div class="col-md-2" style="font-weight: bold; font-size: 18px;">  Le numero:  </div>
+                  <div class="col-md-7">   <input  type="search" autofocus  pKeyFilter="pint" (change)="verifierNumero()"  id='num' pInputText   (keyup.enter)="getByNumero($event)"   [(ngModel)]="numero" [readonly]="readonly" placeholder=" saisir un numéro " /> 
+                    
+                  
+                  </div>
+                      
+              </div> 
+              <br>
+
+
+
+              
+
+     <div *ngIf="afficherClicked">
+          <div [class.disabled-content]="!editEnable">
+
+
+                    <div class="row">
+                              <p-panel   header="En-tete B/S "  >
+                                <div class="row">
+                                            <div class="col-md-1" style="font-weight: bold;">Date:</div>
+                                            <div class="col-md-2"> 
+                                              
+                                              <input type="search"  pInputText   [(ngModel)]="this.elivraison.dated" [readonly]="readonly" />
+                                             
+                                              </div>
+                                              &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                                              <div class="col-md-1" style="font-weight: bold;">Livreur: </div>
+                                              <div class="col-md-2"> 
+                                                <input type="search" pInputText  [(ngModel)]="this.SelectedLivreur.nom" [readonly]="readonly" />
+                                                </div>
+                                                &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                                              <div class="col-md-2" style="font-weight: bold;">Numero du camion:</div>
+                                              <div class="col-md-2">
+                                                      <input type="search"  pInputText  [(ngModel)]="this.elivraison.camuion" [readonly]="readonly"/>
+                                              </div>
+                                              
+                                                    
+                                                  
+                                                                  
+                                </div>
+                                </p-panel>
+                     </div>
+        
+     
+                
+                <br>
+                <div class="row">
+                        <p-panel   header=" Details B/S ">
+                                  <div class="row"  class fxFlexFill fxLayoutAlign="center center">
+                                              <ejs-grid #grid [dataSource]="RecBonSorties" gridLines='Both'
+                                             
+                                              height="350" width="98%"
+                                              rowHeight='35'
+                                              allowResizing= 'true'
+                                                >               
+                                                              <e-columns>
+                                                                  <e-column field="piece"      headerText="Pièce" width="17%" [customAttributes]="customAttributes"  BackgroundColor="Gray" ></e-column>
+                                                                  <e-column field="date"       headerText="Date " width="18%" [customAttributes]="customAttributes"></e-column>
+                                                                  <e-column field="codeclt"    headerText="Code client " width="18%" [customAttributes]="customAttributes"></e-column>
+                                                                  <e-column field="nomclt"     headerText="Nom client" width="30%" [customAttributes]="customAttributes"></e-column>
+                                                                  <e-column field="net"        headerText="Net" width="16%" [customAttributes]="customAttributes">
+                                                                    <ng-template #template let-RecBonSorties>
+                                                                      <div style="text-align: right;">{{RecBonSorties.net}}</div>
+                                                                  </ng-template>
+                                                                  </e-column>
+                                                                  <e-column field="vendeur"    headerText="Vendeur" width="27%" [customAttributes]="customAttributes"></e-column>
+                                                                  <e-column field="observlivr" headerText="Observation de livreur" width="28%" [customAttributes]="customAttributes"></e-column>   
+                                                              </e-columns>
+                                                </ejs-grid>
+                                    </div>
+                            </p-panel>
+                </div>
+                    <br>
+                    <div class="row">
+                       <div class="col-md-2"></div>
+                       <div class="col-md-2"><button pButton type="button" class="ui-button-raised" (click)="Supprimer($event)" label="Valider"></button></div>
+                       <div class="col-md-2"><button pButton type="button" class="ui-button-raised" (click)="nouvelleSaisie()" label="Annuler"></button></div>
+                       <div class="col-md-6"></div>
+                      </div>
+
+                    
+            </div>
+     </div>
+
+
+
+         
+          <p-overlayPanel #op appendTo="body" [dismissable]='false'  [showCloseIcon]="true"  [style]="{'text-align': 'center', 'font-size':'14px' ,'background-color': ' #f8b7bd'}" >
+            <span style="width: 138%;"> {{msgerror}} </span>
+        </p-overlayPanel> 

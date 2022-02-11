@@ -1,0 +1,588 @@
+<p-blockUI [blocked]="blocked"></p-blockUI>
+<br />
+
+<!---->
+
+  <div class="row"  >
+      
+    <div class="col-md-12" >
+                      
+                          <div class="row">
+                          <div class="col-md-12" style="width: 100%;">
+                              
+                              <p-table #dt   [resizableColumns]="true" styleClass="p-datatable-gridlines"  [value]="transits"   dataKey="id" 
+                              selectionMode="single" [(selection)]="SelectedTransit" (onRowSelect)="onRowEditInit($event)"
+                                      [scrollable]="true" scrollHeight="24.95em" 
+                                       
+                              editMode="row" 
+                              >
+                                  <ng-template pTemplate="header">
+                                    <tr >
+                                      <th style="width: 5%;">Ordre</th>
+                                      <th style="width: 8%;">Fournisseur</th>
+                                      <th style="width: 6%;">N°_cmd</th>
+                                      <th style="width: 7%;">date_env</th>
+                                      <th style="width: 8%;">mnt_prof</th>
+  
+                                      <th style="width: 7%;">dt_prof</th>
+                                      
+                                      <th style="width: 9%;">mnt_fact</th>
+                                      <th style="width: 7%;">dt_fr</th>
+                                      <th style="width: 7%;">dt_arr</th>
+                                      <th style="width: 7%;">dt_rem</th>
+                                      <th style="width: 7%;">dt_sor</th>
+                                      <th style="width: 7%;">dt_reg</th>
+                                      <th style="width: 5%;">observ</th>
+                                      <th style="width: 7%;">Edit</th>
+                                      </tr>
+                                  </ng-template>
+                                  <ng-template pTemplate="body" let-rowData  let-editing="editing" let-ri="rowIndex"
+                                 
+                                  >
+                                   
+                                      <tr 
+                                    
+                                      #row [attr.id]="rowData.id"
+                                      [pEditableRow]="rowData"
+                                          >
+  
+                                          <td  style="width: 5%;" id="row_{{rowData.id}}_frs"  >
+                                            <p-cellEditor >
+                                              <ng-template pTemplate="input"  >
+                                              {{rowData.id}}
+                                                
+                                              </ng-template>
+
+                                               <ng-template pTemplate="output">
+                                                {{rowData.id}}
+                                              
+                                              </ng-template>
+                                          </p-cellEditor>
+                                             
+                                          </td>
+                                          <td style="width: 8%;"> 
+                                              <p-cellEditor >
+                                                  <ng-template pTemplate="input" style="font-size: 11px;" >
+                                                    {{rowData.nomFrs}}
+                                                     
+                                                  </ng-template>
+                                                   <ng-template pTemplate="output" style="font-size: 11px;">
+                                                    {{rowData.nomFrs}}
+                                                  </ng-template>
+                                              </p-cellEditor>
+                                          </td>
+                                          <td style="width: 6%;">
+                                              <p-cellEditor>
+                                                  <ng-template pTemplate="input">
+                                                    {{rowData.numCmd}}
+                                                    
+                                                      
+                                                  </ng-template>
+                                                  <ng-template pTemplate="output">
+                                                      {{rowData.numCmd}}
+                                                  </ng-template>
+                                              </p-cellEditor>
+                                          </td>
+                                          <td style="width: 7%;">
+                                              <p-cellEditor>
+                                                  <ng-template pTemplate="input" style="size: 10px;">
+                                                    
+                                                    {{rowData.dateEnv}}
+                                                  </ng-template>
+                                                
+                                                  <ng-template  appendTo="body" pTemplate="output">
+                                                    {{rowData.dateEnv }}
+
+                                                </ng-template>
+                                              </p-cellEditor>
+                                          </td>
+                                          <td style="width: 8%;">
+                                              <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                   
+                                                  <p align="right"> {{rowData.mntProf}}</p>
+                                                </ng-template>
+                                                <ng-template pTemplate="output" >
+                                                  <p align="right"> {{rowData.mntProf}}</p>
+                                                </ng-template>
+                                            </p-cellEditor>
+                                          </td>
+                                          <td style="width: 7%;">
+                                            <p-cellEditor>
+                                              <ng-template pTemplate="input">
+                                                {{rowData.dateProf}}
+                                              </ng-template>
+                                              <ng-template pTemplate="output">
+                                                  {{rowData.dateProf}}
+                                              </ng-template>
+                                          </p-cellEditor>
+                                          </td>
+                                          <td style="width: 9%;">
+                                          <p-cellEditor>
+                                            <ng-template pTemplate="input">
+                                              <p align="right">{{rowData.mntFact}}</p>
+                                            </ng-template>
+                                            <ng-template pTemplate="output" >
+                                               <p align="right">{{rowData.mntFact}}</p> 
+                                            </ng-template>
+                                        </p-cellEditor>
+                                      </td>
+                                      <td style="width: 7%;">
+                                        <p-cellEditor>
+                                          <ng-template pTemplate="input">
+                                            {{rowData.dateFact}}                                             
+                                          </ng-template>
+                                          <ng-template pTemplate="output">
+                                              {{rowData.dateFact}}
+                                          </ng-template>
+                                      </p-cellEditor>
+                                  </td>
+                                   <td style="width: 7%;">
+                                      <p-cellEditor>
+  
+                                        <ng-template pTemplate="input">
+                                          
+                                          {{rowData.dateArr}} 
+                                          
+                                         
+                                           
+                                        </ng-template>
+                                        <ng-template pTemplate="output" style="width: 2%;">
+                                            {{rowData.dateArr}} 
+                                        </ng-template>
+                                    </p-cellEditor>
+                                  </td>
+                              <td style="width: 7%;">
+                                    <p-cellEditor>
+                                      <ng-template pTemplate="input">
+                                      
+                                        {{rowData.dateRem }}
+                                         
+                                      </ng-template>
+                                      <ng-template pTemplate="output">
+                                        <!-- | date : 'dd/MM/y' -->
+                                          {{rowData.dateRem }}
+                                      </ng-template>
+                                  </p-cellEditor>
+                              </td>  
+
+                              <td style="width: 7%;">
+                                <p-cellEditor>
+                                  <ng-template pTemplate="input">
+                                   
+                                    {{rowData.dateSort }}
+                                     
+                                  </ng-template>
+                                  <ng-template pTemplate="output">
+                                    <!-- | date : 'dd/MM/y' -->
+                                      {{rowData.dateSort }}
+                                  </ng-template>
+                              </p-cellEditor>
+                          </td> 
+
+                          <td style="width: 7%;">
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                {{rowData.dateReg }}
+
+                                 
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                <!-- | date : 'dd/MM/y' -->
+                                  {{rowData.dateReg }}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>                                      
+                       <td style="width: 5%;">
+                        <p-cellEditor>
+                          <ng-template pTemplate="input">
+                            {{rowData.observation}}                         
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                              {{rowData.observation}}
+                          </ng-template>
+                      </p-cellEditor>
+                  </td>
+                              <td style="position: center; width: 7%;">
+                               
+                                              <button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info"  (click)="onRowEditInit(rowData)" ></button>
+                                              <!--<button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" [disabled]="disable" class="ui-button-success"  id="sav" style="margin-right: .5em" (click)="onRowEditSave(rowData,$event)"></button>
+                                              <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>-->
+                             
+                                              
+                                                <button 
+                                                  pButton
+                                                  type="button"
+                                                  pDeletetableRow
+                                                  icon="pi pi-trash"
+                                                  class="ui-button-danger"
+                                                  (click)="supprimer(ri)"
+                                                 
+                                                ></button>
+                                              
+                             
+                                            </td>
+                                      </tr>
+
+                                      
+                                  </ng-template>
+                              </p-table>
+                              
+                            
+                                </div>
+  
+                                </div>
+  
+                               
+                      
+  </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-1">
+      <button
+        clikcked="true"
+        style="font-size: 14px;"
+        [ngStyle]="{ visibility: getVisibilityApercu() }"
+        pButton
+        type="button"
+        label="Apercu"
+        (click)="Appercu()"
+        class="ui-button-raised"
+      ></button>
+    </div>
+    <div class="col-md-1">
+      <button
+        clikcked="true"
+        style="font-size: 14px;"
+        pButton
+        type="button"
+        [ngStyle]="{ visibility: getVisibilityExcel() }"
+        label="Excel"
+        (click)="Excel()"
+        class="ui-button-raised"
+      ></button>
+    </div>
+    <div class="col-md-9"></div>
+       <!--[newRow]="newRow()"-->
+      <div class="col-md-1" ><button *ngIf="btnajut" pButton type="button"icon="pi pi-plus"  class="ui-button-info" [label]="'Ajouter'"
+        (click)="add()" pAddRow [table]="dt" [newRow]="newRow()" ></button></div> 
+    </div>
+  
+
+  
+
+
+
+
+
+  <p-dialog header=" Détailles" appendTo="body" [blockScroll]="true" (onHide)="onRowEditCancel()" [draggable]="false" [(visible)]="displayDialog" [closable]="true" [focusOnShow]="false" showEffect="fade" [modal]="true" [style]="{width: '98%', height:'50%'}">
+      <!--   *ngIf="car"  -->
+    <div class="p-grid ui-fluid">
+
+      <div class="row">
+        <div class="col-md-2">
+          <label>N° d'ordre</label>
+        </div>
+        <div class="col-md-2">
+          <input
+            type="search"
+            style="width: 100%;"
+            [(ngModel)]="nmOrdre"
+            pInputText
+            [disabled]="readOnlyID"
+            [readOnly]="readonlyNORD"
+          />
+        </div>
+        <div class="col-md-2">
+          <label>Nom Fournisseur</label>
+        </div>
+        <div class="col-md-3" style="width: 100%;">
+          <ng-select
+            id="frs"
+            appendTo="body"
+            ngselect
+            [items]="fournisseurs"
+            bindLabel="deno"
+            
+            [(ngModel)]="SelectedFournisseur"
+            placeholder="Veuiller choisir un Fournisseur"
+            [searchFn]="onSearchFournisseur"
+          >
+          </ng-select>
+        </div>
+
+        <div class="col-md-1">
+          <label>N° Cmd</label>
+        </div>
+        <div class="col-md-2">
+          <input
+            type="search"
+            [maxlength]="5"
+            style="width: 100%;"
+            [(ngModel)]="nmrCmd"
+            pInputText
+          />
+        </div>
+      </div>
+      <br>
+
+      <div class="row">
+        <div class="col-md-2">
+          <label>Montant Proforma</label>
+        </div>
+        <div class="col-md-2">
+          <input
+            appendTo="body"
+            type="search"
+            style="width: 100%;"
+            [(ngModel)]="montantproforma"
+            pKeyFilter="num"
+            pInputText
+            (mousewheel)="viderChamp(montantproforma)"
+          />
+        </div>
+        <div class="col-md-2">
+          <label>Montant Facture</label>
+        </div>
+        <div class="col-md-2">
+          <input
+          appendTo="body"
+            type="search"
+            style="width: 100%;"
+            [(ngModel)]="montantfact"
+            pInputText
+            pKeyFilter="num"
+          />
+        </div>
+        <div class="col-md-1"></div>
+
+        <div class="col-md-1">
+          <label>Observations</label>
+        </div>
+        <div class="col-md-2">
+          <input
+          appendTo="body"
+          [maxlength]="30"
+            type="search"
+            style="width: 100%;"
+            [(ngModel)]="observation"
+            pInputText
+          />
+        </div>
+      </div>
+     <br>
+
+        <div class="row" style="margin-top: 0.5%;">
+          <div class="col-md-3">
+            <p-checkbox
+              appendTo="body"
+              [(ngModel)]="value1"
+              [binary]="true"
+              label="Enregistrer Date Envoi"
+            ></p-checkbox>
+          </div>
+          <div class="col-md-3">
+            <p-checkbox
+            appendTo="body"
+              [(ngModel)]="value2"
+              [binary]="true"
+              label="Enregistrer Date Proforma"
+            ></p-checkbox>
+          </div>
+          <div class="col-md-3">
+            <p-checkbox
+            appendTo="body"
+              [(ngModel)]="value3"
+              [binary]="true"
+              label="Enregistrer Date Facture"
+            ></p-checkbox>
+          </div>
+          <div class="col-md-3">
+            <p-checkbox
+            appendTo="body"
+              [(ngModel)]="value4"
+              [binary]="true"
+              label="Enregistrer Date Arrivée"
+            ></p-checkbox>
+          </div>
+
+        </div>
+        <div class="row" style="margin-top: 0.5%;">
+          <div class="col-md-2">
+            <p-calendar
+            appendTo="body"
+              [locale]="tn"
+              [(ngModel)]="dateEnv"
+              [ngStyle]="{ visibility: getVisibilityy(value1) }"
+              dateFormat="dd/mm/yy"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              placeholder="date d'envoi "
+              yearRange="2000:2999"
+            ></p-calendar>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-2">
+            <p-calendar
+            appendTo="body"
+              [locale]="tn"
+              [(ngModel)]="dateProf"
+              [ngStyle]="{ visibility: getVisibilityy(value2) }"
+              dateFormat="dd/mm/yy"
+              placeholder="date de proforma "
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              yearRange="2000:2999"
+            ></p-calendar>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-2">
+            <p-calendar
+            appendTo="body"
+              [locale]="tn"
+              [(ngModel)]="dateFact"
+              placeholder="date de facture "
+              dateFormat="dd/mm/yy"
+              [ngStyle]="{ visibility: getVisibilityy(value3) }"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              yearRange="2000:2999"
+            ></p-calendar>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-2">
+            <p-calendar
+            appendTo="body"
+              [locale]="tn"
+              [(ngModel)]="dateArv"
+              [ngStyle]="{ visibility: getVisibilityy(value4) }"
+              dateFormat="dd/mm/yy"
+              placeholder="date d'arrivée "
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              yearRange="2000:2999"
+            ></p-calendar>
+          </div>
+          <div class="col-md-1"></div>
+        
+        </div>
+       
+        <div class="row" style="margin-top: 0.5%;">
+          <div class="col-md-3">
+            <p-checkbox
+            appendTo="body"
+              [(ngModel)]="value5"
+              [binary]="true"
+              label="Enregistrer Date Remise"
+            ></p-checkbox>
+          </div>
+          <div class="col-md-3">
+            <p-checkbox
+            appendTo="body"
+              [(ngModel)]="value6"
+              [binary]="true"
+              label="Enregistrer Date Sortie"
+            ></p-checkbox>
+          </div>
+          <div class="col-md-3">
+            <p-checkbox
+            appendTo="body"
+              [(ngModel)]="value7"
+              [binary]="true"
+              label="Enregistrer Date Reglement"
+            ></p-checkbox>
+          </div>
+          <div class="col-md-3">
+
+          </div>
+        </div>
+        <div class="row" style="margin-top: 0.5%;">
+          <div class="col-md-2">
+            <p-calendar
+            appendTo="body"
+              [locale]="tn"
+              [(ngModel)]="dateRms"
+              placeholder="date de remise "
+              [ngStyle]="{ visibility: getVisibilityy(value5) }"
+              dateFormat="dd/mm/yy"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              yearRange="2000:2999"
+            ></p-calendar>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-2">
+            <p-calendar
+            appendTo="body"
+              [locale]="tn"
+              [(ngModel)]="dateSrt"
+              [ngStyle]="{ visibility: getVisibilityy(value6) }"
+              dateFormat="dd/mm/yy"
+              placeholder="Date de sortie"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              yearRange="2000:2999"
+            ></p-calendar>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-2">
+            <p-calendar
+            appendTo="body"
+              [locale]="tn"
+              [(ngModel)]="dateReglm"
+              placeholder="date de reglement "
+              dateFormat="dd/mm/yy"
+              [ngStyle]="{ visibility: getVisibilityy(value7) }"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              yearRange="2000:2999"
+            ></p-calendar>
+          </div>
+          <div class="col-md-4">
+
+          </div>
+        </div>
+  
+     
+      
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+             <button type="button" pButton icon="pi pi-times" (click)="onRowEditCancel()"  label="annuler"></button>
+            <button type="button" appendTo="body" pButton icon="pi pi-check" (click)="save($event)" label="valider"></button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+
+
+
+
+<br>
+
+
+<br />
+<div class="row">
+
+
+  
+</div>
+
+
+
+
+<p-overlayPanel
+  #op
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{ msg }} </span>
+</p-overlayPanel>

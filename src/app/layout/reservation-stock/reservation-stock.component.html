@@ -1,0 +1,424 @@
+<div class="reservation_stock">
+
+  <div class="row" >
+  
+  <p-tabView (onChange)="ChangerGrid()" [activeIndex]="null"  class="ui-tabview" >
+      <p-tabPanel header="Nouvelle Réservation" class="ui-tabview-panels" style="border: none;">
+        <div >
+          <div class="row">
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-4">
+                  <p>Client</p>
+                </div>
+                <div class="col-md-8"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-11">
+                  <ng-select ngselect id="mnt" [items]="clients" bindLabel="deno" [(ngModel)]="SelectedClientNouvelle"
+                     [searchFn]="onSearchClient" placeholder="Veuiller choisir un client">
+                  </ng-select>
+                  
+                </div>
+                <div class="col-md-1">
+                  
+                </div>
+              </div>
+          
+            </div>
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-11" *ngIf="this.SelectedClientNouvelle !== null">
+                  {{SelectedClientNouvelle.code}}
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+            </div>
+            <div class="col-md-4"></div>
+          </div>
+
+          <div class="row" style="margin-top: 1%;" >
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-8">
+                  <p>Bon Com EQM</p>
+                </div>
+                <div class="col-md-4"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-5" >
+                  <input [(ngModel)]="ComNouvelle" class="form-control" id="bncmd"
+                    type="search" pInputText placeholder="Saisir Bon_Commande" style=" width: 110%;"maxlength="15"/>
+                </div>
+                <div class="col-md-7"></div>
+              </div>
+            </div>
+            <div class="col-md-6"></div>
+          </div>
+
+          <div class="row" style="margin-top: 1%;" >
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-4">
+                  <p>Article</p>
+                </div>
+                <div class="col-md-8"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-11">
+                  <ng-select ngselect  id="article" [items]="articles" bindLabel="code" [(ngModel)]="SelectedArticleNouvelle"
+                    (keyup.enter)="onSearchArtParCode($event.target.value)"
+                    placeholder="Veuiller choisir un article">
+                  </ng-select>
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-11" *ngIf="this.SelectedArticleNouvelle !== null">
+                  {{SelectedArticleNouvelle.design}}
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+            </div>
+            <div class="col-md-4"></div>
+          </div>
+          <div class="row" style="margin-top: 1%;" >
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-8">
+                  <p>Quantité</p>
+                </div>
+                <div class="col-md-4"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-5" >
+       
+                  <input style="width: 100%;" [(ngModel)]="quantiteNouvelle" id="quantite"
+                  class="form-control" type="search" placeholder="Saisir La Quantite"  pInputText />
+         
+                  </div>
+                <div class="col-md-7"></div>
+              </div>
+            </div>
+            <div class="col-md-6"></div>
+          </div>
+          <br>
+          <div class="row" style="margin-top: 7.4px;">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-3">
+                  <button clikcked="true" style="font-size: 14px;" pButton type="button" id="btnValider"label="Valider"
+                    (click)="Valider($event)" class="ui-button-raised ">
+                  </button>
+                </div>
+                <div class="col-md-9">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6"></div>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Annulation Réservation">
+        <div >
+          <div class="row">
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-4">
+                  <p>Client</p>
+                </div>
+                <div class="col-md-8"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-11">
+                  <ng-select ngselect [items]="clients" bindLabel="deno" [(ngModel)]="SelectedClientAnnuler"
+                     [searchFn]="onSearchClient" (open)="initialiser()" placeholder="Veuiller choisir un client">
+                  </ng-select>
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-11" *ngIf="this.SelectedClientAnnuler !== null">
+                  {{SelectedClientAnnuler.code}}
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+          </div>
+          <div class="row" style="margin-top: 1%;">
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-8">
+                  <p>Bon Com EQM</p>
+                </div>
+                <div class="col-md-4"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-5" (click)="RechercherBN_Cmd()">
+                  <input [(ngModel)]="ComAnnuler" style=" width: 110%;" class="form-control" type="search" pInputText placeholder="Saisir Bon_Commande" maxlength="15"/>
+                </div>
+                <div class="col-md-7"></div>
+              </div>
+            </div>
+            <div class="col-md-6"></div>
+          </div>
+ 
+          <div class="row" style="margin-top: 1%;">
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-4">
+                  <p>Article</p>
+                </div>
+                <div class="col-md-8"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-11">
+                  <ng-select ngselect [items]="articles" (open)="initialiser()" bindLabel="code" [(ngModel)]="SelectedArticleAnnuler"
+                    (keyup.enter)="onSearchArtParCode($event.target.value)"
+                    placeholder="Veuiller choisir un article">
+                  </ng-select>
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-11" *ngIf="this.SelectedArticleAnnuler !== null">
+                  {{SelectedArticleAnnuler.design}}
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+            </div>
+            <div class="col-md-4"></div>
+          </div>
+          <br><br><br>
+          <div class="row" style="margin-top: 1%;">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-3">
+                  <button clikcked="true" id="consulter" style="font-size: 14px;" pButton type="button" label="Afficher"
+                    (click)="Consulter($event)" class="ui-button-raised ">
+                  </button>
+                </div>
+                <div class="col-md-9"  >
+                 
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6"></div>
+          </div>
+          <div *ngIf="consulterClicked === true && valideconsulter === true">
+            <div class="row" style="margin-top: 0.5%;">
+              <div class="col-md-12">
+                  <ejs-grid 
+                  (recordDoubleClick)="supprimer($event)" #grid [searchSettings]="searchOptions"
+                    [selectedRowIndex]="0" gridLines='Both' (rowSelected)="rowSelected()" width="100%"
+                    [dataSource]="reservationsannulation" [selectedRowIndex]="0" height="200"
+                    rowHeight='40' gridLines='Both' allowResizing= 'true'>
+                    <e-columns>
+                      <e-column field="code_Clt" headerText="Code_Clt" width="110"
+                        [customAttributes]="customAttributes"></e-column>
+                      <e-column field="client" headerText="Client" width="170" [customAttributes]="customAttributes">
+                      </e-column>
+                      <e-column field="bon_de_Commande" headerText="BC EQM " width="110"
+                        [customAttributes]="customAttributes"></e-column>
+                      <e-column field="date" headerText="Date" width="120" [customAttributes]="customAttributes">
+                      </e-column>
+                      <e-column field="article" headerText="Article" width="150" [customAttributes]="customAttributes">
+                      </e-column>
+                      <e-column field="designation" headerText="Désignation" width="250"
+                        [customAttributes]="customAttributes"></e-column>
+                      <e-column field="quantitee" headerText="QTE" width="110" [customAttributes]="customAttributes">
+                      </e-column>
+                      <e-column field="num_Reserv" headerText="Num_Reserv" width="140"
+                        [customAttributes]="customAttributes"></e-column>
+                    </e-columns>
+                  </ejs-grid>
+              </div>
+             
+            </div>
+            <div class="row" style="margin-top: 1%;">
+              <div class="col-md-11">
+                <p style="font-size: 14px; font-weight: bold;">Pour Annuler La Réservation Selectionnez la Ligne
+                  Correspondante Puis Faire Double Click</p>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Consultation Réservation">
+        <div >
+          <div class="row">
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-4">
+                  <p>Client</p>
+                </div>
+                <div class="col-md-8"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-11">
+                  <ng-select  ngselect [items]="clients" bindLabel="deno" [(ngModel)]="SelectedClient"
+                     [searchFn]="onSearchClient" (open)="initialiser()" placeholder="Veuillez choisir un client">
+                  </ng-select>
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-11" *ngIf="this.SelectedClient !== null">
+                  {{SelectedClient.code}}
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+            </div>
+            <div class="col-md-4"></div>
+          </div>
+          <div class="row" style="margin-top: 1%;">
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-8">
+                  <p>Bon Com EQM</p>
+                </div>
+                <div class="col-md-4"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-5" (click)="RechercherBN_Cmd()">
+                  <input [(ngModel)]="Com" style=" width: 110%;" class="form-control" type="search" style=" width: 110%;" pInputText placeholder="Saisir Bon_Commande"maxlength="15" />
+                </div>
+                <div class="col-md-7"></div>
+              </div>
+            </div>
+            <div class="col-md-6"></div>
+          </div>
+  
+          <div class="row" style="margin-top: 1%;">
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-4">
+                  <p>Article</p>
+                </div>
+                <div class="col-md-8"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-11">
+                  <ng-select 
+                  ngselect 
+                  [items]="articles"
+                   bindLabel="code" 
+                   [(ngModel)]="SelectedArticle"
+                   (open)="initialiser()"
+                    (keyup.enter)="onSearchArtParCode($event.target.value)"
+                    placeholder="Veuiller choisir un article">
+                  </ng-select>
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="row">
+                <div class="col-md-11" *ngIf="this.SelectedArticle !== null">
+                  {{SelectedArticle.design}}
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+            </div>
+            <div class="col-md-4"></div>
+          </div>
+          <br><br><br>
+          <div class="row" style="margin-top: 1%;">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-3">
+                  <button clikcked="true" id="afficher" style="font-size: 14px;" pButton type="button" label="Afficher"
+                    (click)="Afficher($event)" class="ui-button-raised ">
+                  </button>
+                </div>
+                <div class="col-md-9" >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6"></div>
+          </div>
+          <div class="row" style="margin-top: 0.5%;" *ngIf="afficheClicked === true && valideAfficher=== true">
+            <div class="col-md-12">
+                <ejs-grid #gridconsulter [searchSettings]="searchOptions" [selectedRowIndex]="0" gridLines='Both'
+                  width="100%" [dataSource]="reservations" [selectedRowIndex]="0"height="200"
+                  rowHeight='40' [allowExcelExport]='true'
+                  gridLines='Both' allowResizing= 'true'>
+                  <e-columns>
+                    <e-column field="code_Clt" headerText="Code_Clt" width="110" [customAttributes]="customAttributes">
+                    </e-column>
+                    <e-column field="client" headerText="Client" width="170" [customAttributes]="customAttributes">
+                    </e-column>
+                    <e-column field="bon_de_Commande" headerText="BC EQM " width="110"
+                      [customAttributes]="customAttributes"></e-column>
+                    <e-column field="date" headerText="Date" width="120" [customAttributes]="customAttributes">
+                    </e-column>
+                    <e-column field="article" headerText="Article" width="150" [customAttributes]="customAttributes">
+                    </e-column>
+                    <e-column field="designation" headerText="Désignation" width="250"
+                      [customAttributes]="customAttributes"></e-column>
+                    <e-column field="quantitee" headerText="QTE" width="110" [customAttributes]="customAttributes">
+                    </e-column>
+                    <e-column field="num_Reserv" headerText="Num_Reserv" width="140"
+                      [customAttributes]="customAttributes"></e-column>
+                  </e-columns>
+                </ejs-grid>
+            </div>
+            
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+    &nbsp;
+
+    <p-overlayPanel
+            #ovo
+            [dismissable]="false"
+            [showCloseIcon]="true"
+            appendTo="body"
+            [style]="{
+              'text-align': 'center',
+              'font-size': '14px',
+              'background-color': ' #f8b7bd'
+            }"
+          >
+            <span> {{ms}} </span>
+          </p-overlayPanel>
+
+  </div>
+ 
+</div>

@@ -1,0 +1,135 @@
+<div class="row">
+  <div class="col-md-2" style="font-weight: bold; font-size: 18px">
+    Le numero:
+  </div>
+  <div class="col-md-7">
+    <input
+      type="search"
+      autofocus
+      pKeyFilter="pint"
+      (change)="verifierNumero()"
+      id="num"
+      pInputText
+      (keyup.enter)="Verifier($event)"
+      [(ngModel)]="numero"
+      placeholder=" saisir un numéro "
+    />
+  </div>
+</div>
+<div *ngIf="readonly === true">
+  <br />
+  <ejs-grid
+    #grid
+    [dataSource]="articles"
+    (recordDoubleClick)="coutDeVenteMinimal($event)"
+    [selectedRowIndex]="selectedArticle"
+    allowResizing="true"
+    height="390"
+    gridLines="Both"
+    allowTextWrap="true"
+    [rowHeight]="26"
+    allowResizing= 'true'
+  >
+    <e-columns>
+      <e-column field="code" headerText="ARTICLE" textAlign="Left" width="15">
+      </e-column>
+      <e-column
+        field="quantite"
+        headerText="QTE"
+        textAlign="right"
+        width="7"
+      ></e-column>
+      <e-column
+        field="remise"
+        headerText="REMISE"
+        textAlign="right"
+        width="7"
+      ></e-column>
+      <e-column
+        field="prix"
+        headerText="PRIX"
+        textAlign="right"
+        width="8"
+      ></e-column>
+      <e-column
+        field="coutDeVente"
+        headerText="COUT VENTE"
+        textAlign="right"
+        width="8"
+      ></e-column>
+      <e-column
+        field="coutDeVenteRemise"
+        headerText="COUT VENTE REMISE"
+        textAlign="right"
+        width="8"
+      ></e-column>
+      <e-column
+        field="achat"
+        headerText="ACHAT"
+        textAlign="right"
+        width="9"
+      ></e-column>
+      <e-column
+        field="coutVenteMinim"
+        headerText="COUT VENTE MIN"
+        textAlign="center"
+        width="8"
+      ></e-column>
+      <e-column
+        field="marge"
+        headerText="MARGE"
+        textAlign="right"
+        width="7"
+      ></e-column>
+      <e-column
+        field="passe"
+        headerText="PASSE"
+        textAlign="right"
+        width="7"
+      ></e-column>
+    </e-columns>
+  </ejs-grid>
+  <div class="row">
+    <div class="col-md-7">
+      <div *ngIf="afficheNouvCout === true">
+        <div>
+          Nouveau cout de vente minimal:
+        </div>
+        <div>
+          <input
+            type="search"
+            pInputText
+            (keyup.enter)="changerCoutMin($event)"
+            [(ngModel)]="coutVenteMin"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="row">
+        <div class="col-md-6">Cout achat total: </div>
+        <div class="col-md-6">{{ coutAchatTotal }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">Cout total de l'offre: </div>
+        <div class="col-md-6">{{ coutOffreTotal }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">Marge globale: </div>
+        <div class="col-md-6">{{ marge }}%</div>
+      </div>
+      <div  *ngIf="nbrArtHorsStk > 0">
+        Articles hors stock non considerés dans ce calcul: {{ nbrArtHorsStk }}
+      </div>
+    </div>
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanelError"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

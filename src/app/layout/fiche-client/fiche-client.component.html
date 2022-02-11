@@ -1,0 +1,683 @@
+<br>
+<div class="row">
+    
+      <div class="col-md-3">
+        <div class="row">
+          <div class="col-md-12">
+          <ng-select
+          ngselect
+          
+          [searchFn]="onSearchClient"
+          [items]="listClient"
+          bindLabel="deno"
+          (open)="chargerClient()"
+          [searchFn]="onSearchClient"
+          (change)="changeClient()"
+          [(ngModel)]="selectedClient"
+          placeholder="choisir un client"
+          [disabled]="readonl"
+          > 
+          </ng-select>
+        </div>
+        </div>
+
+              
+
+                <div class="row"  >
+                  <div class="col-md-3" style="font-weight: bold;"> Code :</div>
+                 
+                  <div class="col-md-9" style="font-size: 17px;color: darkblue;font-weight: bold;">
+                   {{this.codeClient}}
+                  </div>
+                 
+                </div>
+<br>
+   <div class="row">
+                  
+        <div class="col-md-12" >      
+          <div class="pcard" >
+                   <p-card class="pcard" >
+                         <div class="row">
+                           <div class="col-md-12" >
+                             
+                             
+                             <button pButton type="button" label="Chif Aff/Marges"  (click)="ChiffAff()"  class="ui-button-raised"></button>
+                           </div>
+                           <div class="col-md-2"></div>
+                         </div>
+                        <br>
+                        <p-card [hidden]="chiffaffbtn" >
+                          <div class="row">
+                            <br>
+                          </div>
+                          <br>
+                          <div class="row">
+                            <br>
+                          </div>
+                          <br>
+                          <div class="row">
+                           <br>
+                          </div>
+                         <br>
+                          <div class="row">
+                            <br>
+                             </div>
+
+                          </p-card>
+
+
+                         <p-card [hidden]="!chiffaffbtn" >
+                           <div class="row" >
+                             <div class="col-md-4"style="font-weight: bold;text-align:center;"> Année</div>
+                             <div class="col-md-4"style="font-weight: bold;text-align:center;">  Chif Aff</div>
+                             <div class="col-md-4"style="font-weight: bold;text-align:center;">Marges</div>
+                           </div>
+                         <br>
+           
+                         <div class="row" >
+                           <div class="col-md-4"style="font-weight: bold;"> {{anneecourant}}</div>
+                           <div class="col-md-4" style="text-align: right; font-weight: bold; color: darkblue;"> {{CA}}</div>
+                           <div class="col-md-4" style="text-align: right; font-weight: bold; color: darkblue;"> {{MA}}</div>
+                         </div>
+           
+                         <br>
+           
+                         <div class="row" >
+                           <div class="col-md-4"style="font-weight: bold;"> {{annee_1}}</div>
+                           <div class="col-md-4" style="text-align: right; font-weight: bold; color: darkblue;"> {{CA1}}</div>
+                           <div class="col-md-4" style="text-align: right; font-weight: bold; color: darkblue;"> {{MA1}}</div>
+                         </div>
+           
+                         <br>
+           
+                         <div class="row" >
+                           <div class="col-md-4"style="font-weight: bold;"> {{annee_2}}</div>
+                           <div class="col-md-4" style="text-align: right; font-weight: bold; color: darkblue;"> {{CA2}}</div>
+                           <div class="col-md-4" style="text-align: right; font-weight: bold; color: darkblue;"> {{MA2}}</div>
+                         </div>
+                        </p-card>
+                        <br>
+           
+                          
+           
+                        <div class="row">
+                         <div class="col-md-10">
+                           <button pButton type="button" label="Analyses Objectifs"  (click)="AnalyseObjectifs()"  class="ui-button-raised"></button>
+                         </div>
+                         <div class="col-md-2"></div>
+                       </div>
+                      <br> 
+                             <div class="row">
+                               <div class="col-md-12">
+                                 <!--  *ngIf="Analysebtn"  -->
+
+
+
+                                         <p-card [hidden]="!Analysebtn" >
+                                           <div class="row">
+                                             <div class="col-md-8" style="font-weight: bold;"> Objectif Annuel</div>
+                                             <div class="col-md-4" style="text-align: right; font-weight: bold; color: darkblue;">  {{objectifann}}</div>
+                                           </div>
+                                           <br>
+                                           <div class="row">
+                                             <div class="col-md-8" style="font-weight: bold;"> Objectif Actuel</div>
+                                             <div class="col-md-4" style="text-align: right; font-weight: bold; color: darkblue;">  {{objectifact}}</div>
+                                           </div>
+                                           <br>
+                                           <div class="row">
+                                             <div class="col-md-8" style="font-weight: bold;"> Réalisé</div>
+                                             <div class="col-md-4" style="text-align: right; font-weight: bold; color: darkblue;">  {{realise}}</div>  
+                                           </div>
+                                          <br>
+                                           <div class="row">
+                                             <div class="col-md-8" style="font-weight: bold;"> Soit un pourcentage de </div>
+                                             <div class="col-md-4" style="text-align: right; font-weight: bold;font-size: 13px; color: darkblue;"> {{pourcent }}</div>  
+                                           </div>
+           
+                                           </p-card>
+                                           
+
+
+                                           <p-card [hidden]="Analysebtn" >
+                                            <div class="row">
+                                              <br>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                              <br>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                             <br>
+                                            </div>
+                                           <br>
+                                            <div class="row">
+                                              <br>
+                                               </div>
+            
+                                            </p-card>
+                               </div>
+                             </div>
+                         
+                   </p-card>
+                 </div>
+                </div>      
+
+           
+           </div>
+       
+     </div>
+    <div class="col-md-9">
+    
+    <p-card >
+      <div class="old">
+        
+      <div class="row"  >
+   
+
+        <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+             Adresse :
+         </div>
+         <div class="col-md-2" >
+            <input type="search" pInputText  [(ngModel)]="this.adresseClient" [readonly]="readonly" />
+          </div>
+           
+
+          <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+             Ville :
+          </div>
+          <div class="col-md-2" >
+            <input type="search" pInputText  [(ngModel)]="this.villeClient" [readonly]="readonly"  />
+          </div>
+
+
+
+          <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+            Date creation :
+         </div>
+         <div class="col-md-2" >
+           <input type="search" pInputText  [(ngModel)]="this.dateCreationClient" [readonly]="readonly"  />
+         </div>
+
+     
+
+      </div>
+       <br >
+
+
+      <div class="row">
+         
+        
+        <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+          Typologie :
+         </div>
+        <div class="col-md-2" >
+         <input type="search" pInputText  [(ngModel)]="this.typologieClient" [readonly]="readonly"  />
+        </div>
+
+        <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+             CP :
+         </div>
+         <div class="col-md-2" >
+          <input type="search" pInputText  [(ngModel)]="this.cpClient" [readonly]="readonly"  />
+          </div>
+           
+
+
+
+          <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+            Zone :
+          </div>
+          <div class="col-md-2" >
+            <input type="search" pInputText  [(ngModel)]="this.zoneClient" [readonly]="readonly"  />
+          </div>
+
+      </div>
+      <br>
+
+      <div class="row">
+
+        <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+          Activite :
+       </div>
+       <div class="col-md-2" >
+         <input type="search" pInputText  [(ngModel)]="this.activiteClient" [readonly]="readonly" />
+       </div>
+
+
+        <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+             ADR Usine :
+         </div>
+         <div class="col-md-2" >
+          <input type="search" pInputText  [(ngModel)]="this.adrUsineClient" [readonly]="readonly"  />
+          </div>
+           
+
+
+
+          <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+            ADR Siege :
+          </div>
+          <div class="col-md-2" >
+            <input type="search" pInputText  [(ngModel)]="this.adrSiegeClient" [readonly]="readonly"  />
+          </div>
+
+
+
+        
+
+         
+     
+
+      </div>
+      <br>
+
+      <div class="row">
+         
+        <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+          E-mail :
+       </div>
+       <div class="col-md-2" >
+         <input type="search" pInputText  [(ngModel)]="this.emailClient" [readonly]="readonly"  />
+       </div>
+
+
+        <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+             TEL :
+         </div>
+         <div class="col-md-2" >
+          <input type="search" pInputText  [(ngModel)]="this.TelClient" [readonly]="readonly"  />
+          </div>
+           
+
+
+
+          <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+           FAX :
+          </div>
+          <div class="col-md-2" >
+            <input type="search" pInputText  [(ngModel)]="this.faxClient" [readonly]="readonly"  />
+          </div>
+
+      </div>
+      <br>
+    <div class="row">
+         
+        <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+          REV/CON :
+       </div>
+       <div class="col-md-2" >
+         <input type="search" pInputText  [(ngModel)]="this.RevConClient" [readonly]="readonly"  />
+       </div>
+
+
+        <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+             Representant :
+         </div>
+         <div class="col-md-2" >
+          <input type="search" pInputText  [(ngModel)]="this.representantClient" [readonly]="readonly"  />
+          </div>
+           
+
+          <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+           Vendeur :
+          </div>
+          <div class="col-md-2" >
+            <input type="search" pInputText  [(ngModel)]="this.vendClient" [readonly]="readonly"  />
+          </div>
+
+    </div>
+    <br>
+      <div class="row">
+         
+              <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+                Recouvreur :
+            </div>
+            <div class="col-md-2" >
+              <input type="search" pInputText  [(ngModel)]="this.RecouvreurClient" [readonly]="readonly"  />
+            </div>
+
+
+              <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+                  Exonore :
+              </div>
+              <div class="col-md-2" >
+                <input type="search" pInputText  [(ngModel)]="this.exonoreClient" [readonly]="readonly"  />
+                </div>
+                
+
+                <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+                Mode reg :
+                </div>
+                <div class="col-md-2" >
+                  <input type="search" pInputText  [(ngModel)]="this.modeRegClient" [readonly]="readonly"  />
+                </div>
+
+      </div>
+      <br>
+
+      <div class="row">
+         
+              <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+                Echéance :
+            </div>
+            <div class="col-md-2" >
+              <input type="search" pInputText   [(ngModel)]="this.echeanceClient" [readonly]="readonly"  />
+             
+            </div>
+           
+
+
+              <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+                  Remise :
+              </div>
+              <div class="col-md-2" >
+                <input type="search" pInputText  [(ngModel)]="this.remiseClient" [readonly]="readonly"  />
+                </div>
+                
+
+                <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+                Code TVA :
+                </div>
+                <div class="col-md-2" >
+                  <input type="search" pInputText  [(ngModel)]="this.codeTVAClient" [readonly]="readonly"  />
+                </div>
+
+      </div>
+
+      <br>
+
+  <div class="row">
+         
+        <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+          Assuj TVA :
+       </div>
+      <div class="col-md-2" >
+        <input type="search" pInputText  [(ngModel)]="this.assujTVAClient" [readonly]="readonly"  />
+        
+      </div>
+
+
+        <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+            Banque :
+        </div>
+        <div class="col-md-2" >
+          <input type="search" pInputText  [(ngModel)]="this.banqueClient" [readonly]="readonly"  />
+          </div>
+          
+
+          <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+          Agence :
+          </div>
+          <div class="col-md-2" >
+            <input type="search" pInputText  [(ngModel)]="this.AgenceClient" [readonly]="readonly"  />
+          </div>
+
+  </div>
+
+  <br>
+
+<div class="row">
+         
+    <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+      Compte :
+   </div>
+  <div class="col-md-2" >
+    <input type="search" pInputText  [(ngModel)]="this.compteClient" [readonly]="readonly" />
+    
+  </div>
+
+
+    <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+        Plafond :
+    </div>
+    <div class="col-md-2" >
+      <input type="search" pInputText  [(ngModel)]="this.plafondClient" [readonly]="readonly"  />
+      </div>
+
+      <div class="col-md-2" style="font-size: 13px;font-weight: bold;">
+      Groupe :
+      </div>
+      <div class="col-md-2" >
+        <input type="search" pInputText  [(ngModel)]="this.groupeClient" [readonly]="readonly"  />
+      </div>
+
+</div>
+
+
+
+
+<br>
+<div class="row">
+ 
+    <div class="col-md-6">    
+            <div class="row"> 
+                      <div class="col-md-4" style="font-size: 13px;font-weight: bold;">
+                        Respons 1:
+                      </div>
+                      <div class="col-md-6" >
+                        <input type="search" pInputText  [(ngModel)]="this.respons1Client" [readonly]="readonly"  />
+                      </div>
+                      <div class="col-md-2" ></div>
+          </div>
+          <br>
+          <div class="row"> 
+            <div class="col-md-4" style="font-size: 13px;font-weight: bold;">
+              Fonction:
+            </div>
+            <div class="col-md-6" >
+              <input type="search" pInputText  [(ngModel)]="this.Fonction1Client" [readonly]="readonly"  />
+            </div>
+            <div class="col-md-2" ></div>
+          </div>
+          <br>
+          <div class="row"> 
+            <div class="col-md-4" style="font-size: 13px;font-weight: bold;">
+              TEL:
+            </div>
+            <div class="col-md-6" >
+              <input type="search" pInputText  [(ngModel)]="this.tel1Client" [readonly]="readonly"  />
+            </div>
+            <div class="col-md-2" ></div>
+          </div>
+          <br>
+          <div class="row"> 
+                <div class="col-md-4" style="font-size: 13px;font-weight: bold;">
+                  GSM:
+                </div>
+                <div class="col-md-6" >
+                  <input type="search" pInputText  [(ngModel)]="this.gsm1Client" [readonly]="readonly"  />
+                </div>
+                <div class="col-md-2" ></div>
+          </div>
+          <br>
+          <div class="row"> 
+            <div class="col-md-4" style="font-size: 13px;font-weight: bold;">
+              MAIL:
+            </div>
+            <div class="col-md-6" >
+              <input type="search" pInputText  [(ngModel)]="this.mail1Client" [readonly]="readonly"  />
+            </div>
+            <div class="col-md-2" ></div>
+          </div>
+          <br>
+  </div>
+
+        <div class="col-md-6">    
+          <div class="row"> 
+                    <div class="col-md-4" style="font-size: 13px;font-weight: bold;">
+                      Respons 2:
+                    </div>
+                    <div class="col-md-6" >
+                      <input type="search" pInputText  [(ngModel)]="this.respons2Client" [readonly]="readonly"  />
+                    </div>
+                    <div class="col-md-2" ></div>
+        </div>
+        <br>
+        <div class="row"> 
+          <div class="col-md-4" style="font-size: 13px;font-weight: bold;">
+            Fonction:
+          </div>
+          <div class="col-md-6" >
+            <input type="search" pInputText  [(ngModel)]="this.Fonction2Client" [readonly]="readonly"  />
+          </div>
+          <div class="col-md-2" ></div>
+        </div>
+        <br>
+        <div class="row"> 
+          <div class="col-md-4" style="font-size: 13px;font-weight: bold;">
+            TEL:
+          </div>
+          <div class="col-md-6" >
+            <input type="search" pInputText  [(ngModel)]="this.tel2Client" [readonly]="readonly"  />
+          </div>
+          <div class="col-md-2" ></div>
+        </div>
+        <br>
+        <div class="row"> 
+              <div class="col-md-4" style="font-size: 13px;font-weight: bold;">
+                GSM:
+              </div>
+              <div class="col-md-6" >
+                <input type="search" pInputText  [(ngModel)]="this.gsm2Client" [readonly]="readonly"  />
+              </div>
+              <div class="col-md-2" ></div>
+        </div>
+        <br>
+        <div class="row"> 
+          <div class="col-md-4" style="font-size: 13px;font-weight: bold;">
+            MAIL:
+          </div>
+          <div class="col-md-6" >
+            <input type="search" pInputText  [(ngModel)]="this.mail1Client" [readonly]="readonly"  />
+          </div>
+          <div class="col-md-2" ></div>
+        </div>
+        <br>
+  </div>
+ 
+
+</div>
+
+
+
+
+<div class="row">
+ 
+<div class="col-md-6">    
+        <div class="row"> 
+                  <div class="col-md-4" style="font-size: 13px;font-weight: bold;">
+                    Respons 3:
+                  </div>
+                  <div class="col-md-6" >
+                    <input type="search" pInputText  [(ngModel)]="this.respons3Client" [readonly]="readonly"  />
+                  </div>
+                  <div class="col-md-2" ></div>
+      </div>
+    </div>
+</div>
+
+</div>
+
+
+
+      </p-card>
+     
+    </div>
+
+</div>
+
+<br>
+<div class="row" *ngIf="clientSelected">
+<div class="col-md-1"> <button pButton type="button" label="Offres"  class="ui-button-raised"  (click)="etatOffreEnv($event)"></button></div>
+<div class="col-md-1"> <button pButton type="button" label="Relevé"   (click)="releve()" class="ui-button-raised"></button></div>
+<div class="col-md-2"> <button pButton type="button" label="Mvts Année Courante"   (click)="MvtsAnneeCourante($event)" class="ui-button-raised"></button></div>
+<div class="col-md-2"> <button pButton type="button" label="Mvts Année -1"   (click)="MvtsAnnee_1($event)" class="ui-button-raised"></button></div>
+<div class="col-md-2"> <button pButton type="button" label="Mvts Année -2"   (click)="MvtsAnnee_2($event)" class="ui-button-raised"></button></div>
+
+
+<div class="col-md-2"> <button pButton type="button" id="idCommandes" class="ui-button-raised" label="Commandes" (click)="etatCmdClt($event)"> </button></div>
+<div class="col-md-2"> <button pButton type="button" (click)="reglement ($event)" label="Reglements"    class="ui-button-raised"></button></div>
+
+</div>
+
+
+
+
+
+<p-overlayPanel #opp 
+[dismissable]="false"
+[showCloseIcon]="true" 
+id="opp"
+appendTo="body"  
+[style]="{'text-align': 'center', 
+        'font-size':'14px' ,
+        'background-color': ' #f8b7bd'}" >
+<span> {{msgerror}} </span>
+</p-overlayPanel>
+
+<p-dialog
+  header="Releve client"
+  #dialDetail
+  (onHide)="close()"
+  (onShow)="showDialogMaximized(dialDetail)"
+  [contentStyle]="{ 'min-height': '1000px' }"
+  [style]="{ height: '130vh' }"
+  [(visible)]="visible"
+>
+<app-releveclient></app-releveclient>
+</p-dialog>
+
+
+
+<!--  (onShow)="showDialogMaximized($event,dialreglementClt)"-->
+<p-dialog
+  header="Reglements client"
+  #dialreglementClt
+  (onHide)="close()"
+  (onShow)="showDialogMaximized(dialreglementClt)"
+  [contentStyle]="{ 'min-height': '1000px' }"
+  [style]="{ height: '130vh' }"
+  [(visible)]="visibleRegClt"
+>
+<app-reglementclient></app-reglementclient>
+</p-dialog>
+
+<p-dialog
+  
+  #dialMouvements
+  (onHide)="close()"
+  (onShow)="showDialogMaximized(dialMouvements)"
+  [contentStyle]="{ 'min-height': '1000px' }"
+  [style]="{ height: '130vh' }"
+  [(visible)]="visibledMouvements"
+>
+<app-analyse-ca-marges></app-analyse-ca-marges>
+</p-dialog>
+
+
+
+<p-dialog
+  
+  #dialEtatOffreEnvoyes
+  (onHide)="close()"
+  (onShow)="showDialogMaximized(dialEtatOffreEnvoyes)"
+  [contentStyle]="{ 'min-height': '1000px' }"
+  [style]="{ height: '130vh' }"
+  [(visible)]="visibleEtatOffreEnvoyes"
+>
+<app-etat-offre-envoye></app-etat-offre-envoye>
+</p-dialog>
+
+
+<p-dialog
+  header="Etat Commandes Client"
+  #dialDetail1
+  (onHide)="close()"
+  (onShow)="showDialogMaximized(dialDetail1)"
+  [contentStyle]="{ 'min-height': '1000px' }"
+  [style]="{ height: '130vh' }"
+  [(visible)]="visibleEtatCmdClt"
+>
+<app-etat-commande-client></app-etat-commande-client>
+</p-dialog>

@@ -1,0 +1,198 @@
+<div class="row">
+  <div class="col-md-2" style="font-weight: bold; font-size: 18px">
+    Le numero:
+  </div>
+  <div class="col-md-3">
+    <input
+      type="search"
+      autofocus
+      pKeyFilter="pint"
+      (change)="verifierNumero()"
+      id="num"
+      pInputText
+      [(ngModel)]="numero"
+      [readonly]="readonly || loader"
+      (keyup.enter)="Verifier($event)"
+      placeholder=" saisir un numéro "
+      [maxlength]="5"
+    />
+  </div>
+</div>
+<div *ngIf="loader === true">
+  <br />
+  Commande en cours de verification ...
+</div>
+<div *ngIf="readonly === true && loader === false">
+  <br />
+  <ejs-grid
+    #grid
+    [dataSource]="articles"
+    [allowExcelExport]="true"
+    allowResizing="true"
+    height="390"
+    gridLines="Both"
+    allowTextWrap="true"
+    [rowHeight]="26"
+    allowResizing= 'true'
+  >
+    <e-columns>
+      <e-column field="artCmd" headerText="ARTICLE" textAlign="Left" width="15">
+      </e-column>
+      <e-column
+        field="qtStk"
+        headerText="STK"
+        textAlign="right"
+        width="7"
+      ></e-column>
+      <e-column
+        field="qteReserv"
+        headerText="RES"
+        textAlign="right"
+        width="7"
+      ></e-column>
+      <e-column
+        field="qteComCl"
+        headerText="CM_CL"
+        textAlign="right"
+        width="8"
+      ></e-column>
+      <e-column
+        field="qtCom"
+        headerText="CM_FR"
+        textAlign="right"
+        width="8"
+      ></e-column>
+      <e-column
+        field="qtEquiv"
+        headerText="STK_EQ"
+        textAlign="right"
+        width="8"
+      ></e-column>
+      <e-column
+        field="qtEquivCom"
+        headerText="CM_F_EQ"
+        textAlign="right"
+        width="9"
+      ></e-column>
+      <e-column
+        field="profilStk"
+        headerText="PR_STK"
+        textAlign="center"
+        width="8"
+      ></e-column>
+      <e-column
+        field="nbrCl"
+        headerText="NB_CL"
+        textAlign="right"
+        width="7"
+      ></e-column>
+      <e-column
+        field="nbrBl"
+        headerText="NB_BL"
+        textAlign="right"
+        width="7"
+      ></e-column>
+      <e-column
+        field="qteTotal"
+        headerText="NB_PC"
+        textAlign="right"
+        width="7"
+      ></e-column>
+      <e-column
+        field="qteTotal1"
+        headerText="NB_P1"
+        textAlign="right"
+        width="7"
+      ></e-column>
+      <e-column
+        field="numDernAch"
+        headerText="NUM_AC"
+        textAlign="center"
+        width="9"
+      ></e-column>
+      <e-column
+        field="dateDernAch"
+        headerText="DAT_ACH"
+        textAlign="center"
+        width="12"
+      ></e-column>
+      <e-column
+        field="qteAchetee"
+        headerText="QT_ACH"
+        textAlign="right"
+        width="8"
+      ></e-column>
+      <e-column
+        field="qteVendue"
+        headerText="QT_VND"
+        textAlign="right"
+        width="8"
+      ></e-column>
+      <e-column
+        field="qteMin"
+        headerText="MIN"
+        textAlign="right"
+        width="7"
+      ></e-column>
+      <e-column
+        field="qteMax"
+        headerText="MAX"
+        textAlign="right"
+        width="7"
+      ></e-column>
+      <e-column
+        field="qteCmd"
+        headerText="QT_CMD"
+        textAlign="right"
+        width="8"
+      ></e-column>
+      <e-column
+        field="qteConseillee"
+        headerText="QT_CNS"
+        textAlign="center"
+        width="8"
+      ></e-column>
+      <e-column
+        field="observations"
+        headerText="OBSERVATIONS"
+        textAlign="left"
+        width="30"
+      ></e-column>
+    </e-columns>
+  </ejs-grid>
+  <br />
+  <div style="display: flex; justify-content: space-around;">
+      <button
+        pButton
+        type="button"
+        label="Nouvelle Saisie"
+        (click)="saisir()"
+        class="ui-button-raised"
+        style="margin: auto"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Apercu"
+        (click)="imprimer($event)"
+        class="ui-button-raised center"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="--> EXCEL"
+        (click)="excelExport()"
+        class="ui-button-raised"
+        style="margin: auto"
+      ></button>
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanelError"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

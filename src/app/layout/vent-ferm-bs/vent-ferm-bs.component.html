@@ -1,0 +1,41 @@
+
+<div class fxLayoutAlign="center center">
+<p-panel class="row"  header="Liste des bons de sortie ouverts"  >
+    <!--
+        (rowSelected)="rowSelected($event)"
+    -->
+<div class="row" >
+ <div class="col-md-12">
+            <ejs-grid #grid [dataSource]="elivraisons" gridLines='Both'
+            [selectedRowIndex]="0"
+            (rowSelected)="rowSelected($event)"
+            height="350" width="100%"
+            rowHeight='35'
+            allowResizing= 'true'
+                >               
+                            <e-columns>
+                                <e-column field="numero"      headerText="Numero"  width="120" [customAttributes]="customAttributes"  ></e-column>
+                                <e-column field="dated"       headerText="Date d'ouverture " width="120" [customAttributes]="customAttributes"></e-column>
+                                <e-column field="livreur"     headerText="Livreur " width="120" [customAttributes]="customAttributes"></e-column>
+                                <e-column field="camuion"     headerText="Camion" width="120" [customAttributes]="customAttributes"></e-column>  
+                            </e-columns>
+                </ejs-grid>
+</div>
+</div>
+</p-panel>
+</div>
+<br>
+
+        <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+           <p-button label="Valider et visualiser" id="verif" styleClass="ui-button-info" (click)="afficher($event)"></p-button>
+        </div>
+        <div class="col-md-5"></div>
+        </div> 
+
+
+
+<p-overlayPanel [dismissable]="false"  #op appendTo="body" [showCloseIcon]="true" [style]="{'text-align': 'center', 'background-color': '#f8b7bd'}" >
+    <span>{{ msgerror}}  </span> 
+</p-overlayPanel>

@@ -1,0 +1,213 @@
+<div class="row">
+  <mat-card style="height: 90px; width: 78%;">
+    <mat-card-content  >
+        <div class="row">
+          <div class="col-md-1"  style="max-width : 3%;"><label>Du</label></div>
+          <div class="col-md-2" style="max-width: 20%;" >
+            <p-calendar
+            id="date1"
+            [(ngModel)]="date_debut"
+            [minDate]="minDate"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            [locale]="tn"
+            yearRange="1973:2999">
+           </p-calendar>
+          </div>
+         
+          <div class="col-md-1" style="max-width : 3%;"><label>Au</label></div>
+          <div class="col-md-2" style="max-width: 20%;">
+            <p-calendar 
+             id="date2"
+             [minDate]="minDate"
+             [(ngModel)]="date_fin"
+             dateFormat="dd/mm/yy"
+             [monthNavigator]="true"
+             [yearNavigator]="true"
+             [locale]="tn"
+             yearRange="2011:2999">
+            </p-calendar>
+           </div>&nbsp;
+           <div class="col-md-1" style="max-width : 3%;"><label>client</label></div>&nbsp;&nbsp;
+           <div class="col-md-3">
+             <ng-select
+             ngselect
+             id="inputclient"
+             [items]="listeClients"
+             bindLabel="deno"
+             bindvalue="code"
+             (open)="chargerClients()"
+             style="height: 30px; min-height: 30px"
+             [(ngModel)]="selected_clt"
+             [searchFn]="onSearchDeno"
+             (change)="changeClient()"
+            
+             [disabled]="readonly"
+             style="height: 30px; min-height: 30px"
+             >
+            </ng-select>
+           </div>
+           <div class="col-md-1">
+            <input type="text"
+            size="14"
+            style="height: 30px; min-height: 30px"
+            [(ngModel)]="code_clt "
+            pInputText disabled="true"/>
+          </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+          <div class="col-md-1">
+            <button pButton type="button" label="Afficher" (click)="afficher()"
+            class="ui-button-raised ">
+          </button>
+          </div>
+
+          </div>
+        
+    </mat-card-content>
+  </mat-card>
+</div><br><br>
+  <!--grid2-->
+  <div class="row" style="height: 250px; width: 80%;">
+    <p-tabView (onChange)="handleChange($event)" >
+      <p-tabPanel header="Factures" >
+        <div  class="row" style="color: rgb(38, 0, 255); font-size: 110%;  font-weight: bold;">
+          <div class="col-md-3" > <h4>Liste des Factures à Termes</h4></div>
+        </div>
+
+        <div class="row">
+          <ejs-grid style="width: 130%;"
+          #grid
+          width="99%"
+          [dataSource]="datasourceGrid"
+          height="140"
+          gridLines="Both"
+          (rowSelected)="onRowSelect($event)"
+         
+          (mouseup)="onRowUnselect()"
+         
+          [rowHeight]="35"
+          allowResizing= 'true'>
+          
+           <e-columns>
+              <e-column field="codeclt" headerText="CodeClt"
+                width="85" textAlign="Left" BackgroundColor="Gray"></e-column>
+                <e-column field="raisonSocial" headerText="RaisonSocial"
+                width="100" textAlign="Left" BackgroundColor="Gray"></e-column>
+                <e-column field="numFacture" headerText="N°Facture"
+                width="90" textAlign="Left" BackgroundColor="Gray"></e-column>
+                <e-column field="date" headerText="Date"
+                width="85" textAlign="Right" BackgroundColor="Gray"></e-column>
+
+                <e-column field="sensUI" headerText="Type"
+                width="60" textAlign="Right" BackgroundColor="Gray"></e-column>
+
+                <e-column field="mntHT" headerText="MntHT"
+                width="80" textAlign="Right" BackgroundColor="Gray"></e-column>
+
+                <e-column field="mntRemise" headerText="Mnt Remise"
+                width="85" textAlign="Right" BackgroundColor="Gray"></e-column>
+                <e-column field="mntNet" headerText="Mnt NET"
+                width="90" textAlign="Right" BackgroundColor="Gray"></e-column>
+                
+            </e-columns>
+          </ejs-grid>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Détails" >
+        <div  class="row" style="color: rgb(38, 0, 255); font-size: 110%;  font-weight: bold;">
+          <div class="col-md-4" > <h4>Liste des bons de livraison, facture N°:</h4></div>
+          <div class="col-md-1">
+            <input type="text"
+            size="14"
+            style="height: 30px; min-height: 30px"
+            [(ngModel)]="Num_fact"
+            pInputText disabled="true"/>
+          </div>
+        </div><br>
+
+        <div class="row">
+          <ejs-grid style="width: 130%;"
+          width="99%"
+          height="140"
+          gridLines="Both"
+     
+          [dataSource]="datasourceGrid1"
+          
+          [rowHeight]="35" allowResizing= 'true'>
+            <e-columns>
+              <e-column field="num" headerText="Num B/L"
+                width="65" textAlign="Left" BackgroundColor="Gray"></e-column>
+
+                <e-column field="date" headerText="Date"
+                width="85" textAlign="Left" BackgroundColor="Gray"></e-column>
+
+                <e-column field="ref0" headerText="N°BC"
+                width="70" textAlign="Left" BackgroundColor="Gray"></e-column>
+
+                <e-column field="type" headerText="Type"
+                width="60" textAlign="Left" BackgroundColor="Gray"></e-column>
+
+                <e-column field="mntHT" headerText="MntHT"
+                width="80" textAlign="Right" BackgroundColor="Gray"></e-column>
+
+                <e-column field="mntRemise" headerText="Mnt.Remise"
+                width="85" textAlign="Left" BackgroundColor="Gray"></e-column>
+
+                <e-column field="mntNet" headerText="Mnt.Net"
+                width="90" textAlign="Left" BackgroundColor="Gray"></e-column>
+            </e-columns>
+          </ejs-grid>
+        </div>
+        </p-tabPanel>
+        </p-tabView> 
+        </div><br><br>
+        <div class="row">
+          <div class="col-md-2"style="max-width : 10%;">
+            <p class="p">Total HT</p>
+          </div>
+          <div class="col-md-1">
+            <input type="text"
+            size="14"
+            style="height: 30px; min-height: 30px"
+            [(ngModel)]="TtHT"
+            pInputText disabled="true"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2"style="max-width : 10%;">
+            <p class="p" >Total Remise</p>
+          </div>
+          <div class="col-md-1">
+            <input type="text"
+            size="14"
+            style="height: 30px; min-height: 30px"
+            [(ngModel)]="TtRem"
+            pInputText disabled="true"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2"style="max-width : 10%;">
+            <p class="p" >ToTal Net</p>
+          </div>
+          <div class="col-md-1">
+            <input type="text"
+            size="14"
+            style="height: 30px; min-height: 30px"
+            [(ngModel)]="TtNet"
+            pInputText disabled="true"/>
+          </div>
+       
+            <div class="col-md-5"></div>
+            <div class="col-md-2" >
+             <button  style="font-size: 13px;" pButton type="button" 
+            label="Aperçu"  (click)="Apercu()" class="ui-button-raised"  [hidden]="apercuBTn"></button>
+             </div>
+             <div class="col-md-2"></div>
+           
+          </div>
+         
+          
+          
+      
+        

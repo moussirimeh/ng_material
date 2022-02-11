@@ -1,0 +1,483 @@
+
+<div class="row">
+    <mat-card>
+      <mat-card-content style=" margin-left: -8px; ">
+      
+        <div class="row">
+           <div class="col-md-3">
+            <div class="row">
+              <div class="col-md-5">
+                <label>N° Cmd Client</label>
+
+              </div>
+              <div class="col-md-2">
+                <input type="text"  size="14" pInputText  [(ngModel)]="cmd_clt" [disabled]="readonly"  />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label>N° Cmd EQM</label>
+              </div>
+              <div class="col-md-2">
+                <input type="text"  size="14" pInputText  [(ngModel)]="cmd_eqm" [disabled]="readonly"  />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label>Client</label>
+
+              </div>
+              <div class="col-md-12">
+                <ng-select
+                ngselect
+                id="inputclient"
+                [items]="listeClients"
+                bindLabel="deno"
+                bindvalue="code"
+                (open)="chargerClients()"
+                style="height: 30px; min-height: 30px"
+                [(ngModel)]="selected_clt"
+                [searchFn]="onSearchDeno"
+                (change)="changeClient()"
+               
+                [disabled]="readonly"
+                style="height: 30px; min-height: 30px"
+                >
+               </ng-select>
+              </div>
+              <div class="col-md-2">
+            
+              </div>
+
+            </div>
+           
+          </div>
+
+
+          <div class="col-md-3">
+            <div class="row">
+              <div class="col-md-5">
+                <label>Date de debut</label>
+
+              </div>
+              <div class="col-md-2">
+                <p-calendar  [(ngModel)]="date" dateFormat="dd/mm/yy" [monthNavigator]="true" [yearNavigator]="true"
+                  yearRange="2000:2030" [inputStyle]="{ width: '100px' }" [maxDate]="maxDate" [disabled]="readonly"></p-calendar>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label>Date de fin</label>
+              </div>
+              <div class="col-md-2">
+                <p-calendar [(ngModel)]="to" [maxDate]="maxDate" [yearNavigator]="true" [monthNavigator]="true"
+                  yearRange="2000:2030" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px'}" [disabled]="readonly">
+                </p-calendar>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label>Representant</label>
+              </div>
+              <div class="col-md-12">
+                <ng-select
+                ngselect
+                id="inputRep"
+                [searchFn]="onSearchDeno"
+                (change)="changeRepresentant()"
+                [items]="listeRepresan"
+                bindvalue="code"
+                bindLabel="deno"
+                (open)="chargerRepresan()"
+                [(ngModel)]="selected_Rep"
+              
+                [disabled]="readonlyRepresentant"
+                style="height: 30px; min-height: 30px"
+                >
+               </ng-select>
+              </div>
+              <div class="col-md-2">
+               
+              </div>
+
+            </div>
+          
+          </div>
+        
+          <div class="row">
+         <div class="col-md-4">
+           <label>Commandes &nbsp;</label>
+          <div class="row p-field-radiobutton"> 
+            <div class="col-md">
+              <p-radioButton
+              name="radiobtcmd"
+              value="1"
+              label="Non Soldées"
+              [(ngModel)]="selectedradiobtcmd"
+              [disabled]="readonly"
+            ></p-radioButton>
+            </div>
+          </div>
+         
+          <div class="row p-field-radiobutton"> 
+            <div class="col-md">
+              <p-radioButton
+              name="radiobtcmd"
+              value="2"
+              label="Soldées"
+              [(ngModel)]="selectedradiobtcmd"
+              [disabled]="readonly"
+            ></p-radioButton>
+            </div>
+          </div>
+          <div class="row p-field-radiobutton"> 
+            <div class="col-md">
+              <p-radioButton
+              name="radiobtcmd"
+              value="3"
+              label="Peu Importe"
+              [(ngModel)]="selectedradiobtcmd"
+              [disabled]="readonly"
+            ></p-radioButton>
+            </div>
+          </div>
+         </div>
+
+         <div class="col-md-5">
+          <label>Commandes Peuvent Etre  Soldées &nbsp;</label>
+         <div class="row p-field-radiobutton">         
+         
+           <div class="col-md">
+             <p-radioButton 
+               name="radiobtcmdQPES" 
+               value="1"
+               label="Totalement"
+               [(ngModel)]="selectedradiobtcmdQPES" 
+               [disabled]="readonly"
+               >
+              </p-radioButton>
+           </div>
+         </div>
+         <div class="row p-field-radiobutton"> 
+           <div class="col-md">
+             <p-radioButton 
+               name="radiobtcmdQPES" 
+               value="2"
+               label="Totalement ou Partiellement"
+               [(ngModel)]="selectedradiobtcmdQPES" 
+               [disabled]="readonly"
+               >
+            </p-radioButton>
+           </div>
+         </div>
+         <div class="row p-field-radiobutton"> 
+           <div class="col-md">
+             <p-radioButton 
+               name="radiobtcmdQPES" 
+               value="3" 
+               label="Peu Importe"
+               [(ngModel)]="selectedradiobtcmdQPES"
+               [disabled]="readonly"
+               >
+              </p-radioButton>
+           </div>
+         </div>
+        </div>
+        <div class="col-md-2">
+          <button pButton   id= "numrech" type="button" label="Afficher" (click)="afficher()" class="ui-button-raised " [hidden]="btnaff">
+          </button>
+        </div>
+        <div class="col-md-1">
+          <button pButton  type="button" label="Initialiser" (click)="initialiser()" [hidden]="btninitialiser"
+          class="ui-button-raised ">
+        </button>
+        </div>
+
+        </div>
+
+        <div class="col-md-3"> 
+          <label>Commandes Contenant Article &nbsp;</label>
+         <div class="row">
+          <div class="col-md-10">
+            <ng-select
+            ngselect
+            [items]="listeArticles"
+            bindLabel="code"
+            (keyup.enter)="rechArticle($event.target.value)"
+            (change)="changeArticle()"
+            [searchFn]="onSearchItem"
+            (open)="chargerArticle()"
+            [(ngModel)]="selected_art"
+            style="height: 30px; min-height: 30px"
+            [disabled]="readonly"
+            >
+           </ng-select>
+    
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6"> <label>ET Cet Article Peut Etre &nbsp;</label></div>
+        </div>
+          <div class="row p-field-radiobutton"> 
+            <div class="col-md">   
+              <p-radioButton 
+              name="radiobtart" 
+              value="1"
+              label="Soldé Totalement"
+              [(ngModel)]="selectedradiobtart"
+              [disabled]="readonly">
+             </p-radioButton>
+            </div>
+          </div>
+         
+          <div class="row p-field-radiobutton"> 
+            <div class="col-md">
+              <p-radioButton 
+               name="radiobtart" 
+               value="2"
+               label="Soldé Totalement ou Partiellement"
+               [(ngModel)]="selectedradiobtart"
+               [disabled]="readonly" >
+			    	</p-radioButton>
+            </div>
+          </div>
+          <div class="row p-field-radiobutton"> 
+            <div class="col-md">
+              <p-radioButton 
+               name="radiobtart" 
+               value="3" 
+               label="Peu Importe"
+               [(ngModel)]="selectedradiobtart"
+               [disabled]="readonly">
+              </p-radioButton>
+            </div>
+          </div>
+        
+
+        </div>
+        <div class="col-md-3"> 
+          <label>Commandes Contenant Article Fournis Par &nbsp;</label>
+         <div class="row">
+          <div class="col-md-11">
+            <ng-select
+            [items]="listefournisseurs"
+            bindLabel="deno"
+            bindvalue="code"
+            (open)="chargerFournisseur()"
+            [searchFn]="onSearchDeno"
+            (change)="changeFour()"
+            [(ngModel)]="selected_Four"
+            [disabled]="readonly"
+            style="height: 30px; min-height: 30px"
+            >
+           </ng-select>
+          
+          </div>
+         <div class="col-md-2"></div> 
+        </div>
+        <div class="row">
+          <div class="col-md-7"> <label>ET Cet Article Peuvent Etre</label></div>
+        </div>
+          <div class="row p-field-radiobutton"> 
+            <div class="col-md"> 
+             
+              <p-radioButton 
+                name="radiobtfrn" 
+                value="1" 
+                label="Soldés Totalement"
+                [(ngModel)]="selectedradiobtfrn"
+                [disabled]="readonly" 
+               
+                >
+               </p-radioButton>
+            </div>
+          </div>
+         
+          <div class="row p-field-radiobutton"> 
+            <div class="col-md">
+              <p-radioButton 
+                name="radiobtfrn" 
+                value="2" 
+                label="Soldés Totalement ou Partiellemnt"
+                [(ngModel)]="selectedradiobtfrn" 
+                [disabled]="readonly"
+              
+                >
+               </p-radioButton>
+            </div>
+          </div>
+          <div class="row p-field-radiobutton"> 
+            <div class="col-md">
+              <p-radioButton 
+                name="radiobtfrn" 
+                value="3" 
+                label="Peu Importe"
+                [(ngModel)]="selectedradiobtfrn" 
+                [disabled]="readonly"
+                
+                >
+               </p-radioButton>
+            </div>  
+          </div>
+        </div>
+        <div class="col-md-3">
+       
+        </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+</div>
+
+
+<div class="row"*ngIf="btnaff">
+      <div class="col-md-5">
+        <div class="row">
+        <ejs-grid #grid [dataSource]="datasourceGrid" gridLines="Both" (rowSelected)="rowSelectedNumero($event)"   [allowExcelExport]='true' [allowSelection]="true"
+          height="110" [rowHeight]='20' allowResizing= 'true'>
+          <e-columns>
+          <e-column field="notreNumero" headerText="NotreNumero"textAlign="Left" width="28" > </e-column>
+          <e-column field="numeroClient" headerText="NumeroClt" textAlign="Left"  width="25" ></e-column>
+          <e-column field="dateCmd" headerText="DateCMD"textAlign="Left" width="30" > </e-column>
+          <e-column field="codeClt" headerText="CodeClt" textAlign="Left" width="25" > </e-column>
+          <e-column field="designationClt" headerText="DesingationClt" textAlign="Left" width="30" ></e-column>
+          </e-columns>
+        </ejs-grid>
+       </div><br>
+       <div class="row">
+        <div class="col-md-5" style="margin-left: -3%">
+          <button pButton type="button" label="Afficher Tous Les Articles"  class="ui-button-raised "
+            (click)="afficherTousLesArticles($event)"></button>
+        </div>
+
+        <div class="col-md-6">
+          <button pButton type="button" label="Afficher Les Articles non soldés "
+            (click)="afficherLesArticlesSolde($event)" class="ui-button-raised "></button>
+        </div>
+       
+        <div class="col-md-1">
+          <button pButton type="button" label="Excel" (click)="gererExcelgrid()"  class="ui-button-raised ">
+          </button>
+         </div>
+       </div>
+
+      </div>
+      
+      <div class="col-md-7">
+        <div class="row">
+        <ejs-grid #grid1 [dataSource]=" datasourceGrid1" gridLines="Both" [allowExcelExport]='true' [allowSelection]="true"
+          height="110" [rowHeight]='20'>
+          <e-columns>
+            <e-column field="code" headerText="CODE" width="34"></e-column>
+            <e-column field="prix" headerText="Prix" width="17" textAlign="right"></e-column>
+            <e-column field="tRemise" headerText="T_Remise" width="35"textAlign="right"></e-column>
+            <e-column field="tauxTva" headerText="Taux_Tva" width="34"textAlign="right"></e-column>
+            <e-column field="quantite" headerText="Quantite" width="36"textAlign="right"></e-column>
+            <e-column field="livre" headerText="Livre" width="23" textAlign="right"></e-column>
+            <e-column field="solde" headerText="Solde" width="25" textAlign="right"></e-column>
+             <e-column field="reserv" headerText="Reserv" width="28" textAlign="right"></e-column>
+             <e-column field="enStock" headerText="EnStock" width="30" textAlign="right"></e-column>
+             <e-column field="qtCom" headerText="Qt_EcCom" width="38" textAlign="right"></e-column>
+            <e-column field="datePr" headerText="DatePr" width="29" textAlign="left"></e-column>
+            </e-columns>
+        </ejs-grid>
+         </div><br>
+         <div class="row">
+          <div class="col-md-10">
+         <button pButton type="button" label="Afficher Les Articles de toutes ces commandes avec stock >0 ou avec stock Réservé " 
+         class="ui-button-raised "
+         (click)="afficherLesArticlesCommandeStock()"></button>
+         </div>
+         
+         <div class="col-md-2">
+         <button pButton type="button" label="Excel" (click)="gererExcelgrid1()"  class="ui-button-raised ">
+         </button>
+         </div>
+        </div>
+      </div>
+</div><br>
+
+
+<div class="row"*ngIf="btnaff">
+  
+
+              <div class="col-md-10">
+              <ejs-grid #grid2 [dataSource]=" datasourceGrid2" gridLines="Both"  style="margin-left: -1%"
+              [allowExcelExport]='true' height="93px" [rowHeight]='23'>
+                <e-columns>
+                  <e-column field="numcmd" headerText="N°Cmd"  textAlign="Left" width="37"></e-column>
+                  <e-column field="date" headerText="Date"   textAlign="Left" width="50"></e-column>
+                  <e-column field="client" headerText="Client" textAlign="Left" width="130"></e-column>
+                  <e-column field="code" headerText="Code"  width="52"></e-column>
+                  <e-column field="desingation" headerText="Desingation"textAlign="Left" width="130" ></e-column>
+                  <e-column field="quantite" headerText="Qte" width="20" headerTextAlign="left" textAlign="Right"></e-column>
+                  <e-column field="livre" headerText="Liv" width="20" headerTextAlign="left" textAlign="Right"></e-column>
+                  <e-column field="reserv" headerText="Reserv" width="40"headerTextAlign="left" textAlign="Right"></e-column>
+                  <e-column field="qteStk" headerText="Qt_Stk"  width="40" headerTextAlign="left" textAlign="Right"></e-column>
+                  <e-column field="qtEnCmd" headerText="Qt_Cmd"  width="42"headerTextAlign="left" textAlign="Right"></e-column>
+                  <e-column field="representant" headerText="Representant" width="83"></e-column>
+                  <e-column field="fournisseur" headerText="Fournisseur" width="85"></e-column>
+
+                </e-columns>
+              </ejs-grid>
+            </div>
+            <div class="col-md-2">
+              
+              <div class="row">
+              <div class="col-md-10">
+              <button pButton type="button" label="suivi cmds par Repr"  (click)="suivicmdRep($event)"class="ui-button-raised "></button> 
+              </div>
+              <div class="col-md-2"></div>
+              </div><br>
+              
+              
+              <div class="row">
+              <div class="col-md-10">
+              <button pButton type="button" label="suivi cmds par client" (click)="suivicmdclt($event)" class="ui-button-raised "></button> 
+              </div>
+              <div class="col-md-2"></div>
+              </div><br>
+              <div class="row">
+              <div class="col-md-2">
+              <button pButton type="button" label="Excel"  (click)="gererExcelgrid2()" class="ui-button-raised "></button>
+            </div>
+            <div class="col-md-8"></div>
+             </div>
+            </div>
+
+
+
+   
+          
+
+</div>
+<div class="row"*ngIf="btnaff">
+  <div class="col-md-8">
+    <button
+    pButton
+    id="btnAjouter"
+    type="button"
+    (click)="nouvelleSaisie()"
+    label="Nouvelle Saisie"
+ 
+   ></button>
+ </div>
+ 
+
+</div>
+
+
+
+
+
+<p-overlayPanel #op appendTo="body" [dismissable]='false'  
+[showCloseIcon]="true"
+[style]="{'text-align': 'center', 'font-size':'14px' ,'background-color': ' #f8b7bd'}" >
+<span style="width: 138%;"> {{msg}} </span>
+</p-overlayPanel> 
+
+
+
+
+
+
+

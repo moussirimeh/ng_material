@@ -1,0 +1,65 @@
+.e-grid .e-rowcell {
+  font-size: 12px !important;
+  padding: initial !important;
+}
+.e-grid[_ngcontent-c6] .k {
+  width: 12px !important;
+}
+.e-grid .e-row .e-input-group .e-input.e-field {
+  width: -webkit-fill-available !important;
+  font-size: 12px !important;
+  padding-bottom: initial !important;
+  padding-top: initial !important;
+}
+.e-grid th{
+ 
+  padding: 0!important;
+}
+
+.disablegrid {
+  pointer-events: none;
+  opacity: 0.4;
+}
+.wrapper {
+  cursor: not-allowed;
+}
+
+.ui-button {
+  font-size: 12px;
+  width: max-content;
+}
+
+.ng-select.ng-select-single ::ng-deep .ng-select-container {
+  height: 28px;
+}
+.ng-select ::ng-deep .ng-select-container {
+  min-height: 28px;
+}
+
+.ui-inputtext {
+  font-size: 12px;
+}
+.row {
+  font-size: 12px;
+}
+.e-disabled {
+  opacity: 1.35;
+}
+th, td {
+  font-size: 12px;
+}
+.disableDiv {
+  pointer-events: none;
+}
+.mydialog {
+  width: 50vw;
+}
+.entete {
+  font-family: Fontil Sans, monospace;
+  // font-weight: bold;
+}
+@media screen and (max-width: 40em) {
+  .mydialog {
+    width: 75vw;
+  }
+}

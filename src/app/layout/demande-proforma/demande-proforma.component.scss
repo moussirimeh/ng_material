@@ -1,0 +1,15 @@
+.disableDiv{
+    pointer-events:none;
+}
+.mydialog {
+    width: 50vw;
+}
+.entete{
+    font-family: Fontil Sans, monospace;
+    // font-weight: bold;
+  }
+@media screen and (max-width: 40em) {
+    .mydialog {
+        width: 75vw;
+    }
+}

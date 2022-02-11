@@ -1,0 +1,38 @@
+
+.ng-select.ng-select-single ::ng-deep .ng-select-container {
+    height: 30px;
+  }
+  .ng-select ::ng-deep .ng-select-container {
+    min-height: 30px;
+  }
+
+  .row {
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+
+
+
+  .e-headertext {
+    font-size: 14px;
+  }
+  .e-grid .e-rowcell.customcss{
+   
+    font-size: 14px;
+  }
+  .e-grid th{
+    background-color:whitesmoke;
+    color :black;
+  }
+
+  .e-grid .e-summarycell {
+    border-style: solid;
+    border-width: 1px 0 0;
+    font-size: 26px;
+    font-weight: 500;
+    height: auto;
+    line-height: 18px;
+    padding: 8px 21px;
+    white-space: normal;
+    word-wrap: break-word;
+}

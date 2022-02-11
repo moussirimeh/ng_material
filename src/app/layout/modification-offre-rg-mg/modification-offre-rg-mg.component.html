@@ -1,0 +1,1246 @@
+<p-blockUI [blocked]="blockDocument"></p-blockUI>
+<div *ngIf="!offreCharge">
+  <div class="row">
+    <div class="col-md-2" style="font-weight: bold; font-size: 18px">
+      Le numero:
+    </div>
+    <div class="col-md-7">
+      <input
+        type="search"
+        autofocus
+        pKeyFilter="pint"
+        (change)="verifierNumero()"
+        id="num"
+        pInputText
+        (keyup.enter)="getByNumero($event)"
+        [(ngModel)]="V2"
+        placeholder=" saisir un numéro "
+        [maxlength]="5"
+        [disabled]="blockDocument"
+      />
+    </div>
+  </div>
+</div>
+<div *ngIf="offreCharge">
+  <div class="row">
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col-md-1 bolld">Numero</div>
+        <div class="col-md-1 bolld">Réf.Dem.Pr</div>
+        <div class="col-md-3 bolld">Client</div>
+        <div class="col-md-2 bolld"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1 bolld" style="padding-right: 0">M.</div>
+        <div class="col-md-3">
+          <input
+            id="m"
+            class="form-control"
+            [readOnly]="true"
+            type="search"
+            style="width: 100%"
+            pInputText
+            [(ngModel)]="m"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-1">
+          <input
+            id="refcmd"
+            class="form-control"
+            [readOnly]="true"
+            type="search"
+            style="width: 100%"
+            pInputText
+            [(ngModel)]="V2"
+          />
+        </div>
+        <div class="col-md-1">
+          <input
+            class="form-control"
+            [readOnly]="etab_cmd"
+            type="search"
+            style="width: 100%"
+            pInputText
+            [(ngModel)]="RefDemPr"
+          />
+        </div>
+        <div class="col-md-3">
+          <input
+            class="form-control"
+            [readOnly]="true"
+            type="search"
+            pInputText
+            style="width: 100%"
+            [(ngModel)]="codedeno"
+          />
+        </div>
+        <div class="col-md-1 bolld" style="padding-right: 0">Code TVA:</div>
+        <div class="col-md-2">
+          <input
+            class="form-control"
+            [readOnly]="true"
+            type="search"
+            style="width: 100%"
+            pInputText
+            [(ngModel)]="codeTva"
+          />
+        </div>
+        <div class="col-md-1 bolld">Adresse:</div>
+        <div class="col-md-3">
+          <input
+            class="form-control"
+            [readOnly]="true"
+            type="search"
+            style="width: 100%"
+            pInputText
+            [(ngModel)]="adresse"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-1 bolld">Tel</div>
+        <div class="col-md-2">
+          <input
+            class="form-control"
+            [readOnly]="true"
+            type="search"
+            style="width: 100%"
+            pInputText
+            [(ngModel)]="tel"
+          />
+        </div>
+        <div class="col-md-1 bolld">Fax</div>
+        <div class="col-md-2">
+          <input
+            class="form-control"
+            [readOnly]="true"
+            type="search"
+            style="width: 100%"
+            pInputText
+            [(ngModel)]="fax"
+          />
+        </div>
+        <div class="col-md-1 bolld">Mail:</div>
+        <div class="col-md-2">
+          <input
+            class="form-control"
+            [readOnly]="true"
+            type="search"
+            style="width: 100%"
+            pInputText
+            [(ngModel)]="mail"
+          />
+        </div>
+        <div class="col-md-1 bolld">Ville:</div>
+        <div class="col-md-2">
+          <input
+            class="form-control"
+            [readOnly]="true"
+            type="search"
+            style="width: 100%"
+            pInputText
+            [(ngModel)]="ville"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2" *ngIf="evalClient">
+      <div>
+        <div class="row">
+          <div class="col-md-8 bolld">Nbr d'offres tot:</div>
+          <div class="col-md-4" style="text-align: right">
+            {{ nbrDesOffresTotals }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-7 bolld">Montant Total:</div>
+          <div class="col-md-5" style="text-align: right">
+            {{ mtTotalDesOffres }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-7 bolld">Mt Satisf:</div>
+          <div class="col-md-5" style="text-align: right">
+            {{ mtSatisfTotal }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 bolld">% satisf total:</div>
+          <div class="col-md-4" style="text-align: right">
+            {{ pourcSatisfTotal }}
+          </div>
+        </div>
+        <div
+          class="row bolld"
+          style="margin: auto; text-align: center; color: red"
+        >
+          {{ evaluation }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="etab_cmd">
+    <div class="row" [ngClass]="{ disableDiv: valide }">
+      <div class="col-md-1 bolld">Date</div>
+      <div class="col-md-1">
+        <p-calendar
+          [(ngModel)]="dateOffre"
+          [locale]="tn"
+          [inputStyle]="{ width: '100%' }"
+          dateFormat="dd/mm/yy"
+          [disabled]="true"
+        ></p-calendar>
+      </div>
+      <div class="col-md-1 bolld">Vendeur</div>
+      <div class="col-md-2">
+        <ng-select
+          ngselect
+          id="vend"
+          [items]="vendeurs"
+          bindLabel="deno"
+          [(ngModel)]="selectedVendeur"
+          [searchFn]="onSearchItemclt"
+          (change)="changeSelectedVendeur()"
+          style="width: 100%"
+          placeholder="choisir un Vendeur"
+          [disabled]="valide"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-1 bolld">Réf Clt</div>
+      <div class="col-md-2">
+        <input
+          class="form-control"
+          [readOnly]="valide"
+          type="search"
+          style="width: 100%"
+          pInputText
+          [maxlength]="20"
+          [(ngModel)]="refCmd"
+        />
+      </div>
+      <div class="col-md-2 bolld">A l'attention de:</div>
+      <div class="col-md-2">
+        <input
+          id="responsable"
+          class="form-control"
+          [readOnly]="valide"
+          type="search"
+          style="width: 100%"
+          pInputText
+          [maxlength]="20"
+          [(ngModel)]="responsable"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12" style="height: 190px">
+        <p-table
+          #dt
+          [value]="listeStockCMD"
+          dataKey="id"
+          [resizableColumns]="true"
+          selectionMode="single"
+          [responsive]="true"
+          [scrollable]="true"
+          scrollHeight="150px"
+          editMode="row"
+          (onRowSelect)="onRowSelect($event)"
+          (onRowUnselect)="onRowUnselect()"
+          [(selection)]="mySelection"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 15%">Code</th>
+              <th style="width: 20%">Désignation</th>
+              <th style="width: 7%">Quantité</th>
+              <th style="width: 7%">Remise</th>
+              <th style="width: 7%">TVA</th>
+              <th style="width: 8%">Prix HT</th>
+              <th style="width: 8%">Total HT</th>
+              <th style="width: 20%">Observation</th>
+              <th style="width: 8%">Editer</th>
+            </tr>
+          </ng-template>
+          <ng-template
+            pTemplate="body"
+            let-rowData
+            let-editing="editing"
+            let-ri="rowIndex"
+          >
+            <tr
+              style="height: 30px"
+              attr.id="row_{{ rowData.id }}"
+              appendTo="body"
+              [pEditableRow]="rowData"
+            >
+              <td style="width: 15%">
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input
+                      pInputText
+                      id="row_{{ rowData.id }}_code"
+                      type="text"
+                      style="width: 100%"
+                      [minlength]="1"
+                      [(ngModel)]="rowData.code"
+                      [disabled]="rowData.id.charAt(0) !== '#'"
+                      [maxLength]="20"
+                      (keyup.enter)="verifCode(rowData, $event)"
+                      required
+                    />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ rowData.code }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td style="width: 20%">
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input
+                      pInputText
+                      id="row_{{ rowData.id }}_design"
+                      type="text"
+                      style="width: 100%"
+                      [minlength]="1"
+                      [(ngModel)]="rowData.design"
+                      [maxLength]="30"
+                      (keyup.enter)="verifDesign(rowData, $event)"
+                      required
+                    />
+                  </ng-template>
+
+                  <ng-template pTemplate="output">
+                    {{ rowData.design }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td
+                style="width: 7%"
+                id="row_{{ rowData.id }}_qte"
+                appendTo="body"
+              >
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <!--
+                              (change)="verifQuantite( rowData.qte, rowData.quantite, $event, rowData.id)"
+                            -->
+                    <input
+                      id="row_{{ rowData.id }}_inputQte"
+                      pInputText
+                      type="search"
+                      [min]="1"
+                      style="width: 100%"
+                      placeholder="quantité"
+                      pKeyFilter="num"
+                      (click)="chargerPrixtot(rowData)"
+                      (change)="chargerPrixtot(rowData)"
+                      (keyup)="chargerPrixtot(rowData)"
+                      (keypress)="chargerPrixtot(rowData)"
+                      (keyup.enter)="setQuantite(rowData, $event)"
+                      [(ngModel)]="rowData.qte"
+                      [maxLength]="10"
+                    />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ rowData.qte }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td style="width: 7%">
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input
+                      id="row_{{ rowData.id }}_marge"
+                      pInputText
+                      type="search"
+                      style="width: 100%"
+                      [min]="1"
+                      placeholder="marge"
+                      pKeyFilter="num"
+                      (click)="chargerPrixtot(rowData)"
+                      (keyup)="chargerPrixtot(rowData)"
+                      (keypress)="chargerPrixtot(rowData)"
+                      (keyup.enter)="
+                        verifRemise(rowData.marge, rowData, $event, rowData.id)
+                      "
+                      [(ngModel)]="rowData.marge"
+                      [maxLength]="20"
+                      [readOnly]="readonly1"
+                    />
+                  </ng-template>
+
+                  <ng-template appendTo="body" pTemplate="output">
+                    {{ rowData.marge }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td style="width: 7%">
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input
+                      id="row_{{ rowData.id }}_tva"
+                      pInputText
+                      type="search"
+                      style="width: 100%"
+                      [min]="0"
+                      placeholder="tva"
+                      pKeyFilter="num"
+                      (click)="chargerPrixtot(rowData)"
+                      (keyup)="chargerPrixtot(rowData)"
+                      (keypress)="chargerPrixtot(rowData)"
+                      (keyup.enter)="verifTva(rowData, $event)"
+                      [(ngModel)]="rowData.tva"
+                      [maxLength]="20"
+                      [disabled]="!flag_exonor && rowData.id.charAt(0) !== '#'"
+                      [readOnly]="readonly1"
+                    />
+                  </ng-template>
+
+                  <ng-template pTemplate="output">
+                    {{ rowData.tva }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td style="width: 8%">
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input
+                      pInputText
+                      style="width: 100%"
+                      id="row_{{ rowData.id }}_prix"
+                      appendTo="body"
+                      [maxLength]="15"
+                      [minLength]="1"
+                      width="100%"
+                      (keyup)="chargerPrixtot(rowData)"
+                      (keypress)="chargerPrixtot(rowData)"
+                      (keyup.enter)="
+                        verifPrix(rowData.prix, rowData, $event, rowData.id)
+                      "
+                      (click)="chargerPrixtot(rowData)"
+                      placeholder="prix"
+                      pKeyFilter="num"
+                      type="search"
+                      [readOnly]="readonly1"
+                      [(ngModel)]="rowData.prix"
+                    />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ rowData.prix }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td style="width: 8%" id="row_{{ rowData.id }}_prixtot">
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    {{ rowData.prixtot }}
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ rowData.prixtot }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td style="width: 20%">
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input
+                      pInputText
+                      id="row_{{ rowData.id }}_dispon"
+                      type="text"
+                      style="width: 100%"
+                      [(ngModel)]="rowData.dispon"
+                      [maxLength]="30"
+                    />
+                  </ng-template>
+
+                  <ng-template pTemplate="output">
+                    {{ rowData.dispon }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td style="position: center; width: 8%">
+                <!---  [hidden]="!calculTotPrix" -->
+                <div [ngClass]="{ disableDiv: valide }">
+                  <button
+                    *ngIf="!editing"
+                    pButton
+                    type="button"
+                    pInitEditableRow
+                    icon="pi pi-pencil"
+                    class="ui-button-info"
+                    [disabled]="disable"
+                    (click)="onRowEditInit(rowData, $event)"
+                  ></button>
+
+                  <button
+                    *ngIf="!editing"
+                    pButton
+                    type="button"
+                    pDeletetableRow
+                    icon="pi pi-trash"
+                    class="ui-button-danger"
+                    (click)="supprimer(rowData, ri)"
+                    [disabled]="disable"
+                  ></button>
+                  <!-- <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(rowData)"></button> -->
+                  <button
+                    *ngIf="editing"
+                    pButton
+                    type="button"
+                    pDeletetableRow
+                    icon="pi pi-check"
+                    class="ui-button-success"
+                    (click)="
+                      verifLigne(rowData.prix, rowData, $event, rowData.id)
+                    "
+                  ></button>
+                  <button
+                    *ngIf="editing"
+                    pButton
+                    type="button"
+                    pDeletetableRow
+                    icon="pi pi-trash"
+                    class="ui-button-danger"
+                    (click)="supprimer(rowData, ri)"
+                  ></button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+    <div class="row" [ngClass]="{ disableDiv: valide }">
+      <div class="col-md-1">Text bas de page:</div>
+      <div class="col-md-3">
+        <textarea
+          [(ngModel)]="basDePage"
+          [rows]="4"
+          [cols]="40"
+          style="height: 76px"
+          pInputTextarea
+          [readonly]="readonlyBasDP"
+        ></textarea>
+      </div>
+      <div
+        class="col-md-1"
+        style="
+          margin-left: 0;
+          margin-right: 0;
+          padding-left: 0;
+          padding-right: 0;
+        "
+      >
+        caractéristiques téchniqus Article:
+        <span style="font-weight: bold">{{ currentCode }}</span>
+      </div>
+      <div class="col-md-3">
+        <textarea
+          id="agenda"
+          [(ngModel)]="currentAgenda"
+          style="overflow-y: scroll; height: 76px"
+          [rows]="4"
+          [cols]="40"
+          wrap="hard"
+          pInputTextarea
+          [maxlength]="200"
+          [readonly]="readonlyAgenda"
+        ></textarea>
+      </div>
+      <div class="col-md-2">
+        <div class="row">
+          <div class="col-md-6" style="padding: 0%">REMISE GLOBALE</div>
+          <div class="col-md-6">
+            <input
+              class="form-control"
+              [readOnly]="readonly"
+              type="search"
+              style="width: 100%"
+              pInputText
+              (blur)="appliquerRemise()"
+              (keyup.enter)="appliquerRemise()"
+              [(ngModel)]="remiseGlobale"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <p-radioButton
+            name="radioButtonGroup"
+            value="date"
+            label="Mvts Ordonnés par DATE"
+            (onClick)="onRadioChange($event)"
+            [(ngModel)]="sortOptions"
+          ></p-radioButton>
+        </div>
+        <div class="row">
+          <p-radioButton
+            name="radioButtonGroup"
+            value="client"
+            label="Mvts Ordonnés par CLIENT"
+            [(ngModel)]="sortOptions"
+            (click)="onRadioChange($event)"
+          ></p-radioButton>
+        </div>
+      </div>
+      <div class="col-md-1">
+        <button
+          pButton
+          type="button"
+          style="font-weight: bold; font-size: 14px; width: 90%"
+          label="+"
+          class="ui-button-raised"
+          (click)="addLigne($event)"
+        ></button>
+      </div>
+      <div class="col-md-1">
+        <button
+          [hidden]="affichValider"
+          pButton
+          type="button"
+          label="Valider"
+          style="margin: auto"
+          (click)="valider($event)"
+          class="ui-button-raised"
+        ></button>
+      </div>
+    </div>
+
+    <div class="row" [ngClass]="{ disableDiv: valide }">
+      <div class="col-md-10">
+        <p-tabView [activeIndex]="null" (onChange)="changeSelection($event)">
+          <p-tabPanel header="Stock" (onTabClick)="changeSelection($event)">
+            <div class="row">
+              <div class="col-md-9">
+                <ejs-grid
+                  #gridstock
+                  [selectedRowIndex]="selectedArticleIndex"
+                  [dataSource]="listeStocks"
+                  gridLines="Both"
+                  (recordDoubleClick)="doubleclickStock($event)"
+                  (rowSelected)="rowSelected($event)"
+                  (dataBound)="dataBound($event)"
+                  width="100%"
+                  height="100"
+                  [rowHeight]="20"
+                  allowResizing= 'true'
+                >
+                  <e-columns>
+                    <e-column
+                      field="code"
+                      headerText="Référence"
+                      width="100"
+                    ></e-column>
+                    <e-column
+                      field="design"
+                      headerText="Designation"
+                      width="100"
+                    ></e-column>
+                    <e-column
+                      field="prix"
+                      headerText="Prix U.HT"
+                      format="N3"
+                      textAlign="Right"
+                      width="100"
+                    ></e-column>
+                    <e-column
+                      field="quantite"
+                      headerText="en Stock"
+                      format="N3"
+                      textAlign="Right"
+                      width="100"
+                    ></e-column>
+                  </e-columns>
+                </ejs-grid>
+              </div>
+              <div class="col-md-3">
+                <div class="row">
+                  <span style="margin: auto; font-weight: bold; font-size: 12px"
+                    >Recherche:</span
+                  >
+                  <input
+                    class="form-control"
+                    type="search"
+                    pInputText
+                    [(ngModel)]="refArticleRech"
+                    (keyup.enter)="rechArticle(refArticleRech)"
+                    (search)="rechArticle(refArticleRech)"
+                    (keyup)="op.hide()"
+                    (focus)="$event.target.select()"
+                    placeholder="saisir une référence"
+                    style="margin: auto; width: 140px"
+                  />
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <button
+                      pButton
+                      type="button"
+                      label="En Cours de CMD"
+                      (click)="quantiteCommande($event)"
+                      class="smallBtn"
+                    ></button>
+                  </div>
+                  <div class="col-md-6">
+                    <button
+                      pButton
+                      type="button"
+                      label="CMDS en Cours"
+                      (click)="cmdFrs($event)"
+                      class="smallBtn"
+                    ></button>
+                  </div>
+                </div>
+                <div class="row" *ngIf="qteComm" style="margin-bottom: 0px">
+                  <div class="col-md-7">Fournis</div>
+                  <div
+                    class="col-md-5"
+                    style="font-size: 13px; font-weight: bold"
+                  >
+                    {{ qteEncours }}
+                  </div>
+                </div>
+                <div class="row" *ngIf="qteComm" style="margin-bottom: 0px">
+                  <div class="col-md-6">Arr Prv Le</div>
+                  <div
+                    class="col-md-6"
+                    style="font-size: 13px; font-weight: bold"
+                  >
+                    {{ datePr }}
+                  </div>
+                </div>
+                <div class="row" *ngIf="qteComm" style="margin-bottom: 0px">
+                  <div class="col-md-7">Clients</div>
+                  <div
+                    class="col-md-5"
+                    style="font-size: 13px; font-weight: bold"
+                  >
+                    {{ qteClient }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="height: 33px"></div>
+          </p-tabPanel>
+          <p-tabPanel
+            header="Mvts Année Courante"
+            (onTabClick)="changeSelection($event)"
+          >
+            <div class="row">
+              <ejs-grid
+                #gridMouves
+                [selectedRowIndex]="0"
+                [dataSource]="mvtAnnCournte"
+                gridLines="Both"
+                width="1040"
+                height="100"
+                [rowHeight]="20"
+                allowResizing= 'true'
+              >
+                <e-columns>
+                  <e-column
+                    field="date"
+                    headerText="Date"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="document"
+                    headerText="Document"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="deno"
+                    headerText="Dénomination"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="prix"
+                    headerText="prix"
+                    format="N3"
+                    textAlign="Right"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="entree"
+                    headerText="entrée"
+                    format="N3"
+                    textAlign="Right"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="sortie"
+                    headerText="sortie"
+                    format="N3"
+                    textAlign="Right"
+                    width="100"
+                  ></e-column>
+                </e-columns>
+              </ejs-grid>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-2">
+                <button
+                  pButton
+                  type="button"
+                  label="Mvts Client"
+                  (click)="mvtsClient(0)"
+                  class="ui-button-raised"
+                ></button>
+              </div>
+              <div class="col-md-2">
+                <button
+                  pButton
+                  type="button"
+                  label="TOTAL"
+                  (click)="totalMvts()"
+                  class="ui-button-raised"
+                ></button>
+              </div>
+              <div class="col-md-1 totMvmts">{{ totalEntreesMvts }}</div>
+              <div class="col-md-1"></div>
+              <div class="col-md-1 totMvmts">{{ totalSortiesMvts }}</div>
+              <div class="col-md-2"></div>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel
+            header="Mvts Année Courante - 1"
+            (onTabClick)="changeSelection($event)"
+          >
+            <div class="row">
+              <ejs-grid
+                #gridMouves1
+                [selectedRowIndex]="0"
+                [dataSource]="mvtAnnCournte"
+                gridLines="Both"
+                width="1040"
+                height="100"
+                [rowHeight]="20"
+                allowResizing= 'true'
+              >
+                <e-columns>
+                  <e-column
+                    field="date"
+                    headerText="Date"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="document"
+                    headerText="Document"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="deno"
+                    headerText="Dénomination"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="prix"
+                    headerText="prix"
+                    format="N3"
+                    textAlign="Right"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="entree"
+                    headerText="entrée"
+                    format="N3"
+                    textAlign="Right"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="sortie"
+                    headerText="sortie"
+                    format="N3"
+                    textAlign="Right"
+                    width="100"
+                  ></e-column>
+                </e-columns>
+              </ejs-grid>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-2">
+                <button
+                  pButton
+                  type="button"
+                  label="Mvts Client"
+                  (click)="mvtsClient(1)"
+                  class="ui-button-raised"
+                ></button>
+              </div>
+              <div class="col-md-2">
+                <button
+                  pButton
+                  type="button"
+                  label="TOTAL"
+                  (click)="totalMvts()"
+                  class="ui-button-raised"
+                ></button>
+              </div>
+              <div class="col-md-1 totMvmts">{{ totalEntreesMvts }}</div>
+              <div class="col-md-1"></div>
+              <div class="col-md-1 totMvmts">{{ totalSortiesMvts }}</div>
+              <div class="col-md-2"></div>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel
+            header="Mvts Année Courante - 2"
+            (onTabClick)="changeSelection($event)"
+          >
+            <div class="row">
+              <ejs-grid
+                #gridMouves2
+                [selectedRowIndex]="0"
+                [dataSource]="mvtAnnCournte"
+                gridLines="Both"
+                width="1040"
+                height="100"
+                [rowHeight]="20"
+                allowResizing= 'true'
+              >
+                <e-columns>
+                  <e-column
+                    field="date"
+                    headerText="Date"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="document"
+                    headerText="Document"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="deno"
+                    headerText="Dénomination"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="prix"
+                    headerText="prix"
+                    format="N3"
+                    textAlign="Right"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="entree"
+                    headerText="entrée"
+                    format="N3"
+                    textAlign="Right"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="sortie"
+                    headerText="sortie"
+                    format="N3"
+                    textAlign="Right"
+                    width="100"
+                  ></e-column>
+                </e-columns>
+              </ejs-grid>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-2">
+                <button
+                  pButton
+                  type="button"
+                  label="Mvts Client"
+                  (click)="mvtsClient(2)"
+                  class="ui-button-raised"
+                ></button>
+              </div>
+              <div class="col-md-2">
+                <button
+                  pButton
+                  type="button"
+                  label="TOTAL"
+                  (click)="totalMvts()"
+                  class="ui-button-raised"
+                ></button>
+              </div>
+              <div class="col-md-1 totMvmts">{{ totalEntreesMvts }}</div>
+              <div class="col-md-1"></div>
+              <div class="col-md-1 totMvmts">{{ totalSortiesMvts }}</div>
+              <div class="col-md-2"></div>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel
+            header="Equivalences"
+            (onTabClick)="changeSelection($event)"
+          >
+            <div class="row">
+              <ejs-grid
+                #gridstock
+                [selectedRowIndex]="selectedArticleIndex"
+                [dataSource]="equivalences"
+                gridLines="Both"
+                width="100%"
+                height="100"
+                [rowHeight]="20"
+                allowResizing= 'true'
+              >
+                <e-columns>
+                  <e-column
+                    field="code"
+                    headerText="Référence"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="design"
+                    headerText="Designation"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="prix"
+                    headerText="Prix U.HT"
+                    format="N3"
+                    textAlign="Right"
+                    width="100"
+                  ></e-column>
+                  <e-column
+                    field="quantite"
+                    headerText="en Stock"
+                    format="N3"
+                    textAlign="Right"
+                    width="100"
+                  ></e-column>
+                </e-columns>
+              </ejs-grid>
+            </div>
+            <div class="row" style="height: 33px"></div>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+      <div class="col-md-2">
+        <div class="row">
+          <div class="col-md-3"></div>
+          <div class="col-md-6">
+            <button
+              pButton
+              type="button"
+              label="Dev Clt"
+              style="margin: auto; width: 100%"
+              (click)="offrsClient($event)"
+              class="ui-button-raised"
+            ></button>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-md-3"></div>
+          <div class="col-md-6">
+            <button
+              pButton
+              type="button"
+              label="Totaliser"
+              style="width: 100%"
+              (click)="totaliser($event, listeStockCMD)"
+              class="ui-button-raised"
+            ></button>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="totalise">
+          <div class="col-md-5" style="font-size: 15px; font-weight: bold">
+            Tot Brut
+          </div>
+          <div class="col-md-7">
+            <input
+              class="form-control"
+              [readOnly]="readonly"
+              type="search"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="s_Total1CH"
+            />
+          </div>
+        </div>
+
+        <div class="row" *ngIf="totalise">
+          <div class="col-md-5" style="font-size: 15px; font-weight: bold">
+            Remise
+          </div>
+          <div class="col-md-7">
+            <input
+              class="form-control"
+              [readOnly]="readonly"
+              type="search"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="s_remisech"
+            />
+          </div>
+        </div>
+
+        <div class="row" *ngIf="totalise">
+          <div class="col-md-5" style="font-size: 15px; font-weight: bold">
+            Tot TTC
+          </div>
+          <div class="col-md-7">
+            <input
+              class="form-control"
+              [readOnly]="readonly"
+              type="search"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="s_netch"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <button
+          pButton
+          type="button"
+          label="Nouvelle Saisie"
+          (click)="annulerCMD($event)"
+          class="ui-button-raised"
+        ></button>
+      </div>
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <button
+          *ngIf="valide"
+          pButton
+          type="button"
+          label="Aperçu"
+          (click)="imprimer()"
+          class="ui-button-raised"
+        ></button>
+      </div>
+      <div class="col-md-2">
+        <p-checkbox
+          #enteteCheckBox
+          id="enteteCheckBox"
+          *ngIf="valide"
+          appendTo="body"
+          name="groupname"
+          label="Avec Entete"
+          binary="true"
+          [(ngModel)]="entete"
+        ></p-checkbox>
+      </div>
+      <div class="col-md-2">
+        <p-checkbox
+          #totauxCheckBox
+          id="totauxCheckBox"
+          *ngIf="valide"
+          appendTo="body"
+          name="groupname"
+          label="Avec Totaux"
+          binary="true"
+          [(ngModel)]="totaux"
+        ></p-checkbox>
+      </div>
+      <div class="col-md-2">
+        <button
+          pButton
+          type="button"
+          label="Relevé"
+          (click)="releve()"
+          class="ui-button-raised"
+        ></button>
+      </div>
+    </div>
+  </div>
+
+  <p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
+  <p-dialog
+    header="Devis Client"
+    [(visible)]="displayDevClt"
+    [style]="{ width: '70vw' }"
+  >
+    <div class="row">
+      <!--[allowSelection]="allowSelection"    -->
+      <div class="col-md-4">
+        <ejs-grid
+          #gridOffres
+          [selectedRowIndex]="0"
+          [dataSource]="listeOffres"
+          gridLines="Both"
+          [searchSettings]="searchOptions"
+          width="700"
+          height="80"
+          [rowHeight]="20"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column
+              field="combine"
+              headerText="N° Offre"
+              textAlign="Left"
+              width="10"
+            >
+            </e-column>
+            <e-column
+              field="quantite"
+              headerText="Quantite"
+              textAlign="Left"
+              width="10"
+            ></e-column>
+            <e-column
+              field="prix"
+              headerText="Prix"
+              textAlign="right"
+              format="N3"
+              width="10"
+            ></e-column>
+            <e-column
+              field="tRemise"
+              headerText="t_Remise"
+              textAlign="right"
+              format="N2"
+              width="10"
+            >
+            </e-column>
+            <e-column
+              field="qtSatisf"
+              headerText="qt_Satisf"
+              textAlign="right"
+              format="N2"
+              width="10"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+  </p-dialog>
+</div>
+<p-overlayPanel
+  [dismissable]="false"
+  #op
+  appendTo="body"
+  [showCloseIcon]="true"
+  [style]="{ 'text-align': 'center', 'background-color': '#f8b7bd' }"
+>
+  <span>{{ msg }} </span>
+</p-overlayPanel>
+<p-dialog
+  header="Releve client"
+  #dialDetail
+  (onShow)="showDialogMaximized(dialDetail)"
+  [contentStyle]="{ 'min-height': '1000px' }"
+  [style]="{ height: '130vh' }"
+  [(visible)]="visible"
+>
+  <app-releveclient></app-releveclient>
+</p-dialog>
+
+<p-dialog
+  header="Commandes Fournisseurs"
+  #dialreglementClt
+  (onShow)="showDialogMaximized(dialreglementClt)"
+  [contentStyle]="{ 'min-height': '1000px' }"
+  [style]="{ height: '130vh' }"
+  [(visible)]="visible2"
+>
+  <app-cmds-frs-non-soldees></app-cmds-frs-non-soldees>
+</p-dialog>

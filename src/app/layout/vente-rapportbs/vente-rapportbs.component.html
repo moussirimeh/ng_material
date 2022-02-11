@@ -1,0 +1,49 @@
+
+<br><br>
+  <div class="row" fxLayoutAlign="center center">
+        <div class="col-md-2">Date de fermeture du :</div>
+        <div class="col-md-2"><p-calendar id="deb"
+
+          dateFormat="dd/mm/yy "    
+          inputId="fx_Requested_date"
+          [locale]="tn"
+          placeholder="donnez une date"
+          [(ngModel)]="this.dateDebut" 
+          [monthNavigator]="true" [yearNavigator]="true"
+          yearRange="1990:2999"
+          > 
+        </p-calendar></div>
+
+
+        <div class="col-md-1">jusqu'au :</div>
+        <div class="col-md-2"><p-calendar id='jsq'
+ 
+          dateFormat="dd/mm/yy " 
+          inputId="fx_Requested_date2"   
+          [locale]="tn"
+          placeholder="donnez une date"
+          [(ngModel)]="this.dateFin" 
+          [monthNavigator]="true" [yearNavigator]="true"
+          yearRange="1990:2999"
+          > 
+          </p-calendar> 
+        </div>
+  </div> <br><br>
+  <div class="row">
+          <div class="col-md-6"></div>
+          <div class="col-md-2">
+              <p-button class="center" id='btn' label="apperçu" styleClass="ui-button-info" (click)="afficher($event)"></p-button>
+        </div>
+      </div>
+    
+
+<p-toast key="d" [style]="{ marginTop: '280px', width:'35%' }" position="top-center">  
+</p-toast>
+<p-toast key="k" [style]="{ marginTop: '280px', width:'35%' }" position="top-center">  
+</p-toast>
+<p-toast key="cam" [style]="{ marginTop: '280px', width:'35%' }" position="top-center">  
+</p-toast>
+
+<p-overlayPanel #op appendTo="body" [dismissable]="false" [showCloseIcon]="true"  [style]="{'text-align': 'center', 'font-size':'14px' , 'background-color': '#f8b7bd'}" >
+  <span> {{msgerror}} </span>
+</p-overlayPanel>

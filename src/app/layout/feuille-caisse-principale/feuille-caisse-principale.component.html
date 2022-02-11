@@ -1,0 +1,264 @@
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-3">
+        <h3 style="color: #1611d2;">Feuille de Caisse Principale du:</h3>
+      </div>
+      <div class="col-md-1">
+        <p-calendar
+          [(ngModel)]="dateFeuille"
+          [locale]="tn"
+          [maxDate]="maxDate"
+          [yearNavigator]="true"
+          [monthNavigator]="true"
+          yearRange="1900:2200"
+          dateFormat="dd/mm/yy"
+          [inputStyle]="{ width: '100px', height: '30px' }"
+        >
+        </p-calendar>
+      </div>
+
+      <div class="col-md-1">
+        <button
+        id="btAfficher"
+          pButton
+          type="button"
+          label="Afficher"
+          (click)="afficher($event)"
+          class="ui-button-raised"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <mat-card style="height: 250px;">
+      <mat-card-content>
+        <ejs-grid
+          #grid
+          [dataSource]="FeuilleSoldeEspece"
+          gridLines="Both"
+          height="180px"
+          [rowHeight]="26"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column
+              field="libelle"
+              headerText="Libelle"
+              width="140"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="date"
+              headerText="Date"
+              width="80"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="montant"
+              headerText="Montant"
+              width="80"
+              textAlign="Right"
+            ></e-column>
+            <e-column
+              field="mode"
+              headerText="Mode"
+              width="70"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="facture"
+              headerText="Facture"
+              width="70"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="cheque"
+              headerText="Cheque"
+              width="90"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="banque"
+              headerText="Banque"
+              width="70"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="echeance"
+              headerText="Echeance"
+              width="80"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="observation"
+              headerText="Observations"
+              width="160"
+              textAlign="Left"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <mat-card>
+      <mat-card-content style="font-family: -webkit-pictograph;">
+        <div class="row">
+          <div class="col-md-2">
+            Report Solde:
+          </div>
+          <div class="col-md-2">
+            {{ reportSolde }}
+          </div>
+
+          <div class="col-md-2">
+            Report Solde Espèce:
+          </div>
+          <div class="col-md-2">{{ soldece }}</div>
+
+          <div class="col-md-2">
+            Report Solde Chèque:
+          </div>
+          <div class="col-md-2">
+            {{ soldecc }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2">
+            Total Recettes:
+          </div>
+          <div class="col-md-2">
+            {{ totalRecette }}
+          </div>
+
+          <div class="col-md-2">
+            Recettes Espèce:
+          </div>
+          <div class="col-md-2">{{ totalRecetteEspece }}</div>
+
+          <div class="col-md-2">
+            Recettes Chèque:
+          </div>
+          <div class="col-md-2">
+            {{ totalRecetteCheque }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2">
+            Total Depenses:
+          </div>
+          <div class="col-md-2">
+            {{ totalDepense }}
+          </div>
+
+          <div class="col-md-2">
+            Depenses Espèce:
+          </div>
+          <div class="col-md-2">{{ totalDepenseEspece }}</div>
+
+          <div class="col-md-2">
+            Depenses Chèque:
+          </div>
+          <div class="col-md-2">
+            {{ totalDepenseCheque }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4"></div>
+
+          <div class="col-md-2">
+            Reglements terme Espèces:
+          </div>
+          <div class="col-md-2">{{ totalRegTermeEsp }}</div>
+
+          <div class="col-md-2">
+            Reglements terme Chèques:
+          </div>
+          <div class="col-md-2">
+            {{ totalRegTermeCh }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4"></div>
+
+          <div class="col-md-2">
+            Reglements Cont.espèces:
+          </div>
+          <div class="col-md-2">{{ mtce }}</div>
+
+          <div class="col-md-2">
+            Reglements Cont.Chèques:
+          </div>
+          <div class="col-md-2">
+            {{ mtcc }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2">
+            Total Solde:
+          </div>
+          <div class="col-md-2">
+            {{ totalSolde }}
+          </div>
+
+          <div class="col-md-2">
+            Solde Espèce:
+          </div>
+          <div class="col-md-2">{{ soldeEspece }}</div>
+
+          <div class="col-md-2">
+            Solde Chèque:
+          </div>
+          <div class="col-md-2">
+            {{ soldeCheque }}
+          </div>
+        </div>
+
+        &nbsp;
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-2">
+            <button
+              pButton
+              type="button"
+              label="Valider"
+              (click)="valider()"
+              *ngIf="validerShow"
+            ></button>
+          </div>
+          <div class="col-md-2">
+            <button
+              pButton
+              type="button"
+              label="Visualiser"
+              (click)="apercue()"
+              *ngIf="validerShow"
+            ></button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+

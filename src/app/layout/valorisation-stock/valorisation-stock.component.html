@@ -1,0 +1,363 @@
+<div class="row">
+<div class="col-md-6">
+<div class="row">
+  <div class="col-md-1"  style="max-width : 4%; padding-bottom: 0.3%;"><label>Du:</label></div>
+  <div class="col-md-2" style="max-width: 30%; padding-bottom: 0.3%;" >
+    <p-calendar
+    id="date1"
+    [disabled]="readonly"
+    [minDate]="minDate"
+    [(ngModel)]="datedebut"
+    dateFormat="dd/mm/yy"
+    [monthNavigator]="true"
+    [yearNavigator]="true"
+    [locale]="tn"
+    yearRange="1973:2999">
+   </p-calendar>
+  </div>
+  <div class="col-md-1" style="max-width : 4%; padding-bottom: 0.3%;"><label>Au:</label></div>
+  <div class="col-md-2" style="max-width: 30%; padding-bottom: 0.3%;">
+    <p-calendar 
+     id="date2"
+     [disabled]="readonly"
+     [minDate]="minDate"
+     [(ngModel)]="datefin"
+     dateFormat="dd/mm/yy"
+     [monthNavigator]="true"
+     [yearNavigator]="true"
+     [locale]="tn"
+     yearRange="2011:2999">
+    </p-calendar>
+   </div>
+</div>
+<mat-card class="col-md-12">
+  <mat-card-content class="col-md-12" style="width: 100%;">
+    <h4>Ordre de classement</h4>
+    <div class="row">
+      <div class="row p-field-radiobutton" style="max-height: 12%;">
+        <div class="col-md-1">
+          <p-radioButton 
+            name="trie" 
+            value="four" 
+            [disabled]="readonly"
+            [(ngModel)]="tri"
+            >
+           </p-radioButton>
+        </div>
+        <div class="col-md-2">
+           <label>{{labeltri}}</label>
+         </div>
+     </div>
+     <div class="row p-field-radiobutton" style="max-height: 12%;">
+      <div class="col-md-1">
+        <p-radioButton 
+          
+          name="trie" 
+          [disabled]="readonly"
+          value="achat" 
+          [(ngModel)]="tri"
+           >
+         </p-radioButton>
+      </div>
+      <div class="col-md-2">
+         <label>Tot_achats</label>
+       </div>
+   </div>
+      <div class="row p-field-radiobutton" style="max-height: 12%;">
+       <div class="col-md-1">
+         <p-radioButton          
+           name="trie" 
+           value="vente" 
+           [disabled]="readonly"
+           [(ngModel)]="tri"
+            >
+          </p-radioButton>
+       </div>
+       <div class="col-md-2">
+          <label>Tot_ventes</label>
+        </div>
+    </div>
+
+      <div class="row p-field-radiobutton" style="max-height: 12%;">
+       <div class="col-md-1">
+         <p-radioButton 
+           name="trie" 
+           value="stk" 
+           [disabled]="readonly"
+           [(ngModel)]="tri"
+            >
+          </p-radioButton>
+       </div>
+       <div class="col-md-2">
+          <label>Tot_Stock</label>
+        </div>
+    </div>
+  </div>
+  </mat-card-content>
+</mat-card>
+</div>
+<div class="col-md-6">
+  <div class="row">
+    <div class="col-md-1" style="max-width: 15%; padding-bottom: 0.3%;" >Fournisseur:</div>
+    <div class="col-md-6" style="  padding-bottom: 0.3%;"  >
+      <ng-select
+        ngselect
+        [items]="listefournisseurs"
+        bindLabel="deno"
+        bindValue="code"
+        (open)="chargerFournisseur()"
+        [(ngModel)]="SelectedFournisseur"
+        (change)="changeFournisseur()"
+        [searchFn]="onSearchfournisseur"
+        [disabled]="readonly"
+        (clear)="SelectedFournisseur=''"
+      >
+      </ng-select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-1" style=" max-width: 15%; padding-bottom: 0.3%; padding-right: 5%">Famille:</div>
+    <div class="col-md-6" style="  padding-bottom: 0.3%;" >
+      <ng-select
+      ngselect
+      id="famil"
+      [items]="listeFamille"
+      bindLabel="nom"
+      bindValue="code"
+      (open)="chargerListeFamille()"
+      (change)="changeFamille()"
+      [(ngModel)]="selectedFamille"
+      [searchFn]="onSearchfamille"
+      [disabled]="readonly"
+      (clear)="selectedFamille=''"
+      > 
+      </ng-select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-1" style=" max-width: 15%; padding-bottom: 0.3%; padding-right: 3%">S/Famille:</div>
+    <div class="col-md-6" style="  padding-bottom: 0.3%;" >
+      <ng-select
+      ngselect
+      id="Sfamil"
+      [items]="listeSFamille"
+      bindLabel="nom"
+      bindValue="code"
+      (open)="chargerListeSfamille()"
+      (change)="changeSFamille()"
+      [(ngModel)]="selectedSFamille"
+      [searchFn]="onSearchSfamille"
+      [disabled]="readonly"
+      (clear)="selectedSFamille=''"
+      > 
+      </ng-select>
+    </div>
+  </div>
+</div>
+</div>
+<div class="row" style="padding-bottom: 0.2%;">
+  <div class="col-md-8"></div>
+  <div class="col-md-1">
+    <button
+     pButton
+     id="btnAjouter"
+     type="button"
+     label="Afficher"
+     (click)="afficher()"
+     class="ui-button-raised"
+     [hidden]="btnaff==true"
+    ></button>
+  </div>
+  <div class="col-md-1">
+    <button
+     pButton
+     id="btnInitialiser"
+     type="button"
+     label="Initialiser"
+     (click)="Initialiser()"
+     class="ui-button-raised"
+     [hidden]="btnaff==true"
+    ></button>
+  </div>
+  <div class="col-md-1">
+    <button
+     pButton
+     id="btnAjouter"
+     type="button"
+     label="-->Excel"
+     (click)="excelExport()"
+     class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-1">
+    <button
+     pButton
+     id="btnAjouter"
+     type="button"
+     label="Aperçu"
+     class="ui-button-raised"
+     (click)="Apercu()"
+    ></button>
+  </div>
+</div>
+
+    <div class="row" *ngIf="btnaff && all "  >
+      <ejs-grid id="ejs1" #grid width="99%" [searchSettings]="searchOptions" [allowExcelExport]="true" [dataSource]="listeValorisationAll" [selectedRowIndex]="0" height="240"  
+        rowHeight="20" 
+       gridLines="Both"
+       allowResizing= 'true'>
+       <e-columns>
+         <e-column field="codefr" headerText="CodeFrs" width="45"  headerTextAlign="left">
+         </e-column>
+         <e-column field="raisonS" headerText="RaisonSocial" width="50"  headerTextAlign="left">
+         </e-column>
+         <e-column field="initial" headerText="Initial" width="50"  headerTextAlign="left">
+          <ng-template #template let-listeValorisationAll>
+            <p style="text-align: right; margin: auto; ">
+              {{ listeValorisationAll.initial }}
+            </p>
+          </ng-template>
+        </e-column>
+        <e-column field="achats" headerText="Achats" width="50"  headerTextAlign="left">
+          <ng-template #template let-listeValorisationAll>
+            <p style="text-align: right; margin: auto; ">
+              {{ listeValorisationAll.achats }}
+            </p>
+          </ng-template>
+        </e-column>
+        <e-column field="ventes" headerText="Ventes" width="50"  headerTextAlign="left">
+          <ng-template #template let-listeValorisationAll>
+            <p style="text-align: right; margin: auto; ">
+              {{ listeValorisationAll.ventes }}
+            </p>
+          </ng-template>
+        </e-column>
+        <e-column field="stock" headerText="En Stock" width="45"  headerTextAlign="left">
+          <ng-template #template let-listeValorisationAll>
+            <p style="text-align: right; margin: auto; ">
+              {{ listeValorisationAll.stock }}
+            </p>
+          </ng-template>
+        </e-column>
+       </e-columns>
+      </ejs-grid>
+  </div>
+  <div class="row" *ngIf="btnaff && all==false"  >
+    <ejs-grid id="ejs1" #grid width="99%" [searchSettings]="searchOptions" [allowExcelExport]="true" [dataSource]="listeValorisationAll" [selectedRowIndex]="0" height="240"  
+      rowHeight="20" 
+     gridLines="Both">
+     <e-columns>
+       <e-column field="reference" headerText="Reference" width="45"  headerTextAlign="left">
+       </e-column>
+       <e-column field="designation" headerText="Designation" width="80"  headerTextAlign="left">
+       </e-column>
+       <e-column field="puht" headerText="P.U.HT" width="50"  headerTextAlign="left">
+        <ng-template #template let-listeValorisationAll>
+          <p style="text-align: right; margin: auto; ">
+            {{ listeValorisationAll.puht }}
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column field="achats" headerText="Achats" width="30"  headerTextAlign="left">
+        <ng-template #template let-listeValorisationAll>
+          <p style="text-align: right; margin: auto; ">
+            {{ listeValorisationAll.achats }}
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column field="ventes" headerText="Ventes" width="30"  headerTextAlign="left">
+        <ng-template #template let-listeValorisationAll>
+          <p style="text-align: right; margin: auto; ">
+            {{ listeValorisationAll.ventes }}
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column field="stock" headerText="En Stock" width="35"  headerTextAlign="left">
+        <ng-template #template let-listeValorisationAll>
+          <p style="text-align: right; margin: auto; ">
+            {{ listeValorisationAll.stock }}
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column field="valach" headerText="ValACH" width="35"  headerTextAlign="left">
+        <ng-template #template let-listeValorisationAll>
+          <p style="text-align: right; margin: auto; ">
+            {{ listeValorisationAll.valach }}
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column field="valvnt" headerText="ValVNT" width="35"  headerTextAlign="left">
+        <ng-template #template let-listeValorisationAll>
+          <p style="text-align: right; margin: auto; ">
+            {{ listeValorisationAll.valvnt }}
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column field="valstk" headerText="ValSTK" width="35"  headerTextAlign="left">
+        <ng-template #template let-listeValorisationAll>
+          <p style="text-align: right; margin: auto; ">
+            {{ listeValorisationAll.valstk }}
+          </p>
+        </ng-template>
+      </e-column>
+     </e-columns>
+    </ejs-grid>
+</div>
+
+
+  <div class="row" *ngIf="btnaff">
+    <div class="col-md-2" style="max-width :9%;">
+      <label>Total Achat:</label>
+    </div>
+    <div class="col-md-2" style="max-width :12%;">
+      <label style="color: red;" >{{totalachats}}</label>
+    </div>
+    <div class="col-md-1" style="max-width :100%;">
+      <label >DT en PV</label>
+    </div>
+    <div class="col-md-2" style="max-width : 12%;" >
+      <label>Valeur Inventaire:</label>
+    </div>
+    <div class="col-md-2"  style="max-width :12%;">
+      <label style="color: red;">{{totalinv}}</label>
+    </div>
+    <div class="col-md-1">
+      <label>DT en PV</label>
+    </div>
+  </div>
+  <div class="row" *ngIf="btnaff">
+    <div class="col-md-2" style="max-width :9%;">
+      <label>Total Ventes:</label>
+    </div>
+    <div class="col-md-2"  style="max-width :12%;">
+      <label style="color: red;">{{totalventes}}</label>
+    </div>
+    <div class="col-md-1" style="max-width :100%;">
+      <label >DT en PV</label>
+    </div>
+    <div class="col-md-2" style="max-width :12%;" >
+      <label>Total Stock:</label>
+    </div>
+    <div class="col-md-2"  style="max-width :12%;">
+      <label style="color: red;">{{totalstk}}</label>
+    </div>
+    <div class="col-md-1">
+      <label>DT en PV</label>
+    </div>
+  </div>
+  <div class="row" *ngIf="btnaff">
+    <div class="col-md-2" style="max-width: 12%;">
+      <button
+       pButton
+       id="btnAjouter"
+       type="button"
+       (click)="nouvelleSaisie()"
+       label="Nouvelle Saisie"
+       class="ui-button-raised"
+      ></button>
+    </div>
+    
+    <div class="col-md-10"></div>
+  </div>
+  
+

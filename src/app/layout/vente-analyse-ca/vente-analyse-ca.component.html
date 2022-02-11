@@ -1,0 +1,201 @@
+<br>
+<br>
+<div class="row">
+          <div class="col-md-6">
+              <p-panel  header="Date" >
+                      <div class="row">
+                                      <div class="col-md-1">Du </div>
+                                      <div class="col-md-2"> 
+                                        <p-calendar 
+                                        [locale]="tn"
+                                        [(ngModel)]="dat1"
+                                        [yearNavigator]="true"
+                                        [monthNavigator]="true"
+                                        yearRange="2017:2999"
+                                        dateFormat="dd/mm/yy "   
+                                        [disabled]="readonly" 
+                                        
+                                        > 
+                                      </p-calendar>
+                                        <!--<input type="search"   [(ngModel)]="dat1" pInputText [readonly]="readonly" />-->
+
+                                      </div>
+                                      <div class="col-md-2"> </div>
+                                      <div class="col-md-1">au </div>
+                                      <div class="col-md-2"> 
+                                        <p-calendar 
+                                        [locale]="tn"
+                                        [(ngModel)]="dat2"
+                                        [yearNavigator]="true"
+                                        [monthNavigator]="true"
+                                        yearRange="2017:2999"
+                                        dateFormat="dd/mm/yy "   
+                                        [disabled]="readonly" 
+                                        
+                                        > 
+                                      </p-calendar>
+                                      <!-- <input type="search"   [(ngModel)]="dat2" pInputText [readonly]="readonly" />!-->
+
+                                      </div>
+                          </div>
+            </p-panel>
+          </div>
+
+        <div class="col-md-6">
+          <p-panel  header="Vendeur" >
+              <div class="row">
+                               
+                                <div class="col-md-5"> 
+                                      
+                                    <ng-select id="sv"
+                                          ngselect
+                                          #ngs
+                                          [searchFn]="onSearchVendeur"
+                                          [items]="listeVendeurs"
+                                          bindLabel="deno"
+                                          (change)="changeVendeurs()"
+                                          [(ngModel)]="selectedVendeur"
+                                          placeholder="choisir un vendeur"
+                                          [disabled]="readonlyv"
+                                          width="30%"
+                                          > 
+                                    </ng-select> 
+                                                         
+                                </div>
+
+                                <div class="col-md-1"> </div>
+                                
+                                <div class="col-md-4"> 
+                                  <input type="password"  id="pwd" [readOnly]="readonlyv" pPassword [(ngModel)]="motpass" (keyup.enter)="afficher($event)" [feedback]="false" indicator="false" placeholder=" mot de passe "/>
+                                  
+                                </div>
+                  </div>
+            </p-panel>
+      </div>
+</div>
+<br>
+<div class="row" *ngIf="btnaffich">
+        <div class="col-md-11"></div>
+        <div class="col-md-1" >
+          <button type="button"   pButton  label="Afficher"  (click)="afficher($event)"></button>
+        </div>
+
+        <br>
+</div>
+
+
+<div *ngIf="truepass">
+    <div [class.disabled-content]="!editEnablel">
+
+            <div class="row" >
+                                 
+                                    
+                                     <div class="col-md-12" >
+                                            <ejs-grid #grid [dataSource]="AnalVend" gridLines='Both' 
+                                            [selectedRowIndex]="0"
+                                            height="200" width="100%" 
+                                            rowHeight='40'
+                                            allowResizing= 'true'
+                                              >             
+                                                            <e-columns>
+                                                                <e-column field="denoVend"    headerText="Vendeur" width="23%"   [customAttributes]="customAttributes"   ></e-column>
+                                                                <e-column field="combine"       headerText="Pièce" width="12%"    [customAttributes]="customAttributes"></e-column>
+                                                                <e-column field="date"    headerText="Date" width="13%"  [customAttributes]="customAttributes"></e-column>
+                                                                <e-column field="operateur"    headerText="Code client" width="12%"  [customAttributes]="customAttributes"></e-column>  
+                                                                <e-column field="denoClt"    headerText="Nom client" width="24%"   [customAttributes]="customAttributes"   ></e-column>
+                                                                <e-column field="ht"    headerText="Prix HT" width="13%"    [customAttributes]="customAttributes">
+                                                                  <ng-template #template let-AnalVend>
+                                                                    <div style="text-align: right;">{{AnalVend.ht}}</div>
+                                                                </ng-template>
+
+                                                                </e-column>
+                                                                <e-column field="remise"    headerText="Remise" width="12%"  [customAttributes]="customAttributes">
+                                                                  <ng-template #template let-AnalVend>
+                                                                    <div style="text-align: right;">{{AnalVend.remise}}</div>
+                                                                </ng-template>
+                                                                </e-column>
+                                                                <e-column field="net"    headerText="Net" width="12%"  [customAttributes]="customAttributes">
+                                                                  <ng-template #template let-AnalVend>
+                                                                    <div style="text-align: right;">{{AnalVend.net}}</div>
+                                                                </ng-template>
+
+                                                                </e-column>  
+                                                              </e-columns>
+                                              </ejs-grid>
+                                      </div>
+                                      
+                                      <br>
+                                      <div class="row" class fxFlexFill fxLayoutAlign="center center">
+                          
+                                                              <p-card >
+                                                                <div class="row">
+                                                                      <div class="col-md-2" style="font-size: 16px;">Tot Fact Cpt &#60;HT&#62;:</div>
+                                                                      <div class="col-md-1" style="text-align: right;font-size: 16px;">{{this.ttf}}</div>
+                                                                      <div class="col-md-1"></div>
+
+                                                                      <div class="col-md-2" style="font-size: 16px;">Tot B/L &#60;HT&#62;:</div>
+                                                                      <div class="col-md-1" style="text-align: right;font-size: 16px;">{{ this.BLH}}</div>
+                                                                      <div class="col-md-1"></div>
+
+                                                                      <div class="col-md-2" style="font-size: 16px;">T Vents &#60;HT&#62;:</div>
+                                                                      <div class="col-md-1" style="text-align: right; font-size: 16px;">{{this. tve}}</div>
+                                                                      <div class="col-md-1"></div>
+
+                                                                </div>
+                                                                  <br>
+                                                                 
+                            
+                                                                 
+                                                                <div class="row">
+                                                                        <div class="col-md-2" style="font-size: 16px;">Tot Avoir Cpt &#60;HT&#62;:</div>
+                                                                        <div class="col-md-1" style="text-align: right;font-size: 16px;">{{  this.AvoirH }}</div>
+                                                                        <div class="col-md-1"></div>
+                          
+                                                                        <div class="col-md-2" style="font-size: 16px;">Tot Avoir/BL &#60;HT&#62;:</div>
+                                                                        <div class="col-md-1" style="text-align: right;font-size: 16px;">{{this.AvoirBLH}}</div>
+                                                                        <div class="col-md-1"></div>
+                          
+                                                                        <div class="col-md-2" style="font-size: 16px;">T Avoirs &#60;HT&#62;:</div>
+                                                                        <div class="col-md-1" style="text-align: right;font-size: 16px;">{{this. tav}}</div>
+                                                                        <div class="col-md-1"></div>
+                                                                      </div>
+                                                                  <br>
+                                                                <div class="row">
+                                                                        <div class="col-md-2"style="font-size: 16px;">Chif. Cpt &#60;HT&#62;:</div>
+                                                                        <div class="col-md-1" style="text-align: right;font-size: 16px;">{{TotCACptt }}</div>
+                                                                        <div class="col-md-1"></div>
+                          
+                                                                        <div class="col-md-2" style="font-size: 16px;">Chif. Terme &#60;HT&#62;:</div>
+                                                                        <div class="col-md-1" style="text-align: right;font-size: 16px;">{{this.tota}}</div>
+                                                                        <div class="col-md-1"></div>
+                          
+                                                                        <div class="col-md-2"style="font-size: 16px;">Total CA &#60;HT&#62;:</div>
+                                                                        <div class="col-md-1" style="text-align: right;font-size: 16px;">{{ this. tc }}</div>
+                                                                        <div class="col-md-1"></div>
+                                                                </div>
+                                                            </p-card>
+                                      </div>
+
+                                  
+
+            </div>
+          
+     </div>
+  </div>
+<br>
+<div class="row">
+  <div class="col-md-2" *ngIf="btnnvs"><button type="button" (click)="NouvelleSaisie()"  pButton  label="Nouvelle saisie"></button></div>
+  <div class="col-md-10">
+    
+  </div>
+</div>
+
+
+
+
+
+<p-toast key="d" [style]="{ marginTop: '280px' }" position="top-center" width="50%">
+
+  <p-overlayPanel #op appendTo="body" [dismissable]="false"  [showCloseIcon]="true"  [style]="{'text-align': 'center', 'font-size':'14px' ,'background-color': ' #f8b7bd'}" >
+    <span > {{msgerror}} </span>
+</p-overlayPanel> 

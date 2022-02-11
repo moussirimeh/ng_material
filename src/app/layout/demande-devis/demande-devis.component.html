@@ -1,0 +1,138 @@
+<div align="center">
+</div>
+&nbsp;
+<p-panel header="Lignes de Demande de Devis">
+  <div class="row" style="max-height: 300px;min-height: 300px;overflow: scroll;">
+    <p-table [value]="detDemDevis">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:20%">Référence*</th>
+          <th style="width:20%">Designation*</th>
+          <th style="width:10%">Quantité*</th>
+          <th style="width:20%">Marque</th>
+          <th style="width:10%">Notes</th>
+          <th style="width:10%" *ngIf="true"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-ri="rowIndex">
+        <tr>
+          <td pEditableColumn>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="text" style="width: 100%" [minlength]="1" style="width:100%"
+                  [(ngModel)]="rowData.codeArticle" [disabled]="!rowData.modifiable" required>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{rowData.codeArticle}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td pEditableColumn>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="text" style="width: 100%" [minlength]="1" style="width:100%"
+                  [(ngModel)]="rowData.designation" [disabled]="!rowData.modifiable" required>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{rowData.designation}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td align="Right" pEditableColumn>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="number" style="width: 100%" [min]="1" size="5" [(ngModel)]="rowData.quantite"
+                  required>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{rowData.quantite}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td pEditableColumn>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-dropdown [options]="marques" [(ngModel)]="rowData.marque" [style]="{'width':'100%'}"
+                  optionLabel="nom"></p-dropdown>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{rowData.marque.nom}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td style="text-align:center">
+            <button pButton type="button" icon="pi pi-file" class="ui-button-info" (click)="redigerNote(ri)"></button>
+          </td>
+          <td style="text-align:center" *ngIf="true">
+            <button pButton type="button" pDeletetableRow icon="pi pi-trash" class="ui-button-danger"
+              (click)="onRowDelete(ri)"></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</p-panel>
+&nbsp;
+<div class="row">
+  <div class="col-md-3">
+    <p-button label="Confirmer" (click)="confirmer()"></p-button>
+  </div>
+  <div class="col-md-6"></div>
+  <div class="col-md-3">
+    <p-button label="Ajouter Nouvelle Référence" (click)="ajouter()"></p-button>
+  </div>
+</div>
+&nbsp;
+<p-panel header="Liste des Articles">
+  <div class="row">
+    <div class="col-md-2">
+      <h4>Recherche par Référence :</h4>
+    </div>
+    <div class="col-md-2">
+
+      <input pInputText type="text" [(ngModel)]="codeArticle" (keyup.enter)="rechercheArticle(0)" placeholder="" />
+
+    </div>
+
+    <div class="col-md-3">
+      <h4>Recherche par Designation :</h4>
+    </div>
+    <div class="col-md-2">
+      <input pInputText type="text" [(ngModel)]="designationArticle" (keyup.enter)="rechercheArticle(1)"
+        placeholder="" />
+    </div>
+    <div class="col-md-3">
+      <p-selectButton [options]="types" [(ngModel)]="selectedType" (click)="rechercheArticle(0)"></p-selectButton>
+    </div>
+  </div>
+  &nbsp;
+  <div id="flux">
+    <ejs-grid #gridStock id="gridStock" [dataSource]="stocks" gridLines="Both" (recordDoubleClick)="addArticle()"
+      height="100px" [rowHeight]='26' (mouseup)="annulerSelection()" (mousewheel)="annulerSelection();loadMore()" allowResizing= 'true'>
+      <e-columns>
+        <e-column field="code" headerText="Référence" width="100"></e-column>
+        <e-column field="design" headerText="Designation" width="120"></e-column>
+        <e-column field="quantite" headerText="Qte en Stock" width="80" textAlign="Right"></e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+</p-panel>
+<p-toast [style]="{ marginTop: '10%' }" position="top-center" key="tc"></p-toast>
+<p-dialog header="Rédiger une note" [(visible)]="displayNote" [modal]="true" [responsive]="true"
+  [style]="{width: '350px', minWidth: '250px'}" [minY]="70" [baseZIndex]="10000">
+  <textarea rows="10%" cols="40%" [(ngModel)]="note.text" pInputTextarea autoResize="false"></textarea>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-check" (click)="enregNote()" label="Enregistrer Note"></button>
+    <button type="button" pButton icon="pi pi-close" (click)="displayNote=false" label="Annuler"
+      class="ui-button-secondary"></button>
+  </p-footer>
+</p-dialog>
+<p-dialog header="Note" [(visible)]="displayValider" [modal]="true" [responsive]="true"
+  [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [baseZIndex]="10000">
+  <textarea rows="10%" cols="40%" [(ngModel)]="noteFinal" pInputTextarea autoResize="false"></textarea>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-check" (click)="valider()" label="Valider"></button>
+    <button type="button" pButton icon="pi pi-close" (click)="displayValider=false" label="Annuler"
+      class="ui-button-secondary"></button>
+  </p-footer>
+</p-dialog>

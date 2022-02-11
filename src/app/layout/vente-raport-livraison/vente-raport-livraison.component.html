@@ -1,0 +1,164 @@
+
+
+
+<div class="row" >
+
+  <p-panel header=" Date">
+    <div class="row">
+      <div class="col-md-1"> Du: </div>
+      <div class="col-md-3">  <p-calendar 
+                      [yearNavigator]="true"
+                      [monthNavigator]="true"
+                      yearRange="1990:2999"
+                      dateFormat="dd/mm/yy "    
+                      [locale]="tn"
+                      [(ngModel)]="dat1"
+                      [disabled]="readonly"
+                       
+                      > 
+        </p-calendar>
+      </div>
+      <div class="col-md-1"> </div>
+      <div class="col-md-2"> jusqu'au: </div>
+      <div class="col-md-3">  <p-calendar 
+   
+                      dateFormat="dd/mm/yy "    
+                      [locale]="tn"
+                      [(ngModel)]="dat2"
+                      [yearNavigator]="true"
+                      [monthNavigator]="true" 
+                      yearRange="1990:2999"
+                      [disabled]="readonly"
+                      > 
+        </p-calendar>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+</p-panel>
+</div>
+<br>
+<div class="row" >
+  <div class="col-md-2"> 
+
+  <ng-select
+  ngselect
+  (keyup.enter)="onSearchClients($event.target.value)"
+  [items]="listClients"
+  bindLabel="deno"
+  [(ngModel)]="selectedClient"
+  placeholder="choisir un client"
+  [disabled]="readonly"
+   > 
+  </ng-select>
+  </div>
+  <div class="col-md-1"> </div>
+  <div class="col-md-2">
+    <ng-select
+    ngselect
+    [searchFn]="onSearchVendeur"
+    [items]="listeVendeurs"
+    bindLabel="deno"
+    [(ngModel)]="selectedVendeur"
+    placeholder="choisir un vendeur"
+    [disabled]="readonly"
+    width="30%"
+     > </ng-select>
+     </div>
+  <div class="col-md-1"> </div>
+  <div class="col-md-2"><!--
+    (open)="ChargerArticles ()"
+  -->
+    <ng-select
+    ngselect
+    [items]="listeArticles"
+    bindLabel="code"
+    [(ngModel)]="selectedArticle"
+    (open)="onSearchArticles('')"
+    (keyup)="onSearchArticles($event.target.value )"
+    placeholder="choisir un article"
+    [disabled]="readonly"
+     > </ng-select>
+  </div>
+  <div class="col-md-1"> </div>
+  <div class="col-md-2">
+    <ng-select
+    ngselect
+    [searchFn]="onSearchZones"
+    [items]="listeZones"
+    bindLabel="deno"
+    [(ngModel)]="selectedZone"
+    placeholder="choisir une zone"
+    [disabled]="readonly"
+     > </ng-select>
+     </div>
+
+</div>
+<br>
+<div class="row">
+  <div class="col-md-2">  <p-radioButton name="livraison" [disabled]="readonly" value="1"  [(ngModel)]="livr"></p-radioButton>&nbsp;Livré</div>
+  <div class="col-md-2"> <p-radioButton name="livraison" value="2" [disabled]="readonly" [(ngModel)]="livr"></p-radioButton>&nbsp;Non livré</div>
+  <div class="col-md-1"> <p-radioButton name="livraison" value="3" [disabled]="readonly" [(ngModel)]="livr"></p-radioButton>&nbsp;Tout</div>
+  <div class="col-md-2"></div>
+  <div class="col-md-2"></div>
+  <div class="col-md-2" >
+    <button pButton style="width: 70%;" type="button" id="aff" label="Afficher" (click)="afficher($event)"   class="ui-button-raised" class="ui-button-info"></button>
+</div>
+
+<div class="col-md-1" >
+ 
+</div>
+
+</div>
+<br>
+<div class="row"  >
+  <div class="col-md-12" *ngIf="affichegrid">
+  <ejs-grid #grid [dataSource]= "listeRecettes" gridLines='Both' 
+  [selectedRowIndex]="0"
+  allowResizing= 'true'
+   height="310" width="100%"
+   rowHeight='31'
+    >             
+                  <e-columns>
+                      <e-column field="combine"    headerText="Pièce" width="14%"   [customAttributes]="customAttributes"  BackgroundColor="Gray" ></e-column>
+                      <e-column field="date"    headerText="Date" width="10%"    [customAttributes]="customAttributes"></e-column>
+                      <e-column field="client"    headerText="Client" width="20%"    [customAttributes]="customAttributes"></e-column>
+
+                      <e-column field="etat"    headerText="Etat" width="10%"    [customAttributes]="customAttributes"></e-column>
+                      <e-column field="bonSort"    headerText="Bon de sortie" width="10%"  [customAttributes]="customAttributes"></e-column>
+                      <e-column field="livrObservat"    headerText="Observation de Livraison" width="20%"  [customAttributes]="customAttributes"></e-column>  
+                  </e-columns>
+    </ejs-grid>
+  </div>
+</div> 
+
+    <br>
+    <div class="row"  >
+           
+            <div class="col-md-3" *ngIf="cliqueaffichernvs">
+              <button pButton style="width: 70%;" type="button" label="Nouvelle saisie" (click)="nouvelleSaisie()"   class="ui-button-raised" class="ui-button-info"></button>
+            </div>
+            <div class="col-md-1"></div>
+          <div class="col-md-2" *ngIf="cliquAfficher">
+             <button pButton style="width: 70%;" type="button"  label="Aperçu" icon="pi pi-print"  (click)="appercu()"    class="ui-button-raised" class="ui-button-info"></button>
+          </div>
+   
+        <div class="col-md-2" *ngIf="cliquAfficher">
+          <button style="width: 70%;" pButton type="button" icon="pi pi-download" label="EXCEL"   (click)="genererExcel()"  class="ui-button-raised" class="ui-button-info"></button>
+        </div>
+</div>
+  
+  
+  <p-toast key="d" [style]="{ marginTop: '480px', width:'35%' }" position="top-center" ></p-toast>
+
+
+
+  <p-overlayPanel #opp 
+  [dismissable]="false"
+  [showCloseIcon]="true" 
+  id="opp"
+  appendTo="body"  
+  [style]="{'text-align': 'center', 
+           'font-size':'14px' ,
+           'background-color': ' #f8b7bd'}" >
+  <span> {{msgerror}} </span>
+ </p-overlayPanel>

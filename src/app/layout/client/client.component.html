@@ -1,0 +1,950 @@
+<div id="container">
+  <div class="row">
+    <div
+      class="col-md-4"
+      [ngClass]="{
+        disableDiv: ajouterClicked || modifierClicked || supprimerClicked
+      }"
+    >
+      <div [hidden]="ajouterClicked" style="height: 480px;" id="myDIV">
+        <p-panel header="Recherche Client">
+          <div class="ui-inputgroup" style="margin-bottom: 5px;">
+            <input
+              type="search"
+              maxlength="7"
+              pInputText
+              [(ngModel)]="rechCode"
+              (click)="rechDeno = ''"
+              (keyup.enter)="applyFilterClientParCode()"
+              (search)="applyFilterClientParCode()"
+              placeholder="par code"
+              size="20"
+              [disabled]="ajouterClicked || modifierClicked || supprimerClicked"
+            />
+            <button
+              pButton
+              icon="pi pi-search"
+              (click)="applyFilterClientParCode()"
+            ></button>
+          </div>
+          <div class="ui-inputgroup" style="margin-bottom: 5px;">
+            <input
+              type="search"
+              maxlength="35"
+              pInputText
+              [(ngModel)]="rechDeno"
+              (click)="rechCode = ''"
+              (keyup.enter)="applyFilterClientParDeno()"
+              (search)="applyFilterClientParDeno()"
+              placeholder="par denomination"
+              size="45"
+              [disabled]="ajouterClicked || modifierClicked || supprimerClicked"
+            />
+            <button
+              pButton
+              icon="pi pi-search"
+              (click)="applyFilterClientParDeno()"
+            ></button>
+          </div>
+          <ejs-grid
+            #grid
+            id="myGrid"
+            [dataSource]="clients"
+            (rowSelected)="updateData()"
+            [selectedRowIndex]="selectedIndex"
+            height="396"
+            [searchSettings]="searchOptions"
+            (mouseup)="annulerSelectionClient()"
+            (mousewheel)="annulerSelectionClient()"
+            gridLines="Both"
+            [rowHeight]="30"
+            allowResizing= "true"
+            (dataBound)="dataBound($event)"
+          >
+            <e-columns>
+              <e-column
+                field="code"
+                headerText="Code"
+                textAlign="Left"
+                width="60"
+              >
+              </e-column>
+              <e-column
+                field="deno"
+                headerText="Denomination"
+                textAlign="Left"
+                width="160"
+              ></e-column>
+              <e-column
+                field="id"
+                headerText="id"
+                textAlign="Right"
+                width="0"
+              ></e-column>
+            </e-columns>
+          </ejs-grid>
+        </p-panel>
+        <div class="row" style="height: 50px; margin-top: 10px;">
+          <div class="col-md-4">
+            <button
+              id="btAjouter"
+              color="primary"
+              class="mat-raised-button mat-primary"
+              ng-reflect-color="primary"
+              (click)="ajouter()"
+              *ngIf="clickedMenuAuthAjout"
+            >
+              Ajouter
+            </button>
+          </div>
+          <div class="col-md-4">
+            <button
+              color="primary"
+              class="mat-raised-button mat-primary"
+              ng-reflect-color="primary"
+              (click)="modifier()"
+              *ngIf="!modifierSupprimerDisable && clickedMenuAuthModif"
+            >
+              Modifier
+            </button>
+          </div>
+          <div class="col-md-4">
+            <button
+              color="primary"
+              class="mat-raised-button mat-primary"
+              ng-reflect-color="primary"
+              (click)="supprimer()"
+              *ngIf="false"
+            >
+              Supprimer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div>
+        <p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+          <p-tabPanel header="Identification">
+            <div>
+              <div class="row">
+                <div class="col-md-1">
+                  CODE:
+                </div>
+                <div class="col-md-2">
+                  <input
+                    type="text"
+                    id="codeClt"
+                    maxlength="7"
+                    pInputText
+                    size="7"
+                    [(ngModel)]="selectedClient.code"
+                    [readOnly]="fieldDisable"
+                    (keypress)="ov.hide()"
+                  />
+                </div>
+
+                <div class="col-md-1" align="Right">
+                  NOM:
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    id="denoClt"
+                    maxlength="35"
+                    pInputText
+                    size="41"
+                    [(ngModel)]="selectedClient.deno"
+                    [readOnly]="fieldDisable"
+                    (keypress)="ov.hide()"
+                  />
+                </div>
+
+                <div class="col-md-2" align="Right">
+                  Creé le:
+                </div>
+
+                <div class="col-md-2">
+                  <input
+                    type="text"
+                    pInputText
+                    size="10"
+                    [(ngModel)]="selectedClient.datCreat"
+                    [readOnly]="true"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1">
+                  ADRESSE:
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    id="adresse"
+                    maxlength="30"
+                    pInputText
+                    size="33"
+                    [(ngModel)]="selectedClient.adresse"
+                    [readOnly]="fieldDisable"
+                    (keypress)="ov.hide()"
+                  />
+                </div>
+                <div class="col-md-1" align="Right">
+                  VILLE:
+                </div>
+                <div class="col-md-3">
+                  <input
+                    type="text"
+                    id="ville"
+                    maxlength="20"
+                    pInputText
+                    size="22"
+                    [(ngModel)]="selectedClient.ville"
+                    [readOnly]="fieldDisable"
+                    (keypress)="ov.hide()"
+                  />
+                </div>
+                <div class="col-md-1" align="Right">
+                  CP:
+                </div>
+                <div class="col-md-2">
+                  <input
+                    type="text"
+                    pInputText
+                    maxlength="10"
+                    size="10"
+                    [(ngModel)]="selectedClient.post"
+                    [readOnly]="fieldDisable"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-2">
+                  ADR USINE:
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="30"
+                    [(ngModel)]="selectedClient.adresseusine"
+                    [readOnly]="fieldDisable"
+                  />
+                </div>
+
+                <div class="col-md-2">
+                  ADR SIEGE :
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="30"
+                    [(ngModel)]="selectedClient.adressesiege"
+                    [readOnly]="fieldDisable"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-2">
+                  TEL:
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    id="tel"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.tel"
+                    [readOnly]="fieldDisable"
+                    (keypress)="ov.hide()"
+                  />
+                </div>
+
+                <div class="col-md-2">
+                  FAX:
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.fax"
+                    [readOnly]="fieldDisable"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  Email:
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="35"
+                    [(ngModel)]="selectedClient.eMail"
+                    [readOnly]="fieldDisable"
+                  />
+                </div>
+                <div class="col-md-2">
+                  Rev/Cons:
+                </div>
+                <div class="col-md-4">
+                  <p-dropdown
+                    [options]="revCons"
+                    [style]="{ 'min-width': '50px' }"
+                    [(ngModel)]="selectedClient.typeComm"
+                    [readonly]="fieldDisable"
+                  ></p-dropdown>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-2">
+                  Activité:
+                </div>
+                <div class="col-md-4">
+                  <p-dropdown
+                    id="secteur"
+                    filter="true"
+                    (onChange)="updateOnSelect(1)"
+                    [options]="secteurs"
+                    optionLabel="deno"
+                    [style]="{ 'min-width': '240px', 'max-width': '240px' }"
+                    [(ngModel)]="selectedSecteur"
+                    [readonly]="fieldDisable"
+                  ></p-dropdown>
+                </div>
+                <div class="col-md-2">
+                  Zone:
+                </div>
+                <div class="col-md-4">
+                  <p-dropdown
+                  filter="true"
+                    (onChange)="updateOnSelect(2)"
+                    [options]="zones"
+                    optionLabel="deno"
+                    [style]="{ 'min-width': '240px', 'max-width': '240px' }"
+                    [(ngModel)]="selectedZone"
+                    [readonly]="fieldDisable"
+                  ></p-dropdown>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-2">
+                  RESPONS 1 :
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    id="responsable1"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.respon"
+                    [readonly]="fieldDisable"
+                    (keypress)="ov.hide()"
+                  />
+                </div>
+
+                <div class="col-md-2">
+                  RESPONS 2 :
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.respons2"
+                    [readonly]="fieldDisable"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-2">
+                  FONCTION :
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.fonction1"
+                    [readonly]="fieldDisable"
+                  />
+                </div>
+
+                <div class="col-md-2">
+                  FONCTION :
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.fonction2"
+                    [readonly]="fieldDisable"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  TEL :
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.telex"
+                    [readonly]="fieldDisable"
+                  />
+                </div>
+
+                <div class="col-md-2">
+                  TEL :
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.tel2"
+                    [readonly]="fieldDisable"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-2">
+                  GSM :
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    id="gsm1"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.gsm1"
+                    [readonly]="fieldDisable"
+                    (keypress)="ov.hide()"
+                  />
+                </div>
+
+                <div class="col-md-2">
+                  GSM :
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.gsm2"
+                    [readonly]="fieldDisable"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-2">
+                  MAIL :
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="35"
+                    [(ngModel)]="selectedClient.eMail1"
+                    [readonly]="fieldDisable"
+                  />
+                </div>
+
+                <div class="col-md-2">
+                  MAIL :
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="35"
+                    [(ngModel)]="selectedClient.eMail2"
+                    [readonly]="fieldDisable"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">RESPONS 3 :</div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.respons3"
+                    [readonly]="fieldDisable"
+                  />
+                </div>
+                <div class="col-md-2">FONCTION :</div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.fonction3"
+                    [readonly]="fieldDisable"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">TEL :</div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.tel3"
+                    [readonly]="fieldDisable"
+                  />
+                </div>
+                <div class="col-md-2">GSM :</div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="20"
+                    [(ngModel)]="selectedClient.gsm3"
+                    [readonly]="fieldDisable"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">MAIL :</div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    pInputText
+                    size="30"
+                    maxlength="35"
+                    [(ngModel)]="selectedClient.eMail3"
+                    [readonly]="fieldDisable"
+                  />
+                </div>
+              </div>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel header="Gestion" >
+            <div class="row" style="margin-bottom: 5px;">
+              <div class="col-md-2">
+                Recouvreur :
+              </div>
+              <div class="col-md-4">
+                <p-dropdown
+                filter="true"
+                  id="recouvreur"
+                  (onChange)="updateOnSelect(3)"
+                  [options]="recouvs"
+                  optionLabel="deno"
+                  [style]="{ 'min-width': '250px', 'max-width': '250px' }"
+                  [(ngModel)]="selectedRecouv"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+              <div class="col-md-2">
+                Vendeur :
+              </div>
+              <div class="col-md-4">
+                <p-dropdown
+                filter="true"
+                  id="vendeur"
+                  (onChange)="updateOnSelect(4)"
+                  [options]="vendeurs"
+                  optionLabel="deno"
+                  [style]="{ 'min-width': '250px', 'max-width': '250px' }"
+                  [(ngModel)]="selectedVendeur"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 5px;">
+              <div class="col-md-2">
+                Représentant :
+              </div>
+              <div class="col-md-4">
+                <p-dropdown
+                filter="true"
+                  (onChange)="updateOnSelect(5)"
+                  [options]="represans"
+                  optionLabel="deno"
+                  [style]="{ 'min-width': '250px', 'max-width': '250px' }"
+                  [(ngModel)]="selectedRepresan"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+              <div class="col-md-2">
+                Groupe :
+              </div>
+              <div class="col-md-4">
+                <p-dropdown
+                filter="true"
+                  (onChange)="updateOnSelect(6)"
+                  [options]="groupes"
+                  optionLabel="deno"
+                  [style]="{ 'min-width': '250px', 'max-width': '250px' }"
+                  [(ngModel)]="selectedGroupe"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 5px;">
+              <div class="col-md-2">
+                LIG.FACT(Det/Rel)
+              </div>
+              <div class="col-md-1">
+                <p-dropdown
+                  [options]="ligFact"
+                  [style]="{ 'min-width': '10px' }"
+                  [(ngModel)]="selectedClient.edition"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+              <div class="col-md-2">
+                Fact/BC(O/N)
+              </div>
+              <div class="col-md-1">
+                <p-dropdown
+                  [options]="factBc"
+                  [style]="{ 'min-width': '10px' }"
+                  [(ngModel)]="selectedClient.comm"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+              <div class="col-md-2">
+                BLOCK(O/N)
+              </div>
+              <div class="col-md-auto">
+                <p-dropdown
+                  [options]="block"
+                  [style]="{ 'min-width': '10px' }"
+                  [(ngModel)]="selectedClient.cadnat"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+              <div class="col-md-auto">
+                <input
+                  type="text"
+                  pInputText
+                  size="8"
+                  [(ngModel)]="selectedClient.datBlc"
+                  [readonly]="true"
+                />
+              </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 5px;">
+              <div class="col-md-2">
+                Calcul Ind.(O/N)
+              </div>
+              <div class="col-md-1">
+                <p-dropdown
+                  [options]="calculInd"
+                  [style]="{ 'min-width': '10px' }"
+                  [(ngModel)]="selectedClient.duree"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+              <div class="col-md-2">
+                BLOCABLE (O/N)
+              </div>
+              <div class="col-md-1">
+                <p-dropdown
+                  [options]="blocable"
+                  [style]="{ 'min-width': '10px' }"
+                  [(ngModel)]="selectedClient.bloc"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+              <div class="col-md-2">
+                Remise
+              </div>
+              <div class="col-md-auto">
+                <input
+                id="remiseClt"
+                  type="text"
+                  pInputText
+                  pKeyFilter="pnum"
+                  size="5"
+                  [(ngModel)]="selectedClient.marque"
+                  [readonly]="disableModifRemise"
+                />
+              </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 5px;">
+              <div class="col-md-2">
+                TERME(O/N)
+              </div>
+              <div class="col-md-1">
+                <p-dropdown
+                  [options]="termeOn"
+                  [style]="{ 'min-width': '10px' }"
+                  [(ngModel)]="selectedClient.terme"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+
+              <div class="col-md-2">
+                Client Ord.(O/N)
+              </div>
+              <div class="col-md-1">
+                <p-dropdown
+                  [options]="clientOrd"
+                  [style]="{ 'min-width': '10px' }"
+                  [(ngModel)]="selectedClient.typeC"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+
+              <div class="col-md-2">
+                TIMBRE
+              </div>
+              <div class="col-md-1">
+                <p-dropdown
+                  [options]="timbreOn"
+                  [style]="{ 'min-width': '10px' }"
+                  [(ngModel)]="selectedClient.timbre"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+
+              <div class="col-md-2" align="Right">
+                BC EXIGE(O/N)
+              </div>
+              <div class="col-md-1">
+                <p-dropdown
+                  [options]="bcExigeOn"
+                  [style]="{ 'min-width': '10px' }"
+                  [(ngModel)]="selectedClient.bcExige"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel header="Financement">
+            <div class="row" style="margin-bottom: 5px;">
+              <div class="col-md-2">
+                ASSUEJET (O/N):
+              </div>
+              <div class="col-md-1">
+                <p-dropdown
+                  [options]="assujets"
+                  [style]="{ 'min-width': '10px' }"
+                  [(ngModel)]="selectedClient.assujet"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+              <div class="col-md-2">
+                CODE TVA:
+              </div>
+              <div class="col-md-4">
+                <input
+                  id="codeTva"
+                  type="text"
+                  pInputText
+                  size="20"
+                  maxlength="15"
+                  [(ngModel)]="selectedClient.codeTva"
+                  [readonly]="fieldDisable"
+                  (keypress)="ov.hide()"
+                />
+              </div>
+
+              <div class="col-md-2" align="Right">
+                ECHEANCE:
+              </div>
+              <div class="col-md-1">
+                <input
+                  type="text"
+                  pInputText
+                  size="1"
+                  maxlength="3"
+                  [(ngModel)]="selectedClient.ech"
+                  [readonly]="fieldDisable"
+                />
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 5px;">
+              <div class="col-md-2">OBJECTIF:</div>
+              <div class="col-md-4">
+                <input
+                  type="text"
+                  pInputText
+                  size="20"
+                  maxlength="10"
+                  [(ngModel)]="selectedClient.objectif"
+                  [readonly]="fieldDisable"
+                />
+              </div>
+              <div class="col-md-2">
+                PLAFOND:
+              </div>
+              <div class="col-md-4">
+                <input
+                  type="text"
+                  pInputText
+                  size="20"
+                  maxlength="10"
+                  [(ngModel)]="selectedClient.plafond"
+                  [readonly]="fieldDisable"
+                />
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 5px;">
+              <div class="col-md-2">
+                Mode Reg:
+              </div>
+              <div class="col-md-3">
+                <p-dropdown
+                  id="reg"
+                  [options]="pieces"
+                  [style]="{ 'min-width': '170px', 'max-width': '170px' }"
+                  [(ngModel)]="selectedClient.reg"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+              <div class="col-md-4">
+                <input
+                  id="dureeReg"
+                  maxlength="3"
+                  type="text"
+                  pInputText
+                  size="1"
+                  [(ngModel)]="selectedClient.modeReg"
+                  [readonly]="fieldDisable"
+                  (keypress)="ov.hide()"
+                />&nbsp;JOURS DATE FACTURE
+              </div>
+              <div class="col-md-2" align="Right">
+                EXONORE:
+              </div>
+              <div class="col-md-1">
+                <p-dropdown
+                  [options]="exonoreOn"
+                  [style]="{ 'min-width': '10px' }"
+                  [(ngModel)]="selectedClient.exonor"
+                  [readonly]="fieldDisable"
+                ></p-dropdown>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 5px;">
+              <div class="col-md-2">
+                BANQUE:
+              </div>
+              <div class="col-md-4">
+                <input
+                  type="text"
+                  pInputText
+                  size="25"
+                  maxlength="8"
+                  [(ngModel)]="selectedClient.banque"
+                  [readonly]="fieldDisable"
+                />
+              </div>
+              <div class="col-md-2">
+                AGENCE:
+              </div>
+              <div class="col-md-4">
+                <input
+                  type="text"
+                  pInputText
+                  size="25"
+                  maxlength="20"
+                  [(ngModel)]="selectedClient.agence"
+                  [readonly]="fieldDisable"
+                />
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 5px;">
+              <div class="col-md-2">
+                COMPTE:
+              </div>
+              <div class="col-md-auto">
+                <input
+                  type="text"
+                  pInputText
+                  size="35"
+                  maxlength="20"
+                  [(ngModel)]="selectedClient.compte"
+                  [readonly]="fieldDisable"
+                />
+              </div>
+            </div>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+
+      <div class="row" style="height: 50px;">
+        <div class="col-md-3"></div>
+        <div class="col-md-6" *ngIf="validerAnnulerDisable"></div>
+        <div class="col-md-3">
+          <button
+            id="btValider"
+            color="primary"
+            class="mat-fab mat-primary"
+            ng-reflect-color="primary"
+            (click)="valider($event)"
+            *ngIf="!validerAnnulerDisable"
+          >
+            Valider
+          </button>
+        </div>
+        <div class="col-md-3">
+          <button
+            color="warn"
+            class="mat-fab mat-warn"
+            ng-reflect-color="warn"
+            (click)="annuler()"
+            *ngIf="!validerAnnulerDisable"
+          >
+            Annuler
+          </button>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

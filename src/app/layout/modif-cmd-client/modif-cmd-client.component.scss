@@ -1,0 +1,68 @@
+
+.bolld{
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  
+  .espace {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 0.2;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+  }
+  
+  
+  body .ui-inputtext {
+    font-size: 12px;
+    color: #333333;
+    background: #ffffff;
+    padding: 0.429em;
+    border: 1px solid #a6a6a6;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  .row {
+    font-size: 13px;
+    margin-bottom: 3px;
+  }
+  
+  .ui-button {
+    font-size: 12px
+  }
+  
+  .e-grid .e-rowcell {
+    font-size: 12px !important;
+    padding: initial !important;
+  }
+  .e-grid th{
+  
+    padding: 0!important;
+  }
+  
+  .ng-select.banque {
+    font-size: 14px;
+    width: 270px;
+    
+  }
+  
+  .ng-select.ng-select-single ::ng-deep .ng-select-container {
+    height: 28px;
+    
+  }
+  .ng-select ::ng-deep .ng-select-container {
+    min-height: 28px;
+    max-height: 28px;
+  }
+  
+  br {
+    font-size: 1rem;
+    font-family: sans-serif;
+    margin: 10px;
+  }

@@ -1,0 +1,202 @@
+<p-blockUI [blocked]="blockDocument"></p-blockUI>
+<p-card class="cardContainer" #cardContainer>
+  <p-panel header="Entête">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-3">
+            Entrez le numéro :
+          </div>
+          <div class="col-md-4">
+            <input
+              id="num"
+              pKeyFilter="pint"
+              type="search"
+              maxlength="5"
+              size="10"
+              pInputText
+              [(ngModel)]="numero"
+              (keyup.enter)="afficher($event)"
+              (keypress)="ov.hide()"
+              [disabled]="elemVisibles||blockDocument"
+              style="font-weight: bold;"
+            />
+          </div>
+          <div class="col-md-2">
+            Date :
+          </div>
+          <div class="col-md-3">
+            <h4>{{ date }}</h4>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row">
+          <div class="col-md-2">
+            Client :
+          </div>
+          <div class="col-md-2">
+            <h4>{{ client.code }}</h4>
+          </div>
+          <div class="col-md-8">
+            <h4>{{ client.deno }}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-8"></div>
+          <div class="col-md-2">
+            Remise :
+          </div>
+          <div class="col-md-2">
+            <h4>{{ client.marque|number:'1.2-2' }}%</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            Adresse :
+          </div>
+          <div class="col-md-10">
+            <h4>{{ client.adresse }}</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            Ville :
+          </div>
+          <div class="col-md-10">
+            <h4>{{ client.ville }}</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            Code Post :
+          </div>
+          <div class="col-md-10">
+            <h4>{{ client.post }}</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            Code TVA :
+          </div>
+          <div class="col-md-10">
+            <h4>{{ client.codeTva }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </p-panel>
+  &nbsp;
+  <p-panel header="Détails">
+    <div>
+      <ejs-grid
+        #gridFact
+        id="gridFact"
+        [dataSource]="factures"
+        height="180"
+        gridLines="Both"
+        [rowHeight]="30"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          <e-column
+            field="combine"
+            headerText="PIECE"
+            textAlign="Left"
+            width="100"
+          >
+          </e-column>
+          <e-column field="date" headerText="DATE" width="100"></e-column>
+          <e-column
+            field="vendeur"
+            headerText="VENDEUR"
+            textAlign="Left"
+            width="200"
+          ></e-column>
+          <e-column
+            field="ref"
+            headerText="REF"
+            textAlign="Left"
+            width="100"
+          ></e-column>
+          <e-column
+            field="remise"
+            headerText="REMISE"
+            textAlign="Left"
+            width="100"
+          ></e-column>
+          <e-column
+            field="net"
+            headerText="NET"
+            textAlign="Left"
+            width="100"
+          ></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    &nbsp;
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-3">
+        <button
+          color="primary"
+          class="mat-raised-button mat-primary"
+          style="width: 70%;"
+          ng-reflect-color="primary"
+          (click)="confirmSuppr()"
+          *ngIf="elemVisibles"
+        >
+          Supprimer FACTURE
+        </button>
+      </div>
+      <div class="col-md-3">
+        <button
+          color="primary"
+          class="mat-raised-button mat-primary"
+          ng-reflect-color="primary"
+          (click)="annuler()"
+          *ngIf="elemVisibles"
+        >
+          Annuler
+        </button>
+      </div>
+
+      <div class="col-md-3">
+        <h4>
+          Total TTC : &nbsp;
+          {{ totalTtc }}
+        </h4>
+      </div>
+    </div>
+    &nbsp;
+  </p-panel>
+  &nbsp;
+  <div class="row">
+    <div class="col-md-5"></div>
+    <div class="col-md-2">
+      <button
+        color="primary"
+        *ngIf="false"
+        class="mat-raised-button mat-primary"
+        style="width: 70%;"
+        ng-reflect-color="primary"
+        (click)="nvlSaisie()"
+      >
+        Nouvelle Saisie
+      </button>
+    </div>
+    <div class="col-md-5"></div>
+  </div>
+  &nbsp;
+</p-card>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{ width: '40vw' }"></p-confirmDialog>

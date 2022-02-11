@@ -1,0 +1,401 @@
+<p-blockUI [blocked]="blockedDocument"></p-blockUI>
+<div class="entete">
+  <div class="row">
+    <div class="col-md-1">
+      <label>Numero :&nbsp;&nbsp;</label>
+    </div>
+    <div class="col-md-2">
+      <input
+        id="num"
+        type="search"
+        maxlength="5"
+        size="6"
+        [disabled]="champDisabled||blockedDocument"
+        pInputText
+        pKeyFilter="int"
+        [(ngModel)]="numero"
+        (keyup.enter)="valid_prof_num($event)"
+        (keypress)="ov.hide()"
+      />
+    </div>
+    <div class="col-md-5"><label>Date :&nbsp;&nbsp;</label>{{ date }}</div>
+    <div class="col-md-4">
+      <div class="row">
+        <label>M. &nbsp;</label>
+        <div class="col-md-1"></div>
+        {{ deno }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-1">
+      <label>Fournisseur</label>
+    </div>
+    <div class="col-md-1">
+      {{ codeFour }}
+    </div>
+    <div class="col-md-6">
+      {{ deno }}
+    </div>
+
+    <div class="col-md-3">
+      <div class="row"><label>Adresse :&nbsp;&nbsp;</label>{{ adresse }}</div>
+      <div class="row">
+        <label>Ville :</label>
+        <div class="col-md-1"></div>
+        {{ ville }}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <mat-card *ngIf="cardShow">
+    <mat-card-content style="margin-top: -30px; height: 310px">
+      <h4>Proforma</h4>
+      <div id="GridParent" style="max-height: 250px; min-height: 250px">
+        <!--
+        <ejs-grid
+          #gridProforma
+          [dataSource]="demande"
+          gridLines="Both"
+          [editSettings]="editSettings"
+          [allowExcelExport]="true"
+          (actionComplete)="actionComplete($event)"
+          height="130px"
+          [rowHeight]="26"
+        >
+          <e-columns>
+            <e-column
+              field="rang"
+              headerText="N°"
+              isPrimaryKey="true"
+              width="90"
+            ></e-column>
+            <e-column
+              field="code"
+              headerText="CODE"
+              [validationRules]="codeRules"
+              width="90"
+            ></e-column>
+            <e-column
+              field="design"
+              headerText="Designation"
+              [validationRules]="designRules"
+              width="90"
+            >
+            </e-column>
+            <e-column
+              field="unite"
+              headerText="Unité"
+              [validationRules]="uniteRules"
+              width="100"
+            ></e-column>
+            <e-column
+              field="quantite"
+              headerText="Quantité"
+              [validationRules]="quantiteRules"
+              width="100"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+        -->
+        <p-table
+          class="flexcolumn"
+          [value]="demande"
+          dataKey="rang"
+          #scrollMe
+          [scrollable]="true"
+          scrollHeight="196px"
+          [responsive]="true"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 10%">Numero</th>
+              <th style="width: 25%">Code</th>
+              <th style="width: 35%">Désignation</th>
+              <th style="width: 10%">Unité</th>
+              <th style="width: 10%">Quantité</th>
+              <th style="width: 10%"></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-ri="rowIndex">
+            <tr>
+              <td style="width: 10%" id="row_{{ rowData.rang }}">
+                {{ rowData.rang }}
+              </td>
+              <td
+                pEditableColumn
+                (click)="verifCode(rowData.code, rowData.rang, 0)"
+                style="width: 25%"
+              >
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input
+                      pInputText
+                      type="text"
+                      (keydown.enter)="
+                        verifCode(rowData.code, rowData.rang, 1, $event)
+                      "
+                      (blur)="verifCode(rowData.code, rowData.rang, 1, $event)"
+                      (keyup)="validerShow = true"
+                      style="width: 100%"
+                      [minlength]="1"
+                      [(ngModel)]="rowData.code"
+                      [readOnly]="!allowModifCode"
+                      [maxLength]="20"
+                      required
+                      [disabled]="disableTable"
+                    />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ rowData.code }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td
+                pEditableColumn
+                (click)="verifCode(rowData.code, rowData.rang, 0, $event)"
+                style="width: 35%"
+              >
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input
+                      pInputText
+                      type="text"
+                      style="width: 100%"
+                      [minlength]="1"
+                      [(ngModel)]="rowData.design"
+                      (keyup)="validerShow = true"
+                      [readOnly]="!allowModifCode"
+                      [maxLength]="30"
+                      required
+                      [disabled]="disableTable"
+                    />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ rowData.design }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn style="width: 10%" id="row_unite_{{ rowData.rang }}">
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input
+                      pInputText
+                      type="text"
+                      style="width: 100%"
+                      [minlength]="1"
+                      [(ngModel)]="rowData.unite"
+                      (focus)="$event.target.select()"
+                      (keydown.enter)="moveToNext(0,rowData.rang)"
+                      [maxLength]="2"
+                      (keyup)="validerShow = true"
+                      required
+                      [disabled]="disableTable"
+                    />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ rowData.unite }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td align="Right" pEditableColumn style="width: 10%" id="row_qte_{{ rowData.rang }}">
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input
+                      pInputText
+                      type="text"
+                      style="width: 100%"
+                      [min]="1"
+                      size="5"
+                      [(ngModel)]="rowData.quantite"
+                      (focus)="$event.target.select()"
+                      (keydown.enter)="moveToNext(1,rowData.rang)"
+                      [maxLength]="6"
+                      pKeyFilter="pint"
+                      (keyup)="validerShow = true"
+                      required
+                      [disabled]="disableTable"
+                    />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ rowData.quantite }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td style="width: 10%; text-align: center">
+                <button
+                  pButton
+                  type="button"
+                  pDeletetableRow
+                  icon="pi pi-trash"
+                  class="ui-button-danger"
+                  (click)="onRowDelete(ri)"
+                  [disabled]="disableTable"
+                ></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <div class="row" style="margin-top: 3px">
+        <div class="col-md-2">
+          <button
+            pButton
+            type="button"
+            label="Nouvelle saisie"
+            class="ui-button-raised"
+            (click)="nouvelleSaisie()"
+            *ngIf="nvSaisieShow"
+          ></button>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-1">
+          <button
+            pButton
+            type="button"
+            label="Valider"
+            class="ui-button-raised"
+            (click)="valider($event)"
+            *ngIf="validerShow"
+          ></button>
+        </div>
+        <div class="col-md-1">
+          <button
+            pButton
+            type="button"
+            label="Annuler"
+            class="ui-button-raised"
+            (click)="nouvelleSaisie()"
+            *ngIf="annulerShow"
+          ></button>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-1">
+          <button
+            pButton
+            type="button"
+            label="Excel"
+            (click)="excel()"
+            *ngIf="nvSaisieShow"
+            class="ui-button-raised"
+          ></button>
+        </div>
+        <div class="col-md-1">
+          <button
+            pButton
+            type="button"
+            label="Aperçu"
+            class="ui-button-raised"
+            (click)="apercu()"
+            *ngIf="nvSaisieShow"
+          ></button>
+        </div>
+        <div class="col-md-2">
+          <button
+            pButton
+            type="button"
+            label="Transfer à commande"
+            class="ui-button-raised"
+            (click)="transferCommande()"
+            *ngIf="!validerShow"
+          ></button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div *ngIf="showGrid2">
+  <div class="row">
+    <div class="col-md-10">
+      <ejs-grid
+        #grid
+        [dataSource]="articles"
+        gridLines="Both"
+        (recordDoubleClick)="select($event)"
+        [allowSelection]="allowSelection"
+        height="156px"
+        [rowHeight]="26"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          <e-column field="code" headerText="CODE" width="100"></e-column>
+          <e-column field="design" headerText="DESIGN" width="150"></e-column>
+          <e-column
+            field="prix"
+            headerText="Prix U.HT"
+            width="50"
+            textAlign="Right"
+          ></e-column>
+          <e-column
+            field="quantite"
+            headerText="En Stock"
+            width="50"
+            textAlign="Right"
+          ></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <div class="col-md-2">
+      <div class="ui-inputgroup">
+        <input
+        id="codeArt"
+        type="search"
+        pInputText
+        [(ngModel)]="code"
+        (change)="rechIndic=0"
+        [disabled]="rechercheDisable"
+        (keyup.enter)="recherche()"
+        (search)="recherche()"
+        (keyup)="ov.hide()"
+        (focus)="$event.target.select()"
+        />
+        <button pButton icon="pi pi-search" (click)="recherche()"></button>
+      </div>
+      <div style="margin-top: 3px;">
+        <button
+          pButton
+          type="button"
+          label="Nouvelle référence"
+          class="ui-button-raised"
+          *ngIf="nouvelleReferenceShow"
+          (click)="nouvelleReference($event)"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+<p-dialog [(visible)]="displayMessage" [modal]="true" styleClass="mydialog">
+  <p-header> Information </p-header>
+  <h3>{{ message }}</h3>
+  <p-footer>
+    <div align="center">
+      <button
+        pButton
+        type="button"
+        label="Ok"
+        class="ui-button-raised"
+        (click)="displayMessage = false"
+      ></button>
+    </div>
+  </p-footer>
+</p-dialog>
+<p-dialog
+  header="Commande Fournisseur"
+  [(visible)]="displayCommande"
+  [style]="{ width: '90%', height: '100%' }"
+  [modal]="true"
+>
+  <app-nouvelle-commande></app-nouvelle-commande>
+</p-dialog>

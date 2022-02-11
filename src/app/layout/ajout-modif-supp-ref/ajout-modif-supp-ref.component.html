@@ -1,0 +1,455 @@
+<p-blockUI [blocked]="blockedDocument"></p-blockUI>
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-1" style="font-size: 16px ;font-weight: bold;">Article :</div>
+      <div class="col-md-3">
+        
+          <input
+          [readOnly]="readonly"
+          (focus)="focusRech()"
+         
+          type="search"
+          placeholder="saisir une référence"
+          style="width: 100%"
+          pInputText
+          [(ngModel)]="searchWord"
+          (keyup.enter)="search(searchWord)"
+        />         
+      
+    
+      </div>
+      <div class="col-md-1"></div>
+     
+        <div class="col-md-1">
+          <button
+          [hidden]="hiddenBtnAjout"
+          pButton
+          type="button"
+          label="Ajouter"
+          (click)="ClickBtnAjout()"
+          id="relv"
+        ></button>
+       </div>
+       <div class="col-md-1">
+        <button
+        [hidden]="hiddenBtnModif"
+        pButton
+        type="button"
+        label="Modifier"
+        (click)="ClickBtnmodif()"
+       
+      ></button>
+     </div>
+     <div class="col-md-1">
+      <button
+      [hidden]="hiddenBtnSup"
+      pButton
+      type="button"
+      label="Supprimer"
+      (click)="ClickBtnSupp()"
+      id="relv"
+    ></button>
+   </div>
+
+   <div class="col-md-2">
+    <button
+    [hidden]="hiddenBtnModifPrix"
+    pButton
+    type="button"
+    label="Modifier Prix"
+    (click)="ClickBtnmodifPrix()"
+    id="relv"
+  ></button>
+ </div>
+ <div class="col-md-2"></div>
+     
+    </div>
+    <br>
+<div class="row">
+  <div class="col-md-12">
+    <!--   gridLines="Both" -->
+    <ejs-grid
+      #grid
+      [dataSource]="listeArticles"
+      [searchSettings]="searchOptions"
+      height="160px"
+     
+      (mouseup)="annulerSelectionStock()"
+      (mousewheel)="annulerSelectionStock()"
+      (rowSelected)="rowSelected($event)"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column
+          field="code"
+          headerText="Référecne"
+          textAlign="Left"
+          width="30%"
+        ></e-column>
+        <e-column
+          field="design"
+          headerText="Désignation"
+          width="30%"
+        ></e-column>
+        <e-column field="prix"   format="N3"
+        textAlign="Right" headerText="Prix" width="30%"></e-column>
+        <e-column field="quantite" headerText="Quantité"   
+        textAlign="Right" width="30%"></e-column>
+      </e-columns> </ejs-grid
+    >
+  </div>
+  </div>
+  </div>
+</div>
+<br>
+
+<div class="row" *ngIf="affichDetails">
+  <div class="col-md-12">
+   
+        <p-panel header="Détails article">
+          <div class="row">
+            <div class="col-md-1" style="font-size: 14px; font-weight: bold;">
+              Référence
+            </div>
+            <div class="col-md-3">
+              <input
+                  [readOnly]="readOnlyref"
+                  type="search"
+                  (blur)="focusEmplacement('emp')"
+                  placeholder="saisir une référence"
+                  (keyup.enter)="verifSaisie($event)"
+                  
+                  style="width: 100%"
+                  pInputText
+                  [(ngModel)]="this.SelectedArticleCode"
+                  id="cod"
+           />   </div>
+
+
+
+           <div class="col-md-1" style="font-size: 14px; font-weight: bold;">
+            EMPLACEMENT
+          </div>
+          <div class="col-md-2">
+            <input
+               [(ngModel)]="SelectedArticleEmplacement"
+                type="search"
+                id="emp"
+              
+                maxlength="50"
+                placeholder="saisir un emplacement"
+              
+                (keyup.enter)="verifSaisie($event)"
+                
+                
+                style="width: 100%"
+                [readOnly]="readonly"
+                pInputText
+         />  </div> 
+
+
+
+           <div class="col-md-1" style="font-size: 14px; font-weight: bold;">
+            TAUX TVA
+          </div>
+          <div class="col-md-2">
+            <ng-select
+            #tva
+            id="tva"
+            ngselect
+            (keyup.enter)="verifSaisie($event)"
+            [items]="listeTva"
+            [(ngModel)]="SelectedArticleTvaObj"
+            bindLabel="deno"
+            (change)="changeTva()"
+            [disabled]="readonly"
+            > 
+            </ng-select>
+
+            <!--<input
+                [readOnly]="readonly"
+                type="search"
+                 id="tva"
+                pKeyFilter="int"
+                placeholder="saisir le TVA"
+                (keyup.enter)="verifSaisie($event)"
+                style="width: 100%"
+                pInputText
+                [(ngModel)]="this.SelectedArticleTva"
+                
+         />-->   </div>
+          
+           
+            
+          </div>
+         <br>
+          <div class="row">
+            <div class="col-md-1" style="font-size: 14px; font-weight: bold;">
+              Designation
+            </div>
+            <div class="col-md-3">
+              <input
+                 id="des"
+                  [readOnly]="readonly"
+                  type="search"
+                  (keyup.enter)="verifSaisie($event)"
+                 
+                
+                  placeholder="saisir une désignation"
+                  style="width: 100%"
+                  pInputText
+                  [(ngModel)]="this.SelectedArticleDesign"
+                  
+           />  </div> 
+           
+
+           <div class="col-md-1" style="font-size: 14px; font-weight: bold;">
+            FAMILLE
+          </div>
+          <div class="col-md-2" >
+            <ng-select
+            ngselect
+            (keyup.enter)="verifSaisie($event)"
+           #famil
+          id="famil"
+            [items]="listeFamille"
+           
+          
+            bindLabel="nom"
+            [searchFn]="onSearchItemByNom"
+            (change)="changeFamille()"
+            [(ngModel)]="selectedFamille"
+            placeholder="choisir une famille"
+            [disabled]="readonly"
+            > 
+            </ng-select>
+          </div>
+
+
+   <div class="col-md-1" style="font-size: 14px; font-weight: bold;">
+              S/FAMILLE
+            </div>
+            
+            <div class="col-md-2" >
+              <ng-select
+              ngselect
+              (keyup.enter)="verifSaisie($event)"
+              #sfamil
+              
+             
+              id="sfamil"
+              [items]="listesfamilles"
+              bindLabel="nom"
+              [searchFn]="onSearchItemByNom"
+              (change)="changeSousFamille()"
+              [(ngModel)]="selectedSousFamille"
+              placeholder="choisir une sous famille"
+              [disabled]="readonly"
+             
+              > 
+              </ng-select>
+            </div>
+
+            </div>
+          <br>
+          <div class="row">
+
+            <div class="col-md-1" style="font-size: 14px; font-weight: bold;">
+              FOURNISSEUR
+            </div>
+            <div class="col-md-3" >
+            <ng-select
+            ngselect
+            #four
+            id="four"
+            [items]="listeFournisseur"
+            bindLabel="deno"
+            style="width: 100%"
+            (keyup.enter)="verifSaisie($event)"
+            [searchFn]="onSearchItemByDeno"
+            (change)="changeFournisseur()"
+            [(ngModel)]="selectedFour"
+            placeholder="choisir un fournisseur"
+            [disabled]="readonly"
+            
+            
+            > 
+            </ng-select></div>
+
+         
+
+
+        
+
+          <div  class="col-md-1" style="font-size: 14px; font-weight: bold;" *ngIf="!readOnlyPrunit">
+            PRIX UNIT HT
+          </div>
+          <div class="col-md-2" *ngIf="!readOnlyPrunit" >
+            <input
+            id="prunit"
+               [readonly]="readonly"
+                type="search"
+                (keyup.enter)="verifSaisie($event)"
+                placeholder="saisir un prix unit HT "
+                style="width: 100%"
+                pKeyFilter="num"
+                pInputText
+                
+           
+                [(ngModel)]="SelectedArticlePrixUnHT"
+                
+         />   
+         
+          </div>
+          <div class="col-md-1" style="font-size: 14px; font-weight: bold;">
+            QTE ENTIERE
+        </div>
+        <div class="col-md-2" >
+          <ng-select
+          #qteEnt
+          id="qteEnt"
+          ngselect
+          (keyup.enter)="verifSaisie($event)"
+          [items]="listeON"
+          [(ngModel)]="SelectedArticleQteEntiere"
+          bindLabel="deno"
+          (change)="changeQteEntiere()"
+          [disabled]="readonly"
+          > 
+          </ng-select>
+        </div>
+
+
+          </div>
+          <br>
+          <div class="row">
+      
+            <div class="col-md-1" style="font-size: 14px; font-weight: bold;" *ngIf="SelectedArticlePrACHDTAffich">
+              PR ACH EN DT
+            </div>
+            <div class="col-md-2" *ngIf="SelectedArticlePrACHDTAffich">
+              <input
+                 id="pad"
+                  [readOnly]="readonly"
+                  (keyup.enter)="verifSaisie($event)"
+                  type="search"
+                  placeholder="saisir un prix ach en DT"
+                  style="width: 100%"
+                  pKeyFilter="num"
+                  pInputText
+                  (blur)="goTo(origin)"
+                  
+                  [(ngModel)]="SelectedArticlePrACHDT"
+                  
+           />  </div> 
+
+
+
+           <div class="col-md-1" style="font-size: 14px; font-weight: bold;">
+            D'ORIGINE
+          </div>
+          <div class="col-md-2" >
+            <ng-select
+            #origin
+            id="origin"
+            ngselect
+            [items]="listeON"
+            bindLabel="deno"
+            (keyup.enter)="verifSaisie($event)"
+            (change)="changeOrigine()"
+            [(ngModel)]="SelectedArticleOrigine"
+            (blur)="goTo(imp)"
+          
+            [disabled]="readonly"
+            > 
+            </ng-select>
+          </div>
+  
+
+         <div class="col-md-1" style="font-size: 14px; font-weight: bold;">
+          IMPRIMABLE
+        </div>
+        <div class="col-md-2" >
+          <ng-select
+          #imp
+          id="imp"
+          ngselect
+          [items]="listeON"
+          (keyup.enter)="verifSaisie($event)"
+          bindLabel="deno"
+          (change)="changeImprimable()"
+          [(ngModel)]="SelectedArticleImp"
+          (blur)="focusEmplacement('caractech')"
+          [disabled]="readonly"
+          > 
+          </ng-select>
+        </div>
+
+      
+
+          </div>
+
+
+            <br>
+            <div class="row">
+                    
+              <div class="col-md-3" style="font-size: 14px; font-weight: bold;" >
+                  CARACTERISTIQUES TECHNIQUES :
+              </div>
+            
+              <div class="col-md-4" style="margin-left: -7%;" >
+                <textarea id="caractech"  (keyup.enter)="verifSaisie($event)" [(ngModel)]="SelectedArticleAgenda" [rows]="3" [cols]="50" maxlength="50" pInputTextarea [readonly]="readonly" ></textarea>
+                </div>
+
+
+                <div class="col-md-3" ></div>
+
+                <div class="col-md-1">
+                  <button
+                  pButton
+                  id='btnvalider'
+                  type="button"
+                  (click)="valider($event)"
+                  label="valider"
+                  
+                 
+                ></button>
+               </div>
+         
+               <div class="col-md-1">
+                 <button
+                 pButton
+                 type="button"
+                 label="annuler"
+                 (click)="annuler()"
+                 
+               ></button></div>
+
+            </div>
+
+        </p-panel>
+  </div>
+  </div>
+
+
+
+
+
+  <p-overlayPanel
+  #op
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{msgerror}} </span>
+</p-overlayPanel>
+
+
+
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>

@@ -1,0 +1,211 @@
+<p-blockUI [blocked]="blockedDocument"></p-blockUI>
+<div class="row" *ngIf="!afficherClicked">
+  <div class="col-md-2" style="font-weight: bold; font-size: 18px">
+    Le numero:
+  </div>
+  <div class="col-md-7">
+    <input
+      type="search"
+      autofocus
+      pKeyFilter="pint"
+      (change)="verifierNumero()"
+      id="num"
+      pInputText
+      (keyup.enter)="getByNumero($event)"
+      [(ngModel)]="numero"
+      [readonly]="readonly"
+      placeholder=" saisir un numéro "
+      [maxlength]="5"
+      [disabled]="blockedDocument"
+    />
+  </div>
+</div>
+<br />
+
+<div *ngIf="afficherClicked">
+  <div [class.disabled-content]="!editEnable">
+    <div class="row">
+      <p-card class="col-md-8">
+        <div class="row">
+          <div class="col-md-2" style="font-weight: bold">Numero:</div>
+          <div class="col-md-2">
+            <input
+              type="search"
+              style="width: 100%;"
+              pInputText
+              [(ngModel)]="this.numero"
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-3" style="font-weight: bold">Date:</div>
+          <div class="col-md-3">
+            <input
+              type="search"
+              pInputText
+              [(ngModel)]="this.blData.date"
+              [readonly]="readonly"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2" style="font-weight: bold">Client:</div>
+          <div class="col-md-2">
+            <input
+              type="search"
+              style="width: 100%;"
+              pInputText
+              [(ngModel)]="this.blData.operateur"
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-3" style="font-weight: bold">Bon de commande:</div>
+          <div class="col-md-3">
+          <input
+            type="search"
+            pInputText
+            [(ngModel)]="this.blData.ref"
+            [readonly]="readonly"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2" style="font-weight: bold">Vendeur:</div>
+        <div class="col-md-4">
+          <input
+            type="search"
+            style="width: 100%;"
+            pInputText
+            [(ngModel)]="this.vendeur"
+            [readonly]="readonly"
+          />
+        </div>
+      </div>
+      </p-card>
+      <p-card class="col-md-4">
+        <div class="row">
+          <div class="col-md-4" style="font-weight: bold">Remise:</div>
+          <div class="col-md-8">
+            {{this.client.marque}}%
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4" style="font-weight: bold">Nom:</div>
+          <div class="col-md-8">
+            {{this.client.deno}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4" style="font-weight: bold">Adresse:</div>
+          <div class="col-md-8">
+            {{this.client.adresse}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4" style="font-weight: bold">Ville:</div>
+          <div class="col-md-8">
+            {{this.client.ville}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4" style="font-weight: bold">Code TVA:</div>
+          <div class="col-md-8">
+            {{this.client.codeTva}}
+          </div>
+        </div>
+      </p-card>
+    </div>
+    <br />
+    <div class="row">
+        <div class="row" class fxFlexFill fxLayoutAlign="center center">
+          <ejs-grid
+            #grid
+            [dataSource]="elements"
+            gridLines="Both"
+            height="280"
+            width="98%"
+            rowHeight="35"
+            allowResizing="true"
+          >
+            <e-columns>
+              <e-column
+                field="code"
+                headerText="CODE"
+                width="30%"
+                BackgroundColor="Gray"
+              ></e-column>
+              <e-column
+                field="design"
+                headerText="designation"
+                width="30%"
+              ></e-column>
+              <e-column
+                field="quantite"
+                headerText="QTE"
+                width="10%"
+                textAlign="right"
+              ></e-column>
+              <e-column field="tRemise" headerText="REM" format="N2" width="10%" textAlign="right"></e-column>
+              <e-column field="tauxTva" headerText="TVA" format="N2" width="10%" textAlign="right"></e-column>
+              <e-column field="prix" headerText="PRIX" format="N3" width="15%" textAlign="right"></e-column>
+              <e-column
+                field="total"
+                headerText="totalbrut"
+                format="N3"
+                width="15%"
+                textAlign="right"
+              ></e-column>
+              <e-column
+                field="codeAImprimer"
+                headerText="codeAImprimer"
+                width="20%"
+              ></e-column>
+            </e-columns>
+          </ejs-grid>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <button
+          style="font-size: 14px; width: 80%"
+          pButton
+          type="button"
+          class="ui-button-raised center"
+          (click)="nouvelleSaisie()"
+          label="Nouvelle Saisie"
+        ></button>
+      </div>
+      <div class="col-md-2">
+        <button
+          pButton
+          type="button"
+          class="ui-button-raised"
+          (click)="Supprimer()"
+          label="Supprimer le B/L"
+        ></button>
+      </div>
+      <div class="col-md-3"></div>
+      <div class="col-md-1" style="font-weight: bold">Total TTC:</div>
+          <div class="col-md-2">
+            {{this.blData.net}}
+          </div>
+    </div>
+  </div>
+</div>
+<p-overlayPanel
+  #op
+  appendTo="body"
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span style="width: 138%"> {{ msgerror }} </span>
+</p-overlayPanel>
+<p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>

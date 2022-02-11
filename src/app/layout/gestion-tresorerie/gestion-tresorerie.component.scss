@@ -1,0 +1,62 @@
+.e-headertext {
+  font-size: 110%;
+  font-weight: bold;
+}
+.e-grid .e-rowcell{
+ 
+  font-size: 115%;
+}
+
+p-dialog .ui-dialog {
+  overflow: hidden;
+  max-height: 70%;
+}
+
+.e-grid .e-headercell, .e-grid .e-detailheadercell {
+  border-style: solid;
+  border-width: 0;
+  font-size: 12px;
+  font-weight: 500;
+  height: 42px;
+  overflow: hidden;
+  padding: 0 8px 0;
+  position: relative;
+  text-align: left;
+}
+
+.e-grid .e-gridheader .e-sortfilter .e-headercelldiv, .e-grid .e-gridheader .e-stackedheadercelldiv, .e-grid .e-gridheader .e-headercell .e-headercelldiv.e-headerchkcelldiv {
+  padding: 0px 1.8em 0 -0.4em;
+}
+
+.e-grid th{
+  background-color:whitesmoke;
+  color :black;
+}
+
+.row {
+    margin-bottom: -7px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  
+
+  body .ui-widget {
+    font-family: "Open Sans", "Helvetica Neue", sans-serif;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+
+ .ui-radiobutton .ui-radiobutton-box {
+    border: 1px solid #A6A6B8;
+    background-color: #ffffff;
+    width: 15px;
+    height: 12px;
+    text-align: center;
+    position: relative;
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 95%;
+}
+
+
+

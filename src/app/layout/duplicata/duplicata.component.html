@@ -1,0 +1,219 @@
+<div class="row">
+  <div class="col-md-1">Numéro :</div>
+  <div class="col-md-1">
+    <input
+      id="numero"
+      type="text"
+      size="5"
+      maxlength="5"
+      minlength="5"
+      [(ngModel)]="combine"
+      [disabled]="disableCombine"
+      (keyup.enter)="afficher($event)"
+      pInputText
+    />
+  </div>
+  <div class="col-md-1"></div>
+  <div class="col-md-2">Date :</div>
+  <div class="col-md-2">
+    <h4>{{ docEntete.date }}</h4>
+  </div>
+  <div class="col-md-1" *ngIf="!portail">Client :</div>
+  <div class="col-md-4" *ngIf="!portail">
+    <h4>{{ docEntete.operateur }}</h4>
+  </div>
+</div>
+
+<div class="row" *ngIf="!portail">
+  <div class="col-md-7"></div>
+  <div class="col-md-1">Mr. :</div>
+  <div class="col-md-4">
+    <h4>{{ docEntete.deno }}</h4>
+  </div>
+</div>
+
+<div class="row" *ngIf="!portail">
+  <div class="col-md-3"></div>
+  <div class="col-md-2">Vendeur :</div>
+  <div class="col-md-2">
+    <h4>{{ docEntete.denoVendeur }}</h4>
+  </div>
+  <div class="col-md-1">Adresse :</div>
+  <div class="col-md-4">
+    <h4>{{ docEntete.adresse }}</h4>
+  </div>
+</div>
+<div class="row" *ngIf="!portail">
+  <div class="col-md-7"></div>
+  <div class="col-md-1">Ville :</div>
+  <div class="col-md-4">
+    <h4>{{ docEntete.ville }}</h4>
+  </div>
+</div>
+<div class="row" *ngIf="!portail">
+  <div class="col-md-3"></div>
+  <div class="col-md-2">Bon de Commande :</div>
+  <div class="col-md-2">
+    <h4>{{ docEntete.ref }}</h4>
+  </div>
+  <div class="col-md-1">CodeTva :</div>
+  <div class="col-md-4">
+    <h4>{{ docEntete.codeTva }}</h4>
+  </div>
+</div>
+&nbsp;
+<div>
+  <ejs-grid
+    #grid
+    id="grid"
+    [dataSource]="docDetails"
+    height="200"
+    gridLines="Both"
+    allowResizing= 'true'
+  >
+    <e-columns>
+      <e-column
+        field="code"
+        headerText="Code"
+        textAlign="Left"
+        width="100"
+      ></e-column>
+      <e-column
+        field="design"
+        headerText="Désignation"
+        textAlign="Left"
+        width="200"
+      >
+      </e-column>
+      <e-column
+        field="quantite"
+        headerText="Quantite"
+        textAlign="Right"
+        width="50"
+      ></e-column>
+      <e-column
+        field="tRemise"
+        headerText="Remise"
+        textAlign="Right"
+        width="50"
+      ></e-column>
+      <e-column
+        field="tauxTva"
+        headerText="Taux"
+        textAlign="Right"
+        width="50"
+      ></e-column>
+      <e-column
+        field="prix"
+        headerText="Prix U.HT"
+        textAlign="Right"
+        width="80"
+      ></e-column>
+      <e-column
+        field="total"
+        headerText="Total HT"
+        textAlign="Right"
+        width="80"
+      ></e-column>
+      <e-column
+        field="codeAimprimer"
+        headerText="Code à Imprimer"
+        textAlign="Left"
+        width="150"
+      ></e-column>
+    </e-columns>
+  </ejs-grid>
+</div>
+&nbsp;
+<div class="row">
+  <div class="col-md-2">
+    <p-checkbox
+      binary="true"
+      [(ngModel)]="selectedValuesDup"
+      [disabled]="disableDupCheckbox"
+    ></p-checkbox>
+    Duplicata
+  </div>
+  <div class="col-md-7"></div>
+  <div class="col-md-2">TotalBrut :</div>
+  <div class="col-md-1" align="Right">
+    <h4>{{ totalBrut }}</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-9"></div>
+  <div class="col-md-2">Remise :</div>
+  <div class="col-md-1" align="Right">
+    <h4>{{ remise }}</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-9"></div>
+  <div class="col-md-2">T.V.A à 13% :</div>
+  <div class="col-md-1" align="Right">
+    <h4>{{ base10 }}</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-9"></div>
+  <div class="col-md-2">T.V.A à 19% :</div>
+  <div class="col-md-1" align="Right">
+    <h4>{{ base17 }}</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-9"></div>
+  <div class="col-md-2">T.V.A à 7% :</div>
+  <div class="col-md-1" align="Right">
+    <h4>{{ base29 }}</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-2">
+    <button
+      pButton
+      type="button"
+      *ngIf="disableCombine && !portail"
+      label="Nouvelle Saisie"
+      (click)="nvlSaisie()"
+      [hidden]="hideButtonNvlSaisie"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-1"></div>
+  <div class="col-md-2">
+    <button
+      pButton
+      type="button"
+      *ngIf="disableCombine"
+      label="Imprimer"
+      (click)="imprimer(0)"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-1"></div>
+  <div class="col-md-2">
+    <button
+      pButton
+      type="button"
+      *ngIf="disableCombine"
+      label="Aperçu"
+      (click)="imprimer(1)"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-2">Total T.T.C :</div>
+  <div class="col-md-1" align="Right">
+    <h4>{{ net }}</h4>
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

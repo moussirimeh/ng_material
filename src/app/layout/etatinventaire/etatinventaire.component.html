@@ -1,0 +1,393 @@
+<p-blockUI [blocked]="blockedDocument"></p-blockUI>
+<br /><br />
+
+<div class="row" [hidden]="!showcard">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <p-card>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-5">Veuillez saisir le mot de passe :</div>
+        <div class="col-md-4">
+          <input
+            pInputText
+            id="mdpInv"
+            (click)="mdpInvent = ''"
+            #mdpInv
+            [(ngModel)]="mdpInvent"
+            type="password"
+            maxlength="20"
+            (keypress)="ov.hide()"
+            (keyup.enter)="confirmInv($event.target.value)"
+          />
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+      <br /><br />
+
+      <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+          <button
+            type="button"
+            pButton
+            icon="pi pi-times"
+            label="Annuler"
+            (click)="Annuler()"
+          ></button>
+        </div>
+
+        <div class="col-md-2">
+          <button
+            type="button"
+            pButton
+            id="conf"
+            class="confbutton"
+            icon="pi pi-check"
+            label="Confirmer"
+            (click)="confirmInv($event)"
+          ></button>
+        </div>
+
+        <div class="col-md-3"></div>
+      </div>
+    </p-card>
+  </div>
+
+  <div class="col-md-3"></div>
+</div>
+
+<div class="row" [hidden]="showcard">
+  <div class="col-md-4">
+    <div class="row" style="margin-bottom: 0.3%">
+      <div class="col-md-7">
+        <button
+          pButton
+          (click)="afficherParFour()"
+          type="button"
+          label="Selectionner par Fournisseur"
+          class="ui-button-raised ui-button-secondary"
+          
+          [style.background]="styleButtonFour"
+          [disabled]="readonly"
+        ></button>
+      </div>
+      <div class="col-md-5">
+        <ng-select
+          ngselect
+          #ngselectfournisseur
+          id="fournisseur"
+          [items]="listefournisseurs"
+          bindLabel="deno"
+          (open)="chargerFournisseur()"
+          [searchFn]="onSearchDeno"
+          (change)="changeFour()"
+          [(ngModel)]="selectedFour"
+          style="width: 120%; height: 40px; min-height: 40px"
+          placeholder="choisir un fournisseur"
+          [disabled]="readonly"
+          [hidden]="btnfour == false"
+        >
+        </ng-select>
+      </div>
+    </div>
+    <div class="row" style="margin-bottom: 0.3%">
+      <div class="col-md-7">
+        <button
+          id="ngselectemp"
+          pButton
+          (click)="afficherParEmp()"
+          [style.background]="styleButtonEmp"
+          type="button"
+          label="Emplacement"
+          class="ui-button-raised ui-button-secondary"
+          [disabled]="readonly"
+        ></button>
+      </div>
+      <div class="col-md-5">
+        <input
+          id="ngselectemplacement"
+          type="text"
+          pInputText
+          style="height: 30px; min-height: 30px"
+          [(ngModel)]="emplacement"
+          [disabled]="readonly"
+          [hidden]="btnemp == false"
+        />
+      </div>
+    </div>
+    <div class="row" style="margin-bottom: 0.3%">
+      <div class="col-md-7">
+        <button
+          pButton
+          (click)="afficherTous()"
+          [style.background]="styleButtonTout"
+          type="button"
+          label=" Tous"
+          class="ui-button-raised ui-button-secondary"
+          [disabled]="readonly"
+        ></button>
+      </div>
+      <div class="col-md-5"></div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="col-md-12">
+      <mat-card>
+        <mat-card-content style="margin-top: -30px; margin-left: -8px">
+          <h4>Articles</h4>
+
+          <div class="row p-field-radiobutton p-label-active">
+            <div class="col-md-1">
+              <p-radioButton
+                name="typerech"
+                value="1"
+                [(ngModel)]="rdbtnarticle"
+                [disabled]="readonly"
+              >
+              </p-radioButton>
+            </div>
+            <div class="col-md-11">
+              <label>Non Inventories</label>
+            </div>
+          </div>
+
+          <div class="row p-field-radiobutton p-label-active">
+            <div class="col-md-1">
+              <p-radioButton
+                name="typerech"
+                value="2"
+                [(ngModel)]="rdbtnarticle"
+                [disabled]="readonly"
+              >
+              </p-radioButton>
+            </div>
+            <div class="col-md-11">
+              <label>Inventories</label>
+            </div>
+          </div>
+
+          <div class="row p-field-radiobutton p-label-active">
+            <div class="col-md-1">
+              <p-radioButton
+                name="typerech"
+                value="0"
+                [(ngModel)]="rdbtnarticle"
+                [disabled]="readonly"
+              >
+              </p-radioButton>
+            </div>
+            <div class="col-md-11">
+              <label>Tout</label>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="row">
+      <div class="col-md-12">
+        <mat-card>
+          <mat-card-content style="margin-top: -30px; margin-left: -8px">
+            <h4>Quantité</h4>
+
+            <div class="row p-field-radiobutton p-label-active">
+              <div class="col-md-1">
+                <p-radioButton
+                  name="typef"
+                  value="1"
+                  [(ngModel)]="rdbtnqte"
+                  [disabled]="readonly"
+                >
+                </p-radioButton>
+              </div>
+              <div class="col-md-11">
+                <label>{{ label }}</label>
+              </div>
+            </div>
+
+            <div class="row p-field-radiobutton p-label-active">
+              <div class="col-md-1">
+                <p-radioButton
+                  name="typef"
+                  value="2"
+                  [(ngModel)]="rdbtnqte"
+                  [disabled]="readonly"
+                >
+                </p-radioButton>
+              </div>
+              <div class="col-md-11">
+                <label>Qte INV = Qte Stock</label>
+              </div>
+            </div>
+
+            <div class="row p-field-radiobutton p-label-active">
+              <div class="col-md-1">
+                <p-radioButton
+                  name="typef"
+                  value="0"
+                  [(ngModel)]="rdbtnqte"
+                  [disabled]="readonly"
+                >
+                </p-radioButton>
+              </div>
+              <div class="col-md-11">
+                <label>Tout</label>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 1%; padding-bottom: 1%">
+      <div class="col-md-6"></div>
+      <div class="col-md-3">
+        <button
+          pButton
+          (click)="afficher($event)"
+          type="button"
+          label="Afficher"
+          class="ui-button-raised"
+          [hidden]="btnaff"
+        ></button>
+      </div>
+
+      <div class="col-md-3">
+        <button
+          pButton
+          (click)="Initialiser()"
+          type="button"
+          label="Initialiser "
+          class="ui-button-raised"
+          [hidden]="btnaff"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<div class="row" [hidden]="showcard||!btnaff">
+  <ejs-grid
+    style="width: 100%"
+    #grid
+    width="99%"
+    [dataSource]="liste"
+    [allowExcelExport]="true"
+    height="350"
+    gridLines="Both"
+    [rowHeight]="25"
+    allowResizing="true"
+    (dataBound)="dataBound($event)"
+  >
+    <e-columns>
+      <e-column
+        field="code"
+        headerText="CODE"
+        width="75"
+        textAlign="Left"
+        BackgroundColor="Gray"
+      ></e-column>
+      <e-column
+        field="designation"
+        headerText="Designation"
+        width="90"
+        textAlign="Left"
+        BackgroundColor="Gray"
+      ></e-column>
+      <e-column
+        field="fournisseur"
+        headerText="Fournisseur"
+        width="90"
+        textAlign="Left"
+        BackgroundColor="Gray"
+      ></e-column>
+      <e-column
+        field="qt_inv"
+        headerText="Qte Inv"
+        width="30"
+        textAlign="Left"
+        BackgroundColor="Gray"
+      ></e-column>
+      <e-column
+        field="qt_stk"
+        headerText="Qte Stk"
+        width="30"
+        textAlign="Left"
+        BackgroundColor="Gray"
+      ></e-column>
+      <e-column
+        field="emplacement"
+        headerText="Emplacement"
+        width="110"
+        textAlign="Left"
+        BackgroundColor="Gray"
+      ></e-column>
+    </e-columns>
+  </ejs-grid>
+</div>
+
+<div class="row" [hidden]="showcard||!btnaff">
+  <div class="row">
+    <div class="col-md-9">
+      <label style="color: rgb(38, 0, 255); font-size: 100%; font-weight: bold"
+        >Val_Ach Stock :</label
+      >
+    </div>
+    <div class="col-md-3" style="margin-left: -10%">
+      <label>{{ val_stk }}</label>
+    </div>
+  </div>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+  <div class="row">
+    <div class="col-md-9">
+      <label style="color: rgb(38, 0, 255); font-size: 100%; font-weight: bold"
+        >Val_Ach Inventaire :</label
+      >
+    </div>
+    <div class="col-md-3" style="margin-left: -10%">
+      <label>{{ val_in }}</label>
+    </div>
+  </div>
+</div>
+<div class="row" [hidden]="showcard||!btnaff">
+  <div class="col-md-2">
+    <button
+      pButton
+      (click)="NouvelleSaisie()"
+      type="button"
+      label="Nouvelle Saisie"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-8"></div>
+  <div class="col-md-1">
+    <button
+      pButton
+      (click)="Apercu()"
+      type="button"
+      label="Aperçu"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-1">
+    <button
+      pButton
+      (click)="excelExport()"
+      type="button"
+      label="Excel"
+      class="ui-button-raised"
+    ></button>
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

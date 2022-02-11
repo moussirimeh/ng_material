@@ -1,0 +1,472 @@
+<div style="font-size: 13px">
+  <div class="row" style="margin-bottom: 5px">
+    <div class="col-md-1">
+      <label style="font-size: 16px; font-weight: bold">Article:</label>
+    </div>
+    <div class="col-md-3">
+      <div class="ui-inputgroup" [ngClass]="{ disableDiv: saisieShow }">
+        <!-- <input
+          id="inputRech4"
+          type="search"
+          style="
+            width: 240px;
+            height: 35px;
+            border-radius: 3px;
+            border-width: 1px;
+            border-color: LightGray;
+          "
+          pInputText
+          [(ngModel)]="rechCodeArt"
+          maxlength="5"
+          pKeyFilter="pint"
+          placeholder="Veuiller choisir un article"
+        /> -->
+        <ng-select
+          ngselect
+          [items]="searchArticles"
+          bindLabel="code"
+          [(ngModel)]="rechCodeArt"
+          style="width: 240px"
+          (keyup)="onSearchArtParCode($event.target.value)"
+          placeholder="Veuiller choisir un article"
+        >
+        </ng-select>
+      </div>
+    </div>
+
+    <div class="col-md-1">
+      <label style="font-size: 16px; font-weight: bold">Famille:</label>
+    </div>
+    <div class="col-md-3" [ngClass]="{ disableDiv: saisieShow }">
+      <ng-select
+        ngselect
+        [items]="familles"
+        bindLabel="nom"
+        bindValue="code"
+        [(ngModel)]="selectedFamille"
+        [searchFn]="onSearchFamille"
+        style="width: 240px"
+        placeholder="Veuiller choisir une famille"
+      >
+      </ng-select>
+    </div>
+    <div class="col-md-1"><label style="font-size: 16px; font-weight: bold;">Date Déb:</label></div>
+    <div class="col-md-1">
+      <p-calendar [locale]="tn" [disabled]="saisieShow" [(ngModel)]="from" [yearNavigator]="true" [monthNavigator]="true"
+          yearRange="2000:2030" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px'}">
+        </p-calendar>
+    </div>
+    <div class="col-md-1"><label style="font-size: 16px; font-weight: bold">Date Fin:</label></div>
+    <div class="col-md-1">
+      <p-calendar id="date" [disabled]="saisieShow" [locale]="tn" [(ngModel)]="to" [yearNavigator]="true" [monthNavigator]="true"
+          yearRange="2000:2030" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px'}">
+        </p-calendar>
+    </div>
+  </div>
+
+  <!-- <div class="row" style="margin-bottom: 15px"> -->
+  <div class="row">
+    <div class="col-md-1">
+      <label style="font-size: 16px; font-weight: bold">Fournisseur:</label>
+    </div>
+    <div class="col-md-3" [ngClass]="{ disableDiv: saisieShow }">
+      <ng-select
+        [items]="fournisseurs"
+        bindLabel="deno"
+        bindValue="code"
+        [(ngModel)]="selectedFournisseur"
+        [searchFn]="onSearchFournisseur"
+        style="width: 240px"
+        placeholder="Veuiller choisir un fournisseur"
+      >
+      </ng-select>
+    </div>
+
+    <div class="col-md-1">
+      <label style="font-size: 16px; font-weight: bold; margin-top: -12%"
+        >Sous Famille:</label
+      >
+    </div>
+    <div class="col-md-3" [ngClass]="{ disableDiv: saisieShow }">
+      <ng-select
+        ngselect
+        [items]="sfamilles"
+        bindLabel="nom"
+        bindValue="code"
+        [(ngModel)]="selectedSfamille"
+        [searchFn]="onSearchSfamille"
+        style="width: 240px"
+        placeholder="Veuiller choisir un sous-famille"
+      >
+      </ng-select>
+    </div>
+    <div class="col-md-4" style="display: flex; justify-content: space-between;">
+      <button
+        pButton
+        type="button"
+        label="Initialiser"
+        *ngIf="!saisieShow"
+        (click)="initialiser($event)"
+        class="ui-button-raised"
+        style="height: 75%;"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Afficher"
+        *ngIf="!saisieShow"
+        (click)="valider($event)"
+        class="ui-button-raised"
+        style="height: 75%;"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Nouvelle Saisie"
+        *ngIf="saisieShow"
+        (click)="introduire($event)"
+        class="ui-button-raised"
+        style="height: 75%;"
+      ></button>
+      <button
+        clikcked="true"
+        style="font-size: 14px"
+        pButton
+        type="button"
+        label="Excel"
+        id="excel"
+        (click)="excel($event)"
+        class="ui-button-raised"
+        style="height: 75%;"
+      ></button>
+    </div>
+  </div>
+</div>
+<div *ngIf="saisieShow === true">
+  <div class="row">
+    <div class="col-md-10">
+      <ejs-grid
+        #grid1
+        [dataSource]="articles"
+        [allowExcelExport]="true"
+        (mouseup)="annulerSelectionArticle()"
+        (recordDoubleClick)="consulterArticle($event)"
+        [selectedRowIndex]="selectedArtc"
+        allowResizing="true"
+        (rowSelected)="rowSelectedArticle($event)"
+        height="96"
+        gridLines="Both"
+        allowTextWrap="true"
+        [rowHeight]="24"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          <e-column
+            field="code"
+            headerText="Code ARTICLE"
+            textAlign="Left"
+            width="20"
+          >
+          </e-column>
+          <e-column
+            field="deno"
+            headerText="Denomination"
+            textAlign="Left"
+            width="30"
+          ></e-column
+          ><e-column
+            field="quantite"
+            headerText="QTE"
+            textAlign="right"
+            width="8"
+          ></e-column>
+          <e-column
+            field="qtSatisf"
+            headerText="QTE SATISF"
+            textAlign="right"
+            width="12"
+          ></e-column>
+          <e-column
+            field="net"
+            headerText="MNT TTC"
+            textAlign="right"
+            width="12"
+          ></e-column>
+          <e-column
+            field="satisf"
+            headerText="MNT STF TTC"
+            textAlign="right"
+            width="14"
+          >
+          </e-column>
+          <e-column
+            field="pourc"
+            headerText="%"
+            textAlign="right"
+            width="9"
+          ></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <div class="col-md-2">
+      <div class="row" style="margin-top: 5px">
+        <div
+          align="center"
+          style="color: red; font-size: 110%; font-weight: bold"
+        >
+          <h5>selectionner un article</h5>
+          <h5>Double click pour voir ses clients</h5>
+        </div>
+      </div>
+      <div class="row">
+        <button
+          pButton
+          type="button"
+          label="--> EXCEL"
+          (click)="excelExport1('Offres/fournisseurs')"
+          class="ui-button-raised"
+          style="margin: auto"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="row" *ngIf="selectedArticle === true">
+    <div class="col-md-10">
+      <ejs-grid
+        #grid2
+        [dataSource]="clients"
+        [allowExcelExport]="true"
+        (mouseup)="annulerSelectionClient()"
+        (recordDoubleClick)="consulterClient($event)"
+        [selectedRowIndex]="selectedClt"
+        allowResizing="true"
+        (rowSelected)="rowSelectedClient($event)"
+        height="72"
+        gridLines="Both"
+        allowTextWrap="true"
+        [rowHeight]="24"
+      >
+        <e-columns>
+          <e-column
+            field="code"
+            headerText="Code Client"
+            textAlign="Left"
+            width="20"
+          >
+          </e-column>
+          <e-column
+            field="deno"
+            headerText="Libelle Client"
+            textAlign="Left"
+            width="30"
+          ></e-column>
+          <e-column
+            field="net"
+            headerText="MNT TTC"
+            textAlign="right"
+            width="15"
+          ></e-column>
+          <e-column
+            field="satisf"
+            headerText="MNT STF TTC"
+            textAlign="right"
+            width="15"
+          >
+          </e-column>
+          <e-column
+            field="pourc"
+            headerText="%"
+            textAlign="right"
+            width="15"
+          ></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <div class="col-md-2">
+      <div class="row">
+        <div
+          align="center"
+          style="color: red; font-size: 100%; font-weight: bold"
+        >
+          <h5>selectionner un client</h5>
+          <h5>Double click pour voir ses offres</h5>
+        </div>
+      </div>
+      <div class="row">
+        <button
+          pButton
+          type="button"
+          label="--> EXCEL"
+          (click)="excelExport2('Offres fournisseur/client')"
+          class="ui-button-raised"
+          style="margin: auto"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="row" *ngIf="selectedClient === true">
+    <div class="col-md-10">
+      <ejs-grid
+        #grid3
+        [dataSource]="offres"
+        [allowExcelExport]="true"
+        (mouseup)="annulerSelectionOffre()"
+        (recordDoubleClick)="consulterOffre($event)"
+        [selectedRowIndex]="selectedOfr"
+        allowResizing="true"
+        (rowSelected)="rowSelectedOffre($event)"
+        height="72"
+        gridLines="Both"
+        allowTextWrap="true"
+        [rowHeight]="24"
+      >
+        <e-columns>
+          <e-column
+            field="combine"
+            headerText="N° Offre"
+            textAlign="Left"
+            width="10"
+          >
+          </e-column>
+          <e-column
+            field="datDev"
+            headerText="Date Offre"
+            textAlign="Left"
+            width="10"
+          ></e-column>
+          <e-column
+            field="net"
+            headerText="MNT TTC"
+            textAlign="right"
+            width="10"
+          ></e-column>
+          <e-column
+            field="satisf"
+            headerText="MNT STF TTC"
+            textAlign="right"
+            width="10"
+          >
+          </e-column>
+          <e-column
+            field="pourc"
+            headerText="%"
+            textAlign="right"
+            width="10"
+          ></e-column>
+          <e-column
+            field="deno"
+            headerText="Vendeur"
+            textAlign="Left"
+            width="20"
+          ></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <div class="col-md-2">
+      <div class="row">
+        <div
+          align="center"
+          style="color: red; font-size: 100%; font-weight: bold"
+        >
+          <h5>selectionner un offre</h5>
+          <h5>Double click pour voir ses details</h5>
+        </div>
+      </div>
+      <div class="row">
+        <button
+          pButton
+          type="button"
+          label="--> EXCEL"
+          (click)="excelExport3('Offres/Client')"
+          class="ui-button-raised"
+          style="margin: auto"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="row" *ngIf="selectedOffre === true">
+    <div class="col-md-10">
+      <ejs-grid
+        #grid4
+        [dataSource]="detailsOffre"
+        [allowExcelExport]="true"
+        height="72"
+        gridLines="Both"
+        allowTextWrap="true"
+        [rowHeight]="24"
+      >
+        <e-columns>
+          <e-column
+            field="code"
+            headerText="REFERENCE"
+            textAlign="Left"
+            width="20"
+          >
+          </e-column>
+          <e-column
+            field="design"
+            headerText="DESIGNATION"
+            textAlign="Left"
+            width="30"
+          ></e-column>
+          <e-column
+            field="quantite"
+            headerText="QTE"
+            textAlign="Left"
+            width="12"
+          ></e-column>
+          <e-column
+            field="tRemise"
+            headerText="REMISE"
+            textAlign="Left"
+            width="12"
+          >
+          </e-column>
+          <e-column
+            field="prix"
+            headerText="PRIX U. HT"
+            textAlign="right"
+            width="12"
+          ></e-column>
+          <e-column
+            field="tauxTva"
+            headerText="TVA"
+            textAlign="Left"
+            width="12"
+          ></e-column>
+          <e-column
+            field="qtSatisf"
+            headerText="QTE STF"
+            textAlign="Left"
+            width="12"
+          ></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <div class="col-md-2">
+      <br /><br />
+      <div class="row">
+        <button
+          pButton
+          type="button"
+          label="--> EXCEL"
+          (click)="excelExport4('Details Offre')"
+          class="ui-button-raised"
+          style="margin: auto"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

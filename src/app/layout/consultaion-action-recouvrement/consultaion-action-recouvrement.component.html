@@ -1,0 +1,171 @@
+<div class="pageConcultaion">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-7">
+          <p>ACTIONS EFFECTUEES ENTRE LE</p>
+        </div>
+        <div class="col-md-3">
+          <p-calendar [locale]="tn" [disabled]="dateDisabled == true"[(ngModel)]="from" [maxDate]="maxDate" [yearNavigator]="true" [monthNavigator]="true"
+                  yearRange="2000:2999" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px'}">
+                </p-calendar>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-4">
+          <p>POUR LE CLIENT</p>
+        </div>
+        <div class="col-md-5">
+          <ng-select
+          ngselect
+          [items]="clients"
+          [disabled]="ngselectDisabled"
+          bindLabel="deno"
+          [(ngModel)]="SelectedClient"
+          [searchFn]="onSearchClient"
+          placeholder="Choisir un Client"
+        >
+        </ng-select>  
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-7"></div>
+        <div class="col-md-2">
+          <p style="margin-left: 56%;">ET</p>
+        </div>
+        <div class="col-md-3">
+          <p-calendar  [locale]="tn" [disabled]="dateDisabled == true" [(ngModel)]="to" dateFormat="dd/mm/yy"  
+                 [maxDate]="maxDate" [yearNavigator]="true" [monthNavigator]="true"
+                 yearRange="2000:2999" [inputStyle]="{ width: '100px'}"></p-calendar>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="row">
+        <div class="col-md-3">
+        
+        </div>
+        <div class="col-md-4">
+          <p>EFFECTUEES PAR</p>
+        </div>
+        <div class="col-md-5">
+          <ng-select
+          ngselect
+          [items]="personnes"
+          bindLabel="nPUtil"
+          [(ngModel)]="SelectedPersonne"
+          [disabled]="ngselectDisabled == true"
+          [searchFn]="onSearchPersonne"
+          placeholder="Choisir une personne"
+        >
+        </ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="row">
+        
+        <div class="col-md-4">
+          <button id="afficher" clikcked="true" style="font-size: 14px;"
+          pButton type="button" label="AFFICHER" (click)="AfficherActRecouv($event)" class="ui-button-raised ">        
+          </button>
+        </div>
+        <div class="col-md-8">          
+        </div>
+      </div>
+    </div>
+  </div> &nbsp;
+  <div *ngIf="excelShow === true ">
+  <div class="row">
+    <div class="col-md-12">
+      <ejs-grid 
+      #grid
+      [searchSettings]="searchOptions" [selectedRowIndex]="0"  gridLines='Both'
+              (rowSelected)="rowSelected()"  width="100%" 
+              [dataSource]="actionrecouveff"
+              [selectedRowIndex]="0"
+              height="240"
+              rowHeight='40'
+              (mouseup)="annulerSelection()"
+              (mousewheel)="annulerSelection()"
+              [allowExcelExport]='true'
+               
+      >
+     
+      <e-columns>
+          <e-column field="nomClt" headerText="Client" width="200" [customAttributes]="customAttributes"  ></e-column>
+          <e-column field="effectPar" headerText="Effectuée par" width="160" [customAttributes]="customAttributes" ></e-column>
+          <e-column field="dateaffiche" headerText="Date" width="80"[customAttributes]="customAttributes" ></e-column>
+          <e-column field="nmrVisite"  headerText="Num_visite" width="100" [customAttributes]="customAttributes" ></e-column>
+          <e-column field="detailaction"  headerText="Action" width="200" [customAttributes]="customAttributes" ></e-column>
+
+      </e-columns>
+    </ejs-grid>      
+    </div>
+    
+  </div>
+  <div class="row" style="margin-top: 0.5%;">
+    <div class="col-md-7">
+      
+      <div class="row">
+        <div class="col-md-3">
+          <button  clikcked="true" style="font-size: 14px;"
+      pButton type="button" (click)="introdure()" label="Nouvelle Saisie"  class="ui-button-raised ">        
+      </button>
+        </div>
+        <div class="col-md-5"></div>
+        <div class="col-md-4">
+          <p>Détails de l'action sélectionnée</p>
+
+        </div>
+      </div>
+      
+      
+    </div>
+    <div class="col-md-5">
+      
+      <div class="row" >
+        <div class="col-md-9">
+          <textarea [(ngModel)]="detailaction" [rows]="10" [cols]="50" maxlength="250" pInputTextarea [readonly]="readonly" ></textarea>
+        </div>
+        <div class="col-md-3" >
+          <button  clikcked="true" style="font-size: 14px; margin-top: 10%;"
+      pButton type="button" label="EXCEL" (click)="Excel()"  class="ui-button-raised ">        
+      </button>
+        </div>
+      </div>
+      
+    
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      
+    </div>
+    <div class="col-md-10"></div>
+  </div>
+</div>
+  
+  <p-overlayPanel
+        #ovo
+        [dismissable]="false"
+        [showCloseIcon]="true"
+        appendTo="body"
+        [style]="{
+          'text-align': 'center',
+          'font-size': '14px',
+          'background-color': ' #f8b7bd'
+        }"
+      >
+        <span> {{ms}} </span>
+      </p-overlayPanel>
+</div>

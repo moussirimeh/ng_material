@@ -1,0 +1,71 @@
+<mat-card>
+  <div class="titreModule">
+        <p-toast [style]="{ marginTop: '10%' }" position="top-center" key="tc"></p-toast>
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <mat-card-header>
+          <h3 align="center">
+            <mat-card-title class="titre">Fusion de Deux Références</mat-card-title>
+          </h3>
+        </mat-card-header>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+  &nbsp;
+  <div class="principale">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-4"><mat-label>Selectionner la référence à garder :</mat-label></div>
+      <div class="col-md-4">
+        <!--
+                <mat-label>Donner la reference a garder :</mat-label>
+                -->
+        <ng-select
+          ngselect
+          [items]="stocks"
+          bindLabel="code"
+          [(ngModel)]="SelectedCode1"
+          (keyup)="applyFilterArtParCode($event.target.value)"
+          style="width: 80%"
+          placeholder=""
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+    &nbsp;
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-4"><mat-label>Selectionner la réferénce à écarter : </mat-label></div>
+      <div class="col-md-4">
+        <!--
+                <mat-label>Donner la reference a ecarter : </mat--label>
+                    -->
+        <ng-select
+          ngselect
+          [items]="stocks"
+          bindLabel="code"
+          [(ngModel)]="SelectedCode2"
+          (keyup)="applyFilterArtParCode($event.target.value)"
+          style="width: 80%"
+          placeholder=""
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+  </div>
+  &nbsp;
+  <div class="row">
+    <div class="col-md-5"></div>
+    <div class="col-md-2">
+      <button color="primary" class="mat-raised-button mat-primary" ng-reflect-color="primary" (click)="confirm()">
+        Valider
+      </button>
+      <p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
+    </div>
+    <div class="col-md-5"></div>
+  </div>
+</mat-card>

@@ -1,0 +1,403 @@
+<div class="row">
+ 
+  <div class="col-md-12">
+    <p-card>
+             <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-2 labelc">Typologie:</div>
+              <div class="col-md-3">    <ng-select
+                ngselect
+                [items]="typologieItems"
+                bindLabel="deno"
+                [disabled]="readonly"
+                [searchFn]="onSearchItems"
+                [(ngModel)]="selectedTypo"
+                style="width: 70%"
+                placeholder="choisir une typologie"
+              >
+              </ng-select></div>
+              <div class="col-md-1"></div>
+              <div class="col-md-2 labelc">Mode Règlement:</div>
+              <div class="col-md-3">
+                <ng-select
+                ngselect
+                [items]="modRegItems"
+                [disabled]="readonly"
+                bindLabel="deno"
+                [searchFn]="onSearchItems"
+                [(ngModel)]="selectedModReg"
+                style="width: 70%"
+                placeholder="choisir un mode de rèsgl"
+              >
+              </ng-select>
+              </div>
+
+           </div>
+           <br>
+             <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-2 labelc">Type(Rev/Con):</div>
+              <div class="col-md-3">    <ng-select
+                ngselect
+                [items]="typeRCItems"
+                bindLabel="deno"
+                [searchFn]="onSearchItems"
+                [disabled]="readonly"
+                [(ngModel)]="selectedtype"
+                style="width: 70%"
+                placeholder="choisir une type (Rev/Con)"
+              >
+              </ng-select></div>
+              <div class="col-md-1"></div>
+              <div class="col-md-2 labelc">Groupe:</div>
+              <div class="col-md-3">
+                <ng-select
+                ngselect
+                [items]="groupes"
+                bindLabel="deno"
+                [disabled]="readonly"
+                [(ngModel)]="selectedGroupe"
+                [searchFn]="onSearchItems"
+                style="width: 70%"
+                placeholder="choisir un groupe"
+              >
+              </ng-select>
+              </div>
+           </div>
+
+           <br>
+           <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-2 labelc">Recouvreur:</div>
+            <div class="col-md-3">    <ng-select
+              ngselect
+              [items]="recouvs"
+              bindLabel="deno"
+              [disabled]="readonly"
+              [(ngModel)]="selectedRecouv"
+              [searchFn]="onSearchItems"
+              style="width: 70%"
+              placeholder="choisir un recouvreur"
+            >
+            </ng-select></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-2 labelc">Vendeur:</div>
+            <div class="col-md-3">
+              <ng-select
+              ngselect
+              [items]="vendeurs"
+              bindLabel="deno"
+              [disabled]="readonly"
+              [searchFn]="onSearchItems"
+              [(ngModel)]="selectedVendeur"
+              style="width: 70%"
+              placeholder="choisir un vendeur"
+            >
+            </ng-select>
+            </div>
+         </div>
+
+         <br>
+         <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-2 labelc">Zone:</div>
+          <div class="col-md-3">    
+            <ng-select
+            ngselect
+            [items]="zones"
+            [disabled]="readonly"
+            bindLabel="deno"
+            [(ngModel)]="selectedZone"
+            [searchFn]="onSearchItems"
+            style="width: 70%"
+            placeholder="choisir une zone"
+          >
+          </ng-select></div>
+          <div class="col-md-1"></div>
+          <div class="col-md-2 labelc">Représentant:</div>
+          <div class="col-md-3">
+            <ng-select
+            ngselect
+            [items]="representants"
+            [searchFn]="onSearchItems"
+            bindLabel="deno"
+            [disabled]="readonly"
+            [(ngModel)]="selectedRepresentant"
+            style="width: 70%"
+            placeholder="choisir un représentant"
+          >
+          </ng-select>
+          </div>
+       </div>
+ <br>
+ <div class="row">
+  <div class="col-md-1"></div>
+    <div class="col-md-2 labelc">Date fin:</div>
+    <div class="col-md-2"> 
+      <p-calendar
+      id="date"
+      [disabled]="readonly"
+      [(ngModel)]="datefin"
+      dateFormat="dd/mm/yy"
+      [monthNavigator]="true"
+      [yearNavigator]="true"
+      [locale]="tn"
+      yearRange="2011:9999"
+    ></p-calendar></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-1 "> <p-button [hidden]="!btnafficher" label="intialiser"   (onClick)="initialiser()"></p-button> </div>
+    <div class="col-md-1">  
+      <p-button [hidden]="!btnafficher" label="Afficher"    id="affichBtnn" (onClick)="afficher($event)"></p-button>
+    </div>
+
+    <div class="col-md-1">  <p-button  label="Aperçu"  id='impBtnn'  (onClick)="imprimer($event)"></p-button> </div>
+    <div class="col-md-1"> <p-button id='excelBtnn'  label="Excel"   (onClick)="Excel($event)"></p-button></div>
+
+    </div>
+    <br>
+
+
+
+
+
+    <div *ngIf="!btnafficher">
+      <br>
+      <div class="row ">
+      <div class="col-md-12" >
+        <!-- (mouseup)="annulerSelection()"
+            (mousewheel)="annulerSelection()"
+            (recordDoubleClick)="addPiece()"-->
+        <div >
+          <ejs-grid
+            #grid
+            allowResizing= "true"
+            [dataSource]="liste"
+            [allowSorting]="true"
+            (rowSelected)="rowSelected1($event)"
+            (onmousedown)="annulerSelection()"
+          (mouseup)="annulerSelection()"
+          (mousewheel)="annulerSelection()"
+            [sortSettings]='sortOptions'
+            height="300"
+            gridLines="Both"
+            [rowHeight]="30"
+            gridLines="Both"
+           
+          >
+            <e-columns>
+              <e-column
+                field="id"
+                headerText="Cmpte"
+                textAlign="Left"
+                width="5%"
+              >
+              </e-column>
+              <e-column
+                field="deno"
+                headerText="Désignation"
+                textAlign="Left"
+                width="14%"
+              >
+              </e-column>
+              <e-column
+              
+              headerText="Tel"
+              headerTextAlign="left"
+              field="tel"
+              width="7%"
+              >
+              </e-column>
+              <e-column
+              
+              headerText="Fax"
+              headerTextAlign="left"
+              field="fax"
+             
+              width="7%"
+              >
+              </e-column>
+              <e-column
+                field="reg"
+                headerTextAlign="left"
+                headerText="Reg"
+                textAlign="Left"
+                width="3%"
+              >
+              </e-column>
+              <e-column
+                field="ech"
+                headerText="Ech"
+                headerTextAlign="left"
+                textAlign="Right"
+                width="3%"
+              >
+              </e-column>
+            <e-column
+              field="solde"
+              headerTextAlign="left"
+              headerText="Solde"
+              textAlign="Right"
+              width="8%"
+              format="N3"
+            >
+            </e-column>
+           
+      
+            <e-column
+            field="r30"
+            headerText="Ret 1-30"
+            headerTextAlign="left"
+            textAlign="Right"
+            width="8%"
+            format="N3"
+          >
+          </e-column>
+          <e-column
+          field="r60"
+          headerText="Ret 31-60"
+          headerTextAlign="left"
+          textAlign="Right"
+          width="8%"
+          format="N3"
+        >
+        </e-column>
+        <e-column
+        field="r90"
+        headerTextAlign="left"
+        headerText="Ret 61-90"
+        textAlign="Right"
+        width="8%"
+        format="N3"
+      >
+      </e-column>
+      <e-column
+      format="N3"
+      headerText="Ret > 90"
+      headerTextAlign="left"
+      field="r91"
+      textAlign="Right"
+      width="8%"
+      >
+      </e-column>
+      <e-column
+      field="imp"
+      headerText="Impayé"
+      textAlign="Right"
+      headerTextAlign="left"
+      width="8%"
+      format="N3"
+      >
+      </e-column>
+              </e-columns>
+                 <e-aggregates>
+                   <e-aggregate>
+              <e-columns >
+                <e-column field="solde"  type="sum" format="N3"  textAlign="Right">
+                  <ng-template #footerTemplate let-liste textAlign="Right"
+                    >{{ liste.sum }}
+                    </ng-template
+                  >
+                </e-column>
+
+                <e-column field="r30"  type="sum" format="N3"  textAlign="Right">
+                  <ng-template #footerTemplate let-liste textAlign="Right"
+                    >{{ liste.sum }}
+                    </ng-template
+                  >
+                </e-column>
+                <e-column field="r60"  type="sum" format="N3"  textAlign="Right">
+                  <ng-template #footerTemplate let-liste textAlign="Right"
+                    >{{ liste.sum }}
+                    </ng-template
+                  >
+                </e-column>
+                <e-column field="r90"  type="sum" format="N3"  textAlign="Right">
+                  <ng-template #footerTemplate let-liste textAlign="Right"
+                    >{{ liste.sum }}
+                    </ng-template
+                  >
+                </e-column>
+                <e-column field="r91"  type="sum" format="N3"  textAlign="Right">
+                  <ng-template #footerTemplate let-liste textAlign="Right"
+                    >{{ liste.sum }}
+                    </ng-template
+                  >
+                </e-column>
+                <e-column field="imp"  type="sum" format="N3"  textAlign="Right">
+                  <ng-template #footerTemplate let-liste textAlign="Right"
+                    >{{ liste.sum }}
+                    </ng-template
+                  >
+                </e-column>
+           </e-columns>
+           </e-aggregate>
+           </e-aggregates>
+        
+        </ejs-grid>
+        </div>
+      </div>
+      </div>
+      <br>
+     <!-- <div class="row ">
+      <div class="col-md-5"> </div>
+      
+      <div class="col-md-1 labelc" style="margin-right: -46px;"> Total : </div>
+      <div class="col-md-1 labelc" style="margin-right: 50px;"> {{tutoSoldes}}</div>
+      <div class="col-md-1 labelc" style="margin-left: -2px;"> {{tutoR30s}}</div>
+      <div class="col-md-1 labelc" style="margin-left: -19px;"> {{tutoR60s}}</div>
+      <div class="col-md-1 labelc" style="margin-left: -12px;"> {{tutoR90s}}</div>
+      <div class="col-md-1 labelc" style="margin-left: -3px;">  {{tutoR91s}}</div>
+      <div class="col-md-1 labelc" style="margin-left: 13px;"> {{imps}}</div>
+      </div>-->
+      
+      <div class="row ">
+      <div class="col-md-7"> </div>
+      <div class="col-md-1 labelc" style="color: crimson;"> Total Retard </div>
+      <div class="col-md-1 labelc" style="color: crimson;">{{totRetard}}</div>
+      </div>
+      <div class="col-md-3"> </div>
+      
+      <br>
+      </div>
+   
+   
+  </p-card>
+  </div>
+
+</div>
+
+
+
+<br>
+<div class="row">
+
+  
+  <div class="col-md-2 "> <p-button [hidden]="btnafficher" label="Nouvelle saisie"  (onClick)="nouvelSaisie()"></p-button></div>
+  <div class="col-md-1"></div>
+  <div class="col-md-2">  </div>
+  <div class="col-md-3">  <p-button [hidden]="hiddenBtnMissionrecouv"  (onClick)="showMissionsRecouv($event)" label="Consult mission de recouvrement"  ></p-button> </div>
+  <div class="col-md-2"></div>
+  <div class="col-md-1"> </div>
+  <div class="col-md-1"></div>
+
+</div>
+
+
+
+<p-overlayPanel [dismissable]="false"  #op appendTo="body" [showCloseIcon]="true" [style]="{'text-align': 'center', 'background-color': '#f8b7bd'}" >
+  <span>{{ msg}}  </span> 
+</p-overlayPanel>
+
+
+
+<p-dialog
+  header="Consultation des missions de recouvrement"
+  [(visible)]="showConsultMissions"
+  [modal]="true"
+  [style]="{ width: '96vw', height: '100%' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <app-consultation-mission-recouvrement></app-consultation-mission-recouvrement>
+</p-dialog>

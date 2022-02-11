@@ -1,0 +1,68 @@
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="row" style="margin-bottom: 1%;" >
+      <div class="col-md-2" style="max-width: 15%;" >Emplacement :</div>
+        <div class="col-md-6" >
+          <input
+          id="emp"
+              type="text"
+              id="emplacement"
+              pInputText
+              [disabled]="readonly"
+              [(ngModel)]="emplacement"
+              style="height: 30px; min-height: 30px ; width: 150px; "
+              (keyup.enter)="afficher($event)"
+              (click)='initialiser()'
+              maxlength="6"
+            />
+        </div>
+    </div>
+    <div class="row"  *ngIf="btnaff">
+      <div class="col-md-10">
+      <ejs-grid id="ejs1" #grid1 [searchSettings]="searchOptions" [dataSource]="liste"   [selectedRowIndex]="0" gridLines="Both"
+         width="100%" [selectedRowIndex]="0"  height="400" 
+         [rowHeight]="40" [allowExcelExport]="true"  gridLines="Both" >
+         <e-columns>
+           <e-column field="code" headerText="Code" width="40%"  headerTextAlign="center">
+           </e-column>
+           <e-column field="quantite" headerText="Quantité" width="50%"  headerTextAlign="center">
+           </e-column>
+           </e-columns>
+        </ejs-grid>
+        </div>
+        <div class="col-md-2">
+          <div class="row">
+            <input
+              type="search"
+              pInputText
+              [disabled]="readonly"
+              placeholder="Recherche par Code"
+              [(ngModel)]="codearticle"
+              style="height: 30px; min-height: 30px ; width: 100%; "
+              (keyup.enter)="recherche()"
+            />
+          </div> <br>
+          <div class="row">
+            <button
+            pButton
+             id="btn"
+             type="button"
+             label="visualiser"
+             class="ui-button-raised"
+             (click)="Apercu()"
+            >
+          </button>
+          </div>
+          
+        </div>
+    </div>
+  </div>
+
+</div>
+     
+<p-overlayPanel #op appendTo="body" [dismissable]='false'  
+[showCloseIcon]="true"
+[style]="{'text-align': 'center', 'font-size':'14px' ,'background-color': ' #f8b7bd'}" >
+<span style="width: 138%;"> {{msg}} </span>
+</p-overlayPanel> 

@@ -1,0 +1,413 @@
+<p-blockUI [blocked]="blockedDocument"></p-blockUI>
+<div class="rechercheCard" [ngClass]="{ disableDiv: saisieCardShow }">
+  <mat-card>
+    <div>
+      <mat-card-header>
+        <mat-card-title class="titre"
+          >Recherche ligne d'équivalence</mat-card-title
+        >
+      </mat-card-header>
+    </div>
+    <mat-card-content>
+      <div class="recherche">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="ui-inputgroup">
+              <input
+                id="inputRech1"
+                type="search"
+                style="width: 100%;"
+                (keypress)="ov.hide()"
+                pInputText
+                [(ngModel)]="rechArticleEquiv"
+                (click)="reintialiser(0)"
+                placeholder="Par Article"
+                (keyup.enter)="applyFilterEquivParArt($event)"
+              />
+              <button
+                pButton
+                icon="pi pi-search"
+                (click)="applyFilterEquivParArt($event)"
+              ></button>
+            </div>
+          </div>
+          <div class="col-md-1">
+            <p-button
+              label="Ajouter"
+              (click)="ajouter()"
+              *ngIf="!ajouterDisable"
+            >
+            </p-button>
+          </div>
+          <div class="col-md-1">
+            <p-button
+              label="Modifier"
+              (click)="modifier()"
+              *ngIf="!modifierDisable"
+              [hidden]="!showModif"
+            >
+            </p-button>
+          </div>
+          <div class="col-md-3">
+            <p-button
+              label="Visualiser l'etat des équivalences"
+              (click)="imprimer()"
+              *ngIf="!imprimerDisable"
+            >
+            </p-button>
+          </div>
+          <div class="col-md-3">
+            <div class="ui-inputgroup" align="Right">
+              <input
+                id="inputRech2"
+                type="search"
+                style="width: 100%;"
+                pInputText
+                [(ngModel)]="rechCodeEquiv"
+                (click)="reintialiser(1)"
+                (keypress)="ov.hide()"
+                maxlength="5"
+                pKeyFilter="pint"
+                placeholder="Par numero de ligne d'équivalence"
+                (keyup.enter)="applyFilterEquivParNum($event)"
+              />
+
+              <button
+                pButton
+                icon="pi pi-search"
+                (click)="applyFilterEquivParNum($event)"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mat-elevation-z8">
+        <ejs-grid
+          #gridEquiv
+          [dataSource]="equivalences"
+          [searchSettings]="searchOptions"
+          [allowPdfExport]="true"
+          (pdfHeaderQueryCellInfo)="pdfHeaderQueryCellInfo($event)"
+          (beforePdfExport)="beforeExport($event)"
+          height="130"
+          (rowSelected)="showModif = true"
+          (mouseup)="annulerSelectionEquiv()"
+          (mousewheel)="annulerSelectionEquiv()"
+          gridLines="Both"
+          [rowHeight]="26"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column
+              field="code1"
+              headerText="Article 1"
+              textAlign="Left"
+              width="120"
+            ></e-column>
+            <e-column
+              field="code2"
+              headerText="Article 2"
+              textAlign="Left"
+              width="120"
+            ></e-column>
+            <e-column
+              field="code3"
+              headerText="Article 3"
+              textAlign="Left"
+              width="120"
+            ></e-column>
+            <e-column
+              field="code4"
+              headerText="Article 4"
+              textAlign="Left"
+              width="120"
+            ></e-column>
+            <e-column
+              field="code5"
+              headerText="Article 5"
+              textAlign="Left"
+              width="120"
+            ></e-column>
+            <e-column
+              field="code"
+              headerText="Equivalence"
+              textAlign="Right"
+              width="80"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div class="saisieCardDiv" style="height: 90px;">
+  <mat-card class="ng-hide" *ngIf="saisieCardShow">
+    <mat-card-content>
+      <div class="saisie">
+        <div class="row">
+          <div class="col-md-2">
+            <mat-form-field>
+              <input
+                matInput
+                id="code1"
+                placeholder="Article 1"
+                [(ngModel)]="selectedEquiv.code1"
+                [disabled]="true"
+              />
+              <button
+                mat-button
+                *ngIf="selectedEquiv.code1"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="
+                  selectedEquiv.code1 = selectedEquiv.code2;
+                  selectedEquiv.code2 = selectedEquiv.code3;
+                  selectedEquiv.code3 = selectedEquiv.code4;
+                  selectedEquiv.code4 = selectedEquiv.code5;
+                  selectedEquiv.code5 = ''
+                "
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field>
+              <input
+                matInput
+                id="code2"
+                placeholder="Article 2"
+                [(ngModel)]="selectedEquiv.code2"
+                [disabled]="true"
+              />
+              <button
+                mat-button
+                *ngIf="selectedEquiv.code2"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="
+                  selectedEquiv.code2 = selectedEquiv.code3;
+                  selectedEquiv.code3 = selectedEquiv.code4;
+                  selectedEquiv.code4 = selectedEquiv.code5;
+                  selectedEquiv.code5 = ''
+                "
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field>
+              <input
+                matInput
+                id="code3"
+                placeholder="Article 3"
+                [(ngModel)]="selectedEquiv.code3"
+                [disabled]="true"
+              />
+              <button
+                mat-button
+                *ngIf="selectedEquiv.code3"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="
+                  selectedEquiv.code3 = selectedEquiv.code4;
+                  selectedEquiv.code4 = selectedEquiv.code5;
+                  selectedEquiv.code5 = ''
+                "
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field>
+              <input
+                matInput
+                id="code4"
+                placeholder="Article 4"
+                [(ngModel)]="selectedEquiv.code4"
+                [disabled]="true"
+              />
+              <button
+                mat-button
+                *ngIf="selectedEquiv.code4"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="
+                  selectedEquiv.code4 = selectedEquiv.code5;
+                  selectedEquiv.code5 = ''
+                "
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field>
+              <input
+                matInput
+                id="code5"
+                placeholder="Article 5"
+                [(ngModel)]="selectedEquiv.code5"
+                [disabled]="true"
+              />
+              <button
+                mat-button
+                *ngIf="selectedEquiv.code5"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="selectedEquiv.code5 = ''"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="col-md-1">
+            <button
+              id="btValider"
+              color="primary"
+              class="mat-fab mat-primary"
+              ng-reflect-color="primary"
+              (click)="valider($event)"
+            >
+              Valider
+            </button>
+          </div>
+          <div class="col-md-1">
+            <button
+              color="warn"
+              class="mat-fab mat-warn"
+              ng-reflect-color="warn"
+              (click)="annuler()"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div>
+  <mat-card class="RechercheArtCard">
+    <div>
+      <mat-card-header>
+        <mat-card-title class="titre">Recherche des articles</mat-card-title>
+      </mat-card-header>
+    </div>
+    <mat-card-content>
+      <div class="recherche">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="ui-inputgroup">
+              <input
+                type="search"
+                style="width: 100%;"
+                pInputText
+                [(ngModel)]="rechArticleStock"
+                (click)="reintialiser(2)"
+                placeholder="Par code article"
+                (keyup.enter)="applyFilterArtParCode()"
+              />
+
+              <button
+                pButton
+                icon="pi pi-search"
+                (click)="applyFilterArtParCode()"
+              ></button>
+            </div>
+          </div>
+          <div class="col-md-5"></div>
+          <div class="col-md-3">
+            <div class="ui-inputgroup" align="Right">
+              <input
+                id="inputRech4"
+                type="search"
+                style="width: 100%;"
+                pInputText
+                [(ngModel)]="rechEquivStock"
+                (click)="reintialiser(3)"
+                (keypress)="ov.hide()"
+                (keyup.enter)="applyFilterArtParNum($event)"
+                maxlength="5"
+                pKeyFilter="pint"
+                placeholder="Par numero de ligne d'équivalence"
+              />
+
+              <button
+                pButton
+                icon="pi pi-search"
+                (click)="applyFilterArtParNum($event)"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mat-elevation-z8">
+        <ejs-grid
+          #grid
+          [dataSource]="stocks"
+          [selectedRowIndex]="selectedIndexStock"
+          (recordDoubleClick)="ajouterArt()"
+          height="156"
+          (mouseup)="annulerSelectionStock()"
+          (mousewheel)="annulerSelectionStock()"
+          gridLines="Both"
+          [rowHeight]="26"
+        >
+          <e-columns>
+            <e-column
+              field="code"
+              headerText="Code"
+              textAlign="Left"
+              width="250"
+            >
+            </e-column>
+            <e-column
+              field="design"
+              headerText="Designation"
+              textAlign="Left"
+              width="300"
+            ></e-column>
+            <e-column
+              field="prix"
+              headerText="Prix U. HT"
+              textAlign="Right"
+              width="150"
+            ></e-column>
+            <e-column
+              field="quantite"
+              headerText="en STOCK"
+              textAlign="Right"
+              width="150"
+            ></e-column>
+            <e-column
+              field="equiv"
+              headerText="Equivalence"
+              textAlign="Right"
+              width="150"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+<p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>

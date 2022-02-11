@@ -1,0 +1,79 @@
+
+  <div fxLayoutAlign="center center">
+    <mat-card  style="height: 400px; width: 530px;" >
+    <mat-card-content  >
+          <br>
+         
+
+          <br>
+            <div class="row">
+              <div class="col-md-4">Date : </div>
+                <div class="col-md-6"><input type="search" pInputText  [(ngModel)]="this.elivraison.dated" [readonly]="readonly" style="width: 100%; font-size: 18px; height: 80%;" /></div>
+                <div class="col-md-2"></div>
+          
+            </div>
+             <br>
+             <div class="row">
+                  <div class="col-md-4">Livreur:  </div>
+                  <div class="col-md-6">
+                          <ng-select id="ngs" #ngs
+                          
+                          [items]="livreurs"
+                          [searchFn]="onSearch"
+                          bindLabel="nom"
+                          bindValue="code"
+                          style="width: 100%; font-size: 18px; height: 80%;" 
+                          placeholder="choisir un livreur"
+                          [(ngModel)]="SelectedLivreur">  
+                        </ng-select>
+                     
+	                      
+                          <!--<div #actualTarget></div>-->
+                  </div> 
+                  <div class="col-md-2"></div>
+               </div>
+               <br>
+          <div class="row">
+            <div class="col-md-4">Numero du camion:  </div>
+            <div class="col-md-6"> 
+              
+              <input id="cam" type="search" pInputText style="width: 100%; font-size: 18px; height: 80%;"   [(ngModel)]= "this.elivraison.camuion" placeholder="saisir un numéro"/>
+              
+            </div> 
+            <div class="col-md-2"></div>
+          </div>
+          <br><br>
+          <div class="row">
+            <div class="col-md-5"> </div>
+            <div class="col-md-3">   
+              <button pButton type="button" label="Valider"  (click)="Valider($event)" class="ui-button-raised"></button> 
+             </div>
+            <div  style="WIDTH: 121%;">
+              <p-messages [(value)]="msgs">   </p-messages>
+
+            </div>
+           
+           
+         
+        
+      </div>
+            
+          </mat-card-content>
+    </mat-card>
+  </div>
+
+
+
+
+
+ <p-overlayPanel #ongs 
+  [dismissable]="false"
+  [showCloseIcon]="true" 
+  appendTo="body"  
+  [style]="{'text-align': 'center', 
+           'font-size':'12px' ,
+           'background-color': ' #f8b7bd'}" >
+  <span> {{msgerror}} </span>
+ </p-overlayPanel>
+
+                          

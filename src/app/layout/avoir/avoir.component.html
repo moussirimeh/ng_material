@@ -1,0 +1,680 @@
+<p-blockUI [blocked]="blockedDocument"></p-blockUI>
+<div [ngClass]="{ disableDiv: !hideSaisieCard }">
+  <div class="row">
+    <div class="col-md-1">Client :</div>
+    <div class="col-md-3">
+      <ng-select
+        id="clients"
+        [items]="clientComptants"
+        bindLabel="deno"
+        [(ngModel)]="selectedClient"
+        (clear)="viderSelectedClient()"
+        (change)="updateClientInfos($event)"
+        [searchFn]="onSearchClient"
+      >
+      </ng-select>
+    </div>
+    <div class="col-md-1" style="text-align: right;"><label style="text-align: right;">Remise :</label></div>
+    <div class="col-md-1">{{ detailsClient.remise | number: "1.2-2" }} %</div>
+    <div class="col-md-2 dateSys">Nous sommes le {{ sysDate }}</div>
+    <div class="col-md-1">M. :</div>
+    <div class="col-md-3">
+      <input
+        type="text"
+        id="inputDetailsClient0"
+        pInputText
+        style="width: 100%"
+        [(ngModel)]="detailsClient.deno"
+        [readOnly]="!enableEditClientInfos"
+        (keydown.enter)="focusNextInput(1)"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-1">
+      <label [hidden]="hideVendeurSelect">Vendeur :</label>
+    </div>
+    <div class="col-md-3">
+      <ng-select
+        id="vendeurSelect"
+        #ngSelectVendeur
+        [items]="vendeurs"
+        bindLabel="deno"
+        [(ngModel)]="selectedVendeur"
+        (clear)="viderSelectedVendeur()"
+        (change)="updateVendeurInfos()"
+        [searchFn]="onSearchVendeur"
+        [hidden]="hideVendeurSelect"
+      >
+      </ng-select>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-1">Adresse :</div>
+    <div class="col-md-3">
+      <input
+        type="text"
+        id="inputDetailsClient1"
+        pInputText
+        style="width: 100%"
+        [(ngModel)]="detailsClient.adresse"
+        [readOnly]="!enableEditClientInfos"
+        (keydown.enter)="focusNextInput(2)"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-1"><label [hidden]="hideBcClt">{{labelBcClient}} :</label></div>
+    <div class="col-md-2">
+      <input
+        id="bcClt"
+        type="text"
+        pInputText
+        [(ngModel)]="bcClt"
+        [hidden]="hideBcClt"
+        (keypress)="ov.hide()"
+        (keydown.enter)="verifBcClt($event)"
+        (change)="this.hideSaisirBtn = true"
+        maxlength="25"
+      />
+    </div>
+    <div class="col-md-5"></div>
+    <div class="col-md-1">Ville :</div>
+    <div class="col-md-3">
+      <input
+        type="text"
+        id="inputDetailsClient2"
+        pInputText
+        style="width: 100%"
+        [(ngModel)]="detailsClient.ville"
+        [readOnly]="!enableEditClientInfos"
+        (keydown.enter)="focusNextInput(3)"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-7"></div>
+    <div class="col-md-1">
+      <button
+        pButton
+        id="saisirBtn"
+        type="button"
+        label="Saisir"
+        [hidden]="hideSaisirBtn"
+        (click)="saisir($event)"
+      ></button>
+    </div>
+    <div class="col-md-1">Code TVA :</div>
+    <div class="col-md-3">
+      <input
+        type="text"
+        id="inputDetailsClient3"
+        pInputText
+        style="width: 100%"
+        [(ngModel)]="detailsClient.codeTva"
+        [readOnly]="!enableEditClientInfos"
+        (keydown.enter)="focusNextInput(4)"
+      />
+    </div>
+  </div>
+</div>
+<div [hidden]="hideSaisieCard" [ngClass]="{ disableDiv: displayMessage }">
+  <div [ngClass]="{ disableDiv: !validerShow }">
+    <div style="max-height: 250px; min-height: 250px">
+      <p-table
+        [value]="listeArticlesSaisies"
+        dataKey="rang"
+        #scrollMe
+        [scrollable]="true"
+        scrollHeight="196px"
+        [responsive]="false"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 14%">Code</th>
+            <th style="width: 20%">Désignation</th>
+            <th style="width: 5%">Qte</th>
+            <th style="width: 5%">Rem</th>
+            <th style="width: 5%">TVA</th>
+            <th style="width: 7%">Prix HT</th>
+            <th style="width: 7%">T Brut Rem</th>
+            <th style="width: 14%">Code à imp</th>
+            <th style="width: 6%">Mvts AC</th>
+            <th style="width: 6%">Mvts A_1</th>
+            <th style="width: 6%">Offres</th>
+            <th style="width: 5%"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-ri="rowIndex">
+          <tr>
+            <td style="width: 14%" id="row_code{{ rowData.rang }}">
+              {{ rowData.code }}
+            </td>
+
+            <td style="width: 20%" id="row_designation{{ rowData.rang }}">
+              {{ rowData.designation }}
+            </td>
+
+            <td
+              pEditableColumn
+              id="row_quantite{{ rowData.rang }}"
+              style="width: 5%; text-align: Right"
+            >
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input
+                    id="row_quantite{{ rowData.rang }}"
+                    pInputText
+                    type="text"
+                    style="width: 100%"
+                    [minlength]="1"
+                    [min]="1"
+                    [(ngModel)]="rowData.quantite"
+                    [maxLength]="9"
+                    pKeyFilter="pnum"
+                    (keypress)="ov.hide()"
+                    (keydown.enter)="
+                      actualiserLigne('qte', rowData.rang, $event)
+                    "
+                    (blur)="annulerSaisie('qte', rowData.rang, $event)"
+                    (focus)="$event.target.select()"
+                    required
+                  />
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{ rowData.quantite }}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+
+            <td
+              pEditableColumn
+              id="row_remise{{ rowData.rang }}"
+              style="width: 5%; text-align: Right"
+            >
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input
+                    id="row_remise{{ rowData.rang }}"
+                    pInputText
+                    type="text"
+                    style="width: 100%"
+                    [minlength]="1"
+                    [min]="1"
+                    [(ngModel)]="rowData.remise"
+                    [maxLength]="5"
+                    pKeyFilter="pint"
+                    (keypress)="ov.hide()"
+                    (keydown.enter)="
+                      actualiserLigne('remise', rowData.rang, $event)
+                    "
+                    (blur)="annulerSaisie('remise', rowData.rang, $event)"
+                    (focus)="$event.target.select()"
+                    required
+                  />
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{ rowData.remise }}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+
+            <td style="width: 5%; text-align: right">
+              {{ rowData.tva }}
+            </td>
+
+            <td
+              pEditableColumn
+              id="row_prix{{ rowData.rang }}"
+              style="width: 7%; text-align: Right"
+            >
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input
+                    id="row_prix{{ rowData.rang }}"
+                    pInputText
+                    type="text"
+                    style="width: 100%"
+                    size="5"
+                    [(ngModel)]="rowData.prixHT"
+                    [maxLength]="13"
+                    pKeyFilter="num"
+                    (keypress)="ov.hide()"
+                    (keydown.enter)="
+                      actualiserLigne('prixHT', rowData.rang, $event)
+                    "
+                    (blur)="annulerSaisie('prixHT', rowData.rang, $event)"
+                    (focus)="$event.target.select()"
+                    required
+                  />
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{ rowData.prixHT }}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+
+            <td align="Right" style="width: 7%">
+              {{ rowData.totalBrutRemise }}
+            </td>
+
+            <td
+              pEditableColumn
+              style="width: 14%"
+              id="row_codeAimprimer{{ rowData.rang }}"
+            >
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input
+                    pInputText
+                    id="row_codeAimprimer{{ rowData.rang }}"
+                    type="text"
+                    style="width: 100%"
+                    [minlength]="1"
+                    [(ngModel)]="rowData.codeAImprimer"
+                    [maxLength]="20"
+                    (keypress)="ov.hide()"
+                    (keydown.enter)="
+                      actualiserLigne('codeAimprimer', rowData.rang, $event)
+                    "
+                    (blur)="
+                      annulerSaisie('codeAimprimer', rowData.rang, $event)
+                    "
+                    required
+                  />
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{ rowData.codeAImprimer }}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+
+            <td style="width: 6%; text-align: center">
+              <button
+                pButton
+                icon="pi pi-search"
+                (click)="mvmtsAc(rowData.code)"
+              ></button>
+            </td>
+
+            <td style="width: 6%; text-align: center">
+              <button
+                pButton
+                icon="pi pi-search"
+                (click)="mvmtsA1(rowData.code)"
+              ></button>
+            </td>
+
+            <td style="width: 6%; text-align: center">
+              <button
+                pButton
+                icon="pi pi-search"
+                (click)="offres(rowData.code, $event)"
+              ></button>
+            </td>
+
+            <td style="width: 5%; text-align: center">
+              <button
+                pButton
+                type="button"
+                pDeletetableRow
+                icon="pi pi-trash"
+                class="ui-button-danger"
+                (click)="onRowDelete(ri)"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="row" style="height: 40px">
+      <div class="col-md-1">
+        <p-radioButton
+          name="rechType"
+          value="Tout"
+          [(ngModel)]="selectedRechType"
+          (onClick)="changeTypeRech($event)"
+          [hidden]="true"
+        ></p-radioButton>
+        <label [hidden]="true">Tout</label>
+      </div>
+      <div class="col-md-2">
+        <p-radioButton
+          name="rechType"
+          value="Par Critères"
+          [(ngModel)]="selectedRechType"
+          (onClick)="changeTypeRech($event)"
+          [hidden]="true"
+        ></p-radioButton>
+      <label [hidden]="true">Par critères</label>
+      </div>
+      <div class="col-md-3">
+        <ng-select
+          [items]="fournisseurs"
+          bindLabel="deno"
+          [(ngModel)]="selectedFournisseur"
+          [searchFn]="onSearchFournisseur"
+          placeholder="Fournisseur"
+          [hidden]="hideRechCriteres"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-1">
+        <p-checkbox
+          [(ngModel)]="disponibleCheked"
+          [binary]="true"
+          [hidden]="hideRechCriteres"
+          inputId="binary"
+        ></p-checkbox>
+        <label for="binary" *ngIf="!hideRechCriteres"> Disp </label>
+      </div>
+      <div class="col-md-1">
+        <button
+          pButton
+          type="button"
+          label="Afficher"
+          (click)="afficher($event)"
+          [hidden]="hideRechCriteres"
+        ></button>
+      </div>
+      <div class="col-md-1">
+        <button
+          pButton
+          type="button"
+          label="Vider"
+          (click)="vider($event)"
+          [hidden]="hideRechCriteres"
+        ></button>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-1">
+        <button
+          pButton
+          type="button"
+          label="Valider"
+          (click)="valider($event)"
+          [hidden]="!validerShow"
+        ></button>
+      </div>
+      <div class="col-md-1">
+        <button
+          pButton
+          type="button"
+          label="Annuler"
+          (click)="annuler($event)"
+          [hidden]="!validerShow"
+        ></button>
+      </div>
+    </div>
+
+    <div class="row" style="height: 40px">
+      <div class="col-md-1">Article :</div>
+      <div class="col-md-2">
+        <input
+          id="rechercheArticleInput"
+          type="search"
+          (keyup.enter)="rechercheArticle($event)"
+          (search)="rechercheArticle($event)"
+          (keyup)="ov.hide()"
+          (focus)="$event.target.select()"
+          (change)="rechIndic=0"
+          placeholder="Recherche par code article"
+          style="width: 100%"
+          pInputText
+          [(ngModel)]="rechArtCode"
+        />
+      </div>
+      <div class="col-md-2">
+        <ng-select
+          [items]="familles"
+          bindLabel="nom"
+          [(ngModel)]="selectedFamille"
+          [searchFn]="onSearchFamille"
+          placeholder="Famille"
+          [hidden]="hideRechCriteres"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-2">
+        <ng-select
+          [items]="sousFamilles"
+          bindLabel="nom"
+          [(ngModel)]="selectedSousFamille"
+          [searchFn]="onSearchSousFamille"
+          placeholder="Sous Famille"
+          [hidden]="hideRechCriteres"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-2">
+        <ng-select
+          [items]="marques"
+          bindLabel="nom"
+          [(ngModel)]="selectedMarque"
+          [searchFn]="onSearchMarque"
+          placeholder="Marque"
+          [hidden]="hideRechCriteres"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-10">
+        <ejs-grid
+          #grid
+          [dataSource]="articles"
+          gridLines="Both"
+          (recordDoubleClick)="select($event)"
+          height="156px"
+          [rowHeight]="26"
+          (mouseup)="annulerSelectionStock()"
+          (mousewheel)="annulerSelectionStock()"
+          allowResizing= 'true'
+          (dataBound)="dataBound($event)"
+        >
+          <e-columns>
+            <e-column field="code" headerText="CODE" width="100"></e-column>
+            <e-column field="design" headerText="DESIGN" width="150"></e-column>
+            <e-column
+              field="prix"
+              headerText="Prix U.HT"
+              width="50"
+              textAlign="Right"
+            ></e-column>
+            <e-column
+              field="quantite"
+              headerText="En Stock"
+              width="50"
+              textAlign="Right"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+
+      <div class="col-md-2">
+        <div class="row">
+          <div class="col-md-6">Total Brut :</div>
+          <div class="col-md-6 totaux">{{ totaux.totalBrut }}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">Remise :</div>
+          <div class="col-md-6 totaux">{{ totaux.totalRemise }}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">Total HT :</div>
+          <div class="col-md-6 totaux">{{ totaux.totalHT }}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">TVA 13% :</div>
+          <div class="col-md-6 totaux">{{ totaux.totalTva13 }}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">TVA 19%</div>
+          <div class="col-md-6 totaux">{{ totaux.totalTva19 }}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">TVA 7% :</div>
+          <div class="col-md-6 totaux">{{ totaux.totalTva7 }}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">Timbre :</div>
+          <div class="col-md-6 totaux">{{ totaux.timbre }}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">Total TTC :</div>
+          <div class="col-md-6 totaux">{{ totaux.totalTtc }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" [hidden]="validerShow">
+    <div class="col-md-2">
+      <button
+        pButton
+        [hidden]="true"
+        type="button"
+        label="Nouvelle saisie"
+        (click)="nouvelleSaisie($event)"
+      ></button>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2">
+      <button
+        pButton
+        type="button"
+        label="Imprimer"
+        (click)="imprimer(0)"
+      ></button>
+    </div>
+    <div class="col-md-2">
+      <button
+        pButton
+        type="button"
+        label="Apercu"
+        (click)="imprimer(1)"
+      ></button>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+
+<p-dialog
+  [header]="titreModalMouvements"
+  [(visible)]="displayMouvesArticle"
+  [modal]="true"
+  [style]="{ width: '70vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <ejs-grid
+    #gridMouves
+    [dataSource]="mouvementsArticle"
+    gridLines="Both"
+    height="156px"
+    [rowHeight]="26"
+    allowResizing= 'true'
+  >
+    <e-columns>
+      <e-column field="date" headerText="Date" width="50"></e-column>
+      <e-column field="document" headerText="Document" width="65"></e-column>
+      <e-column field="deno" headerText="Denomination" width="110"></e-column>
+      <e-column
+        field="prix"
+        headerText="Prix"
+        width="45"
+        textAlign="Right"
+      ></e-column>
+      <e-column
+        field="entree"
+        headerText="Entree"
+        width="40"
+        textAlign="Right"
+      ></e-column>
+      <e-column
+        field="sortie"
+        headerText="Sortie"
+        width="40"
+        textAlign="Right"
+      ></e-column>
+    </e-columns>
+  </ejs-grid>
+</p-dialog>
+
+<p-dialog
+  [header]="titreModalOffres"
+  [(visible)]="displayOffresArticle"
+  [modal]="true"
+  [style]="{ width: '70vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <ejs-grid
+    #gridOffres
+    [dataSource]="offresArticle"
+    gridLines="Both"
+    height="156px"
+    [rowHeight]="26"
+    allowResizing= 'true'
+  >
+    <e-columns>
+      <e-column field="combine" headerText="N° Devis" width="50"></e-column>
+      <e-column field="code" headerText="Code Article" width="150"></e-column>
+      <e-column
+        field="quantite"
+        headerText="Quantite"
+        width="50"
+        textAlign="Right"
+      ></e-column>
+      <e-column
+        field="prix"
+        headerText="Prix"
+        width="50"
+        textAlign="Right"
+      ></e-column>
+      <e-column
+        field="tRemise"
+        headerText="Remise"
+        width="40"
+        textAlign="Right"
+      ></e-column>
+    </e-columns>
+  </ejs-grid>
+</p-dialog>
+<p-confirmDialog
+  header="Confirmation"
+  icon="pi pi-exclamation-triangle"
+></p-confirmDialog>
+<p-dialog
+    header="Impression"
+    (visible)="false"
+    [style]="{ width: '80%', height: '70%' }"
+  >
+    <app-duplicata></app-duplicata>
+  </p-dialog>
+  <p-dialog [(visible)]="displayMessage" styleClass="mydialog">
+    <p-header> Information </p-header>
+    <h3>{{ message }}</h3>
+    <p-footer>
+      <div align="center">
+        <button
+          pButton
+          type="button"
+          label="Ok"
+          class="ui-button-raised"
+          (click)="displayMessage = false"
+        ></button>
+      </div>
+    </p-footer>
+  </p-dialog>

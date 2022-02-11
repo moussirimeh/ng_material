@@ -1,0 +1,145 @@
+<br>
+<div class="row" style="font-weight: bold;font-size: 17px;">
+ <div class="col-md-12">* Stock mort : stock avec Qte > 0  et non mouvementé durant
+  l'année courante , l'année -1 , l'année -2 et l'année -3 .</div>
+</div>
+<br> <br> 
+<div class="stock_mort" style="margin-top: 1%;">
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-1" style="font-size: 17px;font-weight: bold;">
+     Fournisseur:
+    </div>
+    <div class="col-md-5">
+      <div class="row">
+        <div class="col-md-8">
+          <ng-select 
+          id="fourn"
+          ngselect   
+          [disabled]="ngselectDisabled == false"       
+          [items]="fournisseurs"
+          bindLabel="deno" 
+          (change)="changeFour()"
+          [(ngModel)]="SelectedFournisseur" 
+          [searchFn]="onSearchFournisseur"
+          placeholder="Veuiller choisir un Fournisseur"
+        >
+        </ng-select> 
+        </div>
+       
+    </div>
+  </div>
+  <div class="col-md-2" *ngIf="valide === false">
+    <button  clikcked="true" style="font-size: 14px;"
+    pButton type="button" label="Afficher" (click)="Afficher($event)" class="ui-button-raised ">        
+    </button>
+   </div>
+    <div class="col-md-1">
+         
+            <button  color="primary"  clikcked="true" style="font-size: 14px;width: 100%;"
+            pButton type="button" label="Apercu" (click)="imprimertout('preview')"class="ui-button-raised ">        
+            </button>
+          </div>
+          <div class="col-md-1" >
+            <button  color="primary"  clikcked="true" style="font-size: 14px;width: 75%;"
+            pButton type="button" label="Excel" (click)="exceltout($event)" class="ui-button-raised ">        
+            </button>
+          </div>
+      </div>
+    
+   
+<br>
+
+ <div  *ngIf="valide === true">
+  <div class="row" >
+    <div class="col-md-12">
+      <ejs-grid 
+      #grid 
+      [searchSettings]="searchOptions" [selectedRowIndex]="0"  gridLines='Both'
+              (rowSelected)="rowSelected()"  width="100%" 
+              [dataSource]="stockMorts"
+              [selectedRowIndex]="0"
+              height="240" rowHeight='40'
+              gridLines='Both' 
+              allowResizing= 'true'  
+      >
+     
+      <e-columns>
+          <e-column field="codeStM" headerText="Code" width="9%" [customAttributes]="customAttributes"   ></e-column>
+          <e-column field="designStM" headerText="Designation" width="16%" [customAttributes]="customAttributes"  ></e-column>
+          <e-column field="quantite" headerText="quantite" width="8%" [customAttributes]="customAttributes"  >
+            <ng-template #template let-stockMorts>
+              <p style="text-align: right;">{{stockMorts.quantite}}</p>
+          </ng-template>
+          </e-column>
+          <e-column field="prixStM" headerText="PR.V" width="7%" [customAttributes]="customAttributes"  >
+            <ng-template #template let-stockMorts>
+              <p style="text-align: right;">{{stockMorts.prixStM}}</p>
+          </ng-template>
+          </e-column>
+          <e-column field="achat" headerText="PAP" width="7%" [customAttributes]="customAttributes"  >
+            <ng-template #template let-stockMorts>
+              <p style="text-align: right;">{{stockMorts.achat}}</p>
+          </ng-template>
+          </e-column>
+          <e-column field="Valeur" headerText="valeur(PAP)" width="9%" [customAttributes]="customAttributes"  >
+            <ng-template #template let-stockMorts>
+              <p style="text-align: right;">{{stockMorts.Valeur}}</p>
+          </ng-template>
+          </e-column>
+          <e-column field="date" headerText="Der Date Achat" width="11%" [customAttributes]="customAttributes" >
+
+           
+          </e-column>
+          <e-column field="denoFour" headerText="Fournisseur" width="21%" [customAttributes]="customAttributes" ></e-column>
+
+        </e-columns>
+    </ejs-grid>
+    </div>
+  </div>  &nbsp;
+  <div class="row" >
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-6">
+          <button  clikcked="true" style="font-size: 14px;"
+          pButton type="button" label="Nouvelle Saisie" (click)="NvlSaisie()" class="ui-button-raised ">        
+          </button>
+        </div>
+        <div class="col-md-6"></div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <button  color="primary"  clikcked="true" style="font-size: 14px;margin-left: 3%;width: 100%;"
+          pButton type="button" label="Total Achat" (click)="CalculTotal()" class="ui-button-raised ">        
+          </button>
+        </div>
+        <div class="col-md-2">
+          <input type="text"  pInputText  disabled=false [(ngModel)]="Totaux" style="background-color: white;border: none;margin-left: -29%" class="form-control"   />
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+    </div>
+    <div class="col-md-4">
+ 
+   
+    </div>
+  </div> 
+</div>
+<p-overlayPanel
+        #ovo
+        [dismissable]="false"
+        [showCloseIcon]="true"
+        appendTo="body"
+        [style]="{
+          'text-align': 'center',
+          'font-size': '14px',
+          'background-color': ' #f8b7bd'
+        }"
+      >
+        <span> {{ms}} </span>
+      </p-overlayPanel>
+</div>
+

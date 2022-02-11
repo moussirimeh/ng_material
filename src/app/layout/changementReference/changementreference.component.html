@@ -1,0 +1,75 @@
+<p-blockUI [blocked]="blockedDocument"></p-blockUI>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <mat-card>
+      <div class="principale">
+        <div class="row" id="ancReference">
+          <div class="col-md-6">
+            <mat-label style="padding-bottom: 100px;"
+              >Selectionnez l'ancienne référence :
+            </mat-label>
+          </div>
+          <div class="col-md-6">
+            <input
+            id="ancRef"
+            type="search"
+            pInputText
+            [(ngModel)]="SelectedAncCode"
+            placeholder="Ancienne référence"
+            maxlength="20"
+            size="30"
+          />
+          </div>
+        </div>
+
+        &nbsp;
+
+        <div id="nvReference" class="row">
+          <div class="col-md-6">
+            <mat-label>Saisissez la nouvelle réferénce : </mat-label>
+          </div>
+          <div class="col-md-6">
+            <input
+              id="nvlRef"
+              type="search"
+              pInputText
+              [(ngModel)]="SelectedNvCode"
+              placeholder="Nouvelle réferénce"
+              size="30"
+              maxlength="20"
+            />
+          </div>
+        </div>
+
+        &nbsp;
+
+        <div class="row" id="button">
+          <div class="col-md-5"></div>
+          <div class="col-md-2">
+            <button
+              id="btValider"
+              color="primary"
+              class="mat-fab mat-primary"
+              ng-reflect-color="primary"
+              (click)="confirm($event)"
+            >
+              Valider
+            </button>
+          </div>
+          <div class="col-md-5"></div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+  <div class="col-md-3"></div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel">
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

@@ -1,0 +1,343 @@
+
+  <div *ngIf="livraison">
+  <div [class.disabled-content]="!editEnable">
+
+  <br><br>
+    <div class="row">
+                  <div class="col-md-1" >Pièce:</div>
+                  <div class="col-md-2">   
+                            <ng-select
+                            ngselect
+                            [items]="pieces"
+                            bindLabel="text"
+                            [searchFn]="onSearch"
+                            [(ngModel)]="selectedpiece"
+                            placeholder="choisir une pièce"
+                            
+                            
+                            >  
+                        </ng-select>
+                        
+                  </div>
+                  
+                    <div class="col-md-1">numero:</div>
+                  
+                  <div class="col-md-2">
+                    
+                    <input type="search" id="num"  pKeyFilter="pint" pInputText [(ngModel)]="numero" (change)="verifierNumero()" (keyup)="tailleNumero(numero,$event)" placeholder="saisir un numéro"  /> 
+                    
+                  </div>
+                  
+                  <div class="col-md-1">
+                    
+                    <button type="button" *ngIf="btnafficher" (click)="reChercheCode ($event)" id="rec"  pButton  label="Recherche"></button> </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2" > </div>
+                  
+                  <div class="col-md-1" align= "right"  >
+                    
+                    <button type="button" (click)="reloadDataGrid()" id="act"  pButton  label="Actualiser"></button> </div>
+                  
+  </div>
+    <br>
+    <br>
+    
+    <div class="row" *ngIf="afficherGrid" >
+      <ejs-grid #grid [dataSource]="listeRecLivraison" gridLines='Both'
+      (rowSelected)="rowSelected($event)"
+      [searchSettings]="searchSettings" 
+      (recordDoubleClick)="Doubleclick($event)"
+       height="330" width="99%"
+       allowResizing= 'true'
+       rowHeight='33'
+       >               
+              <e-columns   >
+                <e-column field="combine"    headerText="Piece"  width="13%"  [customAttributes]="customAttributes"  BackgroundColor="Gray" ></e-column>
+                <e-column field="date"    headerText="Date"   width="10%"    [customAttributes]="customAttributes"></e-column>
+                <e-column field="operateur"    headerText="Code client" width="10%"  [customAttributes]="customAttributes"></e-column>
+                <e-column field="clt"    headerText="Nom client" width="23%"  [customAttributes]="customAttributes"></e-column>
+
+                <e-column field="net"    headerText="Net" width="12%"   [customAttributes]="customAttributes">
+                  <ng-template #template let-listeRecLivraison>
+                    <div style="text-align: right;">{{listeRecLivraison.net}}</div>
+                </ng-template>
+              </e-column>   
+                <e-column field="deno"    headerText="Vendeur" width="20%" [customAttributes]="customAttributes"></e-column>                                    
+            </e-columns>
+       </ejs-grid>
+      
+    </div>
+    
+
+
+
+<br>
+<div *ngIf="info"  >
+        <div class="row">
+              <div [class.disabled-content]="!editEnable">
+                          <p-card  >
+                          <p style=" font-weight: bold; ">Info  : Pour valider le livraison, SELECTIONNER, puis DOUBLE CLICK, dans la liste.</p>
+                        </p-card>
+                        
+                       
+                </div>
+      </div>
+</div>
+
+</div>
+</div>
+
+
+<br>
+
+<br>
+<div *ngIf="validation_livraison">
+  <div [class.disabled-content]="!editEnablel">
+
+    <p-panel   >
+      <p-header>
+        <div class="ui-helper-clearfix">
+            <span class="ui-panel-title" style="font-size:16px;display:inline-block;"> Validation de livraison</span>
+            <span class="asdf"  >
+              <button   mat-icon-button (click)="annulerLivraison()">
+                <mat-icon >cancel</mat-icon>
+              </button>
+            </span>
+           
+        </div>
+    </p-header>
+          
+                    <div class="row">
+                              <div class="col-md-1" style="font-weight: bolder;">Pièce:</div>
+                              <div class="col-md-3">    
+                                {{this.selectedrecord.combine}}
+                                </div>
+                             
+                              <div class="col-md-1" style="font-weight: bolder;">Date :</div>
+                              <div class="col-md-3" disabled> {{this.selectedrecord.date}}</div>
+                              <div class="col-md-4" disabled></div>
+                    
+                    </div>
+                    
+                    <div class="row"  >
+                                      <div class="col-md-1" style="font-weight: bolder;">Client:</div>
+                                      <div class="col-md-3"> {{ this.selectedrecord.clt }}</div>
+                                    
+                                      <div class="col-md-1" style="font-weight: bolder;">Vendeur:</div>
+                                      <div class="col-md-3">{{this.selectedrecord.deno}}</div>
+                                        
+         
+                                                              <div class="col-md-2" >Bons de Sortie ouverts:</div>
+                                                              <div class="col-md-1"> <button type="button" (click)="showDialog()" id='lstbs'  pButton  label="Liste"></button></div>  
+                                                              <div class="col-md-1"></div>
+                                         
+                    </div>
+                
+                
+                    <br>
+                    <div class="row" >
+                                                                        <div class="col-md-6">
+                                                                        <ejs-grid #grid [dataSource]="LivraisonPieces" gridLines='Both'
+                                                                        allowResizing= 'true'
+                                                                        height="330" width="100%"
+                                                                        rowHeight='30'
+                                                                          >             
+                                                                                        <e-columns>
+                                                                                            <e-column field="code"    headerText="Code" width="30%"        [customAttributes]="customAttributes"  BackgroundColor="Gray" ></e-column>
+                                                                                            <e-column field="designation"    headerText="Désignation" width="50%"    [customAttributes]="customAttributes"></e-column>
+                                                                                            <e-column field="quantite"    headerText="Quantité" width="20%"   [customAttributes]="customAttributes">
+                                                                                            <ng-template #template let-LivraisonPieces>
+                                                                                              <p style="text-align: right; ">{{LivraisonPieces.quantite}}</p>
+                                                                                          </ng-template>
+                                                                                        </e-column>
+                                                                                          </e-columns>
+                                                                          </ejs-grid>
+                                                                        </div>
+                                                                       
+                                                                        <div class="col-md-6">
+                                                                                               
+                                                                                                      
+                                                                                                        <div *ngIf="listeBonSortie">
+                                                                                                         
+                                                                                                              <div [class.disabled-content]="!editEnablel" style="width: 90%;height: 50%;">
+                                                                                                                <p-card   class fxFlexFill fxLayoutAlign="center center"  >
+                                                                                                                  
+                                                                                                                  
+                                                                                                                    <div   style="margin-left: 95%; margin-top: -4%;">
+                                                                                                                      <button   mat-icon-button (click)="listeBonSortie=false">
+                                                                                                                        <mat-icon >cancel</mat-icon>
+                                                                                                                      </button>
+                                                                                                                </div>
+                                                                                                                  
+                                                                                                                
+                                                                                                                          <ejs-grid #gridBonSortie [dataSource]="elivraisons" gridLines='Both' 
+                                                                                                                          [selectedRowIndex]="0"
+                                                                                                                          allowResizing= 'true'
+                                                                                                                          (recordDoubleClick)="Doubleclickbs($event)"
+                                                                                                                          (rowSelected)="rowSelectedBonSortie($event)" 
+                                                                                                                          height="210" width="100%"
+                                                                                                                          rowHeight='35'
+                                                                                                                           
+                                                                                                                          
+                                                                                                                          
+                                                                                                                          >             
+                                                                                                                                          <e-columns  >
+                                                                                                                                              <e-column field="numero"    headerText="Numero" width="20%"   [customAttributes]="customAttributes"  BackgroundColor="Gray" ></e-column>
+                                                                                                                                              <e-column field="dated"     headerText="Date d'ouverture" width="28%"    [customAttributes]="customAttributes"></e-column>
+                                                                                                                                              <e-column field="livreur"   headerText="Livreur" width="30%"  [customAttributes]="customAttributes"></e-column>
+                                                                                                                                              <e-column field="camuion"   headerText="Camion" width="20%"  [customAttributes]="customAttributes"></e-column>     
+                                                                                                                                            </e-columns>
+                                                                                                                            </ejs-grid>
+                                                                                                               
+                                                                                                                         
+                                                                                                                        
+                                                                                                                    <div class="row" style="    margin-left: 0%;" >
+                                                                                                                      <p-card >
+                                                                                                                      <p width="88%" style=" font-weight: bold;font-size: 12px; ">Info  : Pour choisir un bon de sortie, SELECTIONNER, puis DOUBLE CLICK, dans la liste.</p>
+                                                                                                                    </p-card>
+                                                                                                                    </div>
+                                                                                                                  </p-card>
+                                                                                                                  </div>
+                                                                                                        </div>
+                                                                                                        
+                                                                                              
+                                                                          
+                                                                          
+                                                                                              <div *ngIf="BonSortie">
+                                                                                                <div [class.disabled-content]="!editEnablel">
+                                                                                                  
+                                                                                                                               
+                                                                                                          
+                                                                                                                  
+                                                                                                                          <div class="row" style="width: 90%;" >
+                                                                                                                                       
+                                                                                                                                                                                  
+                                                                                                                                             
+                                                                                                                                    <p-panel   >
+                                                                                                                                      <p-header>
+                                                                                                                                        <div class="ui-helper-clearfix">
+                                                                                                                                            <span class="ui-panel-title" style="font-size:16px;display:inline-block;"> Details bon de sortie</span>
+                                                                                                                                            <span class="bsferm" >
+                                                                                                                                              <button   mat-icon-button (click)="AnnulerBs()">
+                                                                                                                                                <mat-icon >cancel</mat-icon>
+                                                                                                                                              </button>
+                                                                                                                                            </span>
+                                                                                                                                           
+                                                                                                                                        </div>
+                                                                                                                                    </p-header>
+                                                                                                                                    <br>
+                                                                                                                                    <br>
+                                                                                                                                                  <div class="row">
+                                                                                                                                                        <div class="col-md-5" style="font-weight: bold;">Numero :</div>
+                                                                                                                                                        <div class="col-md-5">{{this.selectedBS.numero}}</div>
+                                                                                                                                                  </div>
+                                                                                                                                                  <br>
+                                                                                                                                                  <div class="row"> 
+                                                                                                                                                          <div class="col-md-5">Livreur :</div>
+                                                                                                                                                          <div class="col-md-5"> 
+                                                                                                                                                            {{this.selectedBS.livreur}}
+                                                                                                                                                                
+                                                                                                                                                          </div>
+                                                                                                                                                  </div>
+                                                                                                                                                  <br>
+                                                                                                                                                    <div class="row">
+                                                                                                                                                      <div class="col-md-5">Numero du Camion :</div> 
+                                                                                                                                                      <div class="col-md-6">
+                                                                                                                                                        {{this.selectedBS.camuion}}
+                                                                                                                                                     </div>   
+                                                                                                                                                    </div><br>
+                                                                                                                                                    <div class="row">
+                                                                                                                                                      <div class="col-md-5" >Nombre de colis :</div> 
+                                                                                                                                                      <div class="col-md-6">
+                                                                                                                                                        
+                                                                                                                                                        <input  type="search" id='nbc'  pKeyFilter="pint" autofocus placeholder="saisir nombre de colis"  [(ngModel)]="nbColis" pInputText  />
+                                                                                                                                                        
+                                                                                                                                                      
+                                                                                                                                                      </div>
+                                                                                                                                                     
+                                                                                                                                                       
+                                                                                                                                                    </div>
+                                                                                                                                                   <br>
+                                                                                                                                                   <br>
+                                                                                                                                                   <br>
+                                                                                                                                                   <br>
+                                                                                                                                                   
+                                                                                                                                    
+                                                                                                                                                    
+
+                                                                                                                            
+                                                                                                                                    </p-panel>
+                                                                                                                            
+                                                                                                                          
+                                                                                                                             
+                                                                                                                             
+                                                                                                                            </div>
+                                                                                                        </div>
+                                                                                              </div>
+                                                                              </div>
+                  </div>
+                
+                  <br>
+                  <div class="row">
+                  <div class="col-md-1" style="font-weight: bolder;">Observation:</div>
+                  <div class="col-md-6"> <textarea type="search" id="ol" [rows]="1" [cols]="80"  [(ngModel)]="livrObservation" pInputTextarea autoResize="autoResize"></textarea>
+                 
+                </div>
+                </div>
+                 <br>
+                <div class="row">
+                  <div class="col-md-4"></div>
+                  <div class="col-md-2">
+                    
+                   
+                    <button pButton type="button" class="ui-button-raised" (click)="validerLivraison($event)" label="Valider"></button></div>
+                
+                </div>
+              </p-panel>
+
+    </div></div>
+
+  
+
+    
+
+
+    <p-overlayPanel [dismissable]="false"  #op appendTo="body" [showCloseIcon]="true" [style]="{'text-align': 'center', 'background-color': '#f8b7bd'}" >
+        <span>{{ msgerror}}  </span> 
+    </p-overlayPanel>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

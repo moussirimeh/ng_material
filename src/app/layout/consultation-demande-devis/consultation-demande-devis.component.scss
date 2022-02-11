@@ -1,0 +1,46 @@
+.ui-button {
+  font-size: 12px
+}
+.ui-inputtext {
+  font-size: 12px;
+}
+.row {
+
+    padding: 3px 0px;
+
+  font-size: 13px;
+}
+.e-grid .e-rowcell {
+  font-size: 12px !important;
+  padding: initial !important;
+}
+
+.e-plus-icon::before {
+  content: '\e823';
+}
+
+.e-dialog.e-control .e-dlg-content {
+  padding: 3px;
+  min-height: 81px;
+  min-width: 300px;
+}
+.e-dialog .e-dlg-header-content {
+  background-color: #d9edf7;
+  padding: 8px;
+  
+}
+
+.e-btn.e-small{
+  margin-left: 22px !important; 
+}
+html,
+body {
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+}
+
+#container {
+    visibility: hidden;
+}

@@ -1,0 +1,35 @@
+<!-- <app-nav></app-nav> -->
+<app-topnav #topnav></app-topnav>
+<!--<app-sidebar></app-sidebar>-->
+<div class="main-container" id="myApp">
+  &nbsp;
+  <router-outlet></router-outlet>
+</div>
+<div class="row">
+  <div class="col-md-3 col-centered">
+    <h3 style="color:red">{{ denoSociete }}</h3>
+  </div>
+  <div class="col-md-9">
+    <div class="row" *ngIf="isdashboard === 'false'">
+      <div class="col-md-11">
+        <div fxFlex>
+          <div class="row row-centered">
+            <div class="col-md-8 col-centered">
+              <h2 style="color: #1611d2">{{ name_module }}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1">
+        <div [class.disabled-content]="isdashboard === 'false'">
+          <div class="asdf">
+            <button mat-icon-button (click)="closeModule()">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

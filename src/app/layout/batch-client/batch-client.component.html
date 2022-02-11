@@ -1,0 +1,199 @@
+
+<br />
+<div class="row" style=" margin-bottom: -10px;">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        Du :
+        <p-calendar
+          [locale]="tn"
+          [(ngModel)]="datedebut"
+          [yearNavigator]="true"
+          [monthNavigator]="true"
+          yearRange="1973:2999"
+          dateFormat="dd/mm/yy "
+          [disabled]="readonly"
+        >
+        </p-calendar>
+      </div>
+
+      <div class="col-md-1"></div>
+      <div class="col-md-2">
+        <ng-select
+          ngselect
+          [items]="listeZone"
+          bindLabel="deno"
+          (open)="changeZone()"
+          [searchFn]="onSearchItem"
+          (change)="changeZone()"
+          [(ngModel)]="selectedZone"
+          placeholder="choisir une zone"
+          [disabled]="readonly"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+</div>
+<br />
+<div class="row" style=" margin-bottom: -10px;">
+  <div class="col-md-2"></div>
+  <div class="col-md-2">
+    Au :
+    <p-calendar
+      [locale]="tn"
+      [(ngModel)]="datefin"
+      [yearNavigator]="true"
+      [monthNavigator]="true"
+      yearRange="2017:2999"
+      dateFormat="dd/mm/yy "
+      [disabled]="readonly"
+    >
+    </p-calendar>
+  </div>
+  <div class="col-md-1"></div>
+  <div class="col-md-2">
+    <ng-select
+      ngselect
+      [items]="listeRec"
+      bindLabel="deno"
+      [searchFn]="onSearchItem"
+      (change)="changeRec()"
+      [(ngModel)]="selectedRec"
+      placeholder="choisir un recouvreur"
+      [disabled]="readonly"
+    >
+    </ng-select>
+  </div>
+  <div class="col-md-1"></div>
+  <div class="col-md-1" *ngIf="visibleBtnAfficher">
+    <p-button
+      class="center"
+      (click)="init()"
+      id="init"
+      label="initialiser"
+      styleClass="ui-button-info"
+    ></p-button>
+  </div>
+  <div class="col-md-1" *ngIf="visibleBtnAfficher">
+    <p-button
+      class="center"
+      (click)="afficher($event)"
+      id="bafich"
+      label="afficher"
+      styleClass="ui-button-info"
+    ></p-button>
+  </div>
+  <div class="col-md-1">    <p-button
+    class="center"
+    (click)="visualiser($event)"
+    id="aprc"
+    label="Apperçu"
+    styleClass="ui-button-info"
+  ></p-button></div>
+</div>
+
+<br />
+<div class="row"  style=" margin-bottom: -10px;" *ngIf="!visibleBtnAfficher">
+  <div class="col-md-12">
+    <ejs-grid
+      #grid
+      gridLines="Both"
+      allowResizing= 'true'
+      width="98%"
+      [dataSource]="liste"
+      height="320"
+      rowHeight="40"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column field="compte" headerText="Code Client" width="10%"></e-column>
+
+        <e-column
+          field="deno"
+          headerText="Raison Sociale"
+          width="20%"
+        ></e-column>
+        <e-column field="date" headerText="Date" width="9%"></e-column>
+        <e-column field="piece" headerText="Pièce" width="12%"></e-column>
+        <e-column field="numero" headerText="Numero" width="10%"></e-column>
+
+        <e-column field="echeance" headerText="Echéance" width="9%"></e-column>
+        <e-column 
+          headerText="Credit"
+          field="montant"
+          width="10%"
+          format="N3"
+          textAlign="Right"
+        ></e-column>
+        <e-column headerText="Debit" format="N3"  textAlign="Right" field="tel" width="10%"></e-column>
+        
+        <e-column headerText="Libelle" field="libelle" width="14%"></e-column>
+        <e-aggregates>
+          <e-aggregate>
+     <e-columns >
+       <e-column field="montant" style="font-size: 14px;font-weight: bold;"  type="sum" format="N3">
+         <ng-template #footerTemplate let-liste
+           >{{ liste.sum }}
+           </ng-template
+         >
+       </e-column>
+
+       <e-column field="tel" style="font-size: 14px;font-weight: bold;" type="sum" format="N3">
+         <ng-template #footerTemplate let-liste
+           >{{ liste.sum }}
+           </ng-template
+         >
+       </e-column>
+     
+  </e-columns>
+  </e-aggregate>
+  </e-aggregates>
+      </e-columns>
+    </ejs-grid>
+  </div>
+</div>
+<br />
+
+
+
+<div class="row" style="margin-bottom: -2px;" *ngIf="!visibleBtnAfficher">
+  <div class="col-md-9"></div>
+  <div class="col-md-1" style="font-size: 16px;font-weight: bold;">Solde</div>
+  <div class="col-md-1" style="font-size: 16px;text-align: right;">{{solde}}</div>
+  <div class="col-md-1"></div>
+</div>
+
+<br />
+<div class="row" style="margin-bottom: -2px;" *ngIf="!visibleBtnAfficher">
+  <div class="col-md-2">
+    <p-button
+    class="center"
+    (click)="NouvelleSaisie()"
+    id="nvs"
+    label="Nouvlle saisie"
+    styleClass="ui-button-info"
+  ></p-button>
+  </div>
+  <div class="col-md-6"></div>
+  <div class="col-md-2"> </div>
+  <div class="col-md-2"></div>
+</div>
+
+
+<p-overlayPanel
+  #op
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{ msgerror }} </span>
+</p-overlayPanel>

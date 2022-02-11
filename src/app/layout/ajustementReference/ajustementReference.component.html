@@ -1,0 +1,280 @@
+<p-tabView [activeIndex]="null" (onChange)="onTabChange($event)">
+  <p-tabPanel header="Consulter">
+    &nbsp;
+    <div style="height: 100%;">
+      <ejs-grid
+        id="grid"
+        #gridRegu
+        [dataSource]="regulatsDatasource"
+        [selectedRowIndex]="selectedIndex"
+        (mousedown)="annulerSelectionRegu()"
+        (mousewheel)="annulerSelectionRegu()"
+        allowTextWrap="true"
+        [textWrapSettings]="wrapSettings"
+        height="400"
+        gridLines="Both"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          <e-column
+            field="numero"
+            headerText="N°"
+            textAlign="Left"
+            width="40"
+          ></e-column>
+          <e-column
+            field="date"
+            headerText="DATE"
+            textAlign="Left"
+            width="65"
+          ></e-column>
+          <e-column
+            field="reference"
+            headerText="REFERENCE"
+            textAlign="Left"
+            width="100"
+          ></e-column>
+          <e-column
+            field="designation"
+            headerText="DESIGNATION"
+            textAlign="Left"
+            width="140"
+          ></e-column>
+          <e-column
+            field="quantite"
+            headerText="QTE"
+            textAlign="right"
+            width="45"
+          ></e-column>
+          <e-column
+            field="sens"
+            headerText="SENS"
+            textAlign="center"
+            width="50"
+          ></e-column>
+          <e-column
+            field="existant"
+            headerText="EXISTANT"
+            textAlign="right"
+            width="70"
+          ></e-column>
+          <e-column
+            field="argument"
+            headerText="ARGUMENTATION"
+            textAlign="Left"
+            width="180"
+          ></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </p-tabPanel>
+  <p-tabPanel header="Régulariser">
+    <div style="min-width: height 100%;">
+      <div class="row">
+        <div class="col-md-2"><h4>Numéro :</h4></div>
+
+        <div class="col-md-2"><h4>Date :</h4></div>
+
+        <div class="col-md-3"><h4>Référence :</h4></div>
+
+        <div class="col-md-5"><h4>Designation :</h4></div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <input
+            type="text"
+            pInputText
+            size="15"
+            [(ngModel)]="numero"
+            [disabled]="true"
+          />
+        </div>
+        <div class="col-md-2">
+          <input
+            type="text"
+            pInputText
+            size="15"
+            [(ngModel)]="date"
+            [disabled]="true"
+          />
+        </div>
+        <div class="col-md-3">
+          <input
+            type="text"
+            id="ref"
+            pInputText
+            size="30"
+            [(ngModel)]="reference"
+            [readOnly]="true"
+          />
+        </div>
+        <div class="col-md-5">
+          <input
+            type="text"
+            pInputText
+            size="60"
+            [(ngModel)]="designation"
+            [readOnly]="true"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><h4>Quantité :</h4></div>
+
+        <div class="col-md-1"><h4>Sens :</h4></div>
+
+        <div class="col-md-8"><h4>Argumentation :</h4></div>
+        <div class="col-md-2"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-1">
+          <input
+            type="search"
+            pKeyFilter="pint"
+            id="qte"
+            style="text-align: right;"
+            pInputText
+            size="5"
+            [(ngModel)]="quantite"
+            (keypress)="ov.hide()"
+            (keyup.enter)="moveToNext(0)"
+          />
+        </div>
+        <div class="col-md-1">
+          <p-dropdown
+          #drp
+            [options]="senss"
+            id="sens"
+            [(ngModel)]="sens"
+            (keyup.enter)="moveToNext(1)"
+            [style]="{ 'min-width': '80%', 'max-width': '80%' }"
+          ></p-dropdown>
+        </div>
+        <div class="col-md-8">
+          <input
+            type="text"
+            id="argument"
+            pInputText
+            size="110"
+            [(ngModel)]="argument"
+            (keypress)="ov.hide()"
+            (keyup.enter)="moveToNext(2)"
+          />
+        </div>
+        <div class="col-md-1">
+          <button
+            id="btValider"
+            color="primary"
+            class="mat-fab mat-primary"
+            ng-reflect-color="primary"
+            (click)="valider($event)"
+          >
+            Valider
+          </button>
+        </div>
+        <div class="col-md-1">
+          <button
+            color="warn"
+            class="mat-fab mat-warn"
+            ng-reflect-color="warn"
+            (click)="annuler()"
+          >
+            Annuler
+          </button>
+        </div>
+      </div>
+      &nbsp;
+      <div [ngClass]="{ disableDiv: disableGrid }">
+        <p-panel header="Lise des articles">
+          <div class="row">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="ui-inputgroup" align="Right">
+              <input
+                id="rechCodeArt"
+                type="search"
+                placeholder="Recherche par article"
+                pInputText
+                [(ngModel)]="rechCodeArt"
+                (keyup.enter)="applyFilterArtParCode()"
+                (search)="applyFilterArtParCode()"
+                (focus)="$event.target.select()"
+                size="28"
+              />
+              <button
+                pButton
+                icon="pi pi-search"
+                (click)="applyFilterArtParCode()"
+              ></button>
+            </div>
+          </div>
+          &nbsp;
+
+          <ejs-grid
+            #grid
+            [dataSource]="stocks"
+            [selectedRowIndex]="0"
+            height="156"
+            (recordDoubleClick)="ajouterArt()"
+            (mouseup)="annulerSelectionStock()"
+            (mousewheel)="annulerSelectionStock()"
+            (dataBound)="dataBound($event)"
+            gridLines="Both"
+            [rowHeight]="26"
+          >
+            <e-columns>
+              <e-column
+                field="code"
+                headerText="Code"
+                textAlign="Left"
+                width="250"
+              >
+              </e-column>
+              <e-column
+                field="design"
+                headerText="Designation"
+                textAlign="Left"
+                width="300"
+              ></e-column>
+              <e-column
+                field="quantite"
+                headerText="en STOCK"
+                textAlign="Right"
+                width="150"
+              ></e-column>
+              <e-column
+                field="prix"
+                headerText="Prix U. HT"
+                textAlign="Right"
+                width="150"
+              ></e-column>
+              <e-column
+                field="id"
+                headerText="id"
+                textAlign="Right"
+                width="0"
+              ></e-column>
+              <e-column
+                field="equiv"
+                headerText="equiv"
+                textAlign="Right"
+                width="0"
+              ></e-column>
+            </e-columns>
+          </ejs-grid>
+        </p-panel>
+      </div>
+    </div>
+    &nbsp;
+  </p-tabPanel>
+</p-tabView>
+
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

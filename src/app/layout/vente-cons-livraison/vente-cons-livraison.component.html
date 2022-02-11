@@ -1,0 +1,144 @@
+<br>
+<br>
+
+<div class="row">
+                  <div class="col-md-1" style="font-weight: bolder;">
+                    Pièce: 
+                  </div>
+                  <div class="col-md-2">
+                  <ng-select id ="pi"
+                  #ngs
+                    ngselect
+                    [items]="pieces"
+                    [searchFn]="onSearch"
+                    bindLabel="text"
+                    [(ngModel)]="selectedpiece"
+                    [disabled]="readonly"
+                    placeholder="choisir une pièce"
+                ></ng-select>
+               
+                  </div>
+                  
+                  <div class="col-md-1"  style="font-weight: bolder;">
+                    numero:
+                  </div>
+                  <div class="col-md-2">
+                    <input type="search" pKeyFilter="pint" (change)="verifierNumero()" id="num" [readonly]="readonly" pInputText [(ngModel)]="numero" (keyup)="tailleNumero($event,$event.target.value)"  placeholder="saisir un numéro" />
+                  </div>
+                  <div class="col-md-2" ></div>
+                  <div class="col-md-2">
+                    <button type="button" (click)="recherche($event)" id="btnaff"  pButton  label="Recherche"></button> 
+                  </div>  
+                 
+                  
+                   
+</div>
+<br>
+<div *ngIf="afficherclique">
+<div class="row" >
+                  <div class="col-md-1" style="font-weight: bolder;"> Date :</div>
+                  <div class="col-md-2" > {{ this.recette.date}} </div>
+                  <div class="col-md-1"  style="font-weight: bolder;">Client : </div>
+                  <div class="col-md-1">{{this.recette.operateur}}</div> 
+                  <div class="col-md-2">{{this.recette.clt}}</div> 
+                  <div class="col-md-1"></div>
+                  <div class="col-md-1"  style="font-weight: bolder;">Vendeur : </div>
+                  <div class="col-md-2">{{this.recette.deno}}</div> 
+ </div>
+
+<br>
+<div class="row">
+                <div class="col-md-6">
+                  <ejs-grid #grid [dataSource]="LivraisonPieces" gridLines='Both'
+                      height="300" width="100%"
+                      rowHeight='30' allowResizing= 'true'
+                   >             
+                                <e-columns>
+                                    <e-column field="code"    headerText="Code" width="20%"        [customAttributes]="customAttributes"  BackgroundColor="Gray" ></e-column>
+                                    <e-column field="designation"    headerText="Désignation" width="60%"    [customAttributes]="customAttributes"></e-column>
+                                    <e-column field="quantite"    headerText="Quantité" width="20%"  [customAttributes]="customAttributes">
+                                    <ng-template #template let-LivraisonPieces>
+                                      <div style="text-align: right;">{{LivraisonPieces.quantite}}</div>
+                                  </ng-template>
+                                </e-column>
+                                  </e-columns>
+                  </ejs-grid>
+                </div>
+                <div class="col-md-6">
+                  
+                    <div *ngIf="BonSortie">
+                          <div [class.disabled-content]="!editEnablel">
+                            <div class="row" style=" margin-left: 2%;">
+                                  <div class="col-md-4" style="font-weight: bolder;" > Bon de Sortie: </div>
+                                  <div class="col-md-3" >{{recette.bon_sort}}</div>
+                            </div>
+                            <br>
+                            <div class="row" style=" margin-left: 2%;" >
+                              <p-panel  header=" Details bon de sortie ">
+                                <br>
+                              <div class="row"> 
+                                <br>
+                                  <div class="col-md-5" style="font-weight: bolder;">Livreur :</div>
+                                 
+                                    <div class="col-md-6">{{this.livreur}}</div>
+                                    
+                                </div>
+                                <br>
+                                <div class="row">
+                                  <div class="col-md-5" style="font-weight: bolder;">Numero du Camion:</div> 
+                                  <div class="col-md-6">{{elivraison.camuion}}</div>
+                                </div><br>
+                                <div class="row">
+                                  <div class="col-md-5" style="font-weight: bolder;">Nombre de colis :</div> 
+                                  <div class="col-md-6">{{nbc}}</div>
+                                </div><br>
+                                <div class="row">
+                                  <div class="col-md-5"></div>
+                            
+                                </div>
+                                <br>
+                    
+                              </p-panel>
+                    
+                            </div>
+                    </div>
+                  </div>  
+                  </div>
+  </div>
+  <br>
+  <div class="row"></div>
+  <div class="row">
+              <div class="col-md-1" style="font-weight: bolder;">
+                Observation:
+              </div>
+              <div class="col-md-11">
+               <textarea [rows]="1" [cols]="80" pInputTextarea  [(ngModel)]="this.recette.livrObservat" disabled autoResize="autoResize"></textarea>
+    </div>
+
+
+  </div>
+<div class="row">
+
+  <div class="col-md-2" *ngIf="btnnvs">
+    <button type="button" (click)="nouvelleSaisie()" id="btnnvs"  pButton  label="Nouvelle saisie"></button> 
+  </div> 
+
+ <div class="col-md-10"></div>
+</div>
+
+
+  </div>
+    <p-toast key="d" [style]="{ marginTop: '280px' }" position="top-center" width="50%">
+
+    
+    
+    
+      <p-overlayPanel #op 
+      [dismissable]="false"
+      [showCloseIcon]="true" 
+      appendTo="body"  
+      [style]="{'text-align': 'center', 
+               'font-size':'14px' ,
+               'background-color': ' #f8b7bd'}" >
+      <span> {{msgerror}} </span>
+     </p-overlayPanel>

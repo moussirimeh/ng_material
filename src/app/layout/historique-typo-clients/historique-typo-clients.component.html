@@ -1,0 +1,86 @@
+<br />
+<br />
+<div class="row">
+  <div class="col-md-1">Client :</div>
+  <div class="col-md-2" >
+    <ng-select
+          ngselect
+          [items]="listeClients"
+          bindLabel="deno"
+          bindvalue="code"
+          (open)="chargerClients()"
+          style="height: 30px; min-height: 30px"
+          [(ngModel)]="selectedclt"
+          [searchFn]="onSearchDeno"
+          (change)="changeClient()"
+          placeholder="choisir un client"
+          [disabled]="readonly"
+        >
+        </ng-select>
+        
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2">
+        <input type="text"  size="20"
+         maxlength="20" 
+         (keyup.enter)="applyFilterClientParCode($event)"
+         (keydown)="intialiserSelectedClient()"
+         (keyup)="ov.hide()"
+         [(ngModel)]="codeClt"
+        
+         pInputText disabled="true" />
+      </div>
+
+  <div class="col-md-3"  *ngIf="affichBTn">
+    <button  pButton type="button" label="Afficher" (click)="afficher()" class="ui-button-raised" width="100%"></button>
+  </div>
+  <div class="col-md-3"></div>
+</div>
+<br><br><br><br>
+
+<div class="row">
+  <div class="col-md-9" *ngIf="afficherGrid">
+  
+    <ejs-grid 
+    #grid 
+  
+    [dataSource]="datasourceGrid"
+    [allowSorting]="true"
+    [allowExcelExport]="true"
+    allowTextWrap="true"
+    gridLines="Both"
+    [allowResizing]="true"
+    width="80%"
+    height="30%"
+    rowHeight="30"
+    >
+    
+    <e-columns>
+      <e-column field="operateur" headerText="Code Client" width="9%"></e-column>
+      <e-column field="denoClt" headerText="Denomation" width="9%"></e-column>
+      <e-column field="date" headerText="Date"  width="8%"></e-column>
+      <e-column field="typologie" headerText="typologie" width="8%"></e-column>
+  
+</e-columns>
+    </ejs-grid>
+    <div class="col-md-3"></div>
+  </div>
+  </div><br>
+
+<div class="row">
+  <div class="col-md-2"  *ngIf="afficherGrid==true">
+  <button  pButton type="button"  label="Nouvelle saisie"  id='btnnvls' (click)="nouvelleSaisie()"  style="font-size: 14px;" class="ui-button-info"></button>
+  </div>
+ 
+ 
+  <div class="col-md-4"> </div>
+    <div class="col-md-6"  *ngIf="afficherGrid==true" >
+
+      <button  color="primary"  style="font-size: 14px;width: 20%;"
+      pButton type="button" label="Excel"  (click)="gererExcel()" class="ui-button-raised ">        
+      </button>
+  </div>
+
+</div>
+
+

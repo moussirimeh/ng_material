@@ -1,0 +1,22 @@
+
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+  <div fxFlex>
+  <br>
+        
+            
+        <div id="mytable" class fxFlexFill fxLayoutAlign="center center" >
+        <ejs-grid #grid [dataSource]="elivraisons" gridLines='Both'
+        height="350" width="100%"
+        rowHeight='35' allowResizing= 'true'
+          >
+                        <e-columns>
+                            <e-column field="numero"  headerText="Numero" [customAttributes]='customAttributes' width="120"   BackgroundColor="Gray" ></e-column>
+                            <e-column field="dated"   headerText="Date d'ouverture " [customAttributes]='customAttributes' width="200"></e-column>
+                            <e-column field="livreur" headerText="Livreur" [customAttributes]='customAttributes' width="200"></e-column>
+                            <e-column field="camuion" headerText="Camion" [customAttributes]='customAttributes' width="200"></e-column>
+                        </e-columns>
+          </ejs-grid>
+          </div>
+
+    </div>
+    </div>

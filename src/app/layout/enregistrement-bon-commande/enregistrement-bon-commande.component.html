@@ -1,0 +1,73 @@
+<p-blockUI [blocked]="blocked"></p-blockUI>
+<div class="row" style="margin-top: 3%;">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-3">
+        <p style="font-size: 18px;">Pièce de vente :</p>
+      </div>
+      <div class="col-md-5" style="margin-left: -2%;">
+        <ng-select
+        ngselect
+        id="bncom"
+        [items]="recettes"
+        bindLabel="combine"
+        [(ngModel)]="SelectedRecette"
+        (change)="changerRef()"
+        [searchFn]="onSearchRecette"
+        placeholder="Veuiller Choisir une pièce"
+      >
+      </ng-select> 
+      </div>
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-md-4">
+            <p style="font-size: 18px;">Réf.:</p>
+          </div>
+          <div class="col-md-8" *ngIf="this.SelectedRecette !== null">
+            {{SelectedRecette.ref}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3"></div>
+</div>
+<div class="row" style="margin-top: 2.5%;">
+  <div class="col-md-2"></div>
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-5">
+        <p style="font-size: 18px;">Nouvelle Réf. Bon Commande:</p>
+      </div>
+      <div class="col-md-4" style="margin-left: -1%;">
+        <input [(ngModel)]="nouvelleref" maxlength="25"
+        class="form-control" type="search" placeholder="saisir la nouvelle Réf" pInputText  />
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3"></div>
+</div>
+<div class="row" style="margin-top: 2.5%;">
+  <div class="col-md-5"></div>
+  <div class="col-md-3">
+    <button clikcked="true" id="enreg" style="font-size: 14px;" pButton type="button" label="Enregistrer"
+    (click)="Enregistrer($event)" class="ui-button-raised ">
+  </button>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+
+<p-overlayPanel
+#ovo
+[dismissable]="false"
+[showCloseIcon]="true"
+appendTo="body"
+[style]="{
+  'text-align': 'center',
+  'font-size': '14px',
+  'background-color': ' #f8b7bd'
+}"
+>
+<span> {{ms}} </span>
+</p-overlayPanel>

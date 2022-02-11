@@ -1,0 +1,419 @@
+<div [class.disabled]="false">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-4">ENTRE LE</div>
+        <div class="col-md-8">
+          <p-calendar
+            [(ngModel)]="dateDebut"
+            [locale]="tn"
+            [inputStyle]="{ width: '100%' }"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true" 
+            [yearNavigator]="true" 
+            yearRange="1980:2050"
+          ></p-calendar>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">ET LE</div>
+        <div class="col-md-8">
+          <p-calendar
+            [(ngModel)]="dateFin"
+            [locale]="tn"
+            [inputStyle]="{ width: '100%' }"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true" 
+            [yearNavigator]="true" 
+            yearRange="1980:2050"
+          ></p-calendar>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="showEnvPar">
+        <div class="col-md-4">ENVOYE PAR</div>
+        <div class="col-md-8">
+          <ng-select
+            ngselect
+            [items]="users"
+            bindLabel="nPUtil"
+            [(ngModel)]="selectedEnvPar"
+            style="width: 100%"
+            placeholder="ENVOYE PAR"
+            
+          >
+          </ng-select>
+        </div>
+      </div>
+
+
+      <div class="row" *ngIf="showEnvA">
+        <div class="col-md-4">ENVOYE A</div>
+        <div class="col-md-8">
+          <ng-select
+            ngselect
+            [items]="users"
+            bindLabel="nPUtil"
+            [(ngModel)]="selectedEnvA"
+            style="width: 100%"
+            placeholder="ENVOYE A"
+            
+          >
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">N°VISITE</div>
+        <div class="col-md-8">
+          <input type="search" pInputText [(ngModel)]="numVisite" placeholder="NUMERO VISITE" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">CLIENT</div>
+        <div class="col-md-8">
+          <ng-select
+            ngselect
+            [items]="clients"
+            bindLabel="deno"
+            [(ngModel)]="selectedClient"
+            (keyup.enter)="recherche($event.target.value)"
+            (keyup)="clients = []"
+            style="width: 100%"
+            placeholder="CLIENT"
+          >
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">SUJET</div>
+        <div class="col-md-8">
+          <ng-select
+            ngselect
+            [items]="sujets"
+            bindLabel="rubrique"
+            [(ngModel)]="selectedSujet"
+            style="width: 100%"
+            placeholder="SUJET"
+          >
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <p-panel header="LECTURE MESSAGE">
+        <div>
+          <p-radioButton
+            name="grouLectureMessage"
+            value="O"
+            label="Lu"
+            [(ngModel)]="selectedLectureMessage"
+          ></p-radioButton>
+        </div>
+        <div>
+          <p-radioButton
+            name="groupLectureMessage"
+            value="N"
+            label="Non Lu"
+            [(ngModel)]="selectedLectureMessage"
+          ></p-radioButton>
+        </div>
+        <div>
+          <p-radioButton
+            name="groupLectureMessage"
+            value=""
+            label="Tout"
+            [(ngModel)]="selectedLectureMessage"
+          ></p-radioButton>
+        </div>
+      </p-panel>
+    </div>
+    <div class="col-md-2">
+      <p-panel header="LECTURE REPONSE">
+        <div>
+          <p-radioButton
+            name="grouLectureReponse"
+            value="O"
+            label="Lu"
+            [(ngModel)]="selectedLectureReponse"
+          ></p-radioButton>
+        </div>
+        <div>
+          <p-radioButton
+            name="groupLectureReponse"
+            value="N"
+            label="Non Lu"
+            [(ngModel)]="selectedLectureReponse"
+          ></p-radioButton>
+        </div>
+        <div>
+          <p-radioButton
+            name="groupLectureReponse"
+            value=""
+            label="Tout"
+            [(ngModel)]="selectedLectureReponse"
+          ></p-radioButton>
+        </div>
+      </p-panel>
+    </div>
+    <div class="col-md-2">
+      <p-panel header="ARRIVEE REPONSE">
+        <div>
+          <p-radioButton
+            name="grouArriveeReponse"
+            value="1"
+            label="Réponse Parvenue"
+            [(ngModel)]="selectedArriveeReponse"
+          ></p-radioButton>
+        </div>
+        <div>
+          <p-radioButton
+            name="groupArriveeReponse"
+            value="0"
+            label="Réponse Non Parvenue"
+            [(ngModel)]="selectedArriveeReponse"
+          ></p-radioButton>
+        </div>
+        <div>
+          <p-radioButton
+            name="groupArriveeReponse"
+            value="-1"
+            label="Tout"
+            [(ngModel)]="selectedArriveeReponse"
+          ></p-radioButton>
+        </div>
+      </p-panel>
+    </div>
+    <div class="col-md-2">
+      <p-panel header="DEPASSEMENT DELAIS">
+        <div>
+          <p-radioButton
+            name="grouDepassementDelais"
+            value="0"
+            label="Delai dépassé"
+            [(ngModel)]="selectedDepassementDelais"
+          ></p-radioButton>
+        </div>
+        <div>
+          <p-radioButton
+            name="grouDepassementDelais"
+            value="4"
+            label="Delai dépassé + de 4 Jrs"
+            [(ngModel)]="selectedDepassementDelais"
+          ></p-radioButton>
+        </div>
+        <div>
+          <p-radioButton
+            name="grouDepassementDelais"
+            value="-1"
+            label="Delai Non Dépassé"
+            [(ngModel)]="selectedDepassementDelais"
+          ></p-radioButton>
+        </div>
+        <div>
+          <p-radioButton
+            name="grouDepassementDelais"
+            value="-2"
+            label="Tout"
+            [(ngModel)]="selectedDepassementDelais"
+          ></p-radioButton>
+        </div>
+      </p-panel>
+      &nbsp;
+      <div align="right">
+        <button
+          pButton
+          type="button"
+          id="aff"
+          label="AFFICHER"
+          (click)="afficher($event)"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div>
+      <ejs-grid
+        #grid
+        [dataSource]="messages"
+        height="210"
+        gridLines="Both"
+        [rowHeight]="30"
+        (rowSelected)="rowSelected($event)"
+        (onmousedown)="annulerSelection()"
+        (mouseup)="annulerSelection()"
+        (mousewheel)="annulerSelection()"
+        gridLines="Both"
+        [allowExcelExport]="true"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          <e-column
+            field="numVisite"
+            headerText="N°Visite"
+            textAlign="Left"
+            width="100"
+          >
+          </e-column>
+          <e-column
+            field="rubrique"
+            headerText="Rubrique"
+            textAlign="Left"
+            width="120"
+          ></e-column>
+          <e-column
+            field="envoyePar"
+            headerText="Envoyé par"
+            textAlign="Left"
+            width="80"
+          >
+          </e-column>
+          <e-column field="date" headerText="Date" textAlign="Left" width="80">
+          </e-column>
+          <e-column
+            field="messageLu"
+            headerText="Message Lu"
+            textAlign="Left"
+            width="80"
+          ></e-column>
+          <e-column
+            field="envoyeA"
+            headerText="Envoyé à"
+            textAlign="Left"
+            width="80"
+          >
+          </e-column>
+          <e-column
+            field="delai"
+            headerText="Delai"
+            textAlign="Left"
+            width="80"
+          ></e-column>
+          <e-column
+            field="dateRep"
+            headerText="Date Reponse"
+            textAlign="Left"
+            width="80"
+          ></e-column>
+          <e-column
+            field="reponseLu"
+            headerText="Reponse Lu"
+            textAlign="Left"
+            width="80"
+          ></e-column>
+        </e-columns>
+      </ejs-grid>
+      <div align="right">
+        <button
+          pButton
+          type="button"
+          label="--> EXCEL"
+          (click)="exportExcel()"
+        ></button>
+      </div>
+    </div>
+    <div class="row" *ngIf="showNext">
+      <div class="col-md-3">
+        <div>
+          <button
+            [hidden]="hideBtns"
+            pButton
+            type="button"
+            label="CONSULTER VISITE"
+            (click)="consulterVisite()"
+          ></button>
+        </div>
+        &nbsp;
+        <div>
+          <button
+          [hidden]="hideBtns"
+            pButton
+            type="button"
+            label="LIRE MESSAGE/REPONSE"
+            (click)="lireMessageReponse()"
+          ></button>
+        </div>
+        &nbsp;
+        <div>
+          <button
+            pButton
+            [hidden]="hideBtns"
+            id="btRep"
+            type="button"
+            label="REPONDRE"
+            (click)="repondre($event)"
+            *ngIf = "showRepondreButton"
+          ></button>
+        </div>
+      </div>
+      <div class="col-md-3" [hidden]="hideMessage">
+        <div>Message</div>
+        <div>
+          <textarea
+            rows="8"
+            cols="30"
+            pInputTextarea
+            autoResize="autoResize"
+            [(ngModel)]="message"
+            [readOnly]="true"
+          ></textarea>
+        </div>
+      </div>
+      <div class="col-md-3" [hidden]="hideReponse" >
+        <div> {{etatReponse}} </div>
+        <div>
+          <textarea
+            rows="8"
+            cols="30"
+            pInputTextarea
+            autoResize="autoResize"
+            [(ngModel)]="reponse"
+            [readOnly]="disableEditRep"
+          ></textarea>
+        </div>
+      </div>
+      <div class="col-md-3">
+        &nbsp;&nbsp;&nbsp;
+        <div  [hidden]="hideValiderRepButton">
+          <button
+            pButton
+            id="btValider"
+            type="button"
+            label="VALIDER LA REPONSE"
+            (click)="validerReponse($event)"
+          ></button>
+        </div>
+        &nbsp;
+        <div>
+          <button
+            pButton
+            type="button"
+            label="OK J'AI BIEN LU"
+            (click)="confirmerLecture()"
+            *ngIf = "!hideOkButton"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p-dialog
+    header="Consultation Visite"
+    
+    (onHide)="ProgVisite.initialiser()"
+    #dialProgVisite
+    [(visible)]="ProgVisite.displayProgVisite"
+    [style]="{ width: '96vw' ,height: '300px'}"
+    [modal]="true"
+    [baseZIndex]="10000"
+  >
+    <app-programmation-visite></app-programmation-visite>
+  </p-dialog>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

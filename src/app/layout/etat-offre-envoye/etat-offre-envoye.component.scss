@@ -1,0 +1,19 @@
+.ui-inputtext {
+  width: 100%;
+}
+.mat-card-content {
+  font-size: 14px; 
+  font-family: serif;
+}
+.ui-inputtext {
+  height: 80%;
+}
+.ng-select.ng-select-single ::ng-deep .ng-select-container {
+  height: 27px;
+}
+.ng-select ::ng-deep .ng-select-container {
+  min-height: 0px;
+}
+.dialog-no-header.ui-dialog .ui-dialog-titlebar {
+  display: none;
+}

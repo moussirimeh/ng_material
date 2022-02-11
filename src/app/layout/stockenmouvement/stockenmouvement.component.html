@@ -1,0 +1,267 @@
+<div class="row">
+  <div class="col-md-6">
+  <div class="row">
+    <div class="col-md-1"  style="max-width : 4%; padding-bottom: 0.3%;"><label>Du:</label></div>
+    <div class="col-md-2" style="max-width: 30%; padding-bottom: 0.3%;" >
+      <p-calendar
+      id="date1"
+      [disabled]="readonly"
+      [minDate]="minDate"
+      [(ngModel)]="datedebut"
+      dateFormat="dd/mm/yy"
+      [monthNavigator]="true"
+      [yearNavigator]="true"
+      [locale]="tn"
+      yearRange="1973:2999">
+     </p-calendar>
+    </div>
+    <div class="col-md-1" style="max-width : 4%; padding-bottom: 0.3%;"><label>Au:</label></div>
+    <div class="col-md-2" style="max-width: 30%; padding-bottom: 0.3%;">
+      <p-calendar 
+       id="date2"
+       [disabled]="readonly"
+       [minDate]="minDate"
+       [(ngModel)]="datefin"
+       dateFormat="dd/mm/yy"
+       [monthNavigator]="true"
+       [yearNavigator]="true"
+       [locale]="tn"
+       yearRange="2011:2999">
+      </p-calendar>
+     </div>
+  </div>
+  <mat-card class="col-md-12">
+    <mat-card-content class="col-md-12" style="width: 100%;">
+      <h4>Ordre de classement</h4>
+      <div class="row">
+        <div class="row p-field-radiobutton" style="max-height: 12%;">
+          <div class="col-md-1">
+            <p-radioButton 
+              name="trie" 
+              value="article" 
+              [disabled]="readonly"
+              [(ngModel)]="tri"
+              >
+             </p-radioButton>
+          </div>
+          <div class="col-md-2">
+             <label>Article</label>
+           </div>
+       </div>
+       <div class="row p-field-radiobutton" style="max-height: 12%;">
+        <div class="col-md-1">
+          <p-radioButton 
+            
+            name="trie" 
+            [disabled]="readonly"
+            value="achat" 
+            [(ngModel)]="tri"
+             >
+           </p-radioButton>
+        </div>
+        <div class="col-md-2">
+           <label>Tot_achats</label>
+         </div>
+     </div>
+        <div class="row p-field-radiobutton" style="max-height: 12%;">
+         <div class="col-md-1">
+           <p-radioButton          
+             name="trie" 
+             value="vente" 
+             [disabled]="readonly"
+             [(ngModel)]="tri"
+              >
+            </p-radioButton>
+         </div>
+         <div class="col-md-2">
+            <label>Tot_ventes</label>
+          </div>
+      </div>
+  
+        <div class="row p-field-radiobutton" style="max-height: 12%;">
+         <div class="col-md-1">
+           <p-radioButton 
+             name="trie" 
+             value="stk" 
+             [disabled]="readonly"
+             [(ngModel)]="tri"
+              >
+            </p-radioButton>
+         </div>
+         <div class="col-md-2">
+            <label>Tot_Stock</label>
+          </div>
+      </div>
+    </div>
+    </mat-card-content>
+  </mat-card>
+  </div>
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-1" style="max-width: 15%; padding-bottom: 0.3%;" >Fournisseur:</div>
+      <div class="col-md-6" style="  padding-bottom: 0.3%;"  >
+        <ng-select
+          ngselect
+          id="four"
+          [items]="listefournisseurs"
+          bindLabel="deno"
+           placeholder="choisir un fournisseur"
+          (open)="chargerFournisseur()"
+          [(ngModel)]="SelectedFournisseur"
+          (change)="changeFournisseur()"
+          [searchFn]="onSearchfournisseur"
+          [disabled]="readonly"
+         
+        >
+        </ng-select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-1" style=" max-width: 15%; padding-bottom: 0.3%; padding-right: 5%">Famille:</div>
+      <div class="col-md-6" style="  padding-bottom: 0.3%;" >
+        <ng-select
+        ngselect
+        id="famil"
+        [items]="listeFamille"
+        bindLabel="nom"
+        (open)="chargerListeFamille()"
+        placeholder="choisir une famille"
+        (change)="changeFamille()"
+        [(ngModel)]="selectedFamille"
+        [searchFn]="onSearchfamille"
+        [disabled]="readonly"
+        > 
+        </ng-select>
+      </div>
+    </div>
+    
+  </div>
+  </div>
+  <div class="row" style="padding-bottom: 0.2%;">
+    <div class="col-md-9"></div>
+    <div class="col-md-1">
+      <button
+       pButton
+       id="btnAjouter"
+       type="button"
+       label="Afficher"
+       (click)="afficher($event)"
+       class="ui-button-raised"
+       [hidden]="btnaff"
+      ></button>
+    </div>
+    <div class="col-md-1">
+      <button
+      pButton
+      id="btnAppercu"
+      type="button"
+      label="Aperçu"
+      class="ui-button-raised"
+      (click)="Apercu($event)"
+     ></button>
+    </div>
+    <div class="col-md-1">
+      <button
+      pButton
+      id="btnExcel"
+      type="button"
+      label="Excel"
+      (click)="gererExcelgrid($event)"
+      class="ui-button-raised"
+      
+     ></button>
+    </div>
+  </div>
+  
+      <div class="row"  *ngIf="btnaff" >
+        <ejs-grid id="ejs1" #grid width="99%" [searchSettings]="searchOptions" [allowExcelExport]="true" 
+        [dataSource]="listeStock" [selectedRowIndex]="0" height="240"  
+          rowHeight="20" 
+         gridLines="Both" allowResizing= 'true'>
+         <e-columns>
+           <e-column field="code" headerText="Reference" width="80"  headerTextAlign="left">
+           </e-column>
+           <e-column field="design" headerText="Designation" width="100"  headerTextAlign="left">
+           </e-column>
+           <e-column field="prix" headerText="P.U.HT" width="50"  headerTextAlign="left">
+            
+          </e-column>
+          <e-column field="achats" headerText="Achats" width="50"  headerTextAlign="left">
+         
+          </e-column>
+          <e-column field="ventes" headerText="Ventes" width="50"  headerTextAlign="left">
+        
+          </e-column>
+          <e-column field="enstock" headerText="En Stock" width="45"  headerTextAlign="left">
+         
+          </e-column>
+          <e-column field="valach" headerText="Val.Ach" width="45"  headerTextAlign="left">
+           
+          </e-column>
+          <e-column field="valvnt" headerText="Val.Vnt" width="45"  headerTextAlign="left">
+           
+          </e-column>
+          <e-column field="valstk" headerText="Val.Stk" width="45"  headerTextAlign="left">
+           
+          </e-column>
+
+         </e-columns>
+        </ejs-grid>
+    </div>
+  
+  
+    <div class="row"*ngIf="btnaff">
+      <div class="col-md-2" style="max-width :9%;">
+        <label>Total Achat:</label>
+      </div>
+      <div class="col-md-2" style="max-width :12%;">
+        <label style="color: red;" >{{total_achats}}</label>
+      </div>
+      <div class="col-md-1" style="max-width :100%;">
+        <label >DT en PV</label>
+      </div>
+  
+    </div>
+    <div class="row"*ngIf="btnaff">
+      <div class="col-md-2" style="max-width :9%;">
+        <label>Total Ventes:</label>
+      </div>
+      <div class="col-md-2"  style="max-width :12%;">
+        <label style="color: red;">{{total_ventes}}</label>
+      </div>
+      <div class="col-md-1" style="max-width :100%;">
+        <label >DT en PV</label>
+      </div>
+      <div class="col-md-2" style="max-width :12%;" >
+        <label>Total Stock:</label>
+      </div>
+      <div class="col-md-2"  style="max-width :12%;">
+        <label style="color: red;">{{total_stk}}</label>
+      </div>
+      <div class="col-md-1">
+        <label>DT en PV</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2" style="max-width: 12%;"*ngIf="btnaff">
+        <button
+         pButton
+         id="btnAjouter"
+         type="button"
+         (click)="nouvelleSaisie()"
+         label="Nouvelle Saisie"
+         class="ui-button-raised"
+        ></button>
+      </div>
+      <div class="col-md-1"*ngIf="btnaff">
+    
+      </div>
+      <div class="col-md-9"></div>
+    </div>
+<p-overlayPanel #op appendTo="body" [dismissable]='false'  
+[showCloseIcon]="true"
+[style]="{'text-align': 'center', 'font-size':'14px' ,'background-color': ' #f8b7bd'}" >
+<span style="width: 138%;"> {{msg}} </span>
+</p-overlayPanel> 
+  
+  

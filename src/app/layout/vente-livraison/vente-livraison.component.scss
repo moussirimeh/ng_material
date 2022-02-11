@@ -1,0 +1,84 @@
+.custom-toast {
+  width: 90%;
+  background: #FFD07B;
+}
+
+:host ::ng-deep .custom-toast .ui-toast-message {
+  width: 90%;
+  background: #FFD07B;
+  margin-left: 90%;
+}
+.em-icons {
+  font-family: 'e-menu';
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: 1;
+  text-transform: none;
+}
+
+.topnav-icon {
+  text-decoration: none;
+  display: flex;
+  color: #fff;
+}
+.asdf {
+  margin-left:81%; 
+  margin-right:0;
+  text-align:end;
+  justify-content: end;
+}
+
+
+.bsferm {
+  margin-left:58%; 
+  margin-right:0;
+  text-align:end;
+  justify-content: end;
+}
+.sidenav-icon {
+  text-decoration: none;
+  padding: 0 10px;
+}
+
+p {
+  margin-top: 20%;
+  margin-bottom: 1rem;
+}
+
+
+p-panel{
+    width: 99%;
+}
+.e-headertext {
+  font-size: 17px;
+}
+.e-grid .e-rowcell.customcss{
+ 
+  font-size: 15px;
+}
+.e-grid th{
+  background-color:whitesmoke;
+  color :black;
+}
+  
+
+
+.ui-card-body {
+  width: 90%;
+}
+
+
+p-dialog{
+  width: 1000%;
+  height:1200%;
+}
+
+
+
+
+
+
+
+
+

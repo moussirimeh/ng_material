@@ -1,0 +1,161 @@
+
+
+<div *ngIf="false">
+<div class="row">
+    <div class="col-md-10">
+        <h2>
+            Informations Utiles :
+        </h2>
+    </div>
+    <div class="col-md-2">
+        <p-button label="Imprimer" (click)="imprimer()"></p-button>
+    </div>
+</div>
+<div id="informations">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Commandes :</h3>
+            <p-chart type="pie" [data]="dataCommandes" width="35vw" height="35vh"></p-chart>
+        </div>
+        <div class="col-md-6">
+            <h3>Factures de l'année courante :</h3>
+            <p-chart type="pie" [data]="dataFactures" width="35vw" height="35vh"></p-chart>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Bons de Livraison :</h3>
+            <p-chart type="pie" [data]="dataBls" width="35vw" height="35vh"></p-chart>
+        </div>
+        <div class="col-md-6">
+            <h3>Créance Client :</h3>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    A payer :
+                </div>
+                <div class="col-md-3"  align="Right">
+                    {{creanceClient.solde}} DT
+                </div>
+                <div class="col-md-4">
+
+                </div>
+            </div>
+            &nbsp;
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    Retard 1-30 jours :
+                </div>
+                <div class="col-md-3" align="Right">
+                    {{creanceClient.r30.value}} DT
+                </div>
+                <div class="col-md-4">
+                    <p-progressBar [value]="creanceClient.r30.pourc"></p-progressBar>
+                </div>
+            </div>
+            &nbsp;
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    Retard 31-60 jours :
+                </div>
+                <div class="col-md-3" align="Right">
+                    {{creanceClient.r60.value}} DT
+                </div>
+                <div class="col-md-4">
+                    <p-progressBar [value]="creanceClient.r60.pourc"></p-progressBar>
+                </div>
+            </div>
+            &nbsp;
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    Retard 61-90 jours :
+                </div>
+                <div class="col-md-3" align="Right">
+                    {{creanceClient.r90.value}} DT
+                </div>
+                <div class="col-md-4">
+                    <p-progressBar [value]="creanceClient.r90.pourc"></p-progressBar>
+                </div>
+            </div>
+            &nbsp;
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    Retard > 90 jours :
+                </div>
+                <div class="col-md-3"  align="Right">
+                    {{creanceClient.r91.value}} DT
+                </div>
+                <div class="col-md-4">
+                    <p-progressBar [value]="creanceClient.r91.pourc"></p-progressBar>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div><!--
+<div id="carrousel">
+    <p-carousel [value]="baniere" [numVisible]="3" [numScroll]="1" [circular]="true" [autoplayInterval]="3000"
+        [responsiveOptions]="responsiveOptions">
+        <p-header>
+            <h4>Nos Partenaires</h4>
+        </p-header>
+        <ng-template let-partenaire pTemplate="item">
+            <div class="partenaire-details">
+                <div class="p-grid p-nogutter">
+                    <div class="p-col-12 conteneurImg">
+                        <img width="260px" height="100px"
+                            src="assets/images/{{ste.societe}}/partenaires/{{partenaire.name}}.png" />
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-carousel>
+</div>
+-->
+<div id="contact" *ngIf="false">
+    <div>
+        <h3>
+            Contact :
+        </h3>
+    </div>
+    <div>
+        <h4>{{ste.societe}}</h4>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <h5>Adresse : </h5>
+        </div>
+        <div class="col-md-3">
+            {{ste.adresse}} {{ste.codep}} {{ste.ville}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <h5>Tel : </h5>
+        </div>
+        <div class="col-md-2">
+            {{ste.tel}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <h5>Fax : </h5>
+        </div>
+        <div class="col-md-2">
+            {{ste.fax}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <h5>Email : </h5>
+        </div>
+        <div class="col-md-2">
+            {{ste.email}}
+        </div>
+    </div>
+</div>
+</div>

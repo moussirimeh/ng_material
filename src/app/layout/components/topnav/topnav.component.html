@@ -1,0 +1,99 @@
+<mat-toolbar color="primary" class="fix-nav">
+  <button type="button" mat-icon-button class="true" (click)="toggleSidebar()">
+    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+  </button>
+  <div class="menu-section" *ngIf="IAmDoingSomething">
+    <div class="scrollable-menu-control" *ngIf="IAmDoingSomething">
+      <ejs-menu
+        #menuID
+        [items]="menuItems"
+        [enableScrolling]="true"
+        cssClass="e-custom-scroll"
+        [animationSettings]="animation"
+        [showItemOnClick]="true"
+        (select)="itemSelect($event)"
+        (beforeOpen)="onBeforeOpen($event)"
+      ></ejs-menu>
+    </div>
+  </div>
+  <span class="nav-spacer"></span>
+  <span class="nav-spacer"></span>
+  <button mat-icon-button (click)="onLoggedout()">
+    <mat-icon>exit_to_app</mat-icon>
+  </button>
+</mat-toolbar>
+<p-dialog
+  [(visible)]="showConfirmFactCollective"
+  styleClass="mydialog"
+  [modal]="true"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p-header icon="pi pi-exclamation-triangle">
+    Demande de confirmation
+  </p-header>
+  <p>Attention ! Vous êtes entrain de lancer la facturation collective.</p>
+  <p>Veuillez confirmer cette operation en tapant votre mot de passe.</p>
+  <div class="row">
+    <div class="col-md-4"><h3>Mot de passe :</h3></div>
+    <div class="col-md-8">
+      <input
+        pInputText
+        id="mdpFactCollect"
+        #mdpFactCollect
+        [(ngModel)]="mdpFactCollective"
+        type="password"
+        maxlength="20"
+        (keypress)="ov.hide()"
+        (keyup.enter)="confirmFactCollective($event)"
+      />
+    </div>
+  </div>
+  <p-footer>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-times"
+      label="Annuler"
+      (click)="showConfirmFactCollective = false"
+    ></button>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-check"
+      label="Confirmer"
+      (click)="confirmFactCollective($event)"
+    ></button>
+  </p-footer>
+</p-dialog>
+
+<p-dialog
+  header="ERREUR"
+  [(visible)]="displayErrorDialog"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p class="p-m-0">{{ errorMessage }}</p>
+  <p-footer>
+    <p-button
+      icon="pi pi-check"
+      (click)="displayErrorDialog = false"
+      label="Ok"
+      styleClass="p-button-text"
+    ></p-button>
+  </p-footer>
+</p-dialog>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body" 
+
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

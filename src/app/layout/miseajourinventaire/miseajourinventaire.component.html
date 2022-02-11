@@ -1,0 +1,211 @@
+
+<br><br>
+<br><br>
+<br><br>
+<div class="row"*ngIf="!reqExec">
+
+<div class="col-md-3"></div>
+<div class="col-md-6">
+
+ <p-card [hidden]="!showcard">
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-5"> Veuillez saisir le mot de passe :</div>
+    <div class="col-md-4">
+      <input
+        pInputText
+        id="mdpInv"
+        (click)="mdpInvent=''"
+        #mdpInv
+        [(ngModel)]="mdpInvent"
+        type="password"
+        maxlength="20"
+        (keypress)="ov.hide()"
+        (keyup.enter)="confirmInv($event.target.value)"
+        
+      />
+    </div>
+    <div class="col-md-2"></div>
+   
+  </div>
+  <br><br>
+
+
+    <div class="row">
+    <div class="col-md-5"></div>
+    <div class="col-md-2">
+    <button
+      type="button"
+      pButton
+      icon="pi pi-times"
+      label="Annuler"
+      (click)="Annuler()"
+    ></button></div>
+
+    <div class="col-md-2">
+    <button
+      type="button"
+      pButton
+      id="conf"
+     class="confbutton"
+      icon="pi pi-check"
+      label="Confirmer"
+      (click)="confirmInv($event)"
+    ></button></div>
+
+    <div class="col-md-3"></div>
+  </div>
+
+  
+
+</p-card>
+
+
+
+
+
+</div>
+<div class="col-md-3"></div>
+</div>
+
+
+
+<div class="row"[hidden]="showcard">
+  <div class="col-md-4"></div>
+  <div class="col-md-5" Style="text-align: center;  font-size: 23px; background-color:  #b7d8b7 ;">
+       La mise à jour est entraint de s'effectuer veuillez patienter...
+  </div> 
+  <div class="col-md-3"></div>
+ </div>
+
+ <br>
+ <br>
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-5"  Style ="  text-align: center; font-size: 20px; "*ngIf="reqExec">
+    Execution Terminée Avec Succès .
+  </div> 
+  <div class="col-md-3"></div>
+ </div>
+
+<br>
+<br>
+
+ <div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-5"  Style ="  text-align: center; color: rgb(38, 0, 255) ; font-size: 20px; ; "*ngIf="articlesDepEmpl.length>0&&reqExec">
+    Trop d-emplacement pour les références suivantes :
+ &nbsp;
+ <br>
+    <ejs-grid
+    #grid
+    [dataSource]="articlesDepEmpl"
+    gridLines="Both"
+    height="100"
+    [rowHeight]="25"
+    allowResizing= 'true'
+  >
+    <e-columns>
+      <e-column
+        field="code"
+        headerText="CODE"
+        width="120"
+        BackgroundColor="Gray"
+      ></e-column>
+    </e-columns>
+  </ejs-grid>
+  </div> 
+  
+  <div class="col-md-3"></div>
+ </div>
+
+
+
+
+
+
+
+
+
+<!--
+  <p-dialog
+appendTo="body" 
+  #dialogpwrd
+  [(visible)]="showConfirmINV"
+  styleClass="mydialog"
+  [modal]="true"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p-header icon="pi pi-exclamation-triangle">
+    Veuillez saisir le mot de passe :
+  </p-header>
+ 
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <input
+        pInputText
+        id="mdpInv"
+        
+        #mdpInv
+        [(ngModel)]="mdpInvent"
+        type="password"
+        maxlength="20"
+        (keypress)="ov.hide()"
+        (keyup.enter)="confirmInv($event.target.value)"
+        
+      />
+    </div>
+    <div class="col-md-3"></div>
+
+  </div>
+
+
+
+
+  <p-footer>
+    <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+    <button
+      type="button"
+      pButton
+      icon="pi pi-times"
+      label="Annuler"
+      (click)="showConfirmINV = false"
+    ></button></div>
+
+
+
+
+
+    <div class="col-md-4">
+    <button
+      type="button"
+      pButton
+      id="conf"
+     class="confbutton"
+      icon="pi pi-check"
+      label="Confirmer"
+      (click)="confirmInv($event)"
+    ></button></div>
+
+    <div class="col-md-2"></div>
+  </div>
+  </p-footer>
+</p-dialog>
+
+-->
+
+
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

@@ -1,0 +1,138 @@
+<div class="row"  >
+    
+  <div class="col-md-12" >
+                    <p-fieldset legend="recherche"   >
+                        <div class="row">
+                          
+                            <div class="col-md-2">
+                                Du :
+                                <p-calendar 
+                                [locale]="tn"
+                                [(ngModel)]="datedeb1"
+                                [yearNavigator]="true"
+                                [monthNavigator]="true"
+                                yearRange="1990:2999"
+                                dateFormat="dd/mm/yy "    
+                                [disabled]="readOnly"
+                                > 
+                               </p-calendar>
+
+                               
+                            </div>
+                          
+                            <div class="col-md-2">
+                                Au :
+                                <p-calendar 
+                                [locale]="tn"
+                                [(ngModel)]="datefin1"
+                                [yearNavigator]="true"
+                                [monthNavigator]="true"
+                                yearRange="1990:2999"
+                                dateFormat="dd/mm/yy "    
+                                [disabled]="readOnly"
+                                > 
+                               </p-calendar>
+
+                               
+                            </div>
+                            <div class="col-md-1">type :</div>
+                            <div class="col-md-2">  
+
+                               
+
+                                <ng-select
+                                [disabled]="readOnly"
+                                ngselect
+                                id="typ"
+                                [items]="type"                              
+                                [(ngModel)]="selectedType"
+                                bindLabel="text"
+                                (change)="changeType()"
+                                placeholder="choisir un type"
+                                
+                                >  
+                            </ng-select></div>
+
+                            <div class="col-md-1">Banque :</div>
+                            <div class="col-md-2">  
+
+                                <ng-select
+                                        ngselect
+                                        [disabled]="readOnly"
+                                        id="bnq" 
+                                        [items]="banques"                              
+                                        bindLabel="deno"                        
+                                        placeholder="choisir une banque"
+                                        [(ngModel)]="selectedBanque"
+                                        (change)="changeBanque()">
+                                    </ng-select>
+
+                        </div>
+                        
+                        <div class="col-md-1" *ngIf="!ejsg"> <p-button id="INIT"  (click)="init()"label="initialiser" styleClass="ui-button-info" ></p-button>
+                        </div>
+                            <div class="col-md-1" *ngIf="!ejsg"> <p-button id="affich"  (click)="afficher($event)"label="afficher" styleClass="ui-button-info" ></p-button>
+                            </div>
+                            
+                        </div>
+
+                </p-fieldset>
+
+  </div> 
+
+</div>
+
+
+<div class="row" *ngIf="ejsg"  >
+    <div class="col-md-12" >
+                      <p-fieldset legend="Liste des factures"   >
+                          <div>
+
+                            <ejs-grid #grid [dataSource]="liste" gridLines='Both'
+                             width="99%"
+                             allowResizing= 'true'
+                             height="280"
+                             rowHeight="40"
+                            
+                            
+                             >               
+                                    <e-columns   >
+                                      <e-column field="operateur"    headerText="Code"  width="10%"  [customAttributes]="customAttributes"  BackgroundColor="Gray" ></e-column>
+                                      <e-column field="deno"    headerText="Raison sociale"   width="15%"    [customAttributes]="customAttributes"></e-column>
+                                      <e-column field="numero"    headerText="N° facture" width="10%"  [customAttributes]="customAttributes"></e-column>
+                                      <e-column field="date"    headerText="Date" width="12%"  [customAttributes]="customAttributes"></e-column>
+                                      <e-column field="echeance"    headerText="Echeance" width="12%" [customAttributes]="customAttributes"></e-column>   
+                                      <e-column field="montant"    headerText="Mnt en devise" width="13%" [customAttributes]="customAttributes"> 
+                                                    <ng-template #template let-liste>
+                                                    <div style="text-align: right;">{{liste.montant}}</div>
+                                                </ng-template>
+                                      </e-column>
+                                      <e-column field="devise"    headerText="Devise " width="8%" [customAttributes]="customAttributes"></e-column>  
+                                      <e-column field="net"    headerText="Montant en DT" width="15%" [customAttributes]="customAttributes">
+                                        <ng-template #template let-liste>
+                                            <div style="text-align: right;">{{liste.net}}</div>
+                                        </ng-template>
+
+                                      </e-column>                                    
+                                  </e-columns>
+                             </ejs-grid>
+                          </div>
+                      </p-fieldset>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-2" *ngIf="btnNouvelSaisie"> <p-button class="center" (onClick)="nouvelleSaisie()" label="Nouvelle saisie" styleClass="ui-button-info" ></p-button>
+    </div>
+    <div class="col-md-4" >  </div>
+    <div class="col-md-2" *ngIf="ejsg">
+        <div [class.disabled-content]="!editEnable"> <p-button class="center" (onClick)="appercu()" label="aperçu" styleClass="ui-button-info" ></p-button>
+        </div></div>
+   
+    
+</div>
+
+
+<p-overlayPanel [dismissable]="false"  #op appendTo="body" [showCloseIcon]="true" [style]="{'text-align': 'center', 'background-color': '#f8b7bd'}" >
+    <span>{{ msgerror}}  </span> 
+</p-overlayPanel>

@@ -1,0 +1,198 @@
+<div *ngIf="false" class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+    <div fxFlex>
+        <div class fxFlexFill fxLayoutAlign="center center">
+          <h2 style="    color: #1611d2;"> CATALOGUE DES PRIX </h2>
+        </div>
+    </div>
+</div>
+
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <div fxFlex>
+        <mat-card style="width: 500px">
+            
+            <mat-card-content >
+                <button pButton type="button" label="Introduire Les criteres de Selection" 
+                (click)="introdure()"
+                class="ui-button-raised ui-button-secondary">
+
+                </button>
+               
+                  <div class="row">
+                      <div class="col-md-4">
+                          <label>Fournisseur:</label></div>
+                          <div class="col-md-2">
+                  <ng-select  class="custom "
+                [items]="fournisseurs"
+                bindLabel="deno"
+                bindValue="code"
+                [(ngModel)]="selectedFournisseur"
+                (keyup)="applyFilterArtParDeno($event.target.value)"
+                style="width: 240px"
+                
+                
+                placeholder=""
+                [disabled]="ngselectDisabled"
+              >
+              </ng-select></div></div>
+
+              <div class="row">
+                <div class="col-md-4">
+                    <label>Famille:</label></div>
+                    <div class="col-md-2">
+              <ng-select class="custom"
+                ngselect
+                [items]="familles"
+                bindLabel="nom"
+                bindValue="code"
+                [(ngModel)]="selectedFamille"
+                (keyup)="applyFilterArtParDeno($event.target.value)"
+                style="width: 240px"
+                
+                
+                placeholder=""
+                [disabled]="ngselectDisabled"
+              >
+              </ng-select></div></div>
+
+              <div class="row">
+                <div class="col-md-4">
+                    <label>Sous Famille:</label></div>
+                    <div class="col-md-2">
+              <ng-select class="custom"
+                ngselect
+                [items]="sfamilles"
+                bindLabel="nom"
+                bindValue="code"
+                [(ngModel)]="selectedSfamille"
+                (keyup)="applyFilterArtParDeno($event.target.value)"
+                style="width: 240px"
+                
+                
+                placeholder=""
+                [disabled]="ngselectDisabled"
+              >
+              </ng-select></div></div>
+
+              <div class="row">
+                <div class="col-md-4">
+                    <label>Marque:</label></div>
+                    <div class="col-md-2">
+              <ng-select class="custom"
+                ngselect
+                [items]="marques"
+                bindLabel="nom"
+                bindValue="code"
+                [(ngModel)]="selectedMarque"
+                (keyup)="applyFilterArtParDeno($event.target.value)"
+                style="width: 240px"
+
+                
+                placeholder=""
+                [disabled]="ngselectDisabled"
+              >
+              </ng-select></div></div>
+              
+              
+            </mat-card-content>
+        </mat-card>
+        
+    </div>
+    <div fxFlex>
+        <mat-card style="width: 520px">
+          
+            <mat-card-content>
+                <div div class="row">
+                    <div class="col-sm-3">
+                <h4 class="first">En stock</h4>
+                <div class="ui-g" style="width:150px;margin-bottom:10px;font-size: 13px;">
+                    <div class="ui-g-12"><p-radioButton name="group1" value="tout" label="TOUT" [(ngModel)]="stock" inputId="opt1"></p-radioButton></div>
+                    <div class="ui-g-12"><p-radioButton name="group1" value="null" label="STOCK NULL" [(ngModel)]="stock" inputId="opt2"></p-radioButton></div>
+                    <div class="ui-g-12"><p-radioButton name="group1" value="disponible" label="DISPONIBLE " [(ngModel)]="stock" inputId="opt3"></p-radioButton></div>
+                    <div class="ui-g-12"><p-radioButton name="group1" value="alerte" label="ALERTE" [(ngModel)]="stock" inputId="opt3"></p-radioButton></div>
+                    <div class="ui-g-12"><p-radioButton name="group1" value="negatif" label="NEGATIF" [(ngModel)]="stock" inputId="opt3"></p-radioButton></div>
+                  </div>
+                  </div>
+                  <div class="col-sm-3">
+                  <h4 >Trier par</h4>
+                  <div class="ui-g" style="width:150px;margin-bottom:10px;font-size: 13px;">
+                    <div class="ui-g-12"><p-radioButton name="group2" value="code" label="CODE" [(ngModel)]="trier" inputId="opt4"></p-radioButton></div>
+                    <div class="ui-g-12"><p-radioButton name="group2" value="design" label="DESIGNATION" [(ngModel)]="trier" inputId="opt5"></p-radioButton></div>
+                    </div>
+                  
+                   </div>
+                
+                  <div class="col-sm-3">
+                  <h4 >Article</h4>
+                  <div class="ui-g" style="width:150px;margin-bottom:10px;font-size: 13px;">
+                    <div class="ui-g-12"><p-radioButton name="group3" value="tout" label="TOUT" [(ngModel)]="article" inputId="opt4"></p-radioButton></div>
+                    <div class="ui-g-12"><p-radioButton name="group3" value="noncommande" label="NON COMMANDE" [(ngModel)]="article" inputId="opt5"></p-radioButton></div>
+                    <div class="ui-g-12"><p-radioButton name="group3" value="encommande" label="En COMMANDE" [(ngModel)]="article" inputId="opt5"></p-radioButton></div>
+  </div>
+ 
+                  </div>
+                  <div class="row" id="button">
+                     
+                      <div class="col-md-3" style="    margin-top: 169px;">
+                        <button pButton type="button" label="Valider" *ngIf="selectedFamille||selectedFournisseur||selectedMarque||selectedSfamille"
+                        (click)="valider()" 
+                        class="ui-button-raised " >
+                        </button>
+                        
+                      </div>
+                      
+                    </div>
+                  </div>
+                  
+                  
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+
+<div fxFlex fxLayout="row" fxLayout.lt-md="column">
+    <div fxFlex>
+        <mat-card class="ng-hide" *ngIf="saisieCardShow">
+           
+            <mat-card-content>
+                
+                  <div class="col-md-4" style="margin-top:-3px">
+                    <input type="text" size="30" (keyup)="applyFilterDesign($event.target.value)" placeholder="Recherche par Designation" pInputText />
+                  
+                  </div> 
+                  
+                  <div class="control-section" style="margin-top:4px">
+                <ejs-grid #grid [dataSource]="catalogues"   [searchSettings]="searchOptions" gridLines='Both' 
+                 [allowExcelExport]='true' [selectedRowIndex]="0"  allowResizing= 'true'
+                height="148" 
+                >
+                <e-columns>
+                    <e-column field="code" headerText="Référence" width="120"></e-column>
+                    <e-column field="design" headerText="Désignation" width="210"></e-column>
+                    <e-column field="quantite" headerText="Quantité" width="80"></e-column>
+                    <e-column field="min" headerText="Min" width="60"></e-column>
+                    <e-column field="max" headerText="Max" width="60"></e-column>
+                    <e-column field="com"  headerText="com" width="60"></e-column>
+                    <e-column field="prix" headerText="Prix_HT" width="100"></e-column>
+                    <e-column field="ttc" headerText="TTC" width="110"></e-column>
+                    <e-column field="tva" headerText="TVA" width="80"></e-column>
+                   
+                </e-columns>
+            </ejs-grid>  
+            <button pButton type="button" label="Excel" 
+            (click)="btnClicked()"
+            class="ui-button-raised " style="margin-top: 3px;margin-bottom: -4px">
+
+            </button>
+            
+          </div>
+
+
+          
+    </mat-card-content>
+        </mat-card>
+        
+       
+        
+    </div>
+</div>

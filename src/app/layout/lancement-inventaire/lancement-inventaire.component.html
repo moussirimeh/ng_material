@@ -1,0 +1,62 @@
+<div>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-2">Date de debut :</div>
+      <div class="col-md-1"></div>
+      <div class="col-md-2">Date de fin :</div>
+      <div class="col-md-3"></div>
+    </div>
+    &nbsp;
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-2">
+        <p-calendar
+          [(ngModel)]="dateDebut"
+          [locale]="tn"
+          [inputStyle]="{ width: '100%' }"
+          dateFormat="dd/mm/yy"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          yearRange="1900:2999"
+          [maxDate]="dateFin"
+        ></p-calendar>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-2">
+        <p-calendar
+          [(ngModel)]="dateFin"
+          [locale]="tn"
+          [inputStyle]="{ width: '100%' }"
+          dateFormat="dd/mm/yy"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          yearRange="1900:2900"
+          [minDate]="dateDebut"
+        ></p-calendar>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+    &nbsp;
+    <div class="row">
+      <div class="col-md-5"></div>
+      <div class="col-md-2">
+        <button
+          pButton
+          id="apercu"
+          type="button"
+          label="Valider"
+          (click)="valider($event)"
+        ></button>
+      </div>
+      <div class="col-md-5"></div>
+    </div>
+  </div>
+  <p-overlayPanel
+    #ov
+    [dismissable]="false"
+    [showCloseIcon]="true"
+    appendTo="body"
+    [style]="styleOvPanel"
+  >
+    <span> {{ msgs }} </span>
+  </p-overlayPanel>

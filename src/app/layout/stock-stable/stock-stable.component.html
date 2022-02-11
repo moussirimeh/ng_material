@@ -1,0 +1,158 @@
+
+<br>
+<div class="row" style="font-weight: bold;font-size: 18px; color: red;">
+  <div class="col-md-3"></div> <div class="col-md-6">Rotation sur la periode du {{datedebut}} jusqu'à   {{dateDeterStockstable}}  &lt;  0.3</div> <div class="col-md-3"></div>
+</div>
+<br>  
+
+
+
+
+<div class="row">
+  <div class="col-md-1">Fournisseur:</div>
+    <div class="col-md-3">
+        <ng-select
+          ngselect
+          id="four"
+          [items]="listefournisseurs"
+          bindLabel="deno"
+           placeholder="choisir un fournisseur"
+          (open)="chargerFournisseur()"
+          [(ngModel)]="SelectedFournisseur"
+          (change)="changeFournisseur()"
+          [searchFn]="onSearchfournisseur"
+          [disabled]="readonly"
+         
+        >
+        </ng-select>
+    </div>
+   
+    <div class="col-md-5"></div>
+    </div>
+
+    <br>
+
+    <div class="row">
+ 
+      <div class="col-md-1">Famille:</div>
+      <div class="col-md-3">
+        <ng-select
+        ngselect
+        id="famil"
+        [items]="listeFamille"
+        bindLabel="nom"
+        (open)="chargerListeFamille()"
+        placeholder="choisir une famille"
+        (change)="changeFamille()"
+        [(ngModel)]="selectedFamille"
+        [searchFn]="onSearchfamille"
+        [disabled]="readonly"
+        > 
+        </ng-select>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-1"> <button
+        pButton
+        id="btnpdf"
+        type="button"
+        label="Aperçu"
+        class="ui-button-raised"
+        (click)="Apercu($event)"
+       ></button></div>
+      <div class="col-md-1"><button
+        pButton
+        id="btnExcel"
+        type="button"
+        label="Excel"
+        (click)="gererExcelgrid($event)"
+        class="ui-button-raised"
+        
+       ></button></div>
+    <div class="col-md-1">
+      <button
+       pButton
+       id="btnAjouter"
+       type="button"
+       label="Afficher"
+       (click)="afficher($event)"
+       class="ui-button-raised"
+       [hidden]="btnaff==true"
+      ></button>
+    </div>
+    <div class="col-md-1">
+    
+    </div>
+  
+  </div>
+  <br>
+      <div class="row"  *ngIf="btnaff" >
+        <ejs-grid id="ejs1" #grid width="99%" [searchSettings]="searchOptions" [allowExcelExport]="true" [dataSource]="listeStockAll" [selectedRowIndex]="0" height="330"  
+          rowHeight="30"   [allowSorting]="true"
+          [allowMultiSorting]="true"
+          [sortSettings]="sortOptions"
+         gridLines="Both"  allowResizing= 'true'>
+         <e-columns>
+           <e-column field="code" headerText="Reference" width="45"  headerTextAlign="left">
+           </e-column>
+           <e-column field="design" headerText="Designation" width="70"  headerTextAlign="left">
+           </e-column>
+           <e-column field="quantite" headerText="Quantite" format="N1"
+           textAlign="Right" width="40"  headerTextAlign="left">
+            
+          </e-column>
+          <e-column field="achats" headerText="Achats" format="N3"
+          textAlign="Right" width="40"  headerTextAlign="left">
+         
+          </e-column>
+          <e-column field="total" headerText="Total"  format="N3"
+          textAlign="Right" width="40"  headerTextAlign="left">
+        
+          </e-column>
+          <e-column field="fournisseur" headerText="Fournisseur" 
+           width="45"  headerTextAlign="left">
+         
+          </e-column>
+          <e-column field="famille" headerText="Famille" 
+           width="45"  headerTextAlign="left">
+          </e-column>
+         
+         </e-columns>
+        </ejs-grid>
+    </div>
+  
+    <br> 
+    <div class="row"*ngIf="btnaff">
+      <div class="col-md-5"></div>
+      <div class="col-md-1" >
+        <label style="font-size: 18px;">Total :</label>
+      </div>
+      <div class="col-md-2"style="font-size: 18px;" >
+        <label >{{total_G}}</label>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+    <br> <br>
+    <div class="row">
+      <div class="col-md-2">
+        <button
+        *ngIf="btnaff"
+         pButton
+         id="btnAjouter"
+         type="button"
+         (click)="nouvelleSaisie()"
+         label="Nouvelle Saisie"
+         class="ui-button-raised"
+        ></button>
+      </div>
+      <div class="col-md-1">
+       
+      </div>
+      <div class="col-md-9"></div>
+    </div>
+<p-overlayPanel #op appendTo="body" [dismissable]='false'  
+[showCloseIcon]="true"
+[style]="{'text-align': 'center', 'font-size':'14px' ,'background-color': ' #f8b7bd'}" >
+<span style="width: 138%;"> {{msg}} </span>
+</p-overlayPanel> 
+  
+  

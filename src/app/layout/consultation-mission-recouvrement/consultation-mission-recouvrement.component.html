@@ -1,0 +1,634 @@
+<p-blockUI [blocked]="blockDocument"></p-blockUI>
+<div>
+  <div [hidden]="hideMissionsNonLuesCtrl">
+    <p style="font-size: large; font-weight: bold;">Vous avez des missions de recouvrement qu'il faut lire !</p>
+    <ejs-grid
+      #gridMissionsNonLues
+      [dataSource]="missions"
+      height="200"
+      gridLines="Both"
+      [rowHeight]="25"
+      (mouseup)="annulerSelectionMissionsNonLues()"
+      (mousewheel)="annulerSelectionMissionsNonLues()"
+      (recordDoubleClick)="lireMission()"
+      gridLines="Both"
+    >
+      <e-columns>
+        <e-column
+          field="numMission"
+          headerText="N°Mission"
+          textAlign="Left"
+          width="35"
+        >
+        </e-column>
+        <e-column
+          field="codeClt"
+          headerText="Code Client"
+          textAlign="Left"
+          width="35"
+        >
+        </e-column>
+        <e-column
+          field="denoClt"
+          headerText="Designation Client"
+          textAlign="Left"
+          width="65"
+        >
+        </e-column>
+        <e-column
+          field="codeInitiateur"
+          headerText="Initiateur"
+          textAlign="Left"
+          width="40"
+        >
+        </e-column>
+        <e-column
+          field="codeDestinataire"
+          headerText="Destinataire"
+          textAlign="Left"
+          width="40"
+        >
+        </e-column>
+        <e-column
+          field="montant"
+          headerText="Montant"
+          textAlign="Right"
+          width="40"
+        >
+        </e-column>
+        <e-column
+          field="dateDebut"
+          headerText="Date Debut"
+          textAlign="Left"
+          width="35"
+        >
+        </e-column>
+        <e-column
+          field="dateFin"
+          headerText="Date Fin"
+          textAlign="Left"
+          width="35"
+        >
+        </e-column>
+        <e-column
+          field="codeSituation"
+          headerText="Situation"
+          textAlign="Left"
+          width="30"
+        >
+        </e-column>
+        <e-column field="lue" headerText="Lue" textAlign="Left" width="25">
+        </e-column> </e-columns
+    ></ejs-grid>
+    <p style="font-weight: bold; color: red;">
+      * Double click sur chaque ligne pour confirmer la lecture de mission
+      selectionnée
+    </p>
+  </div>
+  <div
+    [ngClass]="{ disableDiv: showGridMission }"
+    [hidden]="!hideMissionsNonLuesCtrl"
+  >
+    <div class="row">
+      <div class="col-md-2">INITIATAIRE :</div>
+      <div class="col-md-3">
+        <ng-select
+          ngselect
+          [items]="users"
+          bindLabel="nPUtil"
+          [(ngModel)]="selectedInit"
+          style="width: 100%"
+          placeholder="INITIATAIRE"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-1">SITUATION :</div>
+      <div class="col-md-1">
+        <p-radioButton
+          name="groupSituation"
+          value="O"
+          label="Ouvert"
+          [(ngModel)]="selectedSituation"
+        ></p-radioButton>
+      </div>
+      <div class="col-md-1" style="text-align: right">
+        <label>LUES :</label>
+      </div>
+      <div class="col-md-1">
+        <p-radioButton
+          name="groupLues"
+          value="O"
+          label="Oui"
+          [(ngModel)]="selectedLues"
+        ></p-radioButton>
+      </div>
+      <div class="col-md-2" style="text-align: right">DATE FIN PREVUE :</div>
+      <div class="col-md-1">
+        <p-calendar
+          [(ngModel)]="dateFinPrevue"
+          [locale]="tn"
+          [inputStyle]="{ width: '100%' }"
+          dateFormat="dd/mm/yy"
+          [minDate]="dateMin"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          yearRange="1980:2050"
+        ></p-calendar>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">DESTINATAIRE :</div>
+      <div class="col-md-3">
+        <ng-select
+          ngselect
+          [items]="users"
+          bindLabel="nPUtil"
+          [(ngModel)]="selectedDest"
+          style="width: 100%"
+          placeholder="DESTINATAIRE"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-1">
+        <p-radioButton
+          name="groupSituation"
+          value="F"
+          label="Fermé"
+          [(ngModel)]="selectedSituation"
+        ></p-radioButton>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-1">
+        <p-radioButton
+          name="groupLues"
+          value="N"
+          label="Non"
+          [(ngModel)]="selectedLues"
+        ></p-radioButton>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">CLIENT :</div>
+      <div class="col-md-3">
+        <!--<ng-select
+          ngselect
+          [items]="clients"
+          bindLabel="deno"
+          [(ngModel)]="selectedClient"
+          (keyup.enter)="recherche($event.target.value)"
+          (keyup)="clients = []; codeClient = ''"
+          (change)="syncCodeClient()"
+          (click)="syncCodeClient()"
+          style="width: 100%"
+          placeholder="CLIENT"
+        >
+        </ng-select>-->
+        <ng-select
+          ngselect
+          id="clients"
+          [items]="clients"
+          bindLabel="deno"
+          [(ngModel)]="selectedClient"
+          (clear)="syncCodeClient()"
+          (change)="syncCodeClient()"
+          style="width: 100%"
+          placeholder="CLIENT"
+          [searchFn]="onSearchClient"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-1">
+        <input
+          id="codeClt"
+          type="text"
+          size="15"
+          maxlength="7"
+          [(ngModel)]="codeClient"
+          (keyup)="selectedClient = null; clients = []; ov.hide()"
+          (keyup.enter)="chercherClientParCode($event)"
+          pInputText
+          placeholder="Code Client"
+          style="width: 100%"
+          readonly="true"
+        />
+      </div>
+      <div class="col-md-1">
+        <p-radioButton
+          name="groupSituation"
+          value="T"
+          label="Tout"
+          [(ngModel)]="selectedSituation"
+        ></p-radioButton>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-1">
+        <p-radioButton
+          name="groupLues"
+          value="T"
+          label="Tout"
+          [(ngModel)]="selectedLues"
+        ></p-radioButton>
+      </div>
+      <div class="col-md-2"></div>
+      <div class="col-md-1" style="text-align: right">
+        <button
+          pButton
+          type="button"
+          label="AFFICHER"
+          (click)="afficher($event)"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <!--
+  <div class="row" [hidden]="true" [ngClass]="{ disableDiv: showGridMission }">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-3">INITIATAIRE :</div>
+        <div class="col-md-8">
+          <ng-select
+            ngselect
+            [items]="users"
+            bindLabel="nPUtil"
+            [(ngModel)]="selectedInit"
+            style="width: 70%"
+            placeholder="INITIATAIRE"
+          >
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">DESTINATAIRE :</div>
+        <div class="col-md-8">
+          <ng-select
+            ngselect
+            [items]="users"
+            bindLabel="nPUtil"
+            [(ngModel)]="selectedDest"
+            style="width: 70%"
+            placeholder="DESTINATAIRE"
+          >
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">CLIENT :</div>
+        <div class="col-md-6">
+          <ng-select
+            ngselect
+            [items]="clients"
+            bindLabel="deno"
+            [(ngModel)]="selectedClient"
+            (keyup.enter)="recherche($event.target.value)"
+            (keyup)="clients = []; codeClient = ''"
+            (change)="syncCodeClient()"
+            (click)="syncCodeClient()"
+            style="width: 95%"
+            placeholder="CLIENT"
+          >
+          </ng-select>
+        </div>
+        <div class="col-md-3">
+          <input
+            *ngIf="false"
+            id="codeClt"
+            type="text"
+            size="15"
+            maxlength="7"
+            [(ngModel)]="codeClient"
+            (keyup)="selectedClient = null; clients = []; ov.hide()"
+            (keyup.enter)="chercherClientParCode($event)"
+            pInputText
+            placeholder="Code Client"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-3">SITUATION :</div>
+        <div class="col-md-3">
+          <p-radioButton
+            name="groupSituation"
+            value="O"
+            label="Ouvert"
+            [(ngModel)]="selectedSituation"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-3">
+          <p-radioButton
+            name="groupSituation"
+            value="F"
+            label="Fermé"
+            [(ngModel)]="selectedSituation"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-3">
+          <p-radioButton
+            name="groupSituation"
+            value="T"
+            label="Tout"
+            [(ngModel)]="selectedSituation"
+          ></p-radioButton>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">LUES :</div>
+        <div class="col-md-3">
+          <p-radioButton
+            name="groupLues"
+            value="O"
+            label="Oui"
+            [(ngModel)]="selectedLues"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-3">
+          <p-radioButton
+            name="groupLues"
+            value="N"
+            label="Non"
+            [(ngModel)]="selectedLues"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-3">
+          <p-radioButton
+            name="groupLues"
+            value="T"
+            label="Tout"
+            [(ngModel)]="selectedLues"
+          ></p-radioButton>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">DATE FIN PREVUE :</div>
+        <div class="col-md-4">
+          <p-calendar
+            [(ngModel)]="dateFinPrevue"
+            [locale]="tn"
+            [inputStyle]="{ width: '100%' }"
+            dateFormat="dd/mm/yy"
+            [minDate]="dateMin"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            yearRange="1980:2050"
+          ></p-calendar>
+        </div>
+        <div class="col-md-4" align="Right">
+          <button
+            pButton
+            type="button"
+            label="AFFICHER"
+            (click)="afficher()"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </div>
+-->
+  &nbsp;
+  <div *ngIf="showGridMission">
+    <div class="row">
+      <div class="col-md-12">
+        <div>
+          <ejs-grid
+            #gridMissions
+            [dataSource]="missions"
+            height="200"
+            gridLines="Both"
+            [rowHeight]="25"
+            (rowSelected)="rowSelected($event)"
+            (mouseup)="annulerSelectionMissions()"
+            (mousewheel)="annulerSelectionMissions()"
+            (recordDoubleClick)="showDetails()"
+            gridLines="Both"
+          >
+            <e-columns>
+              <e-column
+                field="numMission"
+                headerText="N°Mission"
+                textAlign="Left"
+                width="35"
+              >
+              </e-column>
+              <e-column
+                field="codeClt"
+                headerText="Code Client"
+                textAlign="Left"
+                width="35"
+              >
+              </e-column>
+              <e-column
+                field="denoClt"
+                headerText="Designation Client"
+                textAlign="Left"
+                width="65"
+              >
+              </e-column>
+              <e-column
+                field="codeInitiateur"
+                headerText="Initiateur"
+                textAlign="Left"
+                width="40"
+              >
+              </e-column>
+              <e-column
+                field="codeDestinataire"
+                headerText="Destinataire"
+                textAlign="Left"
+                width="40"
+              >
+              </e-column>
+              <e-column
+                field="montant"
+                headerText="Montant"
+                textAlign="Right"
+                width="40"
+              >
+              </e-column>
+              <e-column
+                field="dateDebut"
+                headerText="Date Debut"
+                textAlign="Left"
+                width="35"
+              >
+              </e-column>
+              <e-column
+                field="dateFin"
+                headerText="Date Fin"
+                textAlign="Left"
+                width="35"
+              >
+              </e-column>
+              <e-column
+                field="codeSituation"
+                headerText="Situation"
+                textAlign="Left"
+                width="30"
+              >
+              </e-column>
+              <e-column
+                field="lue"
+                headerText="Lue"
+                textAlign="Left"
+                width="25"
+              >
+              </e-column> </e-columns
+          ></ejs-grid>
+        </div>
+      </div>
+      <!--
+      <div class="col-md-5">
+        <div *ngIf="showGridAction">
+          <ejs-grid
+            #gridActions
+            [dataSource]="actions"
+            height="200"
+            gridLines="Both"
+            [rowHeight]="26"
+            (mouseup)="annulerSelectionActions()"
+            (mousewheel)="annulerSelectionActions()"
+            gridLines="Both"
+          >
+            <e-columns>
+              <e-column
+                field="numAction"
+                headerText="N°Action"
+                textAlign="Left"
+                width="50"
+              >
+              </e-column>
+              <e-column
+                field="codeClt"
+                headerText="Code Client"
+                textAlign="Left"
+                width="50"
+              >
+              </e-column>
+              <e-column
+                field="effectueePar"
+                headerText="Effectuee Par"
+                textAlign="Left"
+                width="50"
+              >
+              </e-column>
+              <e-column
+                field="date"
+                headerText="Date"
+                textAlign="Left"
+                width="50"
+              >
+              </e-column>
+              <e-column
+                field="action"
+                headerText="Action"
+                textAlign="Left"
+                width="50"
+              >
+              </e-column>
+              <e-column
+                field="numVisite"
+                headerText="N°Visite"
+                textAlign="Left"
+                width="50"
+              >
+              </e-column> </e-columns
+          ></ejs-grid>
+        </div>
+      </div>
+    --></div>
+    &nbsp;
+    <div class="row">
+      <div class="col-md-4">
+        <button
+          pButton
+          [hidden]="hideBtFermerMission"
+          type="button"
+          label="FERMER MISSION"
+          (click)="fermerMission()"
+        ></button>
+      </div>
+      <div class="col-md-4" align="center">
+        <button
+          pButton
+          type="button"
+          label="NOUVELLE SAISIE"
+          (click)="nvlSaisie()"
+          [hidden]="hideNvlSaisieButton"
+        ></button>
+      </div>
+      <div class="col-md-4" align="Right">
+        <button
+          pButton
+          type="button"
+          label="APERCU"
+          (click)="apercu()"
+        ></button>
+      </div>
+    </div>
+    &nbsp;
+    <div *ngIf="showGridAction">
+      <ejs-grid
+        #gridActions
+        [dataSource]="actions"
+        height="200"
+        gridLines="Both"
+        [rowHeight]="25"
+        (mouseup)="annulerSelectionActions()"
+        (mousewheel)="annulerSelectionActions()"
+        gridLines="Both"
+      >
+        <e-columns>
+          <e-column
+            field="numAction"
+            headerText="N°Action"
+            textAlign="Left"
+            width="50"
+          >
+          </e-column>
+          <e-column
+            field="codeClt"
+            headerText="Code Client"
+            textAlign="Left"
+            width="50"
+          >
+          </e-column>
+          <e-column
+            field="effectueePar"
+            headerText="Effectuee Par"
+            textAlign="Left"
+            width="50"
+          >
+          </e-column>
+          <e-column field="date" headerText="Date" textAlign="Left" width="50">
+          </e-column>
+          <e-column
+            field="action"
+            headerText="Action"
+            textAlign="Left"
+            width="50"
+          >
+          </e-column>
+          <e-column
+            field="numVisite"
+            headerText="N°Visite"
+            textAlign="Left"
+            width="50"
+          >
+          </e-column> </e-columns
+      ></ejs-grid>
+    </div>
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

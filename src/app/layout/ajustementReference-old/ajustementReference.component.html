@@ -1,0 +1,125 @@
+<p-card>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <h2>Régularisation du Stock</h2>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+  <p-toast [style]="{ marginTop: '10%' }" position="top-center" key="tc"></p-toast>
+  <p-tabView [activeIndex]="1">
+    <p-tabPanel header="Consulter">
+      &nbsp;
+      <div style="height:100%">
+        <ejs-grid
+          id="grid"
+          #gridRegu
+          [dataSource]="regulatsDatasource"
+          [selectedRowIndex]="selectedIndex"
+          (mousedown)="annulerSelectionRegu()"
+          (mousewheel)="annulerSelectionRegu()"
+          height="400"
+          gridLines='Both'
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column field="numero" headerText="NUMERO" textAlign="Left" width="45"></e-column>
+            <e-column field="date" headerText="DATE" textAlign="Left" width="70"></e-column>
+            <e-column field="reference" headerText="REFERENCE" textAlign="Left" width="110"></e-column>
+            <e-column field="designation" headerText="DESIGNATION" textAlign="Left" width="155"></e-column>
+            <e-column field="quantite" headerText="QUANTITE" textAlign="right" width="45"></e-column>
+            <e-column field="sens" headerText="SENS" textAlign="Left" width="30"></e-column>
+            <e-column field="existant" headerText="EXISTANT" textAlign="right" width="45"></e-column>
+            <e-column field="argument" headerText="ARGUMENTATION" textAlign="Left" width="190"></e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="Régulariser">
+      <div style="min-width: height 100%;">
+        <div class="row">
+          <div class="col-md-2"><h4>Numéro :</h4></div>
+
+          <div class="col-md-2"><h4>Date :</h4></div>
+
+          <div class="col-md-3"><h4>Référence :</h4></div>
+
+          <div class="col-md-5"><h4>Designation :</h4></div>
+        </div>
+        <div class="row">
+          <div class="col-md-2"><input type="text" pInputText size="15" [(ngModel)]="numero" [disabled]="true" /></div>
+          <div class="col-md-2">
+            <input type="text" pInputText size="15" [(ngModel)]="date" [disabled]="true" />
+          </div>
+          <div class="col-md-3"><input type="text" pInputText size="28" [(ngModel)]="reference" [disabled]="true" /></div>
+          <div class="col-md-5"><input type="text" pInputText size="53" [(ngModel)]="designation" [disabled]="true" /></div>
+        </div>
+        <div class="row">
+          <div class="col-md-2"><h4>Quantité :</h4></div>
+
+          <div class="col-md-2"><h4>Sens :</h4></div>
+
+          <div class="col-md-8"><h4>Argumentation :</h4></div>
+        </div>
+        <div class="row">
+          <div class="col-md-2"><input type="text" pInputText size="15" [(ngModel)]="quantite" /></div>
+          <div class="col-md-2">
+            <p-dropdown [options]="senss" [(ngModel)]="sens" [style]="{ 'min-width': '30%','max-width': '30%' }"></p-dropdown>
+          </div>
+          <div class="col-md-8"><input type="text" pInputText size="90" [(ngModel)]="argument" /></div>
+        </div>
+        &nbsp;
+        <div>
+          <p-panel header="Lise des articles">
+            <div class="row">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input
+                type="search"
+                placeholder="Recherche par article"
+                pInputText
+                (keyup.enter)="applyFilterArtParCode($event.target.value)"
+                size="28"
+              />
+            </div>
+            &nbsp;
+
+            <ejs-grid
+              #grid
+              [dataSource]="stocks"
+              [selectedRowIndex]="0"
+              height="150"
+              (recordDoubleClick)="ajouterArt()"
+              (mouseup)="annulerSelectionStock()"
+              (mousewheel)="annulerSelectionStock()"
+              gridLines='Both'
+              allowResizing= 'true'
+            >
+              <e-columns>
+                <e-column field="code" headerText="Code" textAlign="Left" width="250"> </e-column>
+                <e-column field="design" headerText="Designation" textAlign="Left" width="300"></e-column>
+                <e-column field="quantite" headerText="en STOCK" textAlign="Right" width="150"></e-column>
+                <e-column field="prix" headerText="Prix U. HT" textAlign="Right" width="150"></e-column>
+                <e-column field="id" headerText="id" textAlign="Right" width="0"></e-column>
+                <e-column field="equiv" headerText="equiv" textAlign="Right" width="0"></e-column>
+              </e-columns>
+            </ejs-grid>
+          </p-panel>
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <button color="primary" class="mat-raised-button mat-primary" ng-reflect-color="primary" (click)="valider()">
+            Valider
+          </button>
+          &nbsp;
+          <button color="primary" class="mat-raised-button mat-primary" ng-reflect-color="primary" (click)="annuler()">
+            Annuler
+          </button>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+</p-card>   

@@ -1,0 +1,234 @@
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <div class="col-md-9">
+      <div class="row">
+        <div class="col-md-1">
+          <label>Client</label>
+        </div>
+        <div class="col-md-2">
+          <input
+            readonly="true"
+            id="codeClt"
+            type="text"
+            size="10"
+            maxlength="7"
+            (keyup.enter)="applyFilterClientParCode($event)"
+            (keyup)="ov.hide()"
+            pInputText
+            [(ngModel)]="codeClient"
+            (keydown)="afficherShow = false; intialiserSelectedClient()"
+            [disabled]="saisieCardShow"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <ng-select
+            ngselect
+            id="client"
+            [items]="clients"
+            bindLabel="deno"
+            [(ngModel)]="selectedClient"
+            (click)="updateOnSelect()"
+            [searchFn]="onSearchClient"
+            (clear)="codeClient = ''; afficherShow = false"
+            [disabled]="saisieCardShow"
+          >
+          </ng-select>
+        </div>
+
+        <button
+          pButton
+          id="btAfficher"
+          type="button"
+          label="Afficher"
+          *ngIf="afficherShow"
+          (click)="afficher($event)"
+          class="ui-button-raised"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="mb-20"
+  fxFlex
+  fxLayout="row"
+  fxLayout.lt-md="column"
+  fxLayoutGap="1%"
+>
+  <div fxFlex="50">
+    <mat-card style="height: 380px" class="ng-hide" *ngIf="saisieCardShow">
+      <mat-card-content>
+        <p-table
+          [value]="regtComptD"
+          [scrollable]="true"
+          scrollHeight="236px"
+          [style]="{ height: '300px' }"
+          (onRowSelect)="onRowSelectD($event)"
+          (onRowUnselect)="onRowUnselectD($event)"
+          [(selection)]="selectedDebit"
+        >
+          <ng-template pTemplate="header" let-columns>
+            <tr style="font-size: 12px">
+              <th style="width: 40px">
+                <p-tableHeaderCheckbox [hidden]="true"></p-tableHeaderCheckbox>
+              </th>
+
+              <th style="width: 80px">Piece</th>
+              <th style="width: 80px">Montant</th>
+              <th style="width: 100px">Date</th>
+              <th style="width: 80px">Numero</th>
+              <th style="width: 100px">Echeance</th>
+              <th style="width: 200px">Observation</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowDataa let-debit>
+            <tr [pSelectableRow]="rowDataa" style="font-size: 12px">
+              <td style="width: 40px">
+                <p-tableCheckbox [value]="rowDataa"></p-tableCheckbox>
+              </td>
+              <td style="width: 80px">{{ debit.mode }}</td>
+              <td style="width: 80px">{{ debit.montant }}</td>
+              <td style="width: 100px">{{ debit.date }}</td>
+              <td style="width: 80px">{{ debit.facture }}</td>
+              <td style="width: 100px">{{ debit.ech }}</td>
+              <td style="width: 200px">{{ debit.observat }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <div class="col-md-4">
+          <input
+            type="text"
+            size="30"
+            [(ngModel)]="sommeDebit"
+            placeholder="somme"
+            [readOnly]="true"
+            pInputText
+          />
+        </div>
+        &nbsp;
+      </mat-card-content>
+
+      <button
+        id="btValider"
+        pButton
+        type="button"
+        label="VALIDER"
+        *ngIf="validerShow"
+        (click)="valider($event)"
+        class="ui-button-raised"
+      ></button>
+    </mat-card>
+  </div>
+  <div fxFlex="50">
+    <mat-card style="height: 380px" class="ng-hide" *ngIf="saisieCardShow1">
+      <mat-card-content>
+        <p-table
+          [value]="regtComptC"
+          [scrollable]="true"
+          scrollHeight="236px"
+          [style]="{ height: '300px' }"
+          (onRowSelect)="onRowSelect($event)"
+          (onRowUnselect)="onRowUnselect($event)"
+          [(selection)]="selectedCredit"
+        >
+          <ng-template pTemplate="header" let-columns>
+            <tr style="font-size: 12px">
+              <th style="width: 40px">
+                <p-tableHeaderCheckbox [hidden]="true"></p-tableHeaderCheckbox>
+              </th>
+
+              <th style="width: 80px">Piece</th>
+              <th style="width: 80px">Montant</th>
+              <th style="width: 100px">Date</th>
+              <th style="width: 80px">Numero</th>
+
+              <th style="width: 200px">Observation</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-credit>
+            <tr [pSelectableRow]="rowData" style="font-size: 12px">
+              <td style="width: 40px">
+                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+              </td>
+              <td style="width: 80px">{{ credit.mode }}</td>
+              <td style="width: 80px">{{ credit.montant }}</td>
+              <td style="width: 100px">{{ credit.date }}</td>
+              <td style="width: 80px">{{ credit.facture }}</td>
+              <td style="width: 200px">{{ credit.observat }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+        <div class="col-md-4">
+          <input
+            type="text"
+            size="30"
+            [(ngModel)]="sommeCredit"
+            placeholder="somme"
+            [readOnly]="true"
+            pInputText
+          />
+        </div>
+        &nbsp;
+      </mat-card-content>
+      <button
+        pButton
+        type="button"
+        label="Nouvelle saisie"
+        (click)="nouveau()"
+        class="ui-button-raised"
+      ></button>
+    </mat-card>
+  </div>
+</div>
+
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+
+<p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
+<!--
+<p-toast [style]="{ marginTop: '160px' }" position="top-center"></p-toast>
+<p-toast
+  position="center"
+  key="c"
+  (onClose)="onReject()"
+  [modal]="true"
+  [baseZIndex]="5000"
+>
+  <ng-template let-message pTemplate="message">
+    <div style="text-align: center;">
+      <i class="pi pi-exclamation-triangle" style="font-size: 3em;"></i>
+      <h3>{{ message.summary }}</h3>
+      <p>{{ message.detail }}</p>
+    </div>
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-6">
+        <button
+          type="button"
+          pButton
+          (click)="onConfirm()"
+          label="Yes"
+          class="ui-button-success"
+        ></button>
+      </div>
+      <div class="ui-g-6">
+        <button
+          type="button"
+          pButton
+          (click)="onReject()"
+          label="No"
+          class="ui-button-secondary"
+        ></button>
+      </div>
+    </div>
+  </ng-template>
+</p-toast>
+-->

@@ -1,0 +1,66 @@
+@import 'material';
+@import 'main';
+@import 'utils';
+@import 'responsive';
+@import '~bootstrap/scss/bootstrap-reboot';
+@import '~bootstrap/scss/bootstrap-grid';
+// treegrid css
+/*
+@import '../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-calendars/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-grids/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-treegrid/styles/material.css';*/
+// @import '../../node_modules/@syncfusion/ej2/material.css';
+@import '../../node_modules/@ng-select/ng-select/themes/default.theme.css';
+@import '../../node_modules/primeicons/primeicons.css';
+@import '../../node_modules/primeng/resources/themes/nova-light/theme.css';
+@import '../../node_modules/primeng/resources/primeng.min.css';
+@import '../../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+// @import '../../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
+@import '../../node_modules/@syncfusion/ej2-pdfviewer/styles/material.css';
+@import "../../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../../node_modules/@syncfusion/ej2-navigations/styles/material.css";
+@import '../../node_modules/@syncfusion/ej2-angular-grids/styles/material.css';
+@import '~material-design-icons/iconfont/material-icons.css';
+
+.e-grid td.e-active { 
+    background-color: rgb(63, 91, 181);// #3f51b5;
+    color : white;
+}
+.e-grid th{
+    background-color:whitesmoke;
+    color :black;
+}/*
+.mat-raised-button{
+    width: 98px;
+}*/
+.e-headertext {
+    font-size: 17px;
+  }
+  .e-grid .e-rowcell.customcss {
+    font-size: 14px;
+  }
+  .e-grid {
+    font-weight: bold;
+  }
+body{
+    // background-color: lightgray;
+    font-weight: bold;
+}
+body .ui-inputtext {
+    font-weight: bold;
+}
+body .form-control .ui-inputtext{
+    font-weight: bold;
+}

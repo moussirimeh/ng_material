@@ -1,0 +1,228 @@
+<div class="ListeDesClients">
+ 
+  <div class="row" style="margin-top: 1%;">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-4">
+          <p>Zone Recouvrement :</p>
+        </div>
+        <div class="col-md-7">
+          <ng-select 
+          ngselect [items]="zones"
+          [disabled]="ngselectDisabled == false"  
+           bindLabel="deno" 
+           [(ngModel)]="SelectedZone"
+           [searchFn]="onSearchZones"
+           placeholder="Veuiller choisir une zone"
+            >
+          </ng-select>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-3">
+          <p>Vendeur</p>
+        </div>
+        <div class="col-md-7">
+          <ng-select 
+          ngselect [items]="vendeurs"
+          [disabled]="ngselectDisabled == false"  
+           bindLabel="deno" 
+           [(ngModel)]="selectedVendeur"
+           [searchFn]="onSearchVendeurs"
+           placeholder="Veuiller choisir un Vendeur"
+            >
+          </ng-select>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-4">
+          <p>Typologie</p>
+        </div>
+        <div class="col-md-7">
+          <ng-select 
+          ngselect [items]="typologies"
+          [disabled]="ngselectDisabled == false"  
+           bindLabel="text" 
+           [(ngModel)]="selectedTypologie"
+           placeholder="Saisir N,M,S,C,P,I">
+          </ng-select>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-3">
+          <p>Groupe :</p>
+        </div>
+        <div class="col-md-7">
+          <ng-select 
+          ngselect [items]="groupes"
+          [disabled]="ngselectDisabled == false"  
+           bindLabel="deno" 
+           [(ngModel)]="selectedGroupe"
+           [searchFn]="onSearchGroupes"
+           placeholder="Veuiller choisir un Groupe"
+            >
+          </ng-select>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-4">
+          <p>Activité :</p>
+        </div>
+        <div class="col-md-7">
+          <ng-select 
+          ngselect [items]="secteurs"
+          [disabled]="ngselectDisabled == false"  
+           bindLabel="deno" 
+           [(ngModel)]="selectedSecteur"
+           [searchFn]="onSearchSecteurs"
+           placeholder="Veuiller choisir un secteur"
+            >
+          </ng-select>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-3">
+          <p>Rev/Con/Tout</p>
+        </div>
+        <div class="col-md-7">
+          <ng-select [disabled]="ngselectDisabled == false" 
+          [items]="typescomm" bindLabel="text" 
+          [(ngModel)]="selectedType"
+          [selectOnTab]=true
+          placeholder="Veuiller choisir un Type"
+          >
+        </ng-select>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-4">
+          <p>Etat/Priv/Tout</p>
+        </div>
+        <div class="col-md-7">
+          <ng-select [disabled]="ngselectDisabled == false" 
+          [items]="natures" bindLabel="text" 
+          [(ngModel)]="selectedNature"
+          placeholder="Veuiller choisir la nature"
+          >
+        </ng-select>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-4">
+          <button clikcked="true" id="btn" style="font-size: 14px;" pButton type="button" label="Afficher" *ngIf="btnafficher"
+          (click)="Afficher($event)" class="ui-button-raised ">
+        </button>
+        </div>
+        <div class="col-md-3" style="margin-left: -20%;margin-top: -2%;">
+        </div>
+        <div class="col-md-5"></div>
+      </div>
+    </div>
+    
+  </div>
+<div *ngIf="valide=== true && afficherClicked === true">
+  <div class="row">
+    <div class="col-md-12">
+      <ejs-grid 
+      #grid
+      [selectedRowIndex]="0"  gridLines='Both'       
+               width="100%" 
+              [dataSource]="clients"
+              [selectedRowIndex]="0"
+              height="280"
+              rowHeight='40'
+              [allowExcelExport]='true'   
+              allowResizing= 'true'            
+      >
+     
+      <e-columns>
+          <e-column field="code" headerText="Code" width="100"  [customAttributes]="customAttributes" ></e-column>
+          <e-column field="deno"  headerText="Raison Sociale" width="250" [customAttributes]="customAttributes" ></e-column>
+          <e-column field="tel" headerText="Tél" width="110" [customAttributes]="customAttributes"></e-column>
+          <e-column field="fax" headerText="Fax" width="110" [customAttributes]="customAttributes"></e-column>
+          <e-column field="ech"  headerText="Ech" width="90" [customAttributes]="customAttributes"></e-column>
+          <e-column field="objectifT"  headerText="Objectif" width="100" [customAttributes]="customAttributes">
+            <ng-template #template let-clients>
+              <p style="text-align: right;">{{clients.objectifT}}</p>
+          </ng-template>
+          </e-column>
+          <e-column field="mag"  headerText="Typologie" width="100" [customAttributes]="customAttributes"></e-column>
+          <e-column field="denoActivite"  headerText="activité" width="150" [customAttributes]="customAttributes"></e-column>
+          <e-column field="typeComm"  headerText="Rev/Con" width="90"[customAttributes]="customAttributes" ></e-column>
+          <e-column field="nature"  headerText="Et/Pr" width="90" [customAttributes]="customAttributes" ></e-column>
+        </e-columns>
+    </ejs-grid>
+    </div>
+  </div> 
+  <div class="row" style="margin-top: 0.5%;" >
+    <div class="col-md-5">
+      <div class="row">
+        <div class="col-md-4" *ngIf="afficherClicked === true">
+          <button   clikcked="true" style="font-size: 14px;"
+          pButton type="button" label="Nouvelle Saisie" (click)="NouvelleSaisie()" class="ui-button-raised ">        
+          </button>
+        </div>
+        
+        <div class="col-md-3" >
+          <button clikcked="true" style="font-size: 14px;"
+          pButton type="button" label="Apercu" (click)="Imprimer('preview')" class="ui-button-raised ">        
+          </button>
+        </div>
+        <div class="col-md-5">
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7">
+      <div class="row">
+        <div class="col-md-9"></div>
+        <div class="col-md-3" >
+          <button  clikcked="true" style="font-size: 14px;"
+          pButton type="button" label="EXCEL" (click)="Excel()" class="ui-button-raised ">        
+          </button>
+        </div>
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+<p-overlayPanel
+        #ovo
+        [dismissable]="false"
+        [showCloseIcon]="true"
+        appendTo="body"
+        [style]="{
+          'text-align': 'center',
+          'font-size': '14px',
+          'background-color': ' #f8b7bd'
+        }"
+      >
+        <span> {{ms}} </span>
+      </p-overlayPanel>

@@ -1,0 +1,161 @@
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-2" *ngIf="consultOnly"></div>
+  <div class="col-md-8">
+    <div class="row">
+      <div class="col-md-6" [ngClass]="{ disableDiv: disableGrid }">
+        <div>
+          Recherche : &nbsp;
+          <input
+            type="search"
+            (keyup)="applyFilterMarque($event.target.value)"
+            (search)="applyFilterMarque($event.target.value)"
+            pInputText
+            size="30"
+            maxlength="20"
+          />
+        </div>
+
+        &nbsp;
+        <div>
+          <ejs-grid
+            #grid
+            [dataSource]="marques"
+            [searchSettings]="searchOptions"
+            gridLines="Both"
+            height="300"
+            (onmousedown)="annulerSelection()"
+            (mouseup)="annulerSelection()"
+            (mousewheel)="annulerSelection()"
+            (rowSelected)="rowSelected()"
+            [rowHeight]="30"
+            allowResizing= 'true'
+          >
+            <e-columns>
+              <e-column
+                field="code"
+                headerText="CODE"
+                width="120"
+                BackgroundColor="Gray"
+              ></e-column>
+              <e-column field="nom" headerText="NOM" width="250"></e-column>
+            </e-columns>
+          </ejs-grid>
+          &nbsp;
+          <div align="center">
+            <p-button label="Visualiser" *ngIf="consultOnly" (click)="imprimer()"></p-button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" *ngIf="!consultOnly">
+        <div class="row" style="height: 50px;">
+          <div class="col-md-4" [hidden]="!showButtons">
+            <p-button
+              label="Ajouter"
+              (click)="ajouter()"
+              [hidden]="!showAjouBt"
+            ></p-button>
+          </div>
+          <div class="col-md-4" [hidden]="!showButtons">
+            <p-button
+              label="Modifier"
+              (click)="modifier()"
+              [hidden]="!showModSupBts"
+            ></p-button>
+          </div>
+          <div class="col-md-4" [hidden]="!showButtons">
+            <p-button
+              label="Supprimer"
+              (click)="supprimer()"
+              [hidden]="!showModSupBts"
+            ></p-button>
+          </div>
+        </div>
+        &nbsp;
+        <div>
+          <p-panel header="DETAILS">
+            &nbsp;
+            <div class="row">
+              <div class="col-md-3">
+                CODE :
+              </div>
+              <div class="col-md-9" style="font-size: 12px;">
+                <input
+                  type="search"
+                  id="code"
+                  size="10"
+                  [disabled]="disableEditCode"
+                  [(ngModel)]="selectedMarque.code"
+                  pInputText
+                  maxlength="3"
+                  (keypress)="ov.hide()"
+                />
+              </div>
+            </div>
+            &nbsp;
+            <div class="row">
+              <div class="col-md-3">
+                NOM :
+              </div>
+              <div class="col-md-9">
+                <input
+                  type="search"
+                  id="nom"
+                  size="30"
+                  [disabled]="disableEditNom"
+                  [(ngModel)]="selectedMarque.nom"
+                  pInputText
+                  maxlength="20"
+                  (keypress)="ov.hide()"
+                />
+              </div>
+            </div>
+            &nbsp;
+          </p-panel>
+          &nbsp;
+          <div></div>
+          &nbsp;
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <button
+                color="primary"
+                class="mat-fab mat-primary"
+                ng-reflect-color="primary"
+                id="btValider"
+                (click)="valider($event)"
+                [hidden]="!showValAnnulBts"
+              >
+                Valider
+              </button>
+            </div>
+            <div class="col-md-4">
+              <button
+                color="warn"
+                class="mat-fab mat-warn"
+                ng-reflect-color="warn"
+                (click)="annuler()"
+                [hidden]="!showValAnnulBts"
+              >
+                Annuler
+              </button>
+            </div>
+            <div class="col-md-1" *ngIf="consultOnly"></div>
+            <div class="col-md-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2"></div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

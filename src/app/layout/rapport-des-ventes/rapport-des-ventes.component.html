@@ -1,0 +1,151 @@
+<div class="Rapport_Ventess" style="margin-top: 0.5%;">
+
+  <div class="row">
+  </div>
+
+  <div class="row">
+    
+        <div class="col-md-3">
+          <span style="font-size: 16px;font-weight: bold;margin: 6px;">du:</span>
+          <p-calendar [disabled]="dateDisabled == true"   [locale]="tn" [(ngModel)]="from" dateFormat="dd/mm/yy" [monthNavigator]="true" [yearNavigator]="true"
+            yearRange="2000:9999" ></p-calendar>
+        </div>
+        <div class="col-md-3" style="margin-left: -12px;">
+          <span style="font-size: 16px;font-weight: bold;margin: 6px;">au:</span>
+          <p-calendar [disabled]="dateDisabled == true" [locale]="tn" [(ngModel)]="to" dateFormat="dd/mm/yy" [monthNavigator]="true" [yearNavigator]="true"
+            yearRange="2000:9999" ></p-calendar>
+        </div>
+        
+   
+    <div class="col-md-4"></div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="col-md-1">
+      <p style="font-size: 16px;font-weight: bold;">Client</p>
+    </div>
+    <div class="col-md-3">
+      <ng-select [disabled]="ngselectDisabled == false" ngselect  [items]="clients" bindLabel="deno" [(ngModel)]="SelectedClient"
+      [searchFn]="onSearchClient" placeholder="Veuiller choisir un Client">
+                  </ng-select>
+    </div>
+    <div class="col-md-3" *ngIf="SelectedClient !== null">
+      {{SelectedClient.code}}
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-1">
+      <p style="font-size: 16px;font-weight: bold;">Article</p>
+    </div>
+    <div class="col-md-3">
+      <ng-select ngselect [disabled]="ngselectDisabled == false" [items]="articles" bindLabel="code" [(ngModel)]="SelectedArticle"
+      (keyup)="onSearchArtParCode($event.target.value)" placeholder="Veuiller choisir un article">
+                  </ng-select>
+    </div>
+  
+    <div class="col-md-2" *ngIf="SelectedArticle !== null">
+      {{SelectedArticle.design}}
+    </div>
+    <div class="col-md-2" *ngIf="SelectedArticle === null">
+    </div>
+    <div class="col-md-1">
+      <button id="init" [hidden]="hidden" clikcked="true" style="font-size: 14px;" pButton type="button" label="intialiser"
+                    (click)="init()" class="ui-button-raised ">
+                  </button>
+    </div>
+   
+    <div class="col-md-1">
+      <button id="afficher" [hidden]="hidden" clikcked="true" style="font-size: 14px;" pButton type="button" label="Afficher"
+                    (click)="Afficher($event)" class="ui-button-raised ">
+                  </button>
+    </div>
+    <div class="col-md-1">
+      <button clikcked="true" style="font-size: 14px;" pButton type="button" label="Aperçu" id="apperc"
+      (click)="imprimer($event)" class="ui-button-raised ">
+     </button>
+
+    </div>
+    <div class="col-md-1">
+      <button clikcked="true" style="font-size: 14px;" pButton type="button" label="Excel" id="excel"
+      (click)="excel($event)" class="ui-button-raised ">
+     </button>
+
+    </div>
+    
+  </div>
+
+  <div *ngIf="valide === true" >
+ <br>
+    <div class="row" style="margin-top: 0.5%;">
+      <div class="col-md-12">
+        <ejs-grid 
+                   #grid [searchSettings]="searchOptions"
+                    [selectedRowIndex]="0" gridLines='Both' (rowSelected)="rowSelected()" width="100%"
+                    [dataSource]="ventes" [selectedRowIndex]="0" height="240" gridLines='Both' allowResizing= 'true'>
+                    <e-columns>
+                      <e-column field="codeMouve" headerText="Référence" width="130"
+                        [customAttributes]="customAttributes"></e-column>
+                      <e-column field="designSt" headerText="Désignation" width="200" [customAttributes]="customAttributes">
+                      </e-column>
+                      <e-column field="dateMouve" headerText="Date " width="140"
+                        [customAttributes]="customAttributes"></e-column>
+                      <e-column field="quantiteMouve" headerText="Quantité" width="80" [customAttributes]="customAttributes">
+                        <ng-template #template let-achats>
+                          <div style="text-align: right;">{{achats.quantiteMouve}}</div>
+                      </ng-template>
+                      </e-column>
+                      <e-column field="prixMouve" headerText="Prix Un." width="80" [customAttributes]="customAttributes">
+                       
+                      <ng-template #template let-achats>
+                        <div style="text-align: right;">{{achats.prixMouve}}</div>
+                    </ng-template>
+                     
+                      </e-column>
+                      <e-column field="combinMouve" headerText="Pièce com." width="120"
+                        [customAttributes]="customAttributes"></e-column>
+                      <e-column field="denoClt" headerText="Tier" width="200" [customAttributes]="customAttributes">
+                      </e-column>
+                    
+                    </e-columns>
+                  </ejs-grid>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 0.5%;">
+
+      <div class="col-md-2">
+            <button clikcked="true" style="font-size: 14px;" pButton type="button" label="Nouvelle Saisie"
+                        (click)="NvlSaisie()" class="ui-button-raised ">
+            </button>
+       </div>
+       <div class="col-md-3"></div>
+
+       <div class="col-md-2" >
+      
+        </div>
+
+        <div class="col-md-5"></div>
+
+    </div>
+
+
+
+  </div>
+  <p-overlayPanel
+  #ovo
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{ms}} </span>
+</p-overlayPanel>
+</div>

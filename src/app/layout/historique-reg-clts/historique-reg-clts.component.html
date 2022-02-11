@@ -1,0 +1,265 @@
+ 
+   <div class="row">
+    <div class="col-md-1">
+      <p-calendar
+        [(ngModel)]="datedebut"
+        [locale]="tn"
+        [inputStyle]="{ width: '100%' }"
+        dateFormat="dd/mm/yy"
+        [disabled]="ngselectDisabled"
+      ></p-calendar>
+    </div>
+
+    <div class="col-md-1">
+      <p-calendar
+        [(ngModel)]="datefin"
+        [locale]="tn"
+        [inputStyle]="{ width: '100%' }"
+        dateFormat="dd/mm/yy"
+        [disabled]="ngselectDisabled"
+      ></p-calendar>
+    </div>
+      <div class="col-md-1">Client : <br> <br> Code:
+      </div>
+      <div class="col-md-3">
+
+        <ng-select
+          ngselect
+          [items]="clients"
+          bindLabel="deno"
+          (change)="changeClients()"
+          [(ngModel)]="selectedClient"
+          [searchFn]="onSearchClient"
+          [disabled]="ngselectDisabled"
+          style="width: 100%;"
+        > 
+        </ng-select> <br> 
+        <ng-select
+        ngselect
+        [items]="clients"
+        bindLabel="code"
+        (change)="changeClients()"
+        [(ngModel)]="selectedClient"
+        [searchFn]="onSearchClientParCode"
+        [disabled]="ngselectDisabled"
+        style="width: 100%;"
+      > 
+    </ng-select>
+      </div>
+      <!--    --> 
+      <div class="col-md-2">
+     
+        <div class="row" style="font-weight: bold;"><div class="col-md-12"></div> </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-10"  style="font-size: 13px;font-weight: bold;"><p-radioButton
+              [disabled]="ngselectDisabled"
+              name="group1"
+              value="debit"
+              label="Les Mvts de Débit"
+              [(ngModel)]="regle"
+              inputId="opt1"
+            ></p-radioButton></div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-10" style="font-size: 13px;font-weight: bold;"><p-radioButton
+              name="group1"
+              value="nonRegle"
+              label="Les Mvts de de Crédit"
+              [(ngModel)]="regle"
+              inputId="opt2"
+              [disabled]="ngselectDisabled"
+            ></p-radioButton></div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-10" style="font-size: 13px;font-weight: bold;"><p-radioButton
+              name="group1"
+              value="tout"
+              label="Tout"
+              [(ngModel)]="regle"
+              [disabled]="ngselectDisabled"
+              inputId="opt3"
+            ></p-radioButton></div>
+          </div>
+    
+     </div>
+<div class="col-md-1">
+    <button
+    *ngIf="afficherShow"
+      pButton
+      type="button"
+      label="Afficher"
+      (click)="afficher($event)"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-1">
+    <button
+    *ngIf="appercuShow"
+      pButton
+      type="button"
+      label="Visualiser"
+      (click)="apercu($event)"
+    ></button>
+  </div>
+  <div class="col-md-1">
+    <p-button
+    *ngIf="appercuShow"
+      label="Excel"
+      (click)="excel($event)"
+      id="excel"
+      
+    ></p-button>
+  </div>
+    </div>
+  <br>
+  
+  
+
+
+
+<div class="row"  [hidden]="!showCard1">
+  <div class="col-md-12">
+    <mat-card>
+      <mat-card-content>
+        <ejs-grid
+          #grid
+          [dataSource]="listeBrous"
+          gridLines="Both"
+          height="130px"
+          [rowHeight]="26"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column field="date" headerText="Date" width="90"></e-column>
+            <e-column field="piece" headerText="Piece" width="70"></e-column>
+            <e-column field="numero" headerText="Numero" width="80"></e-column>
+            <e-column
+              field="echeance"
+              headerText="Echeance"
+              width="90"
+            ></e-column>
+            <e-column
+              field="montant"
+              headerText="Debit"
+              textAlign="Right"
+              format="N3"
+              width="90"
+            ></e-column>
+            <e-column
+              field="code"
+              headerText="Credit"
+              textAlign="Right"
+              format="N3"
+              width="90"
+            ></e-column>
+            <e-column field="regle" headerText="Regle" width="80"></e-column>
+            <e-column
+              field="libelle"
+              headerText="Observations"
+              width="150"
+            ></e-column>
+          </e-columns>
+  
+        </ejs-grid>
+
+        <div class="row" style="margin-top: 1%;">
+          <div class="col-md-2"></div>
+          <div class="col-md-2">
+           
+          </div>
+          <div class="col-md-2">
+      
+          </div>
+          <div class="col-md-3">
+     
+          </div>
+          <div class="col-md-3">
+            <h5>Total Débit:&nbsp;&nbsp;&nbsp;{{ totalDebit }}</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <h5>Historique Nombre IMP:&nbsp;&nbsp;{{ histNombreIMP }}</h5>
+          </div>
+          <div class="col-md-3">
+            
+          </div>
+          <div class="col-md-3"></div>
+          <div class="col-md-3">
+            <h5>Total Crédit:&nbsp;&nbsp;&nbsp;{{ totalCredit }}</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <h5>Historique Total IMP:&nbsp;&nbsp;{{ totalIMP }}</h5>
+          </div>
+          <div class="col-md-3">
+            
+          </div>
+          <div class="col-md-3"></div>
+          <div class="col-md-3">
+            <div class="row">
+              <div class="col-md-3">
+                <h5>Solde:</h5>
+              </div>
+              <div class="col-md-6">
+                <h5>{{ solde }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <button
+            (click)="NouvelleSaisie()"
+            *ngIf="showNvSaisie"
+              pButton
+              type="button"
+              label="Nouvelle saisie"
+            ></button>
+          </div>
+          <div class="col-md-3"></div>
+          <div class="col-md-2">
+           
+          </div>
+          <div class="col-md-2">
+            <button
+              pButton
+              type="button"
+              label="Apurement"
+              *ngIf="apurementshow"
+              (click)="apurement()"
+            ></button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<p-dialog
+  header="Appurement"
+  (onHide)="close($event)"
+  [contentStyle]="{ 'min-height': '600px' }"
+  [style]="{ width: '99vw', height: '100vh' }"
+  [(visible)]="display"
+>
+  <app-appurement-reglement></app-appurement-reglement>
+</p-dialog>
+
+
+
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"S
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+
+

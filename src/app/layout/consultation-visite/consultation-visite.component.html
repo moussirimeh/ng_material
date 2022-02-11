@@ -1,0 +1,378 @@
+<p-card class="cardContainer">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-5">
+          DATE PREVUE ENTRE LE
+        </div>
+        <div class="col-md-3">
+          <p-calendar
+            [(ngModel)]="dateDebut"
+            [locale]="tn"
+            [inputStyle]="{ width: '100%' }"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            yearRange="1980:2050"
+          ></p-calendar>
+        </div>
+        <div class="col-md-1">ET</div>
+        <div class="col-md-3">
+          <p-calendar
+            [(ngModel)]="dateFin"
+            [locale]="tn"
+            [inputStyle]="{ width: '100%' }"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            yearRange="1980:2050"
+          ></p-calendar>
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6">
+          NUMERO VISITE
+        </div>
+        <div class="col-md-6">
+          <input
+            type="text"
+            pKeyFilter="pint"
+            [(ngModel)]="numVisite"
+            size="23"
+            maxlength="15"
+            pInputText
+          />
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6">
+          CLIENT
+        </div>
+        <div class="col-md-6">
+          <!--
+          <p-dropdown
+            [options]="clients"
+            optionLabel="deno"
+            [(ngModel)]="selectedClient"
+            [style]="{ 'min-width': '100%', 'max-width': '100%' }"
+          ></p-dropdown>-->
+          <ng-select
+            ngselect
+            [items]="clients"
+            bindLabel="deno"
+            [(ngModel)]="selectedClient"
+            [searchFn]="onSearchClient"
+          >
+          </ng-select>
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6">
+          PROGRAMME PAR
+        </div>
+        <div class="col-md-6">
+          <!--<p-dropdown
+            [options]="utils"
+            [(ngModel)]="selectedUser"
+            optionLabel="nPUtil"
+            [style]="{ 'min-width': '100%', 'max-width': '100%' }"
+          ></p-dropdown>-->
+          <ng-select
+            ngselect
+            [items]="utils"
+            bindLabel="nPUtil"
+            [(ngModel)]="selectedUser"
+            [searchFn]="onSearchUser"
+          >
+          </ng-select>
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6">
+          PARTICIPANT
+        </div>
+        <div class="col-md-6">
+          <!--<p-dropdown
+            [options]="utils"
+            [(ngModel)]="selectedParticipant"
+            optionLabel="nPUtil"
+            [style]="{ 'min-width': '100%', 'max-width': '100%' }"
+          ></p-dropdown>-->
+          <ng-select
+            ngselect
+            [items]="utils"
+            bindLabel="nPUtil"
+            [(ngModel)]="selectedParticipant"
+            [searchFn]="onSearchParticipant"
+          >
+          </ng-select>
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6">
+          SUJET
+        </div>
+        <div class="col-md-6">
+          <!--<p-dropdown
+            [options]="sujets"
+            [(ngModel)]="selectedSujet"
+            optionLabel="rubrique"
+            [style]="{ 'min-width': '100%', 'max-width': '100%' }"
+          ></p-dropdown>-->
+          <ng-select
+            ngselect
+            [items]="sujets"
+            bindLabel="rubrique"
+            [(ngModel)]="selectedSujet"
+            [searchFn]="onSearchSujet"
+          >
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <p-panel header="VISITE NON ENREGISTRE ET DATE ENREGISTREMENT">
+        <div>
+          <p-radioButton
+            name="radioButtonGroup"
+            value="<=0"
+            label="NON DEPASSE"
+            [(ngModel)]="selectedValue1"
+          ></p-radioButton>
+        </div>
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup"
+            value=">0"
+            label="DEPASSE"
+            [(ngModel)]="selectedValue1"
+          ></p-radioButton>
+        </div>
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup"
+            value=">3"
+            label="DEPASSE DE PLUS DE 3 JOUES"
+            [(ngModel)]="selectedValue1"
+          ></p-radioButton>
+        </div>
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup"
+            value=">7"
+            label="DEPASSE DE PLUS DE 7 JOUES"
+            [(ngModel)]="selectedValue1"
+          ></p-radioButton>
+        </div>
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup"
+            value=">15"
+            label="DEPASSE DE PLUS DE 15 JOUES"
+            [(ngModel)]="selectedValue1"
+          ></p-radioButton>
+        </div>
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup"
+            value=""
+            label="TOUT"
+            [(ngModel)]="selectedValue1"
+          ></p-radioButton>
+        </div>
+      </p-panel>
+    </div>
+    <div class="col-md-4">
+      <p-panel header="CONTENANT MESSAGE NON REPONDU">
+        <div>
+          <p-radioButton
+            name="radioButtonGroup2"
+            value=")"
+            label="DELAIS DEPASSE"
+            [(ngModel)]="selectedValue2"
+          ></p-radioButton>
+        </div>
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup2"
+            value="3"
+            label="DELAIS DEPASSE DE + DE 3 JOURS"
+            [(ngModel)]="selectedValue2"
+          ></p-radioButton>
+        </div>
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup2"
+            value="7"
+            label="DELAIS DEPASSE DE + DE 7 JOURS"
+            [(ngModel)]="selectedValue2"
+          ></p-radioButton>
+        </div>
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup2"
+            value="15"
+            label="DELAIS DEPASSE DE + DE 15 JOURS"
+            [(ngModel)]="selectedValue2"
+          ></p-radioButton>
+        </div>
+
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup2"
+            value=""
+            label="TOUT"
+            [(ngModel)]="selectedValue2"
+          ></p-radioButton>
+        </div>
+      </p-panel>
+      &nbsp;
+      <div align="center">
+        <button
+          pButton
+          id="btAfficher"
+          type="button"
+          label="AFFICHER"
+          (click)="afficher($event)"
+          class="ui-button-raised"
+        ></button>
+      </div>
+    </div>
+  </div>
+  &nbsp;
+  <div>
+    <ejs-grid
+      #grid
+      id="grid"
+      [dataSource]="visites"
+      [allowExcelExport]="true"
+      (mouseup)="annulerSelectionVisite()"
+      (mousewheel)="annulerSelectionVisite()"
+      (recordDoubleClick)="consulterVisite()"
+      height="200"
+      gridLines="Both"
+      allowTextWrap="true"
+      [textWrapSettings]="wrapSettings"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column
+          field="numVisite"
+          headerText="N° Visite"
+          textAlign="Left"
+          width="65"
+        ></e-column>
+        <e-column
+          field="codeClt"
+          headerText="Code Clt"
+          textAlign="Left"
+          width="65"
+        >
+        </e-column>
+        <e-column
+          field="denoClt"
+          headerText="Libelle Client"
+          textAlign="Left"
+          width="90"
+        ></e-column>
+        <e-column
+          field="datePrevue"
+          headerText="Date et Heure Prévue"
+          textAlign="Left"
+          width="100"
+        ></e-column>
+        <e-column
+          field="heureFinPrevue"
+          headerText="Heure Fin Prevue"
+          textAlign="Left"
+          width="85"
+        ></e-column>
+        <e-column
+          field="dateReelle"
+          headerText="Date et Heure Réelles"
+          textAlign="Left"
+          width="100"
+        >
+        </e-column>
+        <e-column
+          field="heureFinReelle"
+          headerText="Heure Fin Réelle"
+          textAlign="Left"
+          width="85"
+        ></e-column>
+        <e-column
+          field="codeProgrammeePar"
+          headerText="Prog. Par"
+          textAlign="Left"
+          width="70"
+        ></e-column>
+        <e-column
+          field="codePart1"
+          headerText="Participant 1"
+          textAlign="Left"
+          width="70"
+        ></e-column>
+        <e-column
+          field="codePart2"
+          headerText="Participant 2"
+          textAlign="Left"
+          width="70"
+        >
+        </e-column>
+        <e-column
+          field="codePart3"
+          headerText="Participant 3"
+          textAlign="Left"
+          width="70"
+        ></e-column>
+      </e-columns>
+    </ejs-grid>
+    <div class="row">
+      <div class="col-md-10" align="center" style="color: red;">
+        <h4>Double Click pour selectionner la visite à consulter</h4>
+      </div>
+      <div class="col-md-2">
+        <button
+          pButton
+          type="button"
+          label="--> EXCEL"
+          (click)="excelExport()"
+          class="ui-button-raised"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <p-dialog
+    header="Consultation Visite"
+    (onShow)="showDialogMaximized(dialProgVisite)"
+    (onHide)="ProgVisite.initialiser()"
+    #dialProgVisite
+    [(visible)]="ProgVisite.displayProgVisite"
+    [style]="{ width: '100%', height: '100%' }"
+  >
+    <app-visite-ant-consult></app-visite-ant-consult>
+  </p-dialog>
+</p-card>
+<p-overlayPanel
+    #ov
+    [dismissable]="false"
+    [showCloseIcon]="true"
+    appendTo="body"
+    [style]="styleOvPanel"
+  >
+    <span> {{ msgs }} </span>
+  </p-overlayPanel>

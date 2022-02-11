@@ -1,0 +1,247 @@
+<div align="center">
+  <h2>Ajout-Modif-Supp Article</h2>
+</div>
+&nbsp;
+<div class="row">
+  <div class="col-md-1"><h5>Recherche</h5></div>
+  <div class="col-md-3">
+    <input
+      type="text"
+      [(ngModel)]="code"
+      (keyup.enter)="rechercherArticle()"
+      pInputText
+    />
+  </div>
+  <div class="col-md-2">
+    <button pButton type="button" label="Ajouter"></button>
+  </div>
+  <div class="col-md-2">
+    <button
+      pButton
+      type="button"
+      (click)="modifier()"
+      label="Modifier"
+    ></button>
+  </div>
+  <div class="col-md-2">
+    <button pButton type="button" label="Effacer"></button>
+  </div>
+  <div class="col-md-2"></div>
+</div>
+<div>
+  &nbsp;
+  <ejs-grid
+    #gridStock
+    id="gridStock"
+    [dataSource]="stocks"
+    gridLines="Both"
+    height="100px"
+    [rowHeight]="26"
+    allowResizing= 'true'
+  >
+    <e-columns>
+      <e-column field="code" headerText="Référence" width="100"></e-column>
+      <e-column field="design" headerText="Designation" width="120"></e-column>
+      <e-column
+        field="prix"
+        headerText="Prix"
+        width="80"
+        textAlign="Right"
+      ></e-column>
+      <e-column
+        field="quantite"
+        headerText="Quantite"
+        width="80"
+        textAlign="Right"
+      ></e-column>
+    </e-columns>
+  </ejs-grid>
+</div>
+&nbsp;
+<div *ngIf="showPanel">
+  <div class="row">
+    <div class="col-md-2"><h4>REFERENCE</h4></div>
+    <div class="col-md-4">
+      <input type="text" [(ngModel)]="selectedArticle.code" pInputText />
+    </div>
+  </div>
+  &nbsp;
+  <div class="row">
+    <div class="col-md-2"><h4>DESIGNATION</h4></div>
+    <div class="col-md-4">
+      <input type="text" [(ngModel)]="selectedArticle.design" pInputText />
+    </div>
+  </div>
+  &nbsp;
+  <div class="row">
+    <div class="col-md-2"><h4>PR ACH EN DT</h4></div>
+    <div class="col-md-4">
+      <input
+        type="text"
+        [disabled]="true"
+        [(ngModel)]="selectedArticle.achat"
+        pInputText
+      />
+    </div>
+    <div class="col-md-2"><h4>FAMILLE</h4></div>
+    <div class="col-md-2">
+      <p-dropdown
+        [options]="familles"
+        [(ngModel)]="selectedFamille"
+        optionLabel="nom"
+      ></p-dropdown>
+    </div>
+    <div class="col-md-2">
+      <input
+        type="text"
+        [disabled]="true"
+        [(ngModel)]="selectedFamille.code"
+        pInputText
+      />
+    </div>
+  </div>
+  &nbsp;
+  <div class="row">
+    <div class="col-md-2"><h4>DERNIER PA</h4></div>
+    <div class="col-md-2">
+      <input
+        type="text"
+        [disabled]="true"
+        [(ngModel)]="selectedArticle.dPAchat"
+        pInputText
+      />
+    </div>
+    <div class="col-md-2">
+      {{ selectedArticle.devise }}
+    </div>
+    <div class="col-md-2"><h4>S/FAMILLE</h4></div>
+    <div class="col-md-2">
+      <p-dropdown
+        [options]="sfamilles"
+        [(ngModel)]="selectedSFamille"
+        optionLabel="nom"
+      ></p-dropdown>
+    </div>
+    <div class="col-md-2">
+      <input type="text" [(ngModel)]="selectedArticle.sfamille" pInputText />
+    </div>
+  </div>
+  &nbsp;
+  <div class="row">
+    <div class="col-md-2"><h4>PR ACH EN DT</h4></div>
+    <div class="col-md-4">
+      <input
+        type="text"
+        [disabled]="true"
+        [(ngModel)]="selectedArticle.achat"
+        pInputText
+      />
+    </div>
+    <div class="col-md-2"><h4>FOURNISSEUR</h4></div>
+    <div class="col-md-2">
+      <p-dropdown
+        [options]="fournisseurs"
+        [(ngModel)]="selectedFournisseur"
+        optionLabel="deno"
+      ></p-dropdown>
+    </div>
+    <div class="col-md-2">
+      <input
+        type="text"
+        [disabled]="true"
+        [(ngModel)]="selectedFournisseur.code"
+        pInputText
+      />
+    </div>
+  </div>
+  &nbsp;
+  <div class="row">
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-6"><h4>PRIX UNIT HT</h4></div>
+        <div class="col-md-6"><input type="text" pInputText /></div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6"><h4>REMISE MAX</h4></div>
+        <div class="col-md-6"><input type="text" pInputText /></div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6"><h4>TAUX TVA</h4></div>
+        <div class="col-md-6">
+          <p-dropdown
+            [options]="familles"
+            [(ngModel)]="selectedFamille"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-6"><h4>D'ORIGINE</h4></div>
+        <div class="col-md-6">
+          <p-dropdown
+            [options]="choixON"
+            [(ngModel)]="selectedArticle.origine"
+            optionLabel="name"
+          ></p-dropdown>
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6"><h4>IMPRIMABLE</h4></div>
+        <div class="col-md-6">
+          <p-dropdown
+            [options]="choixON"
+            [(ngModel)]="selectedArticle.imp"
+            optionLabel="name"
+          ></p-dropdown>
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6"><h4>QTE ENTIERE</h4></div>
+        <div class="col-md-6">
+          <p-dropdown
+            [options]="choixON"
+            [(ngModel)]="selectedArticle.qtEnt"
+            optionLabel="name"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-6"><h4>CARACTERISTIQUES TECHNIQUES</h4></div>
+        <div class="col-md-6">
+          <textarea
+            pInputTextarea
+            [(ngModel)]="selectedArticle.agenda"
+            [rows]="6"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  &nbsp;
+  <div class="row">
+    <div class="col-md-2"><h4>QUANTITE MIN</h4></div>
+    <div class="col-md-2"><input type="text" [(ngModel)]="selectedArticle.min" pInputText /></div>
+    <div class="col-md-2"><h4>Quantite MAX</h4></div>
+    <div class="col-md-2"><input type="text" [(ngModel)]="selectedArticle.max" pInputText /></div>
+    <div class="col-md-2"><h4>EMPLACEMENT</h4></div>
+    <div class="col-md-2"><input type="text" [(ngModel)]="selectedArticle.emplacement" pInputText /></div>
+  </div>
+  &nbsp;
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-2">
+      <button pButton type="button" label="Valider"></button>
+    </div>
+    <div class="col-md-2">
+      <button pButton type="button" label="Annuler"></button>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+</div>

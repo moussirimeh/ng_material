@@ -1,0 +1,67 @@
+<p-blockUI [blocked]="blockUi"></p-blockUI>
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <p-card>
+      <p-panel header="CLIENT :">
+        <div class="row">
+          <div class="col-md-2">Code :</div>
+          <div class="col-md-8">Nom Client :</div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <input
+              id="codeClt"
+              type="search"
+              size="10"
+              maxlength="7"
+              [readOnly]="true"
+              (keyup)="ov.hide()"
+              pInputText
+              [(ngModel)]="codeClient"
+              (keydown)="showBtAfficher = false; selectedClient = null"
+            />
+          </div>
+          <div class="col-md-8">
+            <ng-select
+              ngselect
+              [items]="clients"
+              bindLabel="deno"
+              [(ngModel)]="selectedClient"
+              (click)="updateOnSelect()"
+              (keyup.enter)="updateOnSelect()"
+              (clear)="codeClient = ''; showBtAfficher = false"
+              [searchFn]="onSearchClient"
+            >
+            </ng-select>
+          </div>
+          <div class="col-md-2">
+            <button
+              pButton
+              type="button"
+              label="Transferer"
+              *ngIf="showBtAfficher"
+              (click)="transferer()"
+            ></button>
+          </div>
+        </div>
+      </p-panel>
+    </p-card>
+  </div>
+  <div class="col-md-2"></div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+<p-confirmDialog
+  header="Confirmation"
+  icon="pi pi-exclamation-triangle"
+  [style]="{ width: '40vw' }"
+></p-confirmDialog>

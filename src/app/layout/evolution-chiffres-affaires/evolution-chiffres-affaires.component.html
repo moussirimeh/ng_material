@@ -1,0 +1,282 @@
+<br /><br />
+
+
+<div class="row">
+  <div class="col-md-1 bolld">Client </div>
+  <div class="col-md-2">
+    <ng-select
+      ngselect
+      id="clt"
+      [items]="listeClients"
+      bindLabel="deno"
+      (open)="chargerClients()"
+      style="height: 30px; min-height: 30px"
+      [(ngModel)]="selectedclt"
+      [searchFn]="onSearchDeno"
+      (change)="changeClient()"
+      placeholder="choisir un client"
+      [disabled]="readonly"
+    >
+    </ng-select>
+  </div>
+
+  <div class="col-md-1 bolld">Article</div>
+  <div class="col-md-2">
+    <ng-select
+      ngselect
+      [items]="listeArticles"
+      bindLabel="code"
+      (keyup.enter)="rechArticle($event.target.value)"
+      (open)="chargerArticle()"
+      [searchFn]="onSearchItem"
+      (change)="changeArticle()"
+      [(ngModel)]="selectedRef"
+      placeholder="choisir un article"
+      [disabled]="readonly"
+    >
+    </ng-select>
+  </div>
+
+  <div class="col-md-1">Fournisseur</div>
+  <div class="col-md-2">
+    <ng-select
+      ngselect
+      [items]="listefournisseurs"
+      bindLabel="deno"
+      (open)="chargerFournisseur()"
+      [searchFn]="onSearchDeno"
+      (change)="changeFour()"
+      [(ngModel)]="selectedFour"
+      placeholder="choisir un fournisseur"
+      [disabled]="readonly"
+    >
+    </ng-select>
+  </div>
+  <div class="col-md-1">TypolClient</div>
+  <br /><br />
+  <div class="col-md-2">
+    <ng-select
+      ngselect
+      [searchFn]="onSearchDeno"
+      (change)="changeTypologieClt()"
+      [items]="listeTypeClt"
+      bindLabel="deno"
+      [(ngModel)]="selectedTypolClient"
+      placeholder="choisir TypologieClient "
+      [disabled]="readonly"
+    >
+    </ng-select>
+  </div>
+  <div class="col-md-1">Famille</div>
+  <div class="col-md-2">
+    <ng-select
+      ngselect
+      [searchFn]="onSearchNom"
+      [items]="listefamilles"
+      bindLabel="nom"
+      (open)="chargerFamille()"
+      (change)="changeFmille()"
+      [(ngModel)]="selectedfamille"
+      placeholder="choisir une famille"
+      [disabled]="readonly"
+    >
+    </ng-select>
+  </div>
+  <div class="col-md-1">Sous Famille</div>
+  <div class="col-md-2">
+    <ng-select
+      ngselect
+      [searchFn]="onSearchNom"
+      [items]="listeSfamilles"
+      bindLabel="nom"
+      (open)="chargerSousFamille()"
+      (change)="changeSFamille()"
+      [(ngModel)]="selectedSfamille"
+      placeholder="choisir une sous famille"
+      [disabled]="readonly"
+    >
+    </ng-select>
+  </div>
+  <div class="col-md-1">Vendeur</div>
+  <div class="col-md-2">
+    <ng-select
+      ngselect
+      [searchFn]="onSearchDeno"
+      (open)="chargerVendeur()"
+      [items]="listeVend"
+      bindLabel="deno"
+      (change)="changeVendeur()"
+      [(ngModel)]="selectedVendeur"
+      placeholder="choisir un vendeur "
+      [disabled]="readonly"
+    >
+    </ng-select>
+  </div>
+  <br /><br />
+  <div class="col-md-1">Activite</div>
+  <div class="col-md-2">
+    <ng-select
+      [searchFn]="onSearchDeno"
+      (change)="changeActivite()"
+      ngselect
+      [items]="listeActivite"
+      bindLabel="deno"
+      (open)="chargerActivite()"
+      style="height: 30px; min-height: 30px"
+      [(ngModel)]="selectedActivite"
+      placeholder="choisir une Activite  "
+      [disabled]="readonly"
+    >
+    </ng-select>
+  </div>
+  <div class="col-md-1">Cons-Rev</div>
+  <br /><br />
+  <div class="col-md-2">
+    <ng-select
+      ngselect
+      [items]="listeConsRev"
+      bindLabel="deno"
+      style="height: 30px; min-height: 30px"
+      [(ngModel)]="selectedConsRev"
+      [searchFn]="onSearchDeno"
+      (change)="changeConsRev()"
+      placeholder="choisir cons ou Rev"
+      [disabled]="readonly"
+    >
+    </ng-select>
+  </div>
+
+  <div class="col-md-1">Zone</div>
+  <div class="col-md-2">
+    <ng-select
+      ngselect
+      id=""
+      [items]="listeZones"
+      bindLabel="deno"
+      (open)="chargerZone()"
+      style="height: 30px; min-height: 30px"
+      [(ngModel)]="selectedZ"
+      [searchFn]="onSearchDeno"
+      (change)="changeZone()"
+      placeholder="choisir une zone "
+      [disabled]="readonly"
+    >
+    </ng-select>
+  </div>
+  <div class="col-md-1">Representant</div>
+  <div class="col-md-2">
+    <ng-select
+      ngselect
+      id=""
+      [searchFn]="onSearchDeno"
+      (change)="changeRepresentant()"
+      [items]="listeRepresan"
+      bindLabel="deno"
+      (open)="chargerRepresan()"
+      [(ngModel)]="selectedRep"
+      placeholder="choisir un representant"
+      [disabled]="readonly"
+    >
+    </ng-select>
+  </div>
+  <div class="col-md-1">Groupe</div>
+  <br /><br />
+  <div class="col-md-2">
+    <ng-select
+      ngselect
+      [items]="listegroupe"
+      bindLabel="deno"
+      (open)="chargerGroupe()"
+      style="height: 30px; min-height: 30px"
+      [(ngModel)]="selectedG"
+      [searchFn]="onSearchDeno"
+      (change)="changeGroupe()"
+      placeholder="choisir un groupe "
+      [disabled]="readonly"
+    >
+    </ng-select>
+  </div>
+  <br />
+</div>
+
+<div class="row">
+  <div class="col-md-10" ></div>
+  <div class="col-md-1 "*ngIf="affichBTn">
+    <button  pButton type="button"  label="Initialiser" id='btnin'  (click)="initialiser()"  class="ui-button-raised" class="ui-button-info"></button>
+  </div>
+  <div class="col-md-1" *ngIf="affichBTn">
+    <button
+      pButton
+      type="button"
+      (click)="afficher()"
+     
+      label="Afficher"
+    ></button>
+  </div>
+</div>
+<br />
+<div class="row">
+ <div class="col-md-3"></div>
+  <div class="col-md-6" *ngIf="afficherGrid">
+    <ejs-grid
+      #grid
+      [dataSource]="listechAff"
+      [allowSorting]="true"
+      [allowExcelExport]="true"
+      allowTextWrap="true"
+      gridLines="Both"
+      [allowResizing]="true"
+      width="100%"
+      height="30%"
+      rowHeight="30"
+
+    >
+    <e-columns>
+      <e-column
+        field="mois"
+        headerText="Mois"
+        [customAttributes]="customAttributes"
+        width="100"
+         
+      >
+      </e-column>
+      <e-column
+        field="anneeCourante"
+        [headerText]="chAnCourante"
+        [customAttributes]="customAttributes"
+        width="100"
+        textAlign="Right"
+      ></e-column>
+      <e-column
+        field="annee_1"
+        [headerText]="chAnn_1"
+        [customAttributes]="customAttributes"
+        width="100"
+        textAlign="Right" 
+      ></e-column>
+      <e-column
+        field="annee_2"
+        [headerText]="chAnn_2" 
+        [customAttributes]="customAttributes"
+        width="100"
+        textAlign="Right" 
+      ></e-column>
+    </e-columns>
+    </ejs-grid>
+   
+    
+  
+  </div>
+  <div class="col-md-3"></div>
+</div>
+<div class="row">
+  <div class="col-md-2" *ngIf="afficherGrid">
+  <button  pButton type="button"  label="Nouvelle saisie" id='btnnvls'   (click)="nouvelleSaisie()"  class="ui-button-info"></button>
+  </div>
+ 
+ 
+  <div class="col-md-8"> </div>
+    <div class="col-md-2" *ngIf="afficherGrid==true">
+    <button pButton  type="button" (click)="gererExcel()"  label="Excel"  style="width: 70%"  ></button>
+  </div>
+</div>

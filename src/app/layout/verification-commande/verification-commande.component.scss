@@ -1,0 +1,20 @@
+.e-headertext {
+    font-size: 13px;
+    text-align: center !important;
+  }
+  // .e-grid .e-headercell{
+  //   padding-left: -20px;
+  //   padding-right: -20px;
+  // }
+  .e-grid .e-rowcell {
+    font-size: 13px !important;
+    padding: initial !important;
+  }
+  .e-grid th{
+    background-color:whitesmoke;
+    color :black;
+  }
+  .e-grid .e-gridheader tr th {
+    padding-left: 0;
+    padding-right: 0;
+}

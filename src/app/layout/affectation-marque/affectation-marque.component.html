@@ -1,0 +1,156 @@
+<div class="row">
+  <div>
+    <!-- les criteres de recherche -->
+    <div class="row">
+      <div class="col-md-2">
+        <mat-form-field>
+          <input
+            matInput
+            (click)="Onkey($event.target.value)"
+            (keyup.enter)="applyFilterArtParCode($event.target.value)"
+            [(ngModel)]="refRechercher"
+            placeholder="Recherche par Référence"
+            type="search"
+          />
+          <button
+            mat-button
+            *ngIf="refRechercher"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="refRechercher = ''; applyFilterArtParCode('')"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div class="col-md-10"></div>
+    </div>
+
+    <!-- grid 1-->
+    <div class="row" *ngIf="ref == true">
+      <br />
+      <br /><br />
+      <br /><br />
+      <div class="col-md-5">
+        <ejs-grid
+          id="ejs1"
+          #grid
+          [searchSettings]="searchOptions"
+          [selectedRowIndex]="0"
+          gridLines="Both"
+          (rowSelected)="rowSelected($event)"
+          width="100%"
+          [dataSource]="stocks"
+          [selectedRowIndex]="0"
+          height="318"
+          rowHeight="40"
+          (onmousedown)="annulerSelection()"
+          (mouseup)="annulerSelection()"
+          (mousewheel)="annulerSelection()"
+          gridLines="Both"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column
+              field="code"
+              headerText="Référence"
+              width="160"
+              [customAttributes]="customAttributes"
+            ></e-column>
+            <e-column
+              field="design"
+              headerText="Désignation"
+              width="240"
+              [customAttributes]="customAttributes"
+            >
+              <ng-template #template let-stocks>
+                <p style="text-align: left; margin-top: 17px">
+                  {{ stocks.design }}
+                </p>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="prix"
+              headerText="Prix"
+              width="90"
+              [customAttributes]="customAttributes"
+            >
+              <ng-template #template let-stocks>
+                <p style="text-align: right; margin-top: 17px">
+                  {{ stocks.prix }}
+                </p>
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+      <div class="col-md-3" *ngIf="modifierShow">
+        <ejs-grid
+          #gridMarque
+          (recordDoubleClick)="Doubleclick($event)"
+          [dataSource]="marques"
+          gridLines="Both"
+          (rowSelected)="rowSelected1($event)"
+          height="318"
+          width="300"
+          [selectedRowIndex]="0"
+          rowHeight="40"
+          allowResizing="true"
+        >
+          <e-columns>
+            <e-column
+              field="code"
+              headerText="MARQUES"
+              width="100"
+              BackgroundColor="Gray"
+            ></e-column>
+            <e-column field="nom" headerText="VIHICULES" width="180"></e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+      <div class="col-md-1" *ngIf="modifierShow">
+        <br />
+        <br /><br />
+
+        <span style="font-size: 15px">&nbsp;&nbsp; &nbsp;&nbsp; --->> </span
+        ><br />
+        <span style="font-size: 15px">&nbsp;&nbsp; &nbsp;&nbsp; <<--- </span
+        ><br />
+
+        <span style="font-size: 15px"
+          >&nbsp;&nbsp;&nbsp;&nbsp;Double Click </span
+        ><br />
+      </div>
+
+      <div class="col-md-3" *ngIf="modifierShow">
+        <ejs-grid
+          #gridSelctionnee
+          [dataSource]="marques1"
+          (recordDoubleClick)="DoubleclickK($event)"
+          gridLines="Both"
+          (rowSelected)="rowSelected2($event)"
+          height="318"
+          width="200"
+          [selectedRowIndex]="0"
+          rowHeight="40"
+          allowResizing="true"
+        >
+          <e-columns>
+            <e-column field="nom" headerText="VEHICULES" width="180"></e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+    <!-- grid 2-->
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

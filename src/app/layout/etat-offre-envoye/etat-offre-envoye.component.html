@@ -1,0 +1,656 @@
+<div class="row ">
+  <div class="col-md-8" >
+    <mat-card>
+      <mat-card-content style="margin-top: -30px; margin-left: -8px;">
+        <h4>Indiquez Vos critéres S.V.P</h4>
+       <div class="row">
+          <div class="col-md-1"  style="max-width : 3%;"><label>Du:</label></div>
+          <div class="col-md-2" style="max-width: 20%;" >
+            <p-calendar
+            id="date1"
+            [disabled]="readonly"
+            [minDate]="minDate"
+            [(ngModel)]="datedebut"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            [locale]="tn"
+            yearRange="1973:2999">
+           </p-calendar>
+          </div>
+          <div class="col-md-1" style="max-width : 3%;"><label>Au</label></div>
+          <div class="col-md-2" style="max-width: 20%;">
+            <p-calendar 
+             id="date2"
+             [disabled]="readonly"
+             [minDate]="minDate"
+             [(ngModel)]="datefin"
+             dateFormat="dd/mm/yy"
+             [monthNavigator]="true"
+             [yearNavigator]="true"
+             [locale]="tn"
+             yearRange="2011:2999">
+            </p-calendar>
+           </div>
+           <div class="col-md-1" >Vendeur:</div>
+           <div class="col-md-3" >
+             <ng-select
+              height="30%"
+              ngselect
+              [items]="Vendeurs"
+              bindLabel="deno"
+              (open) ="chargerVendeur()"
+              [(ngModel)]="SelectedVendeurs"
+              (change)="changeVendeurs()"
+              [searchFn]="onSearchVendeurs"
+              [disabled]="readonly"
+              (clear)="SelectedVendeurs=''"
+             >
+             </ng-select>
+            </div>
+            <div class="col-md-1">N°Devis:</div>
+            <div class="col-md-2" style="max-width : 10%;">
+              <input
+               type="text"
+               id='numdevis'
+               maxlength="5"
+               pKeyFilter="num"
+               pInputText
+               [(ngModel)]="devis"
+               (keyup.enter)="verifierNum($event)"
+               [disabled]="readonly"
+              />
+           </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2" style="max-width : 15%;">Montant Offre:</div>
+          <div class="col-md-1" style="max-width : 0.1%;">{{operateur1}}</div>
+          <div class="col-md-2" style="max-width : 20%;">
+          <input
+            type="text"
+            placeholder="0"
+            maxlength="7"
+            pKeyFilter="num"
+            pInputText
+            [(ngModel)]="montantsup"
+            [disabled]="readonly"
+          />
+          </div>
+          <div class="col-md-1" style="max-width : 0.1%;">DT</div>
+          <div class="col-md-1" style="max-width : 1%;">ET</div>
+          <div class="col-md-1" style="max-width : 1%;">{{operateur}}</div>
+          <div class="col-md-2" style="max-width : 20%;">
+          <input
+            type="text"
+            maxlength="7"
+            pKeyFilter="num"
+            placeholder="1000000"
+            pInputText
+            [(ngModel)]="montantinf"
+            [disabled]="readonly"
+          />
+          </div>
+          <div class="col-md-1" style="max-width :1%;">DT</div>
+          <div class="col-md-1" >Zone:</div>
+          <div class="col-md-3">
+            <ng-select
+              ngselect
+              [items]="listeZones"
+              bindLabel="deno"
+              bindValue="code"
+              [(ngModel)]="SelectedZones"
+              (open)="chargerZone()"
+              (change)="changeZones()"
+              [searchFn]="onSearchZones"
+              [disabled]="readonly"
+              style="height: 30px; min-height: 30px"
+              (clear)="SelectedZones=''"
+            >
+            </ng-select>
+          </div>
+       </div>
+       <div class="row">
+         <div class="col-md-1" >Client:</div>
+          <div class="col-md-4">
+            <ng-select
+              ngselect
+              [items]="clients"
+              bindLabel="deno"
+              (open)="chargerClient()"
+              [(ngModel)]="SelectedClients"
+              (change)="changeClients()"
+              [searchFn]="onSearchClients"
+              [disabled]="readonly"
+              style="height: 30px; min-height: 30px"
+              (clear)="SelectedClients=''"
+            >
+            </ng-select>
+          </div>
+          <div class="col-md-1" >Activité:</div>
+          <div class="col-md-3" >
+            <ng-select
+              ngselect
+              [items]="listeActivite"
+              bindLabel="deno"
+              bindValue="code"
+              (open)="chargerActivite()"
+              [(ngModel)]="SelectedActivite"
+              (change)="changeActivite()"
+              [searchFn]="onSearchActivite"
+              [disabled]="readonly"
+              style="height: 30px; min-height: 30px"
+              (clear)="SelectedActivite=''"
+            >
+            </ng-select>
+          </div>
+          <div class="col-md-1" >Typologie:</div>
+          <div class="col-md-2" style="max-width : 10%;">
+            <ng-select
+              ngselect
+              [items]="typologieItems"
+              bindLabel="deno"
+              bindValue="id"
+              [(ngModel)]="Selectedtypologie"
+              (change)="changeVendeurs()"
+              [searchFn]="onSearchVendeurs"
+              [disabled]="readonly"
+              style="height: 30px; min-height: 30px"
+              (clear)="Selectedtypologie=''"
+            >
+            </ng-select>
+          </div>
+       
+        </div>
+        <div class="row">
+          <div class="col-md-1" >Article:</div>
+          <div class="col-md-4" >
+            <ng-select
+            ngselect
+            [items]="articles"
+            bindLabel="code"
+            bindvalue="code"
+            (keyup.enter)="rechArticle($event.target.value)"
+            (change)="changeArticle()"
+            [(ngModel)]="SelectedArticles"
+            style="height: 30px; min-height: 30px"
+            [disabled]="readonly"
+            (clear)="deleteliste()"
+            >
+            </ng-select>
+          </div>
+          <div class="col-md-1" >Grp:</div>
+          <div class="col-md-3" >
+            <ng-select
+              ngselect
+              [items]="listegroupe"
+              bindLabel="deno"
+              bindValue="code"
+              (open)="chargerGroupe()"
+              [(ngModel)]="Selectedgroupe"
+              (change)="changeGroupe()"
+              [searchFn]="onSearchGroupe"
+              [disabled]="readonly"
+              style="height: 30px; min-height: 30px"
+              (clear)="Selectedgroupe=''"
+            >
+            </ng-select>
+          </div>
+
+          <div class="col-md-1" >Rv/CS:</div>
+          <div class="col-md-2" style="max-width : 10%;">
+            <ng-select
+            
+              ngselect
+              [items]="ConsRevItems"
+              bindLabel="deno"
+              bindValue="id"
+              [(ngModel)]="SelectedConsRev"
+              [disabled]="readonly"
+              style="height: 30px; min-height: 30px"
+              (clear)="SelectedConsRev=''"
+            >
+            </ng-select>
+          </div>
+          
+        </div>
+        <div class="row">
+          <div class="col-md-1" >Codefrs:</div>
+          <div class="col-md-4" >
+            <ng-select
+              ngselect
+              [items]="listefournisseurs"
+              bindLabel="deno"
+              bindValue="code"
+              (open)="chargerFournisseur()"
+              [(ngModel)]="SelectedFournisseur"
+              (change)="changeFournisseur()"
+              [searchFn]="onSearchfournisseur"
+              [disabled]="readonly"
+              style="height: 30px; min-height: 30px"
+              (clear)="SelectedFournisseur=''"
+            >
+            </ng-select>
+          </div>
+          <div class="col-md-1"  >Repres:</div>
+          <div class="col-md-4" style="max-width: 50%;">
+            <ng-select
+              ngselect
+              [items]="listeRepresan"
+              bindLabel="deno"
+              (open)="chargerRepresan()"
+              [(ngModel)]="SelectedRepresan"
+              (change)="changeRepresan()"
+              style="height: 30px; min-height: 30px"
+              [searchFn]="onSearchRepresan"
+              [disabled]="readonly"
+              (clear)="SelectedRepresan=''"
+            >
+            </ng-select>
+          </div>
+          
+          
+       </div>
+     
+      <div class="row">
+        <div class="col-md-7"></div>
+          <div class="col-md-1" style="max-width: 10%; padding-left: 0.0%;">
+            <button
+             pButton
+             id="btnAfficher"
+             (click)="Afficher($event)"
+             type="button"
+             label="Afficher"
+             class="ui-button-raised"
+             [hidden]='disabledbtn==true'
+            ></button>
+          </div>
+          <div class="col-md-1" style="max-width: 10%; padding-left: 0%;">
+            <button
+             pButton
+             id="btnInitialiser"
+             (click)="Initialiser()"
+             type="button"
+             label="Initialiser"
+             class="ui-button-raised"
+             [hidden]='disabledbtn==true'
+            ></button>
+          </div>
+          <div class="col-md-1"  style="max-width: 8.5%; padding-left: 1%;">
+            <button
+            pButton
+            type="button"
+            label="Aperçu"
+            class="ui-button-raised"
+            (click)="Apercu()"
+           ></button>
+          </div>
+          <div class="col-md-2"  style="max-width: 13%; padding-left: 2%;">
+            <button
+            pButton
+            type="button"
+            label="-->Excel"
+            class="ui-button-raised"
+            (click)="excelExport()"
+           ></button>
+          </div>
+          
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-md-4" >
+    <div class="row"  style="height: 40px;">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <button
+         pButton
+         type="button"
+         label="Enregistrer une Observation"
+         class="ui-button-raised"
+         (click)="showObserv=true"
+         [hidden]="btnaff==false || btnselected == false || fichClientBtnObserv"
+        ></button>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+    <div class="row" style="height: 40px;">
+      <div class="col-md-12">
+       <input
+          type="text"
+          pInputText
+          [hidden]="btnaff==false || showObserv==false || btnselected == false"
+          [(ngModel)]="observation"/>
+      </div>
+    </div>
+    <div class="row" style="height: 40px;">
+      <div class="col-md-2"></div> 
+      <div class="col-md-3">
+        <button
+         pButton
+         id='btnvalider'
+         type="button"
+         label="Valider"
+         [hidden]="btnaff==false || showObserv==false || btnselected == false"
+         class="ui-button-raised"
+         (click)="EnregistrerObsrv($event)"
+        ></button>
+      </div>
+     <div class="col-md-2"></div> 
+      <div class="col-md-3">
+        <button
+         pButton
+         type="button"
+         label="Annuler"
+         [hidden]="btnaff==false || showObserv==false || btnselected == false"
+         class="ui-button-raised"
+         (click)="AnnulerEnregis($event)"
+        ></button>
+      </div>
+      <div class="col-md-2"></div> 
+    </div>
+    <div class="row" *ngIf="showbtnRadio==true|| btnaff==true">
+      <div class="col-md-12">
+        <p>les Article qui existent dans ces offres et qui ne sont pas satisfaits avec :</p>
+      </div>
+    </div>
+    <div class="row" *ngIf="showbtnRadio==true|| btnaff==true">
+      
+      <div class="col-md-3" style="max-width : 20%;">
+        
+        <div class="row p-field-radiobutton p-label-active">
+           <div class="col-md-1">
+             <p-radioButton 
+               name="Stocks" 
+               value="sup"
+               [(ngModel)]="stock" 
+               >
+              </p-radioButton>
+           </div>
+           <div class="col-md-1">
+              <label >Stock>0</label>
+            </div>
+        </div>
+      </div>
+      <div class="col-md-3" style="max-width : 20%;">
+        <div class="row p-field-radiobutton">
+          <div class="col-md-1">
+            <p-radioButton 
+              name="Stocks" 
+              value="egal" 
+              [(ngModel)]="stock" >
+             </p-radioButton>
+          </div>
+          <div class="col-md-1" >
+             <label>Stock=0</label>
+           </div>
+       </div>
+      </div>
+      <div class="col-md-3" style="max-width : 20%;">
+       <div class="row p-field-radiobutton">
+        <div class="col-md-1">
+          <p-radioButton 
+            name="Stocks" 
+            value="tous" 
+            [(ngModel)]="stock">
+           </p-radioButton>
+        </div>
+        <div class="col-md-1">
+           <label>Tous</label>
+        </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <button
+         pButton
+         id='btnAff2'
+         (click)="AfficherArticleStk()"
+         type="button"
+         label="Afficher"
+         class="ui-button-raised"
+        ></button>
+      </div>
+     </div>
+  </div>
+</div><br>
+<label style="color: red; font-weight: bold;">{{label}}</label>
+<div class="row" *ngIf="btnaff==true && showgrid2==false" style="height: 260px;">
+    <ejs-grid id="ejs1" #grid [searchSettings]="searchOptions" [dataSource]="listeOffenv" [selectedRowIndex]="0" gridLines="Both"
+     (rowSelected)="rowSelected($event)" width="99%" [selectedRowIndex]="0" [allowExcelExport]="true" height="240"
+     rowHeight="40" (recordDoubleClick)="voirdetail()" (onmousedown)="annulerSelection()"
+     (mouseup)="annulerSelection()" (mousewheel)="annulerSelection()" gridLines="Both" style="border-bottom-width: 5%;" allowResizing= 'true'>
+     <e-columns>
+       <e-column field="numDevis" headerText="N°Dev" width="50"  headerTextAlign="center">
+       </e-column>
+       <e-column field="datedev" headerText="Date" width="60"  headerTextAlign="center">
+       </e-column>
+      <e-column field="deno" headerText="Nom Clt" width="80"  headerTextAlign="center">
+      </e-column>
+      <e-column field="net" headerText="Mt TTC" width="60"  headerTextAlign="center">
+        <ng-template #template let-listeOffenv>
+          <p style="text-align: right; margin: auto; ">
+            {{ listeOffenv.net }}
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column field="mtsatisfTtc" headerText="MT STF TTC" width="70"  headerTextAlign="center">
+        <ng-template #template let-listeOffenv>
+          <p style="text-align: right; margin: auto; ">
+            {{ listeOffenv.mtsatisfTtc }}
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column field="pc" headerText="%" width="40"  headerTextAlign="center">
+        <ng-template #template let-listeOffenv>
+          <p style="text-align: right; margin: auto; ">
+            {{ listeOffenv.pc }}
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column field="vndDeno" headerText="Vendeur" width="80"  headerTextAlign="center">
+      </e-column>
+      <e-column field="representant" headerText="Representant" width="80"  headerTextAlign="center">
+      </e-column>
+      <e-column field="agenda" headerText="Observation" width="70"  headerTextAlign="center">
+      </e-column>
+     </e-columns>
+    </ejs-grid>
+</div><br><br>
+<div class="row" *ngIf="btnaff==true && showgrid2==false" style="height: 30px;">
+  
+  <div class="col-md-2"></div>
+  <div class="col-md-2" style="max-width :100%;">
+    <label style="color: red;">{{nbroffre}}</label>
+  </div>
+  <div class="col-md-1" style="max-width :100%; padding-left: 2.5%;">
+    <label style="color: red;">{{tOTALTTC}}</label>
+  </div>
+  <div class="col-md-1" style="max-width :100%; padding-left: 6%;">
+    <label style="color: red;" >{{tOTALSTF}}</label>
+  </div>
+  <div class="col-md-1" style="max-width :100%; padding-left: 2.5%;">
+    <label style="color: red;" >{{Soit}}</label>
+  </div>
+</div>
+<div class="row" *ngIf="showgrid2==true" style="height: 30px;">
+  <div class="col-md-2" style="max-width: 10%;">Offre de Prix:</div>
+  <div class="col-md-1">
+    <input
+      type="text"
+      pInputText
+      [(ngModel)]="selectedoffre.numDevis"
+      style="height: 30px; min-height: 30px"
+      [readonly]="readonly"
+    />
+  </div>
+  <div class="col-md-1">Client:</div>
+  <div class="col-md-2">
+    <input
+    type="text"
+    pInputText
+    [(ngModel)]="selectedoffre.cltDev"
+    style="height: 30px; min-height: 30px"
+    [readonly]="readonly"
+  />
+  </div>
+  <div class="col-md-1">Vendeur:</div>
+  <div class="col-md-3">
+    <input
+    type="text"
+    pInputText
+    [(ngModel)]="selectedoffre.vndDeno"
+    style="height: 30px; min-height: 30px"
+    [readonly]="readonly"
+  />
+  </div>
+</div><br>
+<div class="row" *ngIf="showgrid2==true" style="height: 260px;">
+  <ejs-grid id="ejs2" #grid2 [searchSettings]="searchOptions" [dataSource]="listeDetail"  [selectedRowIndex]="0" gridLines="Both"
+   (rowSelected)="rowSelected2($event)" width="99%" [selectedRowIndex]="0" height="240"
+   rowHeight="40" (onmousedown)="annulerSelection2()" (recordDoubleClick)="AffciherGrid3()"
+   (mouseup)="annulerSelection2()" (mousewheel)="annulerSelection2()" gridLines="Both" style="border-bottom-width: 5%;">
+   <e-columns>
+     <e-column field="code" headerText="Reference" width="50"  headerTextAlign="center">
+     </e-column>
+     <e-column field="design" headerText="Designation" width="60"  headerTextAlign="center">
+     </e-column>
+     <e-column field="quantite" headerText="Quantite" width="80"  headerTextAlign="center">
+    </e-column>
+    <e-column field="tRemise" headerText="Remise" width="60"  headerTextAlign="center">
+    </e-column>
+    <e-column field="prix" headerText="Prix u ht" width="60"  headerTextAlign="center">
+    </e-column>
+    <e-column field="tauxTva" headerText="TVA" width="70"  headerTextAlign="center">
+    </e-column>
+    <e-column field="qtSatisf" headerText="Qt STF" width="40"  headerTextAlign="center">
+    </e-column>
+   </e-columns>
+  </ejs-grid>
+</div><br>
+
+<div class="row" style=" width :100% ;" [hidden]="btnaff==false">
+  <div class="col-md-2" style="max-width:12%;" >
+    <button
+    pButton
+    type="button"
+    label="Nouvelle Liste"
+    class="ui-button-raised"
+    (click)="NouvelleListe()"
+    [hidden]="btnfichstk ==true"
+   ></button>
+  </div>
+ 
+  <div class="col-md-2" style="max-width:12%;" >
+    <button
+    pButton
+    type="button"
+    label="Voir Details"
+    class="ui-button-raised"
+    (click)="voirdetail()"
+    [hidden]="showgrid2==true || btnselected == false"
+   ></button>
+  </div>
+  <div class="col-md-2" style="max-width:12%;">
+    <button
+    pButton
+    type="button"
+    label="Voir Liste"
+    class="ui-button-raised"
+    (click)="VoirListe()"
+    [hidden]="showgrid2==false"
+   ></button>
+  </div>
+  <div class="col-md-2" style="max-width:12%;" >
+    <button
+    pButton
+    type="button"
+    label="Voir Totaux"
+    class="ui-button-raised"
+    (click)="AfficherTotaux()"
+   ></button>
+  </div>
+ 
+</div>
+<p-overlayPanel
+#op
+[dismissable]="false"
+[showCloseIcon]="true"
+appendTo="body"
+[style]="{
+  'text-align': 'center',
+  'font-size': '14px',
+  'background-color': ' #f8b7bd'
+}"
+>
+<span> {{ msg }} </span>
+</p-overlayPanel>
+
+<p-dialog
+  header="Information"
+  [(visible)]="showdialog"
+  [modal]="false"
+  [style]="{ width: '50%' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+Aucune offre ne satisfait ces critére! 
+  <p-footer>
+
+    <button
+      type="button"
+      pButton
+      (click)="FermerDialog()"
+      label="Ok"
+      class="ui-button-secondary"
+    ></button>
+  </p-footer>
+</p-dialog>
+<p-dialog 
+[style]="{ width: '50%'}"
+[baseZIndex]="50000"
+[draggable]="true"
+[resizable]="false"
+[(visible)]="showGrid3">
+  <ejs-grid id="ejs3" #grid3 [searchSettings]="searchOptions" [dataSource]="listeGrid3"  [selectedRowIndex]="0" gridLines="Both"
+     width="100%" [selectedRowIndex]="0"  height="240"
+     rowHeight="40"  gridLines="Both" style="border-bottom-width: 5%;">
+     <e-columns>
+       <e-column field="scombine" headerText="Doc Livraison" width="50%"  headerTextAlign="center">
+       </e-column>
+       <e-column field="squantite" headerText="Quantite" width="50%"  headerTextAlign="center">
+       </e-column>
+     </e-columns>
+    </ejs-grid>
+</p-dialog>
+
+<p-dialog 
+[style]="{ width: '70%'}"
+[baseZIndex]="50000"
+[draggable]="true"
+[resizable]="false"
+[(visible)]="btnaffStk">
+  <ejs-grid id="ejs4" #grid4 [searchSettings]="searchOptions" [dataSource]="listeArticleNonStf"  [selectedRowIndex]="0" gridLines="Both"
+     width="100%" [selectedRowIndex]="0"  height="240"
+     rowHeight="40" gridLines="Both" style="border-bottom-width: 5%;">
+     <e-columns>
+       <e-column field="numDevis" headerText="N°Dev" width="40%"  headerTextAlign="center">
+       </e-column>
+       <e-column field="code" headerText="Code ART" width="80%"  headerTextAlign="center">
+       </e-column>
+       <e-column field="design" headerText="Desgin ART" width="80%"  headerTextAlign="center">
+       </e-column>
+       <e-column field="qtstk" headerText="Qt STK" width="35%"  headerTextAlign="center">
+       </e-column>
+       <e-column field="qtdevis" headerText="Qt Devis" width="35%"  headerTextAlign="center">
+       </e-column>
+       <e-column field="qtstf" headerText="Qt STF" width="35%"  headerTextAlign="center">
+       </e-column>
+       <e-column field="reste" headerText="Reste" width="35%"  headerTextAlign="center">
+       </e-column>
+      </e-columns>
+    </ejs-grid>
+</p-dialog>
+
+
+
+     

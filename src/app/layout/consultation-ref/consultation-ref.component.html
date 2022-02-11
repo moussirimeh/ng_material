@@ -1,0 +1,724 @@
+<div class="row">
+  <div class="col-md-8">
+    <div>
+      <!-- les criteres de recherche -->
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              (click)="Onkey($event.target.value)"
+              (keyup.enter)="applyFilterArtParCode($event.target.value)"
+              [(ngModel)]="refRechercher"
+              (keyup.enter)="ajouterArt()"
+              placeholder="Recherche par Référence"
+              type="search"
+            />
+            <button
+              mat-button
+              *ngIf="refRechercher"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="refRechercher = ''; applyFilterArtParCode('')"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field style="width: 70%;">
+            <input
+              matInput
+              (click)="Onkey1($event.target.value)"
+              (keyup.enter)="applyFilterArtParDes($event.target.value)"
+              (keyup.enter)="ajouterArt()"
+              [(ngModel)]="desRechercher"
+              placeholder="Recherche par Désignation"
+              type="search"
+            />
+            <button
+              mat-button
+              *ngIf="desRechercher"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="desRechercher = ''; applyFilterArtParCode('')"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              (click)="Onkey2($event.target.value)"
+              (keyup.enter)="contCarParDes($event.target.value)"
+              [(ngModel)]="contRechercher"
+              (keyup.enter)="ajouterArt()"
+              placeholder="Contenant les critères"
+              type="search"
+            />
+            <button
+              mat-button
+              *ngIf="contRechercher"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="contRechercher = ''; applyFilterArtParCode('')"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- grid 1-->
+      <div class="row" *ngIf="ref == true">
+        <ejs-grid
+          id="ejs1"
+          #grid
+          [searchSettings]="searchOptions"
+          [selectedRowIndex]="0"
+          gridLines="Both"
+          (rowSelected)="rowSelected($event)"
+          width="100%"
+          [dataSource]="stocks"
+          [selectedRowIndex]="0"
+          height="240"
+          rowHeight="40"
+          
+          (recordDoubleClick)="ajouterArt()"
+          (onmousedown)="annulerSelection()"
+          (mouseup)="annulerSelection()"
+          (mousewheel)="annulerSelection()"
+          gridLines="Both"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column
+              field="code"
+              headerText="Référence"
+              width="160"
+              [customAttributes]="customAttributes"
+            ></e-column>
+            <e-column
+              field="design"
+              headerText="Désignation"
+              width="240"
+              [customAttributes]="customAttributes"
+            >
+              <ng-template #template let-stocks>
+                <p style="text-align: left; margin-top: 17px;">
+                  {{ stocks.design }}
+                </p>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="prix"
+              headerText="Prix"
+              width="90"
+              [customAttributes]="customAttributes"
+            >
+              <ng-template #template let-stocks>
+                <p style="text-align: right; margin-top: 17px;">
+                  {{ stocks.prix }}
+                </p>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="quantite"
+              headerText="Stock"
+              width="80"
+              [customAttributes]="customAttributes"
+              textAlign="Right"
+            ></e-column>
+            <e-column
+              field="equivalence"
+              headerText="Equiv"
+              width="90"
+              [customAttributes]="customAttributes"
+            >
+              <ng-template #template let-stocks>
+                <p
+                  style="
+                    color: red;
+                    font-weight: bold;
+                    text-align: left;
+                    margin-top: 17px;
+                  "
+                >
+                  {{ stocks.equivalence }}
+                </p>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="marge"
+              headerText="StkStbl"
+              width="100"
+              [customAttributes]="customAttributes"
+            >
+              <ng-template #template let-stocks>
+                <p
+                  style="
+                    color: brown;
+                    font-weight: bold;
+                    text-align: left;
+                    margin-top: 17px;
+                  "
+                >
+                  {{ stocks.marge }}
+                </p>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="taxe"
+              headerText="StkMort"
+              width="100"
+              [customAttributes]="customAttributes"
+            >
+              <ng-template #template let-stocks>
+                <p
+                  style="
+                    color: brown;
+                    font-weight: bold;
+                    text-align: left;
+                    margin-top: 17px;
+                  "
+                >
+                  {{ stocks.taxe }}
+                </p>
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+      <!-- boutton voir detail-->
+      <div class="row">
+        <div class="col-md-3" *ngIf="ref == true">
+          <button
+            *ngIf="modifierShow == true"
+            clikcked="true"
+            style="font-size: 13px;"
+            pButton
+            type="button"
+            label="VOIR DETAIL"
+            (click)="afficher()"
+            class="ui-button-raised"
+          ></button>
+        </div>
+        <div class="col-md-9"></div>
+      </div>
+      <!-- grid2-->
+      <div class="row" style="margin-top: 1px;">
+        <div *ngIf="detail == true && ajouterClicked == true" class="col-md-12">
+          <p-tabView (onChange)="handleChange($event)">
+            <p-tabPanel
+              [header]="item.header"
+              *ngFor="let item of items; let i = index"
+              [selected]="i === 0"
+            >
+              <div class="row">
+                <ejs-grid
+                  style="width: 100%;"
+                  #grid2
+                  [searchSettings]="searchOptions"
+                  [selectedRowIndex]="0"
+                  gridLines="Both"
+                  (rowSelected)="rowSelected($event)"
+                  width="100%"
+                  [dataSource]="item.datasource"
+                  height="140"
+                  (recordDoubleClick)="afficher()"
+                  gridLines="Both"
+                  [rowHeight]="35"
+                >
+                  <e-columns>
+                    <e-column
+                      [field]="head.field"
+                      [headerText]="head.text"
+                      *ngFor="let head of item.headers"
+                      [width]="head.width"
+                      [textAlign]="head.textAlign"
+                      BackgroundColor="Gray"
+                    ></e-column>
+                  </e-columns>
+                </ejs-grid>
+              </div>
+            </p-tabPanel>
+          </p-tabView>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- identification/ prix/ voir totaux-->
+  <div class="col-md-4" *ngIf="detail == true && ajouterClicked == true">
+    <div class="row">
+      <p-tabView>
+        <p-tabPanel header="IDENTIFICATION">
+          <div style="height: 290px;">
+            <div class="row">
+              <div class="col-md-4">
+                <p class="p">FOURN</p>
+              </div>
+              <div class="col-md-8" style="margin-top: 0.2%;">
+                <input
+                  class="form-control"
+                  type="text"
+                  style="width: 100%;"
+                  pInputText
+                  [(ngModel)]="fournisseurs.deno"
+                  [readonly]="readonly"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <p class="p">FAMILLE</p>
+              </div>
+              <div class="col-md-8" style="margin-top: 0.2%;">
+                <input
+                  class="form-control"
+                  type="text"
+                  style="width: 100%;"
+                  pInputText
+                  [(ngModel)]="familles.nom"
+                  [readonly]="readonly"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <p class="p">S/FAM</p>
+              </div>
+              <div class="col-md-8" style="margin-top: 0.3%;">
+                <input
+                  type="text"
+                  style="width: 100%;"
+                  pInputText
+                  [(ngModel)]="sfamilles.nom"
+                  [readonly]="readonly"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <p class="p">QT CMD FRS</p>
+              </div>
+              <div class="col-md-8" style="margin-top: 0.2%;">
+                <input
+                  type="text"
+                  style="width: 100%;"
+                  pInputText
+                  [(ngModel)]="qteCmdFrs"
+                  [readonly]="readonly"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <p class="p">ARV PRV LE</p>
+              </div>
+              <div class="col-md-8" style="margin-top: 0.3%;">
+                <input
+                  type="text"
+                  style="width: 100%;"
+                  pInputText
+                  [(ngModel)]="arvPrvLe"
+                  [readonly]="readonly"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <p class="p">QT CMD CLT</p>
+              </div>
+              <div class="col-md-8" style="margin-top: 0.3%;">
+                <input
+                  type="text"
+                  style="width: 100%;"
+                  class="form-control"
+                  pInputText
+                  [(ngModel)]="qteCmdClt"
+                  [readonly]="readonly"
+                />
+              </div>
+            </div>
+            <div class="row" [hidden]="true" >
+              <div class="col-md-4">MIN</div>
+              <div class="col-md-3" style="margin-top: 0.3%;">
+                <input
+                  type="text"
+                  style="width: 100%;"
+                  class="form-control"
+                  pInputText
+                  [(ngModel)]="selectedstock.min"
+                  [readonly]="readonly"
+                />
+              </div>
+              <div class="col-md-2">MAX</div>
+              <div class="col-md-3" style="margin-top: 0.3%;">
+                <input
+                  type="text"
+                  style="width: 100%;"
+                  class="form-control"
+                  pInputText
+                  [(ngModel)]="selectedstock.max"
+                  [readonly]="readonly"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <p class="p">CAR. TCHNQ</p>
+              </div>
+              <div class="col-md-8" style="margin-top: 0.3%;">
+                <textarea
+                  class="textarea"
+                  [readonly]="readonly"
+                  style="width: 100%;height: 80px;"
+                  [rows]="3"
+                  [cols]="35"
+                  type="text"
+                  aria-rowcount="3"
+                  maxlength="250"
+                  pInputTextarea
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="PRIX">
+          <div style="height: 290px;">
+            <div class="row">
+              <div class="col-md-4">
+                <p class="p">TVA</p>
+              </div>
+              <div class="col-md-4" style="margin-top: 0.2%;">
+                <input
+                  class="form-control"
+                  type="text"
+                  style="width: 100%;"
+                  pInputText
+                  [(ngModel)]="selectedstock.tva"
+                  [readonly]="readonly"
+                />
+              </div>
+              <div class="col-md-4"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <p class="p">PRIX TTC</p>
+              </div>
+              <div class="col-md-4" style="margin-top: 0.2%;">
+                <input
+                  class="form-control"
+                  type="text"
+                  style="width: 100%;"
+                  pInputText
+                  [(ngModel)]="ttc"
+                  [readonly]="readonly"
+                />
+              </div>
+              <div class="col-md-4"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <p class="p">DER PR ACHAT</p>
+              </div>
+              <div class="col-md-4" style="margin-top: 0.3%;">
+                <input
+                  type="text"
+                  style="width: 100%;"
+                  pInputText
+                  [(ngModel)]="drPrixAchat"
+                  [readonly]="readonly"
+                />
+              </div>
+              <div class="col-md-1"></div>
+              <div class="col-md-3" style="margin-top: 0.3%;">
+                <input
+                  type="text"
+                  style="width: 100%;"
+                  pInputText
+                  [(ngModel)]="selectedstock.devise"
+                  [readonly]="readonly"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4"></div>
+              <div class="col-md-4" style="margin-top: 0.2%;">
+                <input
+                
+                  type="text"
+                  style="width: 100%;"
+                  pInputText
+                  [(ngModel)]="selectedstock.dPachat"
+                  [readonly]="readonly"
+                />
+              </div>
+              <div class="col-md-1"></div>
+              <div class="col-md-3" style="margin-top: 0.2%;">
+                
+                <input
+                  value="DT"
+                  style="width: 100%;"
+                  type="text"
+                  [readonly]="readonly"
+                  pInputText
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <p class="p">DER DATE ACH</p>
+              </div>
+              <div class="col-md-4" style="margin-top: 0.3%;">
+                <input
+                  type="text"
+                  style="width: 100%;"
+                  pInputText
+                  [(ngModel)]="selectedstock.achatD"
+                  [readonly]="readonly"
+                />
+              </div>
+              <div class="col-md-4"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <p class="p">PR ACH POND</p>
+              </div>
+              <div class="col-md-4" style="margin-top: 0.3%;">
+                <input
+                  type="text"
+                  style="width: 100%;"
+                  class="form-control"
+                  pInputText
+                  [(ngModel)]="prixAchatPond"
+                  [readonly]="readonly"
+                />
+              </div>
+              <div class="col-md-4"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <p class="p">EMPL</p>
+              </div>
+              <div class="col-md-8" style="margin-top: 0.3%;">
+                <input
+                  [(ngModel)]="selectedstock.emplacement"
+                  style="width: 100%;"
+                  type="text"
+                  [readonly]="readonly"
+                  pInputText
+                />
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+    <div
+      *ngIf="detail == true && ajouterClicked == true"
+      class="row"
+      style="margin-top: 3px;"
+    >
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <button
+            clikcked="true"
+            *ngIf="
+              mouves2Clickek === true ||
+              mouves1Clickek === true ||
+              mouvesClickek === true
+            "
+            style="font-size: 14px;"
+            pButton
+            type="button"
+            label="Voir Totaux"
+            (click)="afficherTot()"
+            class="ui-button-raised"
+          ></button>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+      <div style="padding: 3%;" *ngIf="VoirTotaux === true">
+        <div class="row">
+          <div class="col-md-4">
+            <p class="p" style="margin-left: 10%;">INVENT</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              [(ngModel)]="invent"
+              class="form-control"
+              type="text"
+              style="width: 100%;"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-2">
+            <p class="p">RESERV</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              [(ngModel)]="reserv"
+              class="form-control"
+              type="text"
+              style="width: 100%; height: 75%;"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <p class="p" style="margin-left: 10%;">ACHAT</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              [(ngModel)]="achat"
+              class="form-control"
+              type="text"
+              style="width: 100%; height: 75%;"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-2">
+            <p class="p">AV/F</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              [(ngModel)]="av_f"
+              class="form-control"
+              type="text"
+              style="width: 100%; height: 75%;"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <p class="p" style="margin-left: 10%;">AV B/L</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              [(ngModel)]="av_b_l"
+              class="form-control"
+              type="text"
+              style="width: 100%; height: 75%;"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-2">
+            <p class="p">B/L</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              [(ngModel)]="b_l"
+              class="form-control"
+              type="text"
+              style="width: 100%; height: 75%;"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <p class="p" style="margin-left: 10%;">AV CPT</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              [(ngModel)]="av_cpt"
+              class="form-control"
+              type="text"
+              style="width: 100%; height: 75%;"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-2">
+            <p class="p" style="width: 115%;">FRE CPT</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              [(ngModel)]="fre_cpt"
+              class="form-control"
+              type="text"
+              style="width: 100%; height: 75%;"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <p class="p" style="margin-left: 10%;">REG+</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              [(ngModel)]="reg_plus"
+              class="form-control"
+              type="text"
+              style="width: 100%; height: 75%;"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-2">
+            <p class="p">REG-</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              [(ngModel)]="reg_moin"
+              class="form-control"
+              type="text"
+              style="width: 100%; height: 75%;"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <p class="p" style="margin-left: 10%;">ENTREE</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              [(ngModel)]="entreesom"
+              class="form-control"
+              type="text"
+              style="width: 100%; height: 75%;"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-2">
+            <p class="p">SORTIE</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              [(ngModel)]="sortiesom"
+              class="form-control"
+              type="text"
+              style="width: 100%; height: 75%;"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="col-md-4"
+    *ngIf="detail === false || ajouterClicked == false"
+  ></div>
+</div>

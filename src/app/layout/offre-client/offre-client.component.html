@@ -1,0 +1,227 @@
+  <div class="row">
+    <div class="col-md-10">
+    <ejs-grid
+      #grid1
+      [dataSource]="clients"
+      [allowExcelExport]="true"
+      (mouseup)="annulerSelectionClient()"
+      (recordDoubleClick)="consulterClient($event)"
+      [selectedRowIndex]="selectedClt"
+      allowResizing= 'true'
+      (rowSelected)="rowSelectedClient($event)" 
+      height="182"
+      gridLines="Both"
+      allowTextWrap="true"
+      [rowHeight]="26"
+    >
+      <e-columns>
+        <e-column
+          field="code"
+          headerText="Code Client"
+          textAlign="Left"
+          width="20"
+        >
+        </e-column>
+        <e-column
+          field="deno"
+          headerText="Libelle Client"
+          textAlign="Left"
+          width="30"
+        ></e-column>
+        <e-column
+          field="net"
+          headerText="MNT TTC"
+          textAlign="right"
+          width="15"
+        ></e-column>
+        <e-column
+          field="satisf"
+          headerText="MNT STF TTC"
+          textAlign="right"
+          width="15"
+        >
+        </e-column>
+        <e-column
+          field="pourc"
+          headerText="%"
+          textAlign="right"
+          width="15"
+        ></e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+  <div class="col-md-2">
+    <br><br>
+    <div class="row">
+      <div align="center" style="color: red; font-size: 110%; font-weight: bold;">
+        <h5>selectionner un client</h5><h5>Double click pour voir ses offres</h5>
+      </div>
+    </div>
+    <br>
+      <div class="row">
+        <button
+          pButton
+          type="button"
+          label="--> EXCEL"
+          (click)="excelExport1('Offres')"
+          class="ui-button-raised"
+          style="margin: auto;"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <div class="row" *ngIf="selectedClient === true">
+    <div class="col-md-10">
+    <ejs-grid
+      #grid2
+      [dataSource]="offres"
+      [allowExcelExport]="true"
+      (mouseup)="annulerSelectionOffre()"
+      (recordDoubleClick)="consulterOffre($event)"
+      [selectedRowIndex]="selectedOfr"
+      allowResizing= 'true'
+      (rowSelected)="rowSelectedOffre($event)" 
+      height="130"
+      gridLines="Both"
+      allowTextWrap="true"
+      [rowHeight]="26"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column
+          field="combine"
+          headerText="N° Offre"
+          textAlign="Left"
+          width="12"
+        >
+        </e-column>
+        <e-column
+          field="datDev"
+          headerText="Date Offre"
+          textAlign="Left"
+          width="12"
+        ></e-column>
+        <e-column
+          field="net"
+          headerText="MNT TTC"
+          textAlign="right"
+          width="13"
+        ></e-column>
+        <e-column
+          field="satisf"
+          headerText="MNT STF TTC"
+          textAlign="right"
+          width="14"
+        >
+        </e-column>
+        <e-column
+          field="pourc"
+          headerText="%"
+          textAlign="right"
+          width="12"
+        ></e-column>
+        <e-column
+          field="deno"
+          headerText="Vendeur"
+          textAlign="Left"
+          width="25"
+        ></e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+  <div class="col-md-2">
+    <br>
+    <div class="row">
+      <div align="center" style="color: red; font-size: 110%; font-weight: bold;">
+        <h5>selectionner un offre</h5><h5>Double click pour voir ses details</h5>
+      </div>
+    </div>
+      <div class="row">
+        <button
+          pButton
+          type="button"
+          label="--> EXCEL"
+          (click)="excelExport2('Offres/Client')"
+          class="ui-button-raised"
+          style="margin: auto;"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row" *ngIf="selectedOffre === true">
+    <div class="col-md-10">
+    <ejs-grid
+      #grid3
+      [dataSource]="detailsOffre"
+      [allowExcelExport]="true"
+      height="130"
+      gridLines="Both"
+      allowTextWrap="true"
+      [rowHeight]="26"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column
+          field="code"
+          headerText="REFERENCE"
+          textAlign="Left"
+          width="18"
+        >
+        </e-column>
+        <e-column
+          field="design"
+          headerText="DESIGNATION"
+          textAlign="Left"
+          width="30"
+        ></e-column>
+        <e-column
+          field="quantite"
+          headerText="QTE"
+          textAlign="right"
+          width="10"
+        ></e-column>
+        <e-column
+          field="tRemise"
+          headerText="REMISE"
+          textAlign="right"
+          width="12"
+        >
+        </e-column>
+        <e-column
+          field="prix"
+          headerText="PRIX U. HT"
+          textAlign="right"
+          width="14"
+        ></e-column>
+        <e-column
+          field="tauxTva"
+          headerText="TVA"
+          textAlign="right"
+          width="10"
+        ></e-column>
+        <e-column
+          field="qtSatisf"
+          headerText="QTE STF"
+          textAlign="right"
+          width="12"
+        ></e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+  <div class="col-md-2">
+    <br><br><br>
+      <div class="row">
+        <button
+          pButton
+          type="button"
+          label="--> EXCEL"
+          (click)="excelExport3('Details Offre')"
+          class="ui-button-raised"
+          style="margin: auto;"
+        ></button>
+      </div>
+    </div>
+  </div>

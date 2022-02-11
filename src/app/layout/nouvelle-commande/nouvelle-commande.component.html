@@ -1,0 +1,515 @@
+<p-blockUI [blocked]="blockDocument"></p-blockUI>
+<div [ngClass]="{ disableDiv: displayMessage }">
+  <div class="entete">
+    <div class="row">
+      <div class="col-md-2"><label>Fournisseur:</label></div>
+      <div class="col-md-2">
+        <ng-select
+          id="four"
+          [items]="four"
+          bindLabel="deno"
+          [(ngModel)]="selectedFour"
+          placeholder=""
+          (change)="fournisseurClick()"
+          [disabled]="champDisabled || fourDisabled"
+          [searchFn]="onSearchFournisseur"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-1"><label>Date:</label></div>
+      <div class="col-md-2">
+        <input
+          type="text"
+          size="11"
+          readonly="true"
+          pInputText
+          [(ngModel)]="date"
+        />
+      </div>
+      <div class="col-md-1"><label>M.</label></div>
+      <div class="col-md-2">
+        <input
+          type="text"
+          size="40"
+          readonly="true"
+          pInputText
+          [(ngModel)]="deno"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2"><label>Transporteur:</label></div>
+      <div class="col-md-2">
+        <ng-select
+          [items]="transp"
+          bindLabel="deno"
+          [(ngModel)]="selectedTransp"
+          placeholder=""
+          [disabled]="champDisabled"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-1"><label>Devise:</label></div>
+      <div class="col-md-2">
+        <input
+          id="devise"
+          type="text"
+          size="5"
+          (keydown.space)="$event.preventDefault()"
+          (keypress)="ov.hide()"
+          (keydown.enter)="changeLocation(0)"
+          maxlength="3"
+          [disabled]="champDisabled"
+          pInputText
+          [(ngModel)]="devise"
+        />
+      </div>
+      <div class="col-md-1">
+        <label>Adresse:</label>
+      </div>
+      <div class="col-md-2">
+        <input
+          type="text"
+          size="40"
+          readonly="true"
+          pInputText
+          [(ngModel)]="adresse"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2"><label>Mode de paiement:</label></div>
+      <div class="col-md-2">
+        <ng-select
+          [items]="modeP"
+          bindLabel="deno"
+          [(ngModel)]="selectedModeP"
+          placeholder=""
+          [disabled]="champDisabled"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-1"><label>Réf/Prof:</label></div>
+      <div class="col-md-2">
+        <input
+          id="refProf"
+          type="text"
+          maxlength="15"
+          size="16"
+          [disabled]="champDisabled"
+          pInputText
+          [(ngModel)]="ref_Prof"
+          (keydown.enter)="changeLocation(1)"
+        />
+      </div>
+      <div class="col-md-1">
+        <label>Ville :</label>
+      </div>
+      <div class="col-md-2">
+        <input
+          type="text"
+          size="40"
+          readonly="true"
+          pInputText
+          [(ngModel)]="ville"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"><label>Mode de livraison:</label></div>
+      <div class="col-md-2">
+        <ng-select
+          [items]="modeL"
+          bindLabel="deno"
+          [(ngModel)]="selectedModel"
+          placeholder=""
+          [disabled]="champDisabled"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-1"><label>Echeance:</label></div>
+      <div class="col-md-2">
+        <p-calendar
+          inputId="echeance"
+          [(ngModel)]="dateEcheance"
+          [locale]="tn"
+          [inputStyle]="{ width: '60%' }"
+          dateFormat="dd/mm/yy"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          yearRange="1980:2050"
+          [disabled]="champDisabled"
+          (onSelect)="changeLocation(2)"
+        ></p-calendar>
+      </div>
+      <div class="col-md-1">
+        <label>Banque:</label>
+      </div>
+      <div class="col-md-2">
+        <ng-select
+          [items]="banque"
+          bindLabel="deno"
+          [(ngModel)]="selectedBanque"
+          placeholder=""
+          [disabled]="champDisabled"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-auto">
+        <button
+          pButton
+          *ngIf="!cardShow"
+          id="btEtablirCommande"
+          type="button"
+          label="Etablir Commande"
+          (click)="commandeClick($event)"
+          class="ui-button-raised"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <mat-card
+    [hidden]="!cardShow"
+    style="height: 310px; margin-top: 1px; margin-left: -8px"
+  >
+    <mat-card-content>
+      <h4>Détails</h4>
+      <div class="row">
+        <div class="col-md-11">
+          <div
+            id="GridParent"
+            style="max-height: 220px; min-height: 220px"
+            [ngClass]="{ disableDiv: disableTable }"
+          >
+            <p-table
+              class="flexcolumn"
+              [value]="demandeCommande"
+              dataKey="rang"
+              #scrollMe
+              [scrollable]="true"
+              scrollHeight="176px"
+              [responsive]="false"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 5%">N°</th>
+                  <th style="width: 20%">Code</th>
+                  <th style="width: 30%">Désignation</th>
+                  <th style="width: 10%">Qte</th>
+                  <th style="width: 10%">Prix HT</th>
+                  <th style="width: 10%">Total art</th>
+                  <th style="width: 10%">Date Prévue</th>
+                  <th style="width: 5%"></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-ri="rowIndex">
+                <tr>
+                  <td style="width: 5%" id="row_nvc{{ rowData.rang }}">
+                    {{ rowData.rang }}
+                  </td>
+                  <td style="width: 20%">
+                    {{ rowData.code }}
+                  </td>
+                  <td style="width: 30%">
+                    {{ rowData.designation }}
+                  </td>
+                  <td
+                    pEditableColumn
+                    id="row_nvc_qte{{ rowData.rang }}"
+                    style="width: 10%; text-align: Right"
+                  >
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <input
+                        id="row_nvc_qte{{ rowData.rang }}"
+                          pInputText
+                          type="text"
+                          style="width: 100%"
+                          [minlength]="1"
+                          [min]="1"
+                          [(ngModel)]="rowData.quantite"
+                          [maxLength]="6"
+                          pKeyFilter="pint"
+                          (keydown.enter)="actualiserLigne('qte', rowData.rang)"
+                          (blur)="actualiserLigne('qte', rowData.rang)"
+                          (focus)="$event.target.select()"
+                          required
+                        />
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{ rowData.quantite }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td
+                    pEditableColumn
+                    id="row_nvc_prix{{ rowData.rang }}"
+                    style="width: 10%; text-align: Right"
+                  >
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <input
+                          pInputText
+                          type="text"
+                          style="width: 100%"
+                          size="5"
+                          [(ngModel)]="rowData.prixHT"
+                          [maxLength]="9"
+                          pKeyFilter="num"
+                          (keydown.enter)="
+                            actualiserLigne('prixHT', rowData.rang)
+                          "
+                          (blur)="actualiserLigne('prixHT', rowData.rang)"
+                          (focus)="$event.target.select()"
+                          required
+                        />
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{ rowData.prixHT }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td align="Right" style="width: 10%">
+                    {{ rowData.total_article }}
+                  </td>
+                  <td
+                    pEditableColumn
+                    id="row_date_prevue{{ rowData.rang }}"
+                    style="width: 10%; text-align: center"
+                  >
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <p-inputMask
+                          mask="99/99/9999"
+                          [(ngModel)]="rowData.date_prevue"
+                          placeholder="jj/mm/aaaa"
+                          slotChar="jj/mm/aaaa"
+                          [style]="{ width: '100%' }"
+                          (keydown.enter)="
+                            actualiserLigne('datePrevue', rowData.rang)
+                          "
+                          (blur)="actualiserLigne('datePrevue', rowData.rang)"
+                        ></p-inputMask>
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{ rowData.date_prevue }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <!--<td pEditableColumn style="width: 10%; text-align: center">
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <p-calendar
+                          [(ngModel)]="rowData.date_prevue"
+                          appendTo="body"
+                          (onSelect)="formatter(rowData.rang)"
+                          [locale]="tn"
+                          dateFormat="dd/mm/yy"
+                          [monthNavigator]="true"
+                          [yearNavigator]="true"
+                          yearRange="1900:2200"
+                          [style]="{ width: '100%' }"
+                          [inputStyle]="{ width: '100%' }"
+                        ></p-calendar>
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{ rowData.date_prevue }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>-->
+                  <td style="width: 5%; text-align: center">
+                    <button
+                      pButton
+                      type="button"
+                      pDeletetableRow
+                      icon="pi pi-trash"
+                      class="ui-button-danger"
+                      (click)="onRowDelete(ri)"
+                    ></button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="row"><label>Montant/Devise</label></div>
+          <div class="row">
+            <input
+              type="text"
+              size="12"
+              pInputText
+              pKeyFilter="int"
+              [(ngModel)]="MD_cmd"
+              readonly="true"
+            />
+          </div>
+          <div class="row"><label>Montant en DT</label></div>
+          <div class="row">
+            <input
+              type="text"
+              size="12"
+              pInputText
+              pKeyFilter="int"
+              format="n3"
+              [(ngModel)]="tot_cmd"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top: 3px">
+        <div class="col-md-2">
+          <button
+            pButton
+            type="button"
+            label="Nouvelle Saisie"
+            class="ui-button-raised"
+            (click)="NouvelleSaisie()"
+            *ngIf="nvSaisieShow"
+          ></button>
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-1">
+          <button
+            pButton
+            type="button"
+            label="Valider"
+            (click)="valider($event)"
+            class="ui-button-raised"
+            *ngIf="validerShow"
+          ></button>
+        </div>
+        <div class="col-md-1">
+          <button
+            pButton
+            type="button"
+            label="Annuler"
+            class="ui-button-raised"
+            (click)="NouvelleSaisie()"
+            *ngIf="annulerShow"
+          ></button>
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-1">
+          <button
+            pButton
+            type="button"
+            label="Aperçu"
+            (click)="apercu()"
+            *ngIf="apercuShow"
+            class="ui-button-raised"
+          ></button>
+        </div>
+        <div class="col-md-1">
+          <button
+            pButton
+            type="button"
+            label="Excel"
+            (click)="excel()"
+            *ngIf="excelShow"
+            class="ui-button-raised"
+          ></button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div [hidden]="!showGrid2">
+    <div class="ui-inputgroup">
+      <input
+        type="search"
+        size="40"
+        id="searchInput"
+        pInputText
+        [(ngModel)]="code"
+        (change)="rechIndic=0"
+        [disabled]="rechercheDisable"
+        (keyup.enter)="recherche()"
+        (search)="recherche()"
+        (keyup)="ov.hide()"
+        (focus)="$event.target.select()"
+        placeholder="Recherche par code article"
+      />
+      <button pButton icon="pi pi-search" (click)="recherche()"></button>
+    </div>
+    <div id="GridParents" style="margin-top: 1px">
+      <ejs-grid
+        #grid
+        [dataSource]="articles"
+        gridLines="Both"
+        (recordDoubleClick)="select($event)"
+        [allowSelection]="allowSelection"
+        [selectedRowIndex]="selectedRowIndex"
+        (dataBound)="dataBound($event)"
+        height="100px"
+        [rowHeight]="25"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          <e-column field="code" headerText="CODE" width="100"></e-column>
+          <e-column field="design" headerText="DESIGN" width="150"></e-column>
+          <e-column
+            field="prix"
+            headerText="Prix U.HT"
+            width="50"
+            textAlign="Right"
+          ></e-column>
+          <e-column
+            field="quantite"
+            headerText="En Stock"
+            width="50"
+            textAlign="Right"
+          ></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <!--<div class="row" style="margin-top: 3px" [hidden]="true">
+      <div class="col-md-3">
+        <button
+          pButton
+          type="button"
+          label="Nouvelle saisie"
+          class="ui-button-raised"
+          (click)="NouvelleSaisie()"
+        ></button>
+      </div>
+      <div class="col-md-3">
+        <button
+          pButton
+          type="button"
+          label="Visualiser"
+          class="ui-button-raised"
+          (click)="apercu()"
+          *ngIf="appercuShow"
+        ></button>
+      </div>
+    </div>-->
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+<p-dialog [(visible)]="displayMessage" styleClass="mydialog">
+  <p-header> Information </p-header>
+  <h3>{{ message }}</h3>
+  <p-footer>
+    <div align="center">
+      <button
+        pButton
+        type="button"
+        label="Ok"
+        class="ui-button-raised"
+        (click)="displayMessage = false"
+      ></button>
+    </div>
+  </p-footer>
+</p-dialog>

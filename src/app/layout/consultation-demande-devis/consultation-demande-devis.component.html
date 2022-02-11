@@ -1,0 +1,216 @@
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <div class fxFlexFill fxLayoutAlign="center center">
+      <h3 style="    color: #1611d2;">Consultation des Demandes de Devis</h3>
+    </div>
+
+  </div>
+</div>
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <mat-card>
+
+      <mat-card-content>
+        <div class="row">
+           
+            <button pButton type="button" label="Initialiser Les Criteres de Séléction" 
+            (click)='initialiser()'  class="ui-button-secondary"></button>
+          
+        </div>
+        <div class="row">
+
+
+          <div class="col-md-3">
+            <div class="row">
+
+              <div class="col-md-5"> <label>Date de debut:&nbsp;</label></div>
+              <div class="col-md-7">
+                <p-calendar [(ngModel)]="from"  [disabled]='disabled' [monthNavigator]="true" [yearNavigator]="true"
+                  yearRange="2005:2022" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px', height: '30px' }">
+                </p-calendar>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+
+            <div class="row">
+              <div class="col-md-5"> <label>Date de fin: &nbsp;</label></div>
+              <div class="col-md-7">
+                <p-calendar [(ngModel)]="to" [maxDate]="maxDate" [disabled]="disabled" [yearNavigator]="true" [monthNavigator]="true"
+                  yearRange="2005:2022" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px', height: '30px' }">
+                </p-calendar>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-3">
+            <div class="row">
+              <div class="col-md-5">
+                <label>N° Demande Devis</label>
+
+              </div>
+              <div class="col-md-7">
+
+
+                <input type="text" maxlength="15" size="16" pInputText 
+                [disabled]="disabled" [(ngModel)]="numero" />
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+
+
+          <div class="col-md-3">
+            <div class="row">
+
+              <div class="col-md-5"> <label>Article:&nbsp;</label></div>
+              <div class="col-md-7">
+                <input type="text" size="16" pInputText [disabled]="disabled" [(ngModel)]="article" />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+
+            <div class="row">
+              <div class="col-md-5"> <label>Etat: &nbsp;</label></div>
+              <div class="col-md-7">
+                <p-dropdown [options]="etat" [style]="{'min-width': '120px'  }" [disabled]="disabled" [(ngModel)]="numeroDevis"></p-dropdown>
+
+
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-3">
+
+            <div class="row">
+              <div class="col-md-5"> </div>
+              <div class="col-md-7">
+                <button pButton type="button" label="Afficher" *ngIf="afficherShow" 
+                (click)="afficher()" class="ui-button-raised ">
+
+                </button>
+              </div></div></div>
+          
+        </div>
+
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</div>
+
+
+
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <mat-card>
+
+      <mat-card-content>
+
+
+<ejs-grid #grid [dataSource]="demande" 
+
+gridLines="Both" height="180px" [rowHeight]='23'>
+  <e-columns>
+    <e-column field="numero" headerText="CODE" width="80"></e-column>
+    <e-column field="date" headerText="DATE" ></e-column>
+    <e-column  [valueAccessor]='etatValue' headerText="Etat" ></e-column>
+    <e-column field="numeroDevis" headerText="N° devis"></e-column> 
+    
+    <e-column filed="note" headerText="Note" width='100'>
+      <ng-template #template let-data>
+          <button ejs-button cssClass='e-small e-round e-info'  iconCss="e-icons e-plus-icon" 
+          (click)='onOpenDialog(data.note,$event)'
+          [isPrimary]="true"></button>
+                  
+      </ng-template>
+    </e-column>
+    <e-column width='110'   >
+        <ng-template #template let-data  >
+            <button ejs-button  cssClass="e-small e-info"  (click)='onOpenDialogg(data.numero)'>Details</button>
+           
+   
+        </ng-template>
+    </e-column>
+  </e-columns>
+</ejs-grid>
+
+    <ejs-dialog id='dialogg' #ejDialogg  isModal='true' [visible]= 'false'  [animationSettings]='animationSettings' header='Details Note' 
+    width='300px' [showCloseIcon]='showCloseIcon'>
+    <ng-template #content>
+      <div class = 'dialog-content'>  
+         
+            {{note}}        
+           
+        </div>
+    </ng-template>
+    </ejs-dialog> 
+    <div #container class='root-container'>
+<ejs-dialog id='dialog' #ejDialog  isModal='true'  [visible]= 'false'  [animationSettings]='animationSettings' header='Details Demande Devis Numero :  {{code}} '
+width='800px' [showCloseIcon]='showCloseIcon'>
+<ng-template #content>
+
+  <div class = 'dialog-content'>  
+        
+      <ejs-grid #grid2 [dataSource]="details" gridLines="Both" height="150px" [rowHeight]='23'>
+          <e-columns>
+            
+            <e-column field="codeArticle" headerText="Code article" textAlign="Justify"></e-column>
+            <e-column field="designation" headerText="Designation" textAlign='Justify'></e-column>
+            <e-column field="quantite" headerText="Quantite"></e-column>
+            <e-column field="prixArticle" headerText="Prix Article"></e-column>
+            <e-column field="marque" headerText="Marque"></e-column>
+            <e-column headerText="Note" width='100'>
+              <ng-template #template let-data>
+                  <button ejs-button cssClass='e-small e-round'  iconCss="e-icons e-plus-icon" 
+                  (click)="onOpenInnerDialog(data.note,$event)"
+                  [isPrimary]="true"></button>
+                          
+              </ng-template>
+            </e-column>
+          </e-columns>
+          </ejs-grid>
+          <div class='row'>
+          <div class="col-md-2">
+            <button pButton type="button" label="Excel" (click)="excelDetail()" *ngIf="buttonShow" class="ui-button-raised ">
+        
+            </button></div>
+            <div class="col-md-8"></div>
+            <div class="col-md-2">
+              <button color="primary" class="mat-raised-button mat-primary" ng-reflect-color="primary" *ngIf="buttonShow" (click)="apercueDetail()">
+                Apercue
+              </button>
+            </div>
+    </div></div>
+</ng-template>
+</ejs-dialog> </div>
+<ejs-dialog id='innerDialog'  #ejInnerDialog header='Note'  isModal='true'  [visible]='false'  width='300px'
+showCloseIcon='true'   >
+<ng-template #content>
+    <div class = 'dialog-content'>  
+       
+          {{noteDetail}}        
+         
+      </div>
+  </ng-template>
+</ejs-dialog>
+<div class='row'>
+<div class="col-md-2">
+    <button pButton type="button" label="Excel" (click)="excel()" *ngIf="buttonShow"  class="ui-button-raised ">
+
+    </button></div>
+    <div class="col-md-8"></div>
+    <div class="col-md-2">
+      <button color="primary" class="mat-raised-button mat-primary" ng-reflect-color="primary" *ngIf="buttonShow" (click)="apercue()">
+        Apercue
+      </button>
+    </div></div>
+</mat-card-content>
+</mat-card></div>
+</div>
+<p-toast [style]="{ marginTop: '160px' }" position="top-center"></p-toast>

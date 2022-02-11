@@ -1,0 +1,711 @@
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <div class="row">
+      <div class="col-md-2">Code Client :</div>
+      <div class="col-md-3">Client :</div>
+      <div class="col-md-7"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <input
+          id="codeClt"
+          type="text"
+          size="10"
+          maxlength="7"
+          (keyup.enter)="applyFilterClientParCode($event)"
+          (keyup)="ov.hide()"
+          pInputText
+          [(ngModel)]="codeClient"
+          (keydown)="afficherShow = false; intialiserSelectedClient()"
+          [disabled]="ngselectDisabled"
+        />
+      </div>
+
+      <div class="col-md-3">
+        <ng-select
+          class="custom"
+          ngselect
+          [items]="clients"
+          bindLabel="deno"
+          [(ngModel)]="selectedClient"
+          (click)="updateOnSelect()"
+          (keyup.enter)="updateOnSelect()"
+          [searchFn]="onSearchClient"
+          [disabled]="ngselectDisabled"
+          style="width: 100%"
+          (clear)="afficherShow = false; codeClient = ''"
+        >
+        </ng-select>
+      </div>
+
+      <div class="col-md-1">
+        <button
+          pButton
+          id="btAfficher"
+          type="button"
+          label="Afficher"
+          *ngIf="afficherShow"
+          (click)="afficher()"
+          class="ui-button-raised"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="mb-20"
+  fxFlex
+  fxLayout="row"
+  fxLayout.lt-md="column"
+  [hidden]="!showCard1"
+>
+  <div fxFlex>
+    <mat-card>
+      <mat-card-content>
+        <ejs-grid
+          #gridCredit
+          [dataSource]="brouCredit"
+          [allowSelection]="allowSelection"
+          [selectedRowIndex]="0"
+          (rowSelected)="rowSelected($event)"
+          gridLines="Both"
+          height="130px"
+          [rowHeight]="26"
+          (mouseup)="annulerSelection()"
+          (mousewheel)="annulerSelection()"
+          allowResizing="true"
+        >
+          <e-columns>
+            <e-column field="date" headerText="Date" width="90"></e-column>
+            <e-column field="piece" headerText="Piece" width="70"></e-column>
+            <e-column field="numero" headerText="Numero" width="80"></e-column>
+            <e-column
+              field="echeance"
+              headerText="Echeance"
+              width="90"
+            ></e-column>
+            <e-column
+              field="debit"
+              headerText="Debit"
+              textAlign="Right"
+              width="90"
+            ></e-column>
+            <e-column
+              field="credit"
+              headerText="Credit"
+              textAlign="Right"
+              width="90"
+            ></e-column>
+            <e-column
+              field="libelle"
+              headerText="Observations"
+              width="150"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+
+        <div class="row" style="margin-top: 1%">
+          <div class="col-md-2"></div>
+          <div class="col-md-2">
+            <button
+              pButton
+              type="button"
+              *ngIf="!ajouterDisabled"
+              label="Ajouter"
+              (click)="ajouter()"
+            ></button>
+          </div>
+          <div class="col-md-2">
+            <button
+              pButton
+              id="btSupprimer"
+              type="button"
+              label="Supprimer"
+              (click)="supprimer($event)"
+              *ngIf="!supprimerDisabled && autoriseSupp"
+            ></button>
+          </div>
+          <div class="col-md-3">
+            <button
+              pButton
+              id="btModifier"
+              type="button"
+              label="Modifier"
+              (click)="modifier($event)"
+              *ngIf="!modifierDisabled && autoriseModif"
+            ></button>
+          </div>
+          <div class="col-md-3">
+            <h5>Total Débit:&nbsp;&nbsp;&nbsp;{{ totalDebit }}</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <h5>Historique Nombre IMP:&nbsp;&nbsp;{{ histNombreIMP }}</h5>
+          </div>
+          <div class="col-md-3">
+            <h5>Nombre IMP:&nbsp;&nbsp;{{ nombreIMP }}</h5>
+          </div>
+          <div class="col-md-3"></div>
+          <div class="col-md-3">
+            <h5>Total Crédit:&nbsp;&nbsp;&nbsp;{{ totalCredit }}</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <h5>Historique Total IMP:&nbsp;&nbsp;{{ histTotalIMP }}</h5>
+          </div>
+          <div class="col-md-3">
+            <h5>Total IMP:&nbsp;&nbsp;{{ totalIMP }}</h5>
+          </div>
+          <div class="col-md-3"></div>
+          <div class="col-md-3">
+            <div class="row">
+              <div class="col-md-3">
+                <h5>Solde:</h5>
+              </div>
+              <div class="col-md-6">
+                <h5>{{ solde }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <button
+              (click)="nouveau()"
+              *ngIf="showNvSaisie"
+              pButton
+              type="button"
+              label="Nouvelle saisie"
+            ></button>
+          </div>
+          <div class="col-md-3"></div>
+          <div class="col-md-2">
+            <button
+              pButton
+              type="button"
+              label="Visualiser"
+              (click)="apercu()"
+            ></button>
+          </div>
+          <div class="col-md-2">
+            <button
+              pButton
+              type="button"
+              label="Apurement"
+              *ngIf="apurementshow"
+              (click)="apurement()"
+            ></button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<div [hidden]="!showCard2">
+  <div class="row">
+    <div class="col-md-1"><h5>Date</h5></div>
+    <div class="col-md-1">
+      <p-calendar
+        id="date"
+        [(ngModel)]="date"
+        [maxDate]="maxDate"
+        [minDate]="minDate"
+        [yearNavigator]="true"
+        [monthNavigator]="true"
+        yearRange="2005:2022"
+        dateFormat="dd/mm/yy"
+        (onSelect)="onselect($event)"
+        [disabled]="champDisabled"
+        [inputStyle]="{ width: '100px', height: '30px' }"
+      >
+      </p-calendar>
+    </div>
+    <div class="col-md-1"><h5>Piece</h5></div>
+    <div class="col-md-2">
+      <ng-select
+        ngselect
+        id="piece"
+        #ngSelectPiece
+        [items]="piece"
+        bindLabel="label"
+        bindValue="value"
+        [disabled]="champDisabled"
+        [(ngModel)]="selectedBrou.piece"
+        (change)="setTire()"
+        [searchFn]="onSearchPiece"
+      >
+      </ng-select>
+    </div>
+    <div class="col-md-1"><h5>Montant</h5></div>
+    <div class="col-md-2">
+      <input
+        id="montant"
+        type="text"
+        pInputText
+        pKeyFilter="num"
+        (blur)="formatMontant()"
+        (keydown.enter)="moveToNextInput($event, 0)"
+        [(value)]="valueMontant"
+        [(ngModel)]="selectedBrou.montant"
+        [readonly]="champDisabled"
+        maxlength="10"
+      />
+    </div>
+    <div class="col-md-1"><h5>Numéro</h5></div>
+    <div class="col-md-2">
+      <input
+        id="numero"
+        pInputText
+        type="text"
+        maxlength="15"
+        class="form-control"
+        [(ngModel)]="selectedBrou.numero"
+        (keydown.enter)="moveToNextInput($event, 1)"
+        [readonly]="champDisabled"
+      />
+    </div>
+    <div class="col-md-1">
+      <button
+        id="btValider"
+        color="primary"
+        class="mat-fab mat-primary"
+        ng-reflect-color="primary"
+        *ngIf="validershow"
+        [disabled]="champDisabled"
+        (click)="valider($event)"
+      >
+        Valider
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-1">
+      <label
+        [hidden]="
+          selectedBrou.piece !== null &&
+          selectedBrou.piece !== '' &&
+          selectedBrou.piece !== 'TRAITE' &&
+          selectedBrou.piece !== 'CHEQUE'
+        "
+        ><h5>Echéance</h5></label
+      >
+    </div>
+    <div class="col-md-1">
+      <p-inputMask
+        mask="99/99/9999"
+        [(ngModel)]="echeance"
+        id="echeance"
+        #inputMaskEcheance
+        (change)="ov.hide()"
+        placeholder="jj/mm/aaaa"
+        slotChar="jj/mm/aaaa"
+        (keydown.enter)="moveToNextInput($event, 2)"
+        (blur)="moveToNextInput($event, 2)"
+        [disabled]="champDisabled"
+        size="10"
+        [hidden]="
+          selectedBrou.piece !== null &&
+          selectedBrou.piece !== '' &&
+          selectedBrou.piece !== 'TRAITE' &&
+          selectedBrou.piece !== 'CHEQUE'
+        "
+      ></p-inputMask>
+    </div>
+    <div class="col-md-1">
+      <label
+        [hidden]="
+          selectedBrou.piece !== null &&
+          selectedBrou.piece !== '' &&
+          selectedBrou.piece !== 'TRAITE' &&
+          selectedBrou.piece !== 'CHEQUE' &&
+          selectedBrou.piece !== 'VIR.BNQ'
+        "
+        ><h5>Banque</h5></label
+      >
+    </div>
+    <div class="col-md-2">
+      <input
+        id="banque"
+        pInputText
+        type="text"
+        maxlength="15"
+        class="form-control"
+        [readonly]="champDisabled"
+        [(ngModel)]="selectedBrou.banque"
+        (keydown.enter)="moveToNextInput($event, 3)"
+        [hidden]="
+          selectedBrou.piece !== null &&
+          selectedBrou.piece !== '' &&
+          selectedBrou.piece !== 'TRAITE' &&
+          selectedBrou.piece !== 'CHEQUE' &&
+          selectedBrou.piece !== 'VIR.BNQ'
+        "
+      />
+    </div>
+    <div class="col-md-1">
+      <label
+        [hidden]="
+          selectedBrou.piece !== null &&
+          selectedBrou.piece !== '' &&
+          selectedBrou.piece !== 'TRAITE' &&
+          selectedBrou.piece !== 'CHEQUE' &&
+          selectedBrou.piece !== 'VIR.BNQ'
+        "
+        ><h5>Observation</h5></label
+      >
+    </div>
+    <div class="col-md-2">
+      <input
+        id="observation"
+        pInputText
+        type="text"
+        class="form-control"
+        maxlength="25"
+        [readonly]="champDisabled"
+        [(ngModel)]="selectedBrou.libelle"
+        (keydown.enter)="moveToNextInput($event, 4)"
+        [hidden]="
+          selectedBrou.piece !== null &&
+          selectedBrou.piece !== '' &&
+          selectedBrou.piece !== 'TRAITE' &&
+          selectedBrou.piece !== 'CHEQUE' &&
+          selectedBrou.piece !== 'VIR.BNQ'
+        "
+      />
+    </div>
+    <div class="col-md-1">
+      <label
+        [hidden]="
+          selectedBrou.piece !== null &&
+          selectedBrou.piece !== '' &&
+          selectedBrou.piece !== 'TRAITE' &&
+          selectedBrou.piece !== 'CHEQUE' &&
+          selectedBrou.piece !== 'VIR.BNQ'
+        "
+        ><h5>Tire</h5></label
+      >
+    </div>
+    <div class="col-md-2">
+      <input
+        id="tire"
+        pInputText
+        type="text"
+        class="form-control"
+        maxlength="25"
+        [(ngModel)]="selectedBrou.tire"
+        (keydown.enter)="moveToNextInput($event, 5)"
+        [readonly]="champDisabled"
+        [hidden]="
+          selectedBrou.piece !== null &&
+          selectedBrou.piece !== '' &&
+          selectedBrou.piece !== 'TRAITE' &&
+          selectedBrou.piece !== 'CHEQUE' &&
+          selectedBrou.piece !== 'VIR.BNQ'
+        "
+      />
+    </div>
+    <div class="col-md-1">
+      <button
+        color="warn"
+        class="mat-fab mat-warn"
+        ng-reflect-color="warn"
+        *ngIf="validershow"
+        (click)="annuler()"
+      >
+        Annuler
+      </button>
+    </div>
+  </div>
+</div>
+<!--
+<div
+  class="mb-20"
+  fxFlex
+  fxLayout="row"
+  fxLayout.lt-md="column"
+  [hidden]="true"
+>
+  <div fxFlex>
+    <mat-card style="margin-top: -1%; min-height: 110px">
+      <mat-card-content>
+        <div class="row" style="height: 60px">
+          <div class="col-md-2">
+            <div class="row">
+              <div class="col-md-4">
+                <h5>Date</h5>
+              </div>
+
+              <div class="col-md-2">
+                <p-calendar
+                  id="date"
+                  [(ngModel)]="date"
+                  [maxDate]="maxDate"
+                  [minDate]="minDate"
+                  [yearNavigator]="true"
+                  [monthNavigator]="true"
+                  yearRange="2005:2022"
+                  dateFormat="dd/mm/yy"
+                  (onSelect)="onselect($event)"
+                  [disabled]="champDisabled"
+                  [inputStyle]="{ width: '100px', height: '30px' }"
+                >
+                </p-calendar>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="row">
+              <div class="col-md-3">
+                <h5>Piece</h5>
+              </div>
+              <div class="col-md-2">
+                <!--<p-dropdown
+                  id="brouPiece"
+                  [options]="piece"
+                  [panelStyle]="{ width: '10px' }"
+                  [readonly]="champDisabled"
+                  [style]="{ width: '100%' }"
+                  [(ngModel)]="selectedBrou.piece"
+                  (onChange)="setTire()"
+                ></p-dropdown>
+                <ng-select
+                  ngselect
+                  id="piece"
+                  #ngSelectPiece
+                  [items]="piece"
+                  bindLabel="label"
+                  bindValue="value"
+                  [disabled]="champDisabled"
+                  [(ngModel)]="selectedBrou.piece"
+                  (change)="setTire()"
+                  [searchFn]="onSearchPiece"
+                >
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="row">
+              <div class="col-md-3">
+                <h5>Montant</h5>
+              </div>
+              <div class="col-md-2">
+                <input
+                  id="montant"
+                  type="text"
+                  pInputText
+                  pKeyFilter="num"
+                  (blur)="formatMontant()"
+                  (keydown.enter)="moveToNextInput($event, 0)"
+                  [(value)]="valueMontant"
+                  [(ngModel)]="selectedBrou.montant"
+                  [readonly]="champDisabled"
+                  maxlength="10"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="row">
+              <div class="col-md-4">
+                <h5>Numéro</h5>
+              </div>
+              <div class="col-md-2">
+                <input
+                  id="numero"
+                  pInputText
+                  type="text"
+                  maxlength="15"
+                  class="form-control"
+                  [(ngModel)]="selectedBrou.numero"
+                  (keydown.enter)="moveToNextInput($event, 1)"
+                  [readonly]="champDisabled"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-1">
+            <button
+              id="btValider"
+              color="primary"
+              class="mat-fab mat-primary"
+              ng-reflect-color="primary"
+              *ngIf="validershow"
+              [disabled]="champDisabled"
+              (click)="valider($event)"
+            >
+              Valider
+            </button>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 0.5%; height: 60px">
+          <div class="col-md-2">
+            <div
+              class="row"
+              *ngIf="
+                selectedBrou.piece == null ||
+                selectedBrou.piece == '' ||
+                selectedBrou.piece == 'TRAITE' ||
+                selectedBrou.piece == 'CHEQUE'
+              "
+            >
+              <div class="col-md-4">
+                <h5>Echéance</h5>
+              </div>
+              <div class="col-md-1">
+                <!--<p-calendar
+                id="echeance"
+                  [(ngModel)]="echeance"
+                  [minDate]="minDate"
+                  [yearNavigator]="true"
+                  [monthNavigator]="true"
+                  [disabled]="champDisabled"
+                  yearRange="2005:2022"
+                  dateFormat="dd/mm/yy"
+                  (onSelect)="onselectEch($event)"
+                  [inputStyle]="{ width: '100px', height: '30px' }"
+                >
+                </p-calendar>
+                <p-inputMask
+                  mask="99/99/9999"
+                  [(ngModel)]="echeance"
+                  id="echeance"
+                  #inputMaskEcheance
+                  (change)="ov.hide()"
+                  placeholder="jj/mm/aaaa"
+                  slotChar="jj/mm/aaaa"
+                  (keydown.enter)="moveToNextInput($event, 2)"
+                  (blur)="moveToNextInput($event, 2)"
+                  [disabled]="champDisabled"
+                ></p-inputMask>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div
+              class="row"
+              *ngIf="
+                selectedBrou.piece == null ||
+                selectedBrou.piece == '' ||
+                selectedBrou.piece == 'TRAITE' ||
+                selectedBrou.piece == 'CHEQUE' ||
+                selectedBrou.piece == 'VIR.BNQ'
+              "
+            >
+              <div class="col-md-3">
+                <h5>Banque</h5>
+              </div>
+              <div class="col-md-2">
+                <input
+                  id="banque"
+                  pInputText
+                  type="text"
+                  maxlength="15"
+                  class="form-control"
+                  [readonly]="champDisabled"
+                  [(ngModel)]="selectedBrou.banque"
+                  (keydown.enter)="moveToNextInput($event, 3)"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div
+              class="row"
+              *ngIf="
+                selectedBrou.piece == null ||
+                selectedBrou.piece == '' ||
+                selectedBrou.piece == 'TRAITE' ||
+                selectedBrou.piece == 'CHEQUE' ||
+                selectedBrou.piece == 'VIR.BNQ'
+              "
+            >
+              <div class="col-md-3">
+                <h5>Observation</h5>
+              </div>
+              <div class="col-md-2">
+                <input
+                  id="observation"
+                  pInputText
+                  type="text"
+                  class="form-control"
+                  maxlength="25"
+                  [readonly]="champDisabled"
+                  [(ngModel)]="selectedBrou.libelle"
+                  (keydown.enter)="moveToNextInput($event, 4)"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div
+              class="row"
+              *ngIf="
+                selectedBrou.piece == null ||
+                selectedBrou.piece == '' ||
+                selectedBrou.piece == 'TRAITE' ||
+                selectedBrou.piece == 'CHEQUE' ||
+                selectedBrou.piece == 'VIR.BNQ'
+              "
+            >
+              <div class="col-md-4">
+                <h5>Tire</h5>
+              </div>
+              <div class="col-md-2">
+                <input
+                  id="tire"
+                  pInputText
+                  type="text"
+                  class="form-control"
+                  maxlength="25"
+                  [(ngModel)]="selectedBrou.tire"
+                  (keydown.enter)="moveToNextInput($event, 5)"
+                  [readonly]="champDisabled"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-1">
+            <button
+              color="warn"
+              class="mat-fab mat-warn"
+              ng-reflect-color="warn"
+              *ngIf="validershow"
+              (click)="annuler()"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+-->
+<p-dialog
+  header="Appurement"
+  (onHide)="close()"
+  [contentStyle]="{ 'min-height': '600px' }"
+  [style]="{ width: '99vw', height: '100vh' }"
+  [(visible)]="display"
+>
+  <app-appurement-reglement></app-appurement-reglement>
+</p-dialog>
+
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

@@ -1,0 +1,405 @@
+<p-blockUI [blocked]="blockDocument"></p-blockUI>
+<div id="container">
+  <div class="row">
+    <div
+      class="col-md-4"
+      [ngClass]="{
+        disableDiv: ajouterClicked || modifierClicked || supprimerClicked
+      }"
+    >
+      <div [hidden]="ajouterClicked" style="height: 490px" id="myDIV">
+        <p-panel header="Recherche Fournisseur">
+          <div class="ui-inputgroup" style="margin-bottom: 5px;">
+            <input
+              type="search"
+              maxlength="7"
+              pInputText
+              [(ngModel)]="rechCode"
+              (click)="rechDeno = ''"
+              (keyup)="applyFilterFournisseurParCode()"
+              (search)="applyFilterFournisseurParCode()"
+              placeholder="par code"
+              size="20"
+              [disabled]="ajouterClicked || modifierClicked || supprimerClicked"
+            />
+            <button
+              pButton
+              icon="pi pi-search"
+              (click)="applyFilterFournisseurParCode()"
+            ></button>
+          </div>
+          <div class="ui-inputgroup" style="margin-bottom: 5px;">
+            <input
+              type="search"
+              maxlength="35"
+              pInputText
+              [(ngModel)]="rechDeno"
+              (click)="rechCode = ''"
+              (keyup)="applyFilterFournisseurParDeno()"
+              (search)="applyFilterFournisseurParDeno()"
+              placeholder="par denomination"
+              size="45"
+              [disabled]="ajouterClicked || modifierClicked || supprimerClicked"
+            />
+            <button
+              pButton
+              icon="pi pi-search"
+              (click)="applyFilterFournisseurParDeno()"
+            ></button>
+          </div>
+          <ejs-grid
+            #grid
+            id="myGrid"
+            [dataSource]="fournisseurs"
+            (rowSelected)="updateData()"
+            [selectedRowIndex]="selectedIndex"
+            height="367"
+            [searchSettings]="searchOptions"
+            (mouseup)="annulerSelectionFournisseur()"
+            (mousewheel)="annulerSelectionFournisseur()"
+            gridLines="Both"
+            allowResizing= 'true'
+          >
+            <e-columns>
+              <e-column
+                field="code"
+                headerText="Code"
+                textAlign="Left"
+                width="90"
+              >
+              </e-column>
+              <e-column
+                field="deno"
+                headerText="Nom Fournisseur"
+                textAlign="Left"
+                width="160"
+              ></e-column>
+              <e-column
+                field="id"
+                headerText="id"
+                textAlign="Right"
+                width="0"
+              ></e-column>
+            </e-columns>
+          </ejs-grid>
+        </p-panel>
+      </div>
+
+      &nbsp;
+      <div class="row" style="height: 35px"></div>
+      &nbsp;
+      <div class="row" style="height: 35px">
+        <div class="col-md-4">
+          <button
+            color="primary"
+            class="mat-raised-button mat-primary"
+            ng-reflect-color="primary"
+            (click)="ajouter()"
+            *ngIf="!ajouterDisable && clickedMenuAuthModif"
+          >
+            Ajouter
+          </button>
+        </div>
+        <div class="col-md-4">
+          <button
+            color="primary"
+            class="mat-raised-button mat-primary"
+            ng-reflect-color="primary"
+            (click)="modifier()"
+            *ngIf="!modifierSupprimerDisable && clickedMenuAuthModif"
+          >
+            Modifier
+          </button>
+        </div>
+        <div class="col-md-4">
+          <button
+            id="supprimerBt"
+            color="primary"
+            class="mat-raised-button mat-primary"
+            ng-reflect-color="primary"
+            (click)="supprimer()"
+            *ngIf="!modifierSupprimerDisable && clickedMenuAuthModif"
+          >
+            Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8" id="container">
+      <div style="height: 580px">
+        <p-panel header="Identification">
+          <div class="row">
+            <div class="col-md-2">CODE :</div>
+            <div class="col-md-3">
+              <input
+                id="codeFour"
+                type="text"
+                maxlength="7"
+                pKeyFilter="pint"
+                pInputText
+                size="8"
+                [(ngModel)]="selectedFournisseur.code"
+                [disabled]="fieldDisable || !ajouterClicked"
+              />
+            </div>
+            <div class="col-md-1">NOM :</div>
+            <div class="col-md-5">
+              <input
+                id="denoFour"
+                type="text"
+                pInputText
+                size="50"
+                maxlength="35"
+                [(ngModel)]="selectedFournisseur.deno"
+                [disabled]="fieldDisable"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">RESPONSABLE :</div>
+            <div class="col-md-6">
+              <input
+                type="text"
+                pInputText
+                size="70"
+                maxlength="20"
+                [(ngModel)]="selectedFournisseur.respon"
+                [disabled]="fieldDisable"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">ADRESSE :</div>
+            <div class="col-md-6">
+              <input
+                type="text"
+                pInputText
+                size="70"
+                maxlength="30"
+                [(ngModel)]="selectedFournisseur.adresse"
+                [disabled]="fieldDisable"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">VILLE :</div>
+            <div class="col-md-3">
+              <input
+                type="text"
+                pInputText
+                size="13"
+                maxlength="20"
+                [(ngModel)]="selectedFournisseur.ville"
+                [disabled]="fieldDisable"
+              />
+            </div>
+            <div class="col-md-1">CP :</div>
+            <div class="col-md-3">
+              <input
+                type="text"
+                pInputText
+                size="25"
+                maxlength="10"
+                [(ngModel)]="selectedFournisseur.post"
+                [disabled]="fieldDisable"
+              />
+            </div>
+            <div class="col-md-1">PAYS :</div>
+            <div class="col-md-2">
+              <input
+                type="text"
+                pInputText
+                size="14"
+                maxlength="12"
+                [(ngModel)]="selectedFournisseur.pays"
+                [disabled]="fieldDisable"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">TEL :</div>
+            <div class="col-md-3">
+              <input
+                type="text"
+                pInputText
+                size="20"
+                maxlength="20"
+                [(ngModel)]="selectedFournisseur.tel"
+                [disabled]="fieldDisable"
+              />
+            </div>
+            <div class="col-md-1">FAX :</div>
+            <div class="col-md-3">
+              <input
+                type="text"
+                pInputText
+                size="20"
+                maxlength="20"
+                [(ngModel)]="selectedFournisseur.fax"
+                [disabled]="fieldDisable"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">DT CREATE :</div>
+            <div class="col-md-3">
+              <input
+                type="text"
+                pInputText
+                size="13"
+                [(ngModel)]="selectedFournisseur.date_creat"
+                [disabled]="true"
+              />
+            </div>
+            <div class="col-md-1">MAIL :</div>
+            <div class="col-md-4">
+              <input
+                type="text"
+                pInputText
+                size="50"
+                maxlength="40"
+                [(ngModel)]="selectedFournisseur.telex"
+                [disabled]="fieldDisable"
+              />
+            </div>
+          </div>
+        </p-panel>
+        &nbsp;
+        <p-panel header="Gestion">
+          <div class="row">
+            <div class="col-md-2">DELAIS DE LIVRAIS</div>
+            <div class="col-md-3">
+              <input
+                type="text"
+                pKeyFilter="pint"
+                pInputText
+                size="5"
+                maxlength="5"
+                [(ngModel)]="selectedFournisseur.delai"
+                [disabled]="fieldDisable"
+              />
+              JOUR(s)
+            </div>
+            <div class="col-md-auto">NATURE (G/P)</div>
+            <div class="col-md-3">
+              <p-dropdown
+                [options]="natureFour"
+                [style]="{ 'min-width': '50px' }"
+                [(ngModel)]="selectedFournisseur.frs"
+                [disabled]="fieldDisable"
+              ></p-dropdown>
+            </div>
+            <div class="col-md-auto">TYPE (E/L)</div>
+            <div class="col-md-1">
+              <p-dropdown
+                [options]="typeFour"
+                [style]="{ 'min-width': '50px' }"
+                [(ngModel)]="selectedFournisseur.typef"
+                [disabled]="fieldDisable"
+              ></p-dropdown>
+            </div>
+          </div>
+        </p-panel>
+        &nbsp;
+        <p-panel header="Financement">
+          <div class="row">
+            <div class="col-md-2">OBJECTIF (/AN)</div>
+            <div class="col-md-3">
+              <input
+                type="text"
+                pKeyFilter="pnum"
+                maxlength="10"
+                pInputText
+                size="20"
+                [(ngModel)]="selectedFournisseur.plafond"
+                [disabled]="fieldDisable"
+              />
+            </div>
+            <div class="col-md-auto">ECHEANCE(J):</div>
+            <div class="col-md-2">
+              <input
+                type="text"
+                pInputText
+                size="5"
+                pKeyFilter="pint"
+                maxlength="3"
+                [(ngModel)]="selectedFournisseur.ech"
+                [disabled]="fieldDisable"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">BANQUE :</div>
+            <div class="col-md-2">
+              <input
+                type="text"
+                pInputText
+                size="7"
+                maxlength="8"
+                [(ngModel)]="selectedFournisseur.banque"
+                [disabled]="fieldDisable"
+              />
+            </div>
+            <div class="col-md-auto">AGENCE :</div>
+            <div class="col-md-3">
+              <input
+                type="text"
+                pInputText
+                size="20"
+                maxlength="20"
+                [(ngModel)]="selectedFournisseur.agence"
+                [disabled]="fieldDisable"
+              />
+            </div>
+            <div class="col-md-auto">COMPTE :</div>
+            <div class="col-md-2">
+              <input
+                type="text"
+                pInputText
+                size="20"
+                maxlength="15"
+                [(ngModel)]="selectedFournisseur.compte"
+                [disabled]="fieldDisable"
+              />
+            </div>
+          </div>
+        </p-panel>
+      </div>
+      <div class="row" style="height: 35px">
+        <div class="col-md-3"></div>
+        <div class="col-md-3">
+          <button
+            color="primary"
+            class="mat-raised-button mat-primary"
+            ng-reflect-color="primary"
+            (click)="valider($event)"
+            *ngIf="!validerAnnulerDisable"
+          >
+            Valider
+          </button>
+        </div>
+        <div class="col-md-3">
+          <button
+            color="primary"
+            class="mat-raised-button mat-primary"
+            ng-reflect-color="primary"
+            (click)="annuler()"
+            *ngIf="!validerAnnulerDisable"
+          >
+            Annuler
+          </button>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

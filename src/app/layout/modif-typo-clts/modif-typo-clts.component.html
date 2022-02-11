@@ -1,0 +1,115 @@
+<br />
+<br />
+<div class="row">
+  <div class="col-md-1">Client :</div>
+  <div class="col-md-2" >
+    <ng-select
+    ngselect
+    [items]="listeClients"
+    bindLabel="deno"
+    (open)="chargerClients()"
+    style="height: 30px; min-height: 30px"
+    [(ngModel)]="selectedclt"
+    [searchFn]="onSearchDeno"
+    (change)="changeClient($event)"
+    placeholder="choisir un client"
+    [disabled]="readonly"
+    >
+  </ng-select>
+  
+  </div>
+  <div class="col-md-1"></div>
+        <div class="col-md-1">
+       
+      </div>
+ <div class="col-md-7"></div>
+ 
+</div>
+<br>
+<div class="row">
+<div class="col-md-2">Ancienne Typologie</div> 
+<div class="col-md-1"> 
+  <input id="antypo" type="text"  size="20"
+  maxlength="20" 
+  [(ngModel)]="magclt"
+  pInputText 
+  readonly="true" />
+</div>
+<div class="col-md-9"></div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-2">Ancien Objectif</div> 
+  <div class="col-md-1"> 
+    <input type="text"  size="20"
+    readonly="true"
+    maxlength="20" 
+    [(ngModel)]="objclt"
+    pInputText />
+  </div>
+  <div class="col-md-9"></div>
+  </div>
+  <br>
+  
+  <div class="row">   
+    <div class="col-md-2" [hidden]="hiddenModifBTn">
+      <button  pButton type="button"  (click)="Modifier()"
+      label="Modifier" 
+      class="ui-button-info" width="100%"></button>
+    </div>
+  
+    <div class="col-md-10"></div>
+  </div>
+
+  <br>
+<div  *ngIf="cltNonN">
+<div class="row" *ngIf="Cltobj" >
+<div class="col-md-2">Nouvelle Typologie</div> 
+<div class="col-md-3">
+  <ng-select
+    ngselect
+    [searchFn]="onSearchDeno"
+    (change)="changeTypologieClt()"
+    [items]="listeTypeClt"
+    bindLabel="deno"
+    style="height: 30px; min-height: 30px"
+    [(ngModel)]="nouvelleTypologie"
+    placeholder="Choisir Typologie "
+    id="novtypo"
+  >
+  </ng-select>
+</div>
+<div class="col-md-7"></div>
+</div>
+<br>
+
+<div class="row">
+  <div class="col-md-2">Nouveau Objectif</div> 
+  <div class="col-md-2"> 
+    <input type="text"  size="20"
+    maxlength="20" 
+    [(ngModel)]="nouvelObjectif"
+    pInputText />
+  </div>
+  <div class="col-md-8"></div>
+</div>
+  <br>
+  <div class="row">   
+    <div class="col-md-2">
+      <button id="modif"  pButton type="button" label="Valider Modification" (click)="Validermodif()"
+      class="ui-button-info" style="font-size: 14px;"></button>
+    </div>
+    <div class="col-md-2">
+      <button  pButton type="button"  (click)="Annulermodif()" label="Anuuler Modification" 
+      class="ui-button-info" style="font-size: 14px;" ></button>
+    </div>
+   
+    <div class="col-md-8"></div>
+  </div>
+
+</div>
+<p-overlayPanel #op appendTo="body" [dismissable]='false'  
+  [showCloseIcon]="true"
+  [style]="{'text-align': 'center', 'font-size':'14px' ,'background-color': ' #f8b7bd'}" >
+  <span style="width: 138%;"> {{msg}} </span>
+</p-overlayPanel> 

@@ -1,0 +1,45 @@
+<div>
+  &nbsp;
+  <br>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-2" style="max-width : 10%;">
+      Journées du :
+    </div>
+    <div class="col-md-2"style="max-width: 20%;">
+      <p-calendar
+            id="date1"
+            [(ngModel)]="date_debut"
+            [minDate]="minDate"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            [locale]="tn"
+            yearRange="1973:2999">
+           </p-calendar>
+    </div>
+  
+    <div class="col-md-2" style="max-width : 5%;">Au : </div>
+    <div class="col-md-2"style="max-width: 20%;"> 
+      <p-calendar 
+      id="date2"
+      [minDate]="minDate"
+      [(ngModel)]="date_fin"
+      dateFormat="dd/mm/yy"
+      [monthNavigator]="true"
+      [yearNavigator]="true"
+      [locale]="tn"
+      yearRange="2011:2999">
+     </p-calendar>
+    </div>
+    <div class="col-md-2">
+      <button
+        pButton
+        id="apercu"
+        type="button"
+        label="Visualiser"
+        (click)="visualiser()"
+      ></button>
+    </div>
+  </div>
+</div>

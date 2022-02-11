@@ -1,0 +1,34 @@
+p-panel{
+    width: 90%;
+}
+.mat-card-header .mat-card-title.titre{
+    margin-left: -34px;
+    margin-bottom: 49px;
+  }
+  .e-headertext {
+    font-size: 17px;
+  }
+  .e-grid .e-rowcell.customcss{
+   
+    font-size: 17px;
+  }
+  .e-grid[_ngcontent-c6] .e-rowcell.customcss[_ngcontent-c6] {
+    font-size: 15px;
+}
+  .e-grid th{
+    background-color:whitesmoke;
+    color :black;
+  }
+  
+  @media screen and (max-width: 40em) {
+    :host ::ng-deep .ui-dialog {
+        width: 75vw !important;
+    }
+}
+
+input:disabled {
+  color: black;
+  cursor: default;
+  background-color: white;
+}
+

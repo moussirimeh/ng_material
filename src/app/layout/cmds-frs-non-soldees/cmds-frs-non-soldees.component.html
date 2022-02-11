@@ -1,0 +1,319 @@
+<br>
+<div class="row">
+  <div class="col-md-4" >
+    <div class="row" style="margin-bottom: 0.3%;">
+      <div class="col-md-2" >Début:</div>
+      <div class="col-md-2">
+        <p-calendar
+        id="date1"
+        [disabled]="readonly"
+        [minDate]="minDate"
+        [(ngModel)]="datedebut"
+        dateFormat="dd/mm/yy"
+        [monthNavigator]="true"
+        [yearNavigator]="true"
+        [locale]="tn"
+        yearRange="1973:2999">
+       </p-calendar>
+      </div>
+      <div class="col-md-9"></div>
+    </div>
+    <div class="row" style="margin-bottom: 0.3%;">
+      <div class="col-md-2">Fin: </div>
+      <div class="col-md-2"  >
+        <p-calendar
+        id="date1"
+        [minDate]="minDate"
+        [disabled]="readonly"
+        [(ngModel)]="datefin"
+        dateFormat="dd/mm/yy"
+        [monthNavigator]="true"
+        [yearNavigator]="true"
+        [locale]="tn"
+        yearRange="1973:2999">
+       </p-calendar>
+      </div>
+      <div class="col-md-9"></div>
+    </div>
+    <div class="row" style="margin-bottom: 0.3%;">
+      <div class="col-md-4" >N°Commande:</div>
+      <div class="col-md-2">
+        <input
+            type="text"
+            pKeyFilter="num"
+            pInputText
+            style="height: 30px; min-height: 30px"
+            [(ngModel)]="numcmd"
+            [disabled]="readonly"
+          />
+      </div>
+      <div class="col-md-6"></div>
+    </div>
+    <div class="row" style="margin-bottom: 0.3%;">
+      <div class="col-md-4">Article:</div>
+      <div class="col-md-6">
+        <ng-select
+        ngselect
+        [items]="articles"
+        bindLabel="code"
+        bindvalue="code"
+        (keyup.enter)="rechArticle($event.target.value)"
+        (change)="changeArticle()"
+        [(ngModel)]="SelectedArticles"
+        style="height: 30px; min-height: 30px"
+        [disabled]="readonly"
+        (clear)="deleteliste()"
+         
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+    <div class="row" style="margin-bottom: 0.3%;">
+      <div class="col-md-4">Fournisseur:</div>
+      <div class="col-md-6">
+        <ng-select
+        ngselect
+        [items]="listefournisseurs"
+        bindLabel="deno"
+        (open)="chargerFournisseur()"
+        [(ngModel)]="SelectedFournisseur"
+        style="height: 30px; min-height: 30px"
+        (change)="changeFournisseur()"
+        [searchFn]="onSearchfournisseur"
+        [disabled]="readonly"
+         
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="col-md-12" >
+      <mat-card>
+        <mat-card-content style="margin-top: -30px; margin-left: -8px;">
+          <h4>Livraison</h4>
+          
+            <div class="row p-field-radiobutton p-label-active">
+               <div class="col-md-1">
+                 <p-radioButton 
+                   name="typerech" 
+                   value="1"
+                   [(ngModel)]="typerech" 
+                   [disabled]="readonly"
+                   >
+                  </p-radioButton>
+               </div>
+               <div class="col-md-11">
+                  <label >Non livrée Totalement</label>
+              </div>
+            </div>
+
+            <div class="row p-field-radiobutton p-label-active">
+               <div class="col-md-1">
+                 <p-radioButton 
+                   name="typerech" 
+                   value="2"
+                   [(ngModel)]="typerech" 
+                   [disabled]="readonly"
+                   >
+                  </p-radioButton>
+               </div>
+               <div class="col-md-11">
+                  <label >Partielle</label>
+              </div>
+            </div>
+
+            <div class="row p-field-radiobutton p-label-active">
+
+               <div class="col-md-1">
+                 <p-radioButton 
+                   name="typerech" 
+                   value="3"
+                   [(ngModel)]="typerech" 
+                   [disabled]="readonly"
+                   >
+                  </p-radioButton>
+               </div>
+               <div class="col-md-11">
+                  <label >Non livrée Totalement ou partielle</label>
+              </div>
+            </div>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="row">
+     <div class="col-md-12" >
+      <mat-card>
+        <mat-card-content style="margin-top: -30px; margin-left: -8px;" >
+          <h4>Fournisseurs</h4>
+
+            <div class="row p-field-radiobutton p-label-active">
+               <div class="col-md-1">
+                 <p-radioButton 
+                   name="typef" 
+                   value="E"
+                   [(ngModel)]="typef" 
+                   [disabled]="readonly"
+                   >
+                  </p-radioButton>
+               </div>
+               <div class="col-md-11">
+                  <label >Etrangers</label>
+              </div>
+            </div>
+
+            <div class="row p-field-radiobutton p-label-active">
+               <div class="col-md-1">
+                 <p-radioButton 
+                   name="typef" 
+                   value="L"
+                   [(ngModel)]="typef" 
+                   [disabled]="readonly"
+                   >
+                  </p-radioButton>
+               </div>
+               <div class="col-md-11">
+                  <label >Locaux</label>
+              </div>
+            </div>
+
+            <div class="row p-field-radiobutton p-label-active">
+               <div class="col-md-1">
+                 <p-radioButton 
+                   name="typef" 
+                   value=""
+                   [(ngModel)]="typef" 
+                   [disabled]="readonly"
+                   >
+                  </p-radioButton>
+               </div>
+               <div class="col-md-11">
+                  <label >Tout</label>
+              </div>
+            </div>
+        </mat-card-content>
+      </mat-card>
+     </div>
+    </div>
+  
+    <div class="row" style="margin-top: 1%; padding-bottom: 1%;">
+      <div class="col-md-3"></div>
+      <div class="col-md-3">
+        <button
+        pButton
+         id="btnInit"
+         (click)="Afficher()"
+         type="button"
+         label="Afficher"
+         class="ui-button-raised"
+         [hidden]="btnaff"
+        >
+      </button>
+       </div>
+
+      <div class="col-md-3"> 
+         <button
+            pButton
+             id="btnInit"
+             (click)="Initialiser()"
+             type="button"
+             label="Initialiser "
+             class="ui-button-raised"
+            >
+          </button>
+       </div>
+       
+       <div class="col-md-3"> 
+        <button
+           pButton
+            id="btnExcel"
+            (click)="excelExport1()"
+            type="button"
+            label="-->Excel "
+            class="ui-button-raised"
+           >
+         </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" style="margin-bottom: 0.3%;">
+  <ejs-grid id="ejs1" #grid1 [searchSettings]="searchOptions" [dataSource]="listeCmdsFrsNonSolde" (dataBound)="dataBound($event)"  [selectedRowIndex]="0" gridLines="Both"
+     width="100%" [selectedRowIndex]="0"  height="180" (recordDoubleClick)="voirdetail()" (rowSelected)="rowSelected()"
+     (onmousedown)="annulerSelection()" (mouseup)="annulerSelection()" (mousewheel)="annulerSelection()"
+     rowHeight="40" [allowExcelExport]="true"  gridLines="Both" style="border-bottom-width: 5%;" allowResizing= 'true'>
+     <e-columns>
+       <e-column field="codefr" headerText="codeFr" width="40%"  headerTextAlign="center">
+       </e-column>
+       <e-column field="four" headerText="Fournisseur" width="50%"  headerTextAlign="center">
+       </e-column>
+       <e-column field="numcmd" headerText="N°cmd" width="40%"  headerTextAlign="center">
+      </e-column>
+      <e-column field="datcmd" headerText="Date" width="40%"  headerTextAlign="center">
+      </e-column>
+      <e-column field="artcmd" headerText="Article" width="40%"  headerTextAlign="center">
+      </e-column>
+      <e-column field="design" headerText="Designation" width="50%"  headerTextAlign="center">
+      </e-column>
+      <e-column field="qtecmd" headerText="QteCmd" width="40%"  headerTextAlign="center">
+      </e-column>
+      <e-column field="qtelivr" headerText="Qtelivr" width="40%"  headerTextAlign="center">
+      </e-column>
+      <e-column field="diff" headerText="Diff" width="30%"  headerTextAlign="center">
+      </e-column>
+      <e-column  headerText="Pru" width="30%"  headerTextAlign="center">
+        <ng-template #template let-listeCmdsFrsNonSolde>
+          <p style="text-align: right; ">
+            {{ listeCmdsFrsNonSolde.pru }}
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column field="total" headerText="Total" width="40%"  headerTextAlign="center">
+        <ng-template #template let-listeCmdsFrsNonSolde>
+          <p style="text-align: right;  ">
+            {{ listeCmdsFrsNonSolde.total }}
+          </p>
+        </ng-template>
+      </e-column>
+     </e-columns>
+    </ejs-grid>
+</div>
+<div class="row">
+  <ejs-grid id="ejs2" #grid2 [searchSettings]="searchOptions" [dataSource]="listDetail" (dataBound)="dataBound2($event)"   [selectedRowIndex]="0" gridLines="Both"
+     width="100%" [selectedRowIndex]="0"  height="180"
+     (rowSelected)="rowSelected1()" (onmousedown)="annulerSelection1()" (mouseup)="annulerSelection1()" (mousewheel)="annulerSelection1()"
+     rowHeight="40" [allowExcelExport]="true"  gridLines="Both" style="border-bottom-width: 5%;" allowResizing= 'true'>
+     <e-columns>
+       <e-column field="codeart" headerText="CodeArt" width="40%"  headerTextAlign="center">
+       </e-column>
+       <e-column field="design" headerText="Designation" width="40%"  headerTextAlign="center">
+       </e-column>
+       <e-column field="qtecmd" headerText="QteCmd" width="40%"  headerTextAlign="center">
+      </e-column>
+      <e-column field="qteliv" headerText="QteLiv" width="40%"  headerTextAlign="center">
+      </e-column>
+      <e-column field="prix" headerText="Prix" width="40%"  headerTextAlign="center">
+      </e-column>
+     </e-columns>
+    </ejs-grid>
+</div>
+<div class="row" style="margin-top: 0.3%; margin-bottom: 0.3%;" *ngIf="btnexcel2==true">
+  <div class="col-md-11"></div>
+      <div class="col-md-1"> 
+         <button
+            pButton
+             id="btnExcel"
+             (click)="excelExport2()"
+             type="button"
+             label="-->Excel "
+             class="ui-button-raised"
+            >
+          </button>
+       </div>
+</div>
+

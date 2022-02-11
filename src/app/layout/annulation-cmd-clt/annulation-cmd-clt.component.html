@@ -1,0 +1,452 @@
+
+<p-blockUI [blocked]="blockedDocument"></p-blockUI>
+<p-panel header="Commande clients">
+  <div class="row">
+    <div class="col-md-7">
+      <p-card>
+        <div class="row">
+  
+          <div class="col-md-1 bolld">Numéro</div>
+          <div class="col-md-2">
+            <input
+              id="refcmd"
+              class="form-control"
+              [readOnly]="readonly"
+              [disabled]="readonly"
+              type="search"
+              style="width: 100%"
+              pInputText
+              (keyup.enter)="chargerCmd(refCmd,$event)"
+              placeholder="ref cmd"
+              [(ngModel)]="refCmd"
+            />
+          </div>
+  
+          <div class="col-md-1 bolld">Date :</div>
+          <div class="col-md-2">
+  
+            <input
+            class="form-control"
+            [readOnly]="true"
+            type="search"
+            style="width: 100%"
+            pInputText
+            [(ngModel)]="dated"
+          />
+           
+          </div>
+  
+          <div class="col-md-2 bolld">Réf. commande</div>
+          <div class="col-md-2">
+            <input
+              id="refcmd"
+              class="form-control"
+              [readOnly]="true"
+              type="search"
+              style="width: 100%"
+              pInputText
+              
+           
+              [(ngModel)]="ref"
+            />
+          </div>
+  
+       
+        </div>
+  
+        <div class="row">
+          <div class="col-md-1 bolld">Client:</div>
+          <div class="col-md-6">
+            <input
+            class="form-control"
+            [readOnly]="true"
+            type="search"
+            style="width: 100%"
+            pInputText
+            [(ngModel)]="codeClient"
+          />
+          </div>
+         
+        </div>
+  
+        <div class="row">
+          <div class="col-md-1 bolld">Vendeur:</div>
+          <div class="col-md-6">
+            <input
+            class="form-control"
+            [readOnly]="true"
+            type="search"
+            style="width: 100%"
+            pInputText
+            [(ngModel)]="codeVendeur"
+          />
+          </div>
+         
+        </div>
+  
+        <br />
+      </p-card>
+    </div>
+  
+    <div class="col-md-5">
+      <p-card class="brr">
+        <div class="row">
+          <div class="col-md-3 bolld">M.</div>
+          <div class="col-md-6">
+            <input
+              id="m"
+              class="form-control"
+              [readOnly]="true"
+              type="search"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="m"
+            />
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md-3 bolld">Adresse :</div>
+          <div class="col-md-6">
+            <input
+              class="form-control"
+              [readOnly]="true"
+              type="search"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="adresse"
+            />
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md-3 bolld">Ville :</div>
+          <div class="col-md-6">
+            <input
+              class="form-control"
+              [readOnly]="true"
+              type="search"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="ville"
+            />
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md-3 bolld">Code TVA</div>
+          <div class="col-md-6">
+            <input
+              class="form-control"
+              [readOnly]="true"
+              type="search"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="codeTva"
+            />
+          </div>
+       
+        </div>
+      </p-card>
+    </div>
+  </div>
+  </p-panel>
+  <br>
+  <div *ngIf="etab_cmd">
+    <p-panel header="Commande">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="row">
+          <div class="col-md-12">
+            <p-table
+              #dt
+              [value]="listeStockCMD"
+              dataKey="index"
+              [resizableColumns]="true"
+              selectionMode="single"
+              [responsive]="true"
+              [scrollable]="true"
+              scrollHeight="218px"
+              editMode="row"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 5%">N° </th>
+                  <th style="width: 9%">Code</th>
+                  <th style="width: 20%">Désignation</th>
+                  <th style="width: 9%">Quantité</th>
+                  <th style="width: 9%">Remise</th>
+                  <th style="width: 9%">TVA</th>
+                  <th style="width: 10%">Prix HT</th>
+                  <th style="width: 9%">Total HT</th>
+                 
+                  <th style="width: 9%">Livré</th>
+                </tr>
+              </ng-template>
+              <ng-template
+                pTemplate="body"
+                let-rowData
+                let-editing="editing"
+                let-ri="rowIndex"
+              >
+                <tr
+                  style="height: 30px"
+                  attr.id="row_{{ rowData.index }}"
+                  appendTo="body"
+                  [pEditableRow]="rowData"
+                >
+                <td style="width: 5%">
+                  <p-cellEditor>
+                   
+                    <ng-template pTemplate="output" >
+                      {{ rowData.index }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                  <td style="width: 9%">
+                    <p-cellEditor>
+                      
+                      <ng-template pTemplate="output">
+                        {{ rowData.code }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td style="width: 20%">
+                    <p-cellEditor>
+                     
+  
+                      <ng-template pTemplate="output">
+                        {{ rowData.design }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td
+                    style="width: 9%"
+                    id="row_{{ rowData.index }}_qte"
+                    appendTo="body"
+                  >
+                    <p-cellEditor>
+                   
+                      <ng-template pTemplate="output">
+                        {{ rowData.qte }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td style="width: 9%">
+                    <p-cellEditor>
+                   
+  
+                      <ng-template appendTo="body" pTemplate="output">
+                        {{ rowData.marge }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td style="width: 9%">
+                    <p-cellEditor>
+                     
+  
+                      <ng-template pTemplate="output">
+                        {{ rowData.tva }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td style="width: 10%">
+                    <p-cellEditor>
+                     
+                      <ng-template pTemplate="output">
+                        {{ rowData.prix }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td style="width: 9%" >
+                    <p-cellEditor>
+                     
+                      <ng-template pTemplate="output">
+                        {{ rowData.prixtot }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+
+
+
+                  <td style="width: 9%" >
+                    <p-cellEditor>
+                     
+                      <ng-template pTemplate="output">
+                        {{ rowData.livre }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                
+  
+                  
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        <br>
+      <br>
+      <br>
+      <br>
+     
+      <br>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-2">
+            <!--<button
+          pButton
+          type="button"
+          label="Supprimer"
+          (click)="offrsClient($event)"
+          class="ui-button-raised"
+        ></button>-->
+          </div>
+          <div class="col-md-2">
+            <button
+            
+              pButton
+              type="button"
+              label="Confirmer"
+              (click)="valider($event)"
+              class="ui-button-raised"
+            ></button>
+          </div>
+          <div class="col-md-2">
+            <button
+              pButton
+              type="button"
+              label="Annuler"
+              (click)="annulerCMD($event)"
+              class="ui-button-raised"
+            ></button>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
+  
+      
+      </div>
+      <div class="col-md-3">
+
+
+        <div class="row">
+         
+        </div>
+  
+        <div class="row">
+          <div class="col-md-4" style="font-size: 15px; font-weight: bold">
+            Tot Brut
+          </div>
+          <div class="col-md-8">
+            <input
+              class="form-control"
+              [readOnly]="true"
+              type="search"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="s_Total1CH"
+            />
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md-4" style="font-size: 15px; font-weight: bold">
+            Remise
+          </div>
+          <div class="col-md-8">
+            <input
+              class="form-control"
+              [readOnly]="true"
+              type="search"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="s_remisech"
+            />
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md-4" style="font-size: 15px; font-weight: bold">
+            TVA à 13%:
+          </div>
+          <div class="col-md-8">
+            <input
+              class="form-control"
+              [readOnly]="true"
+              type="search"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="tva13ch"
+            />
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md-4" style="font-size: 15px; font-weight: bold">
+            TVA 19%
+          </div>
+          <div class="col-md-8">
+            <input
+              class="form-control"
+              [readOnly]="true"
+              type="search"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="tva19ch"
+            />
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md-4" style="font-size: 15px; font-weight: bold">
+            TVA 7%
+          </div>
+          <div class="col-md-8">
+            <input
+              class="form-control"
+              [readOnly]="true"
+              type="search"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="tva7ch"
+            />
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md-4" style="font-size: 15px; font-weight: bold">
+            Tot TTC
+          </div>
+          <div class="col-md-8">
+            <input
+              class="form-control"
+              [readOnly]="true"
+              type="search"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="s_netch"
+            />
+          </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+    
+      </div>
+    </div>
+    </p-panel>
+  </div>
+  
+  <p-overlayPanel
+    [dismissable]="false"
+    #op
+    appendTo="body"
+    [showCloseIcon]="true"
+    [style]="{ 'text-align': 'center', 'background-color': '#f8b7bd' }"
+  >
+    <span>{{ msg }} </span>
+  </p-overlayPanel>
+  
+  <p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
+  

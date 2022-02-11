@@ -1,0 +1,445 @@
+<div>
+
+<br />
+<div *ngIf="doubleclick">
+        <div class="row">
+          
+          <div  class="col-md-2" >
+            Du
+            <p-calendar
+            [(ngModel)]="dateDebut"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [disabled]="readonly"
+              yearRange="2000:3000"
+              [locale]="tn"
+              [inputStyle]="{ width: '100%' }"
+              dateFormat="dd/mm/yy"
+            ></p-calendar>
+          </div>
+          <div class="col-md-1" >VND</div>
+          <div class="col-md-2" >
+            <ng-select
+              ngselect
+              [items]="listVend"
+              bindLabel="deno"
+              [(ngModel)]="selectedVend"
+              [searchFn]="onSearchVendeur"
+              [disabled]="readonly"
+              style="width: 100%;"
+              placeholder="Choisir un vendeur"
+            >
+            </ng-select>
+          </div>
+          <div class="col-md-1">ZN</div>
+          <div class="col-md-1" >
+            <ng-select
+              ngselect
+              [items]="zones"
+              bindLabel="deno"
+              [(ngModel)]="selectedZone"
+              [disabled]="readonly"
+              style="width: 100%;"
+              placeholder="Choisir une zone"
+            >
+            </ng-select>
+          </div>
+          <div class="col-md-2"></div>
+
+        </div>
+        <br />
+        <div class="row">
+        
+          <div class="col-md-2" >
+            Au
+            <p-calendar
+            [(ngModel)]="dateFin"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [disabled]="readonly"
+              yearRange="2000:3000"
+            
+              [locale]="tn"
+              [inputStyle]="{ width: '100%' }"
+              dateFormat="dd/mm/yy"
+            ></p-calendar>
+          </div>
+          <div class="col-md-1">CLT</div>
+          <div class="col-md-2" >
+            <ng-select
+              ngselect
+              [items]="clients"
+              bindLabel="deno"
+              [(ngModel)]="selectedClient"
+              [disabled]="readonly"
+              [searchFn]="onSearchClient"
+              style="width: 100%;"
+              placeholder="Choisir un client"
+            >
+            </ng-select>
+          </div>
+          <div class="col-md-1" >Type Clt</div>
+          <div class="col-md-1" >
+            <ng-select
+              ngselect
+              [items]="rc"
+              [(ngModel)]="selectedRC"
+              [disabled]="readonly"
+              style="width: 100%;"
+              placeholder="Choisir un type"
+            >
+            </ng-select>
+          </div>
+         
+          <div class="col-md-1" [hidden]="btninit">
+            <p-button label="intialiser"   (onClick)="initialiser()"></p-button>
+          </div>
+          <div class="col-md-1"  [hidden]="btnafficher">
+            <p-button  label="Afficher" id="affichBtn" (onClick)="afficher($event)"></p-button>
+          </div>
+          <div class="col-md-1" >
+            <p-button id='imp' label="Aperçu" (onClick)="appercu($event)"></p-button>
+          </div>
+          <div class="col-md-1" >
+            <p-button label="Excel" (onClick)="excel($event)"></p-button>
+          </div>
+        
+        </div>
+        <br />
+
+
+
+        <div  *ngIf="affichGrid" style="margin-top: 1%;">
+          <div class="col-md-12">
+            <ejs-grid
+              #grid
+              gridLines="Both"
+              [allowSorting]="true"
+              [dataSource]="liste"
+              [selectedRowIndex]="0"
+              height="300"
+              [sortSettings]="sortOptions"
+               rowHeight="30"
+              (recordDoubleClick)="Doubleclick($event)"
+              (rowSelected)="rowSelected()"
+              (mouseup)="annulerSelection()"
+              (mousewheel)="annulerSelection()"
+              allowResizing= 'true'
+                
+            >
+              <e-columns >
+                <e-column
+                  field="operateur"
+                  headerText="Code"
+                
+                width="6%"
+                ></e-column>
+                <e-column
+                  field="denoClt"
+                  headerText="Nom Client"
+                  width="14%"
+                  [customAttributes]="customAttributes"
+                ></e-column>
+                <e-column
+                  field="combine"
+                  width="10%"
+                  headerText="N° B/L"
+                  [customAttributes]="customAttributes"
+                >
+              </e-column>
+                <e-column width="11%"
+                field="date"
+                headerText="Date"
+                [customAttributes]="customAttributes"
+              >
+                <!--<ng-template #template let-liste>
+                  {{liste.date | date : 'dd/MM/y'}}
+                </ng-template>-->
+              </e-column>
+                <e-column
+                field="ref"
+                width="9%"
+                headerText="Bon Commande"
+                [customAttributes]="customAttributes"
+              >
+            
+            
+            </e-column>
+              <e-column
+              width="9%" 
+              textAlign="Right"
+              field="net"
+              format="N3"
+              headerText="Montant"
+              [customAttributes]="customAttributes"
+            >
+        
+          </e-column>
+        
+
+
+            
+              </e-columns>
+            </ejs-grid>
+          </div>
+        </div>
+        <br>
+        <div class="row" style="font-size: 18px;font-weight: bold;" *ngIf="affichGrid">
+        ⚠️ Double click  pour voir le B/L en détail
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-2">
+            <p-button label="Nouvelle saisie"*ngIf="affichGrid" (onClick)="nouvelSaisie()" ></p-button></div>
+            <div class="col-md-1" >
+            
+            </div>
+            <div class="col-md-7"></div>
+
+            <div class="col-md-2"  >
+             
+            </div>
+        </div>
+
+</div>
+<!---->
+<p-dialog header="Duplicata B/L" [(visible)]="displayDupicata" [style]="{ width: '90%', height: '70%' }" [contentStyle]="{'max-height':'80vh'}">
+  <app-duplicata></app-duplicata>
+</p-dialog>
+</div>
+
+
+
+
+
+
+
+
+
+<div>
+  <p-overlayPanel
+  #op
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{msg}} </span>
+</p-overlayPanel>
+</div>
+
+
+
+
+<!--<div *ngIf="!doubleclick">
+  <div class="row">
+    <div class="col-md-1" style="font-weight: bold; font-size: 15 px;">Numéro: </div>
+    <div class="col-md-1" style="color: darkblue;" >{{numeroBL}} </div>
+ 
+    <div class="col-md-1"align="right" style="font-weight: bold; font-size: 15 px;">Date:</div>
+    <div class="col-md-3" style="color: darkblue;">{{detailBLEnCoursdate}}</div>
+ 
+    <div class="col-md-1"align="right" style="font-weight: bold; font-size: 15 px;">Client:</div>
+    <div class="col-md-3" style="color: darkblue;">{{detailBLEnCoursoperateur}}</div>
+    <div class="col-md-2"></div>
+  </div>
+  <br>.
+  <div class="row">
+   <div class="col-md-2"> </div>
+  
+ 
+   <div class="col-md-1"align="right" style="font-weight: bold; font-size: 15 px;">Vendeur:</div>
+   <div class="col-md-3" style="color: darkblue;">{{detailBLEnCoursvendeur}}</div>
+ 
+   <div class="col-md-1"align="right" style="font-weight: bold; font-size: 15 px;">Mr:</div>
+   <div class="col-md-3" style="color: darkblue;">{{detailBLEnCoursdenoClt}} </div>
+   <div class="col-md-2"></div>
+ </div>
+ <br>
+  <div class="row">
+   <div class="col-md-2"> </div>
+  
+ 
+   <div class="col-md-2"align="right" style="font-weight: bold; font-size: 15 px;">Bon de commande:</div>
+   <div class="col-md-3"style="color: darkblue;">{{detailBLEnCoursref}}    </div>
+ 
+   <div class="col-md-1"align="right" style="font-weight: bold; font-size: 15 px;">Ville:</div>
+   <div class="col-md-3" style="color: darkblue;">{{detailBLEnCoursvilleClt}} </div>
+   <div class="col-md-2"></div>
+ </div>
+ <div class="row">
+   <div class="col-md-2"> </div>
+  
+ 
+   <div class="col-md-4"></div>
+   
+ 
+   <div class="col-md-1"align="right" style="font-weight: bold; font-size: 15 px;">Code TVA:</div>
+   <div class="col-md-3"  style="color: darkblue;">{{detailBLEnCourscodeTvaClt}}  </div>
+   <div class="col-md-2"></div>
+ </div>
+
+ <br>
+ <div class="row"  style="margin-top: 1%;">
+  <div class="col-md-12">
+    <ejs-grid
+      #grid2
+      gridLines="Both"
+      width="100%"
+      autoResize="true"
+      [dataSource]="listeMouve"
+      [selectedRowIndex]="0"
+      height="240"
+      rowHeight="30"
+    >
+      <e-columns>
+        <e-column
+          field="code"
+          headerText="Code"
+         
+         width="10%"
+        ></e-column>
+        <e-column
+          field="design"
+          headerText="Désignation"
+          width="14%"
+        ></e-column>
+        <e-column
+          field="quantite"
+          width="7%"
+          headerText="Quantité"
+          [customAttributes]="customAttributes"
+        >
+        <ng-template #template let-listeMouve>
+          <p style="text-align: right; ">{{listeMouve.quantite}}</p>
+      </ng-template>
+      </e-column>
+        <e-column
+        width="7%"
+          field="tRemise"
+          headerText="Remise"
+          [customAttributes]="customAttributes"
+        >
+        <ng-template #template let-listeMouve>
+          <p style="text-align: right; ">{{listeMouve.tRemise}}</p>
+      </ng-template>
+      </e-column>
+        <e-column
+        field="tauxTva"
+        width="7%"
+        headerText="Taux"
+        [customAttributes]="customAttributes"
+      >
+      <ng-template #template let-listeMouve>
+        <p style="text-align: right; ">{{listeMouve.tauxTva}}</p>
+    </ng-template>
+    
+    </e-column>
+      <e-column
+      width="9%"
+      field="prix"
+      headerText="Prix U.HT"
+      [customAttributes]="customAttributes"
+    >
+    <ng-template #template let-listeMouve>
+      <p style="text-align: right; ">{{listeMouve.prix}}</p>
+  </ng-template>
+  </e-column>
+  <e-column
+  width="9%"
+  field="totalBrut"
+  headerText="Total HT"
+  [customAttributes]="customAttributes"
+>
+<ng-template #template let-listeMouve>
+  <p style="text-align: right; ">{{listeMouve.totalBrut}}</p>
+</ng-template>
+</e-column>
+ 
+  <e-column
+        field="codeAImprimer"
+        width="9%"
+        headerText="Code à imprimer"
+        [customAttributes]="customAttributes"
+      >
+    
+    
+    </e-column>
+
+     
+      </e-columns>
+    </ejs-grid>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-2">
+    <p-checkbox
+     
+      appendTo="body"
+      name="groupname"
+      (onChange)="changeDuplicata()"
+      [value]="true"
+      [(ngModel)]="selected"
+      [disabled]="disabledduplic"
+    ></p-checkbox>
+    Duplicata
+  </div>
+  <div class="col-md-10"></div>
+</div>
+<br>
+<div class="row">
+ <div class="col-md-8"> </div>
+
+
+ <div class="col-md-1"align="right" style="font-weight: bold; font-size: 15 px;">Total Brut:</div>
+ <div class="col-md-1" style="color: darkblue;">{{this.detailBLEnCoursht}}</div>
+
+ <div class="col-md-1"align="right" style="font-weight: bold; font-size: 15 px;">Remise:</div>
+ <div class="col-md-1" style="color: darkblue;">{{this.detailBLEnCoursremise}}  </div>
+ 
+</div>
+<br>
+<div class="row">
+ <div class="col-md-8"> </div>
+
+
+ <div class="col-md-1"align="right" style="font-weight: bold; font-size: 15 px;">T.V.A à 13 %:</div>
+ <div class="col-md-1" style="color: darkblue;">{{detailBLEnCoursbase17}}</div>
+
+ <div class="col-md-1"align="right" style="font-weight: bold; font-size: 15 px;">T.V.A à 19 %:</div>
+ <div class="col-md-1" style="color: darkblue;">{{ detailBLEnCoursbase29 }}  </div>
+ 
+</div>
+<br>
+<div class="row">
+ <div class="col-md-8"> </div>
+
+
+ <div class="col-md-1"align="right" style="font-weight: bold; font-size: 15 px;">T.V.A à 7 %:</div>
+ <div class="col-md-1" style="color: darkblue;">{{detailBLEnCoursbase10}} </div>
+
+ <div class="col-md-1"align="right" style="font-weight: bold; font-size: 15 px;">Total T.T.C:</div>
+ <div class="col-md-1" style="color: darkblue;">{{this.detailBLEnCoursnet}} </div>
+ 
+</div>
+<br>
+<div class="row">
+  <div class="col-md-2">
+    <p-button label="Nouvelle saisie" (onClick)="nouvelSaisie2()" ></p-button></div>
+    <div class="col-md-1" >
+     
+    </div>
+    <div class="col-md-7"></div>
+
+    <div class="col-md-2"  >
+      <p-button label="Aperçu" (onClick)="appercu2()"></p-button>
+    </div>
+ </div>
+ </div>-->
+ 
+ 

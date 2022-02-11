@@ -1,0 +1,138 @@
+<br>
+<br>
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-3" style="font-weight: bold;font-size: 16px;">N° du Bordereau a réimprimer</div>
+  <div class="col-md-3">
+    <input
+    id="codeBord"
+    class="form-control"
+    pKeyFilter="num"
+    type="search"
+    (keyup.enter)="gererPdf($event)"
+    pInputText
+    [(ngModel)]="codeBord"
+  />
+  
+  </div>
+  <div class="col-md-3"></div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-3" style="font-weight: bold;font-size: 16px;">Type du Bordereau a réimprimer</div>
+  <div class="col-md-3"><p-radioButton
+  name="group1"
+  value="1"
+  label="Versement à la banque"
+  [(ngModel)]="typeBord"
+ 
+  inputId="opt31"
+></p-radioButton></div>
+<div class="col-md-3"></div>
+</div>
+
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-3" ></div>
+  <div class="col-md-3"><p-radioButton
+  name="group1"
+  value="2"
+  label="Encaissement à la Banque"
+  [(ngModel)]="typeBord"
+ 
+  inputId="opt31"
+></p-radioButton></div>
+<div class="col-md-3"></div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-3" ></div>
+  <div class="col-md-3"><p-radioButton
+  name="group1"
+  value="3"
+  label="Retour Impayé"
+  [(ngModel)]="typeBord"
+  inputId="opt31"
+></p-radioButton></div>
+<div class="col-md-3"></div>
+</div>
+
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-3" ></div>
+  <div class="col-md-3"><p-radioButton
+  name="group1"
+  value="4"
+  label="Versement au Factoring"
+  [(ngModel)]="typeBord"
+  inputId="opt31"
+></p-radioButton></div>
+<div class="col-md-3"></div>
+</div>
+
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-3" ></div>
+  <div class="col-md-3"><p-radioButton
+  name="group1"
+  value="5"
+  label="Versement a L'Escompte"
+  [(ngModel)]="typeBord"
+  inputId="opt31"
+></p-radioButton></div>
+<div class="col-md-3"></div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-3" ></div>
+  <div class="col-md-3"><p-radioButton
+  name="group1"
+  value="6"
+  label="Retour Fact / banque"
+  [(ngModel)]="typeBord"
+  inputId="opt31"
+></p-radioButton></div>
+<div class="col-md-3"></div>
+</div>
+
+
+<br>
+<div class="row">
+  <div class="col-md-6"></div>
+  <div class="col-md-3" >
+<button
+(click)="gererPdf($event)"
+pButton
+type="button"
+label="Previsualiser le bordereau"
+
+
+></button></div>
+
+<div class="col-md-3"></div>
+</div>
+
+
+
+
+  <p-overlayPanel
+  #op
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{msg}} </span>
+</p-overlayPanel>
+

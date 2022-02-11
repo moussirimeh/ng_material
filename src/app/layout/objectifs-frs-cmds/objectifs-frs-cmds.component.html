@@ -1,0 +1,32 @@
+<br /> <br />
+
+<div class="row">
+  <div class="col-md-1">
+    <p>Fournisseurs</p>
+  </div>
+  <div class="col-md-4">
+    <ng-select
+      ngselect
+      [items]="fournisseurs"
+      bindLabel="deno"
+      bindValue="code"
+      [(ngModel)]="SelectedFournisseur"
+      (change)="changeFournisseur()"
+      [searchFn]="onSearchFournisseur"
+      [disabled]="readonly"
+      placeholder="Veuiller choisir un fournisseur"
+    >
+    </ng-select>
+  </div>
+  <div class="col-md-1"></div>
+  <div class="col-md-1" *ngIf="btnaffich">
+    <button id="btn" clikcked="true" style="width: 100%;" (click)="Afficher()" pButton type="button" label="Apperçu"
+    class="ui-button-raised"></button>
+  </div>
+ 
+  <div class="col-md-5"></div>
+</div>
+
+<p-overlayPanel #op appendTo="body" [dismissable]='false'  [showCloseIcon]="true"  [style]="{'text-align': 'center', 'font-size':'14px' ,'background-color': ' #f8b7bd'}" >
+  <span style="width: 138%;"> {{msg}} </span>
+</p-overlayPanel> 

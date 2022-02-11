@@ -1,0 +1,810 @@
+<div class="row">
+  <div class="col-md-8">
+    <p-card width="100%">
+      <div class="row">
+        <div class="col-md-1">Début :</div>
+        <div class="col-md-2">
+          <p-calendar
+            [(ngModel)]="datedebut"
+            [locale]="tn"
+            [yearNavigator]="true"
+            yearRange="1973:2999"
+            [monthNavigator]="true"
+            [inputStyle]="{ width: '100%',height:'20%' }"
+            dateFormat="dd/mm/yy"
+            [disabled]="disabled"
+          ></p-calendar>
+        </div>
+        <div class="col-md-2">Type de pièce:</div>
+        <div class="col-md-2" style="margin-left: -6%;">
+          <ng-select
+            ngselect
+            [items]="pieces"
+            placeholder="choisir une pièce"
+            bindLabel="label"
+            (change)="changePieces()"
+            [(ngModel)]="selectedPiece"
+            [searchFn]="onSearchPiece"
+            [disabled]="disabled"
+           
+          >
+          </ng-select>
+        </div>
+        <div class="col-md-2" >Client :</div>
+        <div class="col-md-3" style="margin-left: -11%;">
+          <ng-select
+            style="height: 20px; min-height: 20px ; width:165%"
+            ngselect
+            id='client'
+            [items]="clients"
+            bindLabel="deno"
+            placeholder="choisir un client"
+            (change)="changeClients()"
+            [(ngModel)]="selectedClient"
+            [searchFn]="onSearchClient"
+            [disabled]="disabled"
+          >
+          </ng-select>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-md-1">Fin :</div>
+        <div class="col-md-2">
+          <p-calendar
+            [(ngModel)]="datefin"
+            [locale]="tn"
+            [yearNavigator]="true"
+            yearRange="1973:2999"
+            [monthNavigator]="true"
+            [inputStyle]="{ width: '100%',height:'20%' }"
+            dateFormat="dd/mm/yy"
+            [disabled]="disabled"
+          ></p-calendar>
+        </div>
+        <div class="col-md-2">Etat de pièce :</div>
+        <div class="col-md-2" style="margin-left: -6%;">
+          <ng-select
+          style="height: 20px; min-height: 20px ; width:165%"
+            ngselect
+            [items]="etatPieces"
+            bindLabel="label"
+            (change)="changeEtatPieces()"
+            [(ngModel)]="selectedEtatPiece"
+            [searchFn]="onSearchPiece"
+            placeholder="choisir un etat"
+            [disabled]="disabledEp"
+          
+          >
+          </ng-select>
+        </div>
+
+        <div class="col-md-1" style="margin-left: 10%;" >Banque:</div>
+        <div class="col-md-2" >
+          <ng-select
+          style="height: 20px; min-height: 20px ; width:150%"
+            ngselect
+            id="bnq"
+            [items]="banques"
+            bindLabel="deno"
+            [searchFn]="onSearchBanque"
+            placeholder="choisir une banque"
+            [(ngModel)]="selectedBanque"
+            (change)="changeBanque()"
+            [disabled]="disabledEp"
+          >
+          </ng-select>
+        </div>
+
+
+
+
+      </div>
+      <br />
+      <div class="row">
+
+  
+        <div class="col-md-2" >Bord de VER:</div>
+        <div class="col-md-1">
+          <input
+            class="form-control"
+            [readOnly]="disabled"
+            type="search"
+            placeholder="0"
+            style="
+              width: 200%;
+              margin-left: -124%;
+              padding: -12.571em;
+              height: 30px;
+            "
+            pInputText
+            [(ngModel)]="bordVER"
+          />
+        </div>
+
+        <div class="col-md-2">Bord ENC:</div>
+        <div class="col-md-1">
+          <input
+            class="form-control"
+            [readOnly]="disabled"
+            type="search"
+            placeholder="0"
+            style="
+              width: 200%;
+              margin-left: -124%;
+              padding: -12.571em;
+              height: 30px;
+            "
+            pInputText
+            [(ngModel)]="bordENC"
+          />
+        </div>
+        <div class="col-md-2">Bord RTR:</div>
+        <div class="col-md-1">
+          <input
+            [readOnly]="disabled"
+            type="search"
+            placeholder="0"
+            style="
+              width: 200%;
+              margin-left: -124%;
+              padding: -12.571em;
+              height: 30px;
+            "
+            pInputText
+            [(ngModel)]="bordRTR"
+          />
+        </div>
+       
+        <div class="col-md-2">Montant:</div>
+        <div class="col-md-1">
+          <input
+            class="form-control"
+            [readOnly]="disabled"
+            type="search"
+            pKeyFilter="num"
+            placeholder="0.000"
+            
+
+            style="
+                  width: 187%;
+                  margin-left: -151%;
+                  padding: -12.571em;
+                  height: 30px;
+                       "
+            pInputText
+            [(ngModel)]="montantRech"
+          />
+        </div>
+
+
+      </div>
+      <br />
+      <div class="row">
+      
+        <div class="col-md-4">
+          <p-radioButton
+          [disabled]="disabled"
+          (onClick)="changeEcheance()"
+            name="group1"
+            value="0"
+            label="Date écheance comprise entre  :"
+            [(ngModel)]="echTout"
+            inputId="opt1"
+          ></p-radioButton>
+        </div>
+       
+        <div class="col-md-2" [hidden]="hiddenEch">
+          <p-calendar
+            [(ngModel)]="datedebutEch"
+            [locale]="tn"
+            [yearNavigator]="true"
+            yearRange="1973:2999"
+            [monthNavigator]="true"
+            [inputStyle]="{ width: '100%',height:'20%' }"
+            dateFormat="dd/mm/yy"
+            [disabled]="disabled"
+          ></p-calendar>
+        </div> <span [hidden]="hiddenEch">et</span>
+        <div class="col-md-2" [hidden]="hiddenEch"> 
+          <p-calendar
+            [(ngModel)]="dateFinEch"
+            [locale]="tn"
+            [yearNavigator]="true"
+            yearRange="1973:2999"
+            [monthNavigator]="true"
+            [inputStyle]="{ width: '100%',height:'20%' }"
+            dateFormat="dd/mm/yy"
+            [disabled]="disabled"
+          ></p-calendar>
+        </div>
+    
+        </div>
+
+
+        <br />
+
+      <div class="row">
+        <div class="col-md-1">
+          <p-radioButton
+          [disabled]="disabled"
+            name="group1"
+            value="1"
+            (onClick)="changeEcheance()"
+            label="TOUT"
+            [(ngModel)]="echTout"
+            inputId="opt2"
+          ></p-radioButton>
+        </div>
+
+
+
+
+      
+        <div class="col-md-7" ></div>
+        <div class="col-md-1" > <button
+          *ngIf="!afficherShow"
+          id='initBtn'
+            pButton
+            type="button"
+            label="initialiser"
+            (click)=" init()"
+            class="ui-button-raised"
+          
+          ></button></div>
+          <div class="col-md-1"></div>
+        <div class="col-md-1" >
+          <button
+          *ngIf="!afficherShow"
+          id='afficherBtn'
+            pButton
+            type="button"
+            label="Afficher"
+            (click)="afficher($event)"
+            class="ui-button-raised"
+           
+          ></button>
+        </div>
+       
+        <div class="col-md-1" >
+          <button
+            pButton
+            type="button"
+            id="excelBtn"
+            label="Excel"
+            (click)="gererExcel($event)"
+            class="ui-button-raised"
+           
+          ></button>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </p-card>
+  </div>
+  <div class="col-md-4" *ngIf="affichEnregOp">
+    <p-panel header="Opération a enregistrer" [toggleable]="false" >
+ 
+      <div class="row">
+        <div class="col-md-3">Date Operation</div>
+        <div class="col-md-3" style="margin-left: -4%;">
+          <p-calendar
+            [(ngModel)]="dateOp"
+            [locale]="tn"
+            [yearNavigator]="true"
+            yearRange="1973:2999"
+            [monthNavigator]="true"
+            [inputStyle]="{ width: '100%',height:'20%' }"
+            dateFormat="dd/mm/yy"
+            [disabled]="disabled2"
+          ></p-calendar>
+        </div>
+        <div class="col-md-2" style="margin-left: -4.7%;">Banque:</div>
+        <div class="col-md-4" style="margin-left: -4%;">
+          <ng-select
+          style="height: 20px; min-height: 20px ; width:150%"
+            ngselect
+            id="bnq2"
+            [items]="banques"
+            bindLabel="deno"
+            [searchFn]="onSearchBanque"
+            placeholder="choisir une banque"
+            [(ngModel)]="selectedBanque2"
+          
+            (change)="changeBanque2()"
+            [disabled]="disabledBanque2"
+          >
+          </ng-select>
+        </div>
+      </div>
+      <br />
+      <div style="line-height: 0.6;">
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            name="group3"
+            value="VE"
+            [hidden]="hiddenVE"
+            label="Versement à l'encaissement"
+            [(ngModel)]="operation"
+            [disabled]="disabled2"
+            inputId="opt31"
+          ></p-radioButton>
+        </div>
+
+        <div class="col-md-6">
+          <p-radioButton
+            name="group3"
+            value="VF"
+            [hidden]="hiddenVF"
+            label="Versement au Factoring"
+            [(ngModel)]="operation"
+            [disabled]="disabled2"
+            inputId="opt31"
+          ></p-radioButton>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            name="group3"
+            [hidden]="hiddenVESC"
+            value="VESC"
+            label="Versement à l'Escompte"
+            [(ngModel)]="operation"
+            [disabled]="disabled2"
+            inputId="opt31"
+          ></p-radioButton>
+        </div>
+
+        <div class="col-md-6">
+          <p-radioButton
+            name="group3"
+            [hidden]="hiddenEP"
+            value="EP"
+            label="Encaissement Provisoire"
+            [(ngModel)]="operation"
+            [disabled]="disabled2"
+            inputId="opt31"
+          ></p-radioButton>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            name="group3"
+            [hidden]="hiddenED"
+            value="ED"
+            label="Encaissement définitif"
+            [(ngModel)]="operation"
+            [disabled]="disabled2"
+            inputId="opt31"
+          ></p-radioButton>
+        </div>
+
+        <div class="col-md-6">
+          <p-radioButton
+            name="group3"
+            [hidden]="hiddenRI"
+            value="RI"
+            label="Retour Impayé"
+            [(ngModel)]="operation"
+            [disabled]="disabled2"
+            inputId="opt31"
+          ></p-radioButton>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            name="group3"
+           [hidden]="hiddenRFB"
+            value="RFB"
+            label="Retour FACT/Banque"
+            [(ngModel)]="operation"
+            [disabled]="disabled2"
+            inputId="opt31"
+          ></p-radioButton>
+        </div>
+
+        <div class="col-md-6" *ngIf="selectPieceShow"> <button
+          id='selecttBtn'
+            pButton
+            type="button"
+            label="selectionner les pièces"
+            (click)=" selectionnerPieces($event)"
+            class="ui-button-raised"
+            width="100%"
+          ></button></div>
+      </div>
+    </div>
+    <br>
+   
+    </p-panel>
+  </div>
+  <br />
+</div>
+
+
+
+<p-blockUI  [blocked]="blockedDocument"></p-blockUI>
+
+<br />
+<div *ngIf="afficherShow">
+  <!-- 
+     (recordDoubleClick)="Doubleclick($event)"
+     (rowSelected)="rowSelected($event)"
+      [selectedRowIndex]="0"
+
+        [allowSelection]="allowSlection($any)"
+        (recordDoubleClick)="doublclick($event)"
+  -->
+        <div class="row" [hidden]="hiddenGrid ">
+          <div class="col-md-12">
+            <ejs-grid
+              #grid
+              [selectionSettings]='selectionOptions' 
+              
+              (rowSelected)='rowSelectedCheckbox($event)'
+              (rowDeselected)="rowDeSelectedCheckbox($event)"
+              [dataSource]="lignesselectionnesgrid1" 
+              gridLines='Both'
+               height="330px" width="100%" 
+              rowHeight='30'
+              allowResizing= 'true'
+            [allowSorting]="true"
+            
+            >
+              <e-columns>
+                <e-column   type='checkbox'  width='4%'></e-column>
+                <e-column field="mode" headerTextAlign="left"  headerText="Pièce" textAlign="Left" width="8%"></e-column>
+                <e-column field="cheque" headerTextAlign="left" headerText="Numéro" width="9%"></e-column>
+                <e-column field="montant" headerTextAlign="left"  headerText="Montant" textAlign="Right"   format="N3" width="10%"></e-column>
+                <e-column field="date" headerTextAlign="left" [format]="{type: 'date', format:'dd/MM/yyyy'}"  headerText="Date Reg" width="10%"></e-column>
+                <e-column field="ech" headerTextAlign="left" headerText="Ech" [format]="{type: 'date', format:'dd/MM/yyyy'}" width="10%"></e-column>
+                <e-column field="banque" headerTextAlign="left" headerText="BNQ CLT" width="8%"></e-column>
+                <e-column field="etat2" headerTextAlign="left" headerText="Cs" width="5%"></e-column>
+                <e-column field="etat" headerTextAlign="left" headerText="Et" width="5%"></e-column>
+                <!--<e-column field="banqEqm" headerText="Notre BNQ" width="9%"></e-column>-->
+                <e-column field="operateur" headerTextAlign="left" headerText="Client" width="8%"></e-column>
+                <e-column field="tire" headerTextAlign="left" headerText="Tiré" width="13%"></e-column>
+                <e-column field="borVer" headerTextAlign="left" headerText="Br_V" width="6%"></e-column>
+                <e-column field="datVer" headerTextAlign="left" headerText="Dt_V" width="6%"></e-column>
+                <e-column field="borEnc" headerTextAlign="left" headerText="Br_E" width="6%"></e-column>
+                <e-column field="datRec" headerTextAlign="left" headerText="Dt_E" width="6%"></e-column>
+              </e-columns>
+            </ejs-grid>
+          </div>
+        </div>
+
+
+        <div class="row" [hidden]="hiddenGridSelctionne">
+          <div class="col-md-12">
+            <ejs-grid
+              #gridSelctionnee
+              (recordDoubleClick)="doublclick($event)"
+              [dataSource]="lignesselectionnesgrid1" 
+              gridLines='Both'
+              (rowSelected)="rowSelected($event)" 
+              (mouseup)="onRowUnselect()"
+              (mousewheel)="onRowUnselect()"
+              
+              height="210px" width="100%" 
+              rowHeight='30'
+              allowResizing= 'true'
+              [allowSorting]="true"
+         
+            >
+              <e-columns>
+               
+                <e-column field="mode" headerText="Pièce" width="9%"></e-column>
+                <e-column field="cheque" headerText="Numéro" width="9%"></e-column>
+                <e-column field="montant" headerText="Montant" headerTextAlign="left"  textAlign="Right" format="N3" width="9%"></e-column>
+                <e-column field="date" headerText="Date Reg" [format]="{type: 'date', format:'dd/MM/yyyy'}" width="9%"></e-column>
+                <e-column field="ech" headerText="Ech" [format]="{type: 'date', format:'dd/MM/yyyy'}" width="9%"></e-column>
+                <e-column field="banque" headerText="BNQ CLT" width="9%"></e-column>
+                <e-column field="etat2" headerText="Cs" width="8%"></e-column>
+                <e-column field="etat" headerText="Et" width="8%"></e-column>
+                <!--<e-column field="banqEqm" headerText="Notre BNQ" width="9%"></e-column>-->
+                <e-column field="operateur" headerText="Client" width="8%"></e-column>
+                <e-column field="tire" headerText="Tiré" width="11%"></e-column>
+                <e-column field="borVer" headerText="Br_V" width="9%"></e-column>
+                <e-column field="datVer" headerText="Dt_Vr" width="9%"></e-column>
+                <e-column field="borEnc" headerText="Br_E" width="9%"></e-column>
+                <e-column field="datRec" headerText="Dt_E" width="9%"></e-column>
+                
+              </e-columns>
+            </ejs-grid>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-md-10">
+            <div class="row" style="font-size: 14px">
+              <div class="col-md-1">Total Cheque:</div>
+              <div class="col-md-1" style="text-align: right">{{totalCheque}}</div>
+              <div class="col-md-1"></div>
+              <div class="col-md-1">Total Traite:</div>
+              <div class="col-md-1" style="text-align: right">{{totalTraite}}</div>
+              <div class="col-md-1"></div>
+              <div class="col-md-1">Total Espece</div>
+              <div class="col-md-1" style="text-align: right">{{totalEspece}}</div>
+              <div class="col-md-1"></div>
+              <div class="col-md-2">Total Virement:</div>
+              <div class="col-md-1" style="text-align: right">{{totalVir}}</div>
+            </div>
+          </div>
+          <div class="col-md-2">
+           
+                <button
+                *ngIf="consultApurShow"
+                  pButton
+                  type="button"
+                  (click)="apurement()"
+                  label="Consultation Apurement"
+                  class="ui-button-raised"
+                  width="100%"
+                ></button>
+              </div>
+
+              <!--<div class="col-md-5">
+                <button
+                  pButton
+                  (click)="exportExcel()"
+                  type="button"
+                  label="Excel"
+                  class="ui-button-raised"
+                  width="100%"
+                ></button>
+              </div>-->
+            
+            <br />
+            <!--<div class="row">
+              <div class="col-md-1"></div>
+                <div class="col-md-10">
+                  <button
+                    pButton
+                    (click)="trasfererTout()"
+                    type="button"
+                    label="Transférer Tout"
+                    class="ui-button-raised"
+                    width="100%"
+                  ></button>
+                </div>
+                <div class="col-md-1"></div>
+              </div>-->
+            </div>
+          
+        <br>
+          <!--<div class="row">
+          
+            <div class="col-md-12">
+              
+              <ejs-grid #gridSelctionnee   
+              
+              [dataSource]="lignesselectionnesgrid2" 
+              (recordDoubleClick)="DoubleclickK($event)"
+                gridLines='Both'
+              (rowSelected)="rowSelected2($event)" height="125px" width="100%" 
+              [selectedRowIndex]="0"
+                rowHeight='25'
+              allowResizing= 'true'
+              [allowSorting]="true"
+                >
+              <e-columns>
+                <e-column field="mode" headerText="Pièce" width="9%"></e-column>
+                <e-column field="cheque" headerText="Numéro" width="9%"></e-column>
+                <e-column field="montant" headerText="Montant" width="9%"></e-column>
+                <e-column field="date" headerText="Date Reg" width="9%"></e-column>
+                <e-column field="ech" headerText="Ech" width="9%"></e-column>
+                <e-column field="banque" headerText="BNQ CLT" width="9%"></e-column>
+                <e-column field="etat2" headerText="Caisse" width="9%"></e-column>
+                <e-column field="etat" headerText="Etat" width="9%"></e-column>
+                <e-column field="banqEqm" headerText="Notre BNQ" width="9%"></e-column>
+                <e-column field="operateur" headerText="Client" width="9%"></e-column>
+                <e-column field="tire" headerText="Tiré" width="9%"></e-column>
+                <e-column field="borVer" headerText="BORD VER" width="9%"></e-column>
+                <e-column field="datVer" headerText="Date_Ver" width="9%"></e-column>
+                <e-column field="borEnc" headerText="BORD ENC" width="9%"></e-column>
+                <e-column field="datRec" headerText="DATE ENC" width="9%"></e-column>
+            </e-columns>
+        </ejs-grid> 
+              
+                
+            </div>
+                                                            
+          </div>-->
+
+
+  </div>
+  <br>
+  <div class="row" *ngIf="validshow">
+    <div class="col-md-3" style="font-size: 16px;font-weight: bold;"> Montant des pièces selectionnées :</div>
+    <div class="col-md-3" style="font-size: 16px;font-weight: bold;color: crimson;"> {{totMontantSelectionne}}</div>
+ 
+    <div class="col-md-6"></div>
+  </div>
+ 
+  <br>
+  <div class="row" *ngIf="validshow">
+    <div class="col-md-3" style="font-size: 16px;font-weight: bold;">Nombre des pièces : </div>
+    <div class="col-md-3" style="font-size: 16px;font-weight: bold;color: crimson;"> {{nbrLigneSelectionnes}}</div>
+    <div class="col-md-2">
+      <button
+      id='validerBtn'
+        pButton
+        type="button"
+        label="verifier"
+        (click)="verifAvantValidation($event)"
+        class="ui-button-raised"
+        width="100%"
+      ></button></div>
+    <div class="col-md-5"></div>
+  
+  </div>
+
+
+
+
+
+<br>
+<div class="row" *ngIf="afficherShow">
+<div class="col-md-2">
+  <button
+  id='nouvelSaisieBtn'
+    pButton
+    type="button"
+    label="Nouvelle saisie"
+    (click)="nouvelleSaisie($event)"
+    class="ui-button-raised"
+    width="100%"
+  ></button>
+  <div class="col-md-10"></div>
+</div>
+</div>
+
+   <p-dialog
+  header="Appurement"
+  (onHide)="close($event)"
+  [contentStyle]="{ 'min-height': '70px' }"
+  [style]="{ width: '95vw', height: '60vh' }"
+  [(visible)]="display"
+  
+>
+  <app-appurement-reglement></app-appurement-reglement>
+</p-dialog>
+
+<p-dialog
+header="Envoi SMS "
+(onHide)="close($event)"
+[contentStyle]="{ 'min-height': '20px' }"
+[style]="{ width: '55vw', height: '20vh' }"
+[(visible)]="visibleProbSMS"
+>
+<div style="font-size: 64;font-weight: bold;color: red;"> {{ERRORSMS}}</div>
+</p-dialog>
+
+
+<p-dialog
+#dialDetail
+header="Veuillez Verifier les lignes selectionnées avant la validation "
+(onHide)="close($event)"
+(onShow)="showDialogMaximized(dialDetail)"
+
+[(visible)]="visibleVerifValidation"
+>
+ <div class="row" >
+  <div class="col-md-12">
+    <ejs-grid
+      #gridAvantValidation
+      [dataSource]="selectedGridRecords" 
+      gridLines='Both'
+      height="520px" width="99%" 
+      rowHeight='40'
+      allowResizing= 'true'
+      [allowSorting]="true"
+ 
+    >
+      <e-columns>
+       
+        <e-column field="mode" headerText="Pièce" width="8%"></e-column>
+        <e-column field="cheque" headerText="Numéro" width="9%"></e-column>
+        <e-column field="montant" headerText="Montant" headerTextAlign="left" textAlign="Right" format="N3" width="9%"></e-column>
+        <e-column field="date" headerText="Date Reg" [format]="{type: 'date', format:'dd/MM/yyyy'}" width="8%"></e-column>
+        <e-column field="ech" headerText="Ech"  [format]="{type: 'date', format:'dd/MM/yyyy'}" width="9%"></e-column>
+        <e-column field="banque" headerText="BNQ CLT" width="9%"></e-column>
+        <e-column field="etat2" headerText="Cs" width="6%"></e-column>
+        <e-column field="etat" headerText="Et" width="6%"></e-column>
+        <!--<e-column field="banqEqm" headerText="Notre BNQ" width="9%"></e-column>-->
+        <e-column field="operateur" headerText="Client" width="8%"></e-column>
+        <e-column field="tire" headerText="Tiré" width="12%"></e-column>
+        <e-column field="borVer" headerText="Br_V" width="8%"></e-column>
+        <e-column field="datVer" headerText="Dt_Vr" width="8%"></e-column>
+        <e-column field="borEnc" headerText="Br_E" width="8%"></e-column>
+        <e-column field="datRec" headerText="Dt_E" width="8%"></e-column>
+        <!--<e-aggregates>
+          <e-aggregate>
+            <e-columns>
+              <e-column field="montant" type="sum" format="N3">
+                <ng-template #footerTemplate let-selectedGridRecords
+                  >{{ selectedGridRecords.sum }}
+                  </ng-template
+                >
+              </e-column>
+              </e-columns>
+              </e-aggregate>
+              </e-aggregates>-->
+      </e-columns>
+    </ejs-grid>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-5"></div>
+  <div class="col-md-2">
+    <button
+    id='annulerBtn'
+      pButton
+      type="button"
+      label="annuler"
+      (click)="annuler()"
+      class="ui-button-raised"
+      width="100%"
+    ></button></div>
+  <div class="col-md-2">
+    <button
+    id='validerBtn'
+      pButton
+      type="button"
+      label="valider"
+      (click)="valider($event)"
+      class="ui-button-raised"
+      width="100%"
+    ></button></div>
+    <div class="col-md-3"></div>
+</div>
+</p-dialog>
+
+
+
+
+
+
+
+<p-overlayPanel
+  #op
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  id="op"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{ msg }} </span>
+</p-overlayPanel>
+
+
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>

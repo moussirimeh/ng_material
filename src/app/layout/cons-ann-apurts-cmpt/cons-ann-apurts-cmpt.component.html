@@ -1,0 +1,252 @@
+<p-blockUI [blocked]="blockDocument"></p-blockUI>
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <div class="row">
+      <div class="col-sm-5">Client</div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-sm-3">Pièce</div>
+          <div class="col-sm-3">Début</div>
+          <div class="col-sm-3">Fin</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col-md-3">
+            <input
+              id="codeClt"
+              type="text"
+              size="10"
+              maxlength="7"
+              (keyup.enter)="applyFilterClientParCode($event)"
+              (keyup)="ov.hide()"
+              pInputText
+              [(ngModel)]="codeClient"
+              (keydown)="afficherShow = false; intialiserSelectedClient()"
+              [disabled]="saisieCardShow"
+              readonly="true"
+            />
+          </div>
+
+          <div class="col-md-8">
+            <ng-select
+              ngselect
+              id="client"
+              [items]="clients"
+              bindLabel="deno"
+              [(ngModel)]="selectedClient"
+              (click)="updateOnSelect()"
+              (clear)="codeClient = ''; afficherShow = false"
+              [disabled]="saisieCardShow"
+              [searchFn]="onSearchClient"
+            >
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-3">
+            <p-dropdown
+              [options]="piece"
+              [style]="{ 'min-width': '120px' }"
+              [(ngModel)]="selectedPiece"
+              [disabled]="saisieCardShow"
+            ></p-dropdown>
+          </div>
+
+          <div class="col-md-3">
+            <p-calendar
+              [(ngModel)]="from"
+              placeholder=""
+              readonlyInput="true"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              yearRange="1980:2050"
+              dateFormat="dd/mm/yy"
+              [disabled]="saisieCardShow"
+              [inputStyle]="{ width: '120px' }"
+            >
+            </p-calendar>
+          </div>
+          <div class="col-md-4">
+            <p-calendar
+              [(ngModel)]="to"
+              readonlyInput="true"
+              [yearNavigator]="true"
+              [monthNavigator]="true"
+              yearRange="1980:2050"
+              dateFormat="dd/mm/yy"
+              [disabled]="saisieCardShow"
+              [inputStyle]="{ width: '120px' }"
+            >
+            </p-calendar>
+          </div>
+          <div class="col-md-1">
+            <button
+              pButton
+              type="button"
+              id="btAfficher"
+              label="Afficher"
+              *ngIf="afficherShow"
+              (click)="afficher($event)"
+              class="ui-button-raised"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <mat-card style="height: 200px" class="ng-hide" [hidden]="!saisieCardShow">
+      <mat-card-content style="margin-top: -30px; margin-left: -8px">
+        <h4>Selection de reglement</h4>
+        <ejs-grid
+          #grid
+          [dataSource]="caisseP"
+          gridLines="Both"
+          (recordDoubleClick)="getAppurement($event)"
+          height="130px"
+          [rowHeight]="26"
+          [allowResizing]="true"
+        >
+          <e-columns>
+            <e-column field="mode" headerText="Piece" width="90"></e-column>
+            <e-column
+              field="facture"
+              headerText="Numero"
+              width="100"
+            ></e-column>
+            <e-column field="date" headerText="Date" width="100"></e-column>
+            <e-column
+              field="montant"
+              headerText="Montant"
+              width="100"
+            ></e-column>
+            <e-column field="ech" headerText="Echeance" width="100"></e-column>
+            <e-column
+              field="observat"
+              headerText="Obsevation"
+              width="200"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+        <p *ngIf="!saisieCardShow1" style="color: red">
+          double click pour voir les resultats!
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex="83">
+    <mat-card class="ng-hide" [hidden]="!saisieCardShow1">
+      <mat-card-content style="margin-top: -30px; margin-left: -8px">
+        <h4>Débit</h4>
+        <ejs-grid
+          #gridDebit
+          [dataSource]="caissePDebit"
+          gridLines="Both"
+          height="130px"
+          [rowHeight]="26"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column field="mode" headerText="Piece" width="90"></e-column>
+            <e-column field="facture" headerText="Numero" width="90"></e-column>
+            <e-column field="date" headerText="Date" width="100"></e-column>
+            <e-column
+              field="montant"
+              headerText="Montant"
+              width="100"
+            ></e-column>
+            <e-column field="ech" headerText="Echeance" width="100"></e-column>
+            <e-column
+              field="dateApur"
+              headerText="Apurement"
+              width="120"
+            ></e-column>
+            <e-column
+              field="observat"
+              headerText="Obsevation"
+              width="160"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+      </mat-card-content>
+    </mat-card>
+    &nbsp;
+    <mat-card class="ng-hide" [hidden]="!saisieCardShow1">
+      <mat-card-content style="margin-top: -30px; margin-left: -8px">
+        <h4>Crédit</h4>
+        <ejs-grid
+          #gridCredit
+          [dataSource]="caissePCredit"
+          gridLines="Both"
+          height="130px"
+          [rowHeight]="26"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column field="mode" headerText="Piece" width="90"></e-column>
+            <e-column field="facture" headerText="Numero" width="90"></e-column>
+            <e-column field="date" headerText="Date" width="100"></e-column>
+            <e-column
+              field="montant"
+              headerText="Montant"
+              width="100"
+            ></e-column>
+            <e-column field="ech" headerText="Echeance" width="100"></e-column>
+            <e-column
+              field="dateApur"
+              headerText="Apurement"
+              width="120"
+            ></e-column>
+            <e-column
+              field="observat"
+              headerText="Obsevation"
+              width="160"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex>
+    <div>
+      <button
+        pButton
+        type="button"
+        label="ANNULER CET APPUREMENT"
+        class="annuler"
+        (click)="annuler()"
+        *ngIf="saisieCardShow1"
+      ></button>
+    </div>
+    &nbsp;
+    <div>
+      <button
+        pButton
+        type="button"
+        label="Nouvelle saise"
+        class="ui-button-raised"
+        (click)="nouveau()"
+        *ngIf="saisieCardShow"
+      ></button>
+    </div>
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

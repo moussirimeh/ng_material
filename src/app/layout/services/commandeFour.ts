@@ -1,0 +1,29 @@
+export class CommandeFour {
+    id: string;
+    numcmd: string;
+    frscmd: string;
+    deno: string;
+    adresse: string;
+    ville: string;
+    post: string;
+    pays: string;
+    datcmd: string;
+    echcmd: string;
+    devcmd: string;
+    tcmd: string;
+    transpdeno: string;
+    pcmd: string;
+    modepdeno: string;
+    lcmd: string;
+    modeldeno: string;
+    ddcmd: string;
+    totcmd: string;
+    purcmd: string;
+    bnqcmd: string;
+    bankdeno: string;
+    compte: string;
+    agence: string;
+    livcmd: string;
+    mdcmd: string;
+    profcmd: string;
+}

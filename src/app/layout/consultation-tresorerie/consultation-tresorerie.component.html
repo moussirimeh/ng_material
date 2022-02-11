@@ -1,0 +1,405 @@
+<div class="row">
+  <div class="col-md-12">
+    <p-card width="100%">
+      <div class="row">
+        <div class="col-md-1">Début :</div>
+        <div class="col-md-2">
+          <p-calendar
+            [(ngModel)]="datedebut"
+            [locale]="tn"
+            [yearNavigator]="true"
+            yearRange="1973:2999"
+            [monthNavigator]="true"
+            [inputStyle]="{ width: '100%',height:'20%' }"
+            dateFormat="dd/mm/yy"
+            [disabled]="disabled"
+          ></p-calendar>
+        </div>
+        <div class="col-md-2">Type de pièce:</div>
+        <div class="col-md-2">
+          <ng-select
+            ngselect
+            [items]="pieces"
+            placeholder="choisir une pièce"
+            bindLabel="label"
+            (change)="changePieces()"
+            [(ngModel)]="selectedPiece"
+            [searchFn]="onSearchPiece"
+            [disabled]="disabled"
+            style="width: 100%"
+          >
+          </ng-select>
+        </div>
+        <div class="col-md-1">Client :</div>
+        <div class="col-md-3">
+          <ng-select
+            ngselect
+            id='client'
+            [items]="clients"
+            bindLabel="deno"
+            placeholder="choisir un client"
+            (change)="changeClients()"
+            [(ngModel)]="selectedClient"
+            [searchFn]="onSearchClient"
+            [disabled]="disabled"
+            placeh
+            style="width: 100%"
+          >
+          </ng-select>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-md-1">Fin :</div>
+        <div class="col-md-2">
+          <p-calendar
+            [(ngModel)]="datefin"
+            [locale]="tn"
+            [yearNavigator]="true"
+            yearRange="1973:2999"
+            [monthNavigator]="true"
+            [inputStyle]="{ width: '100%',height:'20%' }"
+            dateFormat="dd/mm/yy"
+            [disabled]="disabled"
+          ></p-calendar>
+        </div>
+        <div class="col-md-2">Etat de pièce :</div>
+        <div class="col-md-2">
+          <ng-select
+            ngselect
+            [items]="etatPieces"
+            bindLabel="label"
+            (change)="changeEtatPieces()"
+            [(ngModel)]="selectedEtatPiece"
+            [searchFn]="onSearchPiece"
+            placeholder="choisir un etat"
+            [disabled]="disabledEp"
+          
+          >
+          </ng-select>
+        </div>
+        <div class="col-md-1">Banque:</div>
+        <div class="col-md-3">
+          <ng-select
+            ngselect
+            id="bnq"
+            [items]="banques"
+            bindLabel="deno"
+            [searchFn]="onSearchBanque"
+            placeholder="choisir une banque"
+            [(ngModel)]="selectedBanque"
+            (change)="changeBanque()"
+          >
+          </ng-select>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+       
+
+        <div class="col-md-1">Bord de VER:</div>
+        <div class="col-md-1">
+          <input
+            class="form-control"
+            [readOnly]="disabled"
+            type="search"
+            placeholder="0"
+            style="
+              width: 150%;
+              margin-left: -46%;
+              padding: -12.571em;
+              height: 30px;
+            "
+            pInputText
+            [(ngModel)]="bordVER"
+          />
+        </div>
+
+        <div class="col-md-1">Bord ENC:</div>
+        <div class="col-md-1">
+          <input
+            class="form-control"
+            [readOnly]="disabled"
+            type="search"
+            placeholder="0"
+            style="
+              width: 150%;
+              margin-left: -46%;
+              padding: -12.571em;
+              height: 30px;
+            "
+            pInputText
+            [(ngModel)]="bordENC"
+          />
+        </div>
+        <div class="col-md-1">Bord RTR:</div>
+        <div class="col-md-1">
+          <input
+            [readOnly]="disabled"
+            type="search"
+            placeholder="0"
+            style="
+              width: 150%;
+              margin-left: -46%;
+              padding: -12.571em;
+              height: 30px;
+            "
+            pInputText
+            [(ngModel)]="bordRTR"
+          />
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1">Montant:</div>
+        <div class="col-md-2">
+          <input
+            class="form-control"
+            [readOnly]="disabled"
+            type="search"
+           
+            placeholder="0.000"
+                         pKeyFilter="num"
+
+           
+            pInputText
+            [(ngModel)]="montantRech"
+          />
+        </div>
+
+      </div>
+      <br />
+      <div class="row">
+
+
+        <div class="col-md-3">
+          <p-radioButton
+          [disabled]="disabled"
+          (onClick)="changeEcheance()"
+            name="group1"
+            value="0"
+            label="Date écheance comprise entre  :"
+            [(ngModel)]="echTout"
+            inputId="opt1"
+          ></p-radioButton>
+        </div>
+
+        <div class="col-md-2" [hidden]="hiddenEch">
+          <p-calendar
+            [(ngModel)]="datedebutEch"
+            [locale]="tn"
+            [yearNavigator]="true"
+            yearRange="1973:2999"
+            [monthNavigator]="true"
+            [inputStyle]="{ width: '100%',height:'20%' }"
+            dateFormat="dd/mm/yy"
+            [disabled]="disabled"
+          ></p-calendar>
+        </div> <span [hidden]="hiddenEch">et</span>
+        <div class="col-md-2" [hidden]="hiddenEch"> 
+          <p-calendar
+            [(ngModel)]="dateFinEch"
+            [locale]="tn"
+            [yearNavigator]="true"
+            yearRange="1973:2999"
+            [monthNavigator]="true"
+            [inputStyle]="{ width: '100%',height:'20%' }"
+            dateFormat="dd/mm/yy"
+            [disabled]="disabled"
+          ></p-calendar>
+        </div>
+
+
+       
+        <div class="col-md-1"></div>
+       
+      </div>
+
+      <br />
+
+      <div class="row">
+        <div class="col-md-1">
+          <p-radioButton
+          [disabled]="disabled"
+            name="group1"
+            value="1"
+            (onClick)="changeEcheance()"
+            label="TOUT"
+            [(ngModel)]="echTout"
+            inputId="opt2"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-7"></div>
+        <div class="col-md-1"> <button
+          *ngIf="!afficherShow"
+          id='initBtn'
+            pButton
+            type="button"
+            label="initialiser"
+            (click)=" init()"
+            class="ui-button-raised"
+            width="100%"
+          ></button></div>
+
+         
+        <div class="col-md-1" >
+          <button
+          *ngIf="!afficherShow"
+          id='afficherBtn'
+            pButton
+            type="button"
+            label="Afficher"
+            (click)=" afficher($event)"
+            class="ui-button-raised"
+            width="100%"
+          ></button>
+        </div>
+        <div class="col-md-1" >
+          <button
+            pButton
+            type="button"
+            id="excelBtn"
+            label="Excel"
+            (click)="gererExcel($event)"
+            class="ui-button-raised"
+            width="100%"
+          ></button>
+        </div>
+</div>
+
+
+
+
+      <br />
+    </p-card>
+  </div>
+  <br />
+</div>
+
+<br />
+<div *ngIf="afficherShow">
+
+        <div class="row" >
+          <div class="col-md-12">
+            <ejs-grid
+              #gridSelctionnee
+              [dataSource]="lignesselectionnesgrid1" 
+              gridLines='Both'
+              (rowSelected)="rowSelected($event)" 
+              (mouseup)="onRowUnselect()"
+              (mousewheel)="onRowUnselect()"
+              
+              height="210px" width="100%" 
+              rowHeight='30'
+            allowResizing= 'true'
+            [allowSorting]="true"
+            [allowExcelExport]="true"
+            >
+              <e-columns>
+               
+                <e-column field="mode" headerText="Pièce" width="9%"></e-column>
+                <e-column field="cheque" headerText="Numéro" width="9%"></e-column>
+                <e-column field="montant" headerText="Montant"  textAlign="Right" format="N3" width="9%"></e-column>
+                <e-column field="date" headerText="Date Reg" width="9%"></e-column>
+                <e-column field="ech" headerText="Ech" width="9%"></e-column>
+                <e-column field="banque" headerText="BNQ CLT" width="9%"></e-column>
+                <e-column field="etat2" headerText="Cs" width="8%"></e-column>
+                <e-column field="etat" headerText="Et" width="8%"></e-column>
+                <!--<e-column field="banqEqm" headerText="Notre BNQ" width="9%"></e-column>-->
+                <e-column field="operateur" headerText="Client" width="8%"></e-column>
+                <e-column field="tire" headerText="Tiré" width="11%"></e-column>
+                <e-column field="borVer" headerText="Br_V" width="9%"></e-column>
+                <e-column field="datVer" headerText="Dt_Vr" width="9%"></e-column>
+                <e-column field="borEnc" headerText="Br_E" width="9%"></e-column>
+                <e-column field="datRec" headerText="Dt_E" width="9%"></e-column>
+                
+              </e-columns>
+            </ejs-grid>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-md-9">
+            <div class="row" style="font-size: 15px">
+              <div class="col-md-1">Total Cheque:</div>
+              <div class="col-md-1" style="text-align: right">{{totalCheque}}</div>
+              <div class="col-md-1"></div>
+              <div class="col-md-1">Total Traite:</div>
+              <div class="col-md-1" style="text-align: right">{{totalTraite}}</div>
+              <div class="col-md-1"></div>
+              <div class="col-md-1">Total Espece</div>
+              <div class="col-md-1" style="text-align: right">{{totalEspece}}</div>
+              <div class="col-md-1"></div>
+              <div class="col-md-2">Total Virement:</div>
+              <div class="col-md-1" style="text-align: right">{{totalVir}}</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="row" >
+              <div class="col-md-7" >
+                <button
+                *ngIf="consultApurShow"
+                  pButton
+                  type="button"
+                  (click)="apurement()"
+                  label="Consultation Apurement"
+                  class="ui-button-raised"
+                  width="100%"
+                ></button>
+              </div>
+
+              <div class="col-md-5">
+               
+              </div>
+            </div>
+            <br />
+            
+            </div>
+          </div>
+        <br>
+         
+
+  </div>
+
+
+<br>
+<div class="row" *ngIf="afficherShow">
+<div class="col-md-2">
+  <button
+  id='nouvelSaisieBtn'
+    pButton
+    type="button"
+    label="Nouvelle saisie"
+    (click)="nouvelleSaisie($event)"
+    class="ui-button-raised"
+    width="100%"
+  ></button>
+  <div class="col-md-10"></div>
+</div>
+</div>
+
+   <p-dialog
+  header="Appurement"
+  (onHide)="close($event)"
+  [contentStyle]="{ 'min-height': '70px' }"
+  [style]="{ width: '95vw', height: '60vh' }"
+  [(visible)]="display"
+>
+  <app-appurement-reglement></app-appurement-reglement>
+</p-dialog>
+
+
+
+
+<p-overlayPanel
+  #op
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  id="op"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{ msg }} </span>
+</p-overlayPanel>

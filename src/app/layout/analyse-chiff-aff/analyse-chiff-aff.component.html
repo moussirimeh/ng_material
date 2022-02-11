@@ -1,0 +1,939 @@
+<br>
+<div class="row">
+  <!--     ANNEE  courante          -->
+    <div class="col-md-4" style="background-color:burlywood">
+      <!--style="background-color:burlywood"-->
+         <div class="row" >
+            <span style=" margin-left: 30%;color: darkblue;font-weight: bold; font-size: 18px;">ANNEE</span> <span style="    margin-left: 10%;color: red;font-weight: bold; font-size: 18px;"> {{anneeCourante}}</span>
+         </div>
+         <div class="row">
+          <div class="col-md-6"> DU: 
+            <p-calendar
+            [(ngModel)]="datedeb1"
+            [locale]="tn"
+            [minDate]="mindate"
+            [maxDate]="maxDate"
+            [inputStyle]="{ width: '100%' }"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [disabled]="readonly"
+          
+          ></p-calendar>
+        </div>
+        <div class="col-md-6"> AU: 
+          <p-calendar
+           [(ngModel)]="datefin"
+           [locale]="tn"
+           [minDate]="mindate"
+           [maxDate]="maxDate"
+           [inputStyle]="{ width: '100%' }"
+           dateFormat="dd/mm/yy"
+           [disabled]="readonly"
+           [monthNavigator]="true"
+           
+         ></p-calendar>
+        </div>
+         </div>
+         <br>
+         <div class="row"  >
+          
+          <p-panel header="Chiffres d'affaires par" >
+            <div class="row">
+              <div class="col-md-6">
+              <p-radioButton
+              name="group1"
+              value="clt"
+              label="Client"
+              [(ngModel)]="selectedChoix"
+              (onClick)="clickClient()"
+              [disabled]="readonly"
+            ></p-radioButton>
+           </div>
+            <div class="col-md-6">
+            <p-radioButton
+            (onClick)="clickArticle()"
+            name="group1"
+            value="art"
+            label="Article"
+            [(ngModel)]="selectedChoix"
+            [disabled]="readonly"
+          ></p-radioButton>
+            </div>
+            </div>
+            
+         
+            <div class="row">
+              <div class="col-md-6">
+              <p-radioButton
+              name="group1"
+              value="four"
+              label="Fournisseur"
+              [(ngModel)]="selectedChoix"
+              (onClick)="clickFournisseur()"
+              [disabled]="readonly"
+            ></p-radioButton>
+              </div>
+                <div class="col-md-6">
+                <p-radioButton
+                name="group1"
+                value="vend"
+                label="Vendeur"
+                [(ngModel)]="selectedChoix"
+                (onClick)="clickVendeur()"
+                [disabled]="readonly"
+              ></p-radioButton>
+                </div>
+  
+              </div>
+         
+
+        
+            <div class="row">
+              <div class="col-md-6">
+              <p-radioButton
+              name="group1"
+              value="famil"
+              label="Famille"
+              [(ngModel)]="selectedChoix"
+              (onClick)="clickFamille()"
+              [disabled]="readonly"
+            ></p-radioButton>
+              </div>
+            
+                <div class="col-md-6">
+                <p-radioButton
+                name="group1"
+                value="sfamil"
+                label="Sous famille"
+                [(ngModel)]="selectedChoix"
+                (onClick)="clicksFamille()"
+                [disabled]="readonly"
+              ></p-radioButton>
+              
+  
+              </div>
+            </div>
+      
+            <div class="row">
+              <div class="col-md-6">
+              <p-radioButton
+              name="group1"
+              value="typoclt"
+              label="Typologie client"
+              [(ngModel)]="selectedChoix"
+              (onClick)="clickTypologieclient()"
+              [disabled]="readonly"
+            ></p-radioButton>
+              </div>
+                <div class="col-md-6">
+                <p-radioButton
+                name="group1"
+                value="zone"
+                label="Zone"
+                [(ngModel)]="selectedChoix"
+                (onClick)="clickZone()"
+                [disabled]="readonly"
+              ></p-radioButton>
+              </div>
+            </div>
+
+          
+
+            <div class="row">
+              <div class="col-md-6">
+              <p-radioButton
+              name="group1"
+              value="sect"
+              label="Secteur"
+              [(ngModel)]="selectedChoix"
+              (onClick)="clickSecteur()"
+              [disabled]="readonly"
+            ></p-radioButton>
+              </div>
+            
+                <div class="col-md-6">
+                <p-radioButton
+                name="group1"
+                value="repres"
+                label="Representant"
+                [(ngModel)]="selectedChoix"
+                (onClick)="clickRepresentant()"
+                [disabled]="readonly"
+              ></p-radioButton>
+                </div>
+  
+             
+
+            </div>
+         
+              </p-panel>
+            
+         </div>
+       <br>
+       <div class="row" *ngIf="btnafficher">
+        <div class="col-md-4" ></div>
+        <div class="col-md-4" >
+          <button  id="aff"  pButton type="button" label="afficher" (click)="afficher()"
+                         class="ui-button-raised ">
+                      </button>
+        </div>
+
+        <div class="col-md-4" >
+          
+        </div>
+        <div class="col-md-4" ></div>
+       </div>
+       <br *ngIf="btnafficher">
+       <div class="row" *ngIf="!btnafficher" >
+       
+          <ejs-grid
+            #grid
+             [dataSource]="items"
+             [allowResizing]='true' 
+             [selectedRowIndex]="index"
+            gridLines="Both"
+            width="97%"
+           
+            height="150"
+            rowHeight="30"
+           
+          ><!-- [searchSettings]="searchOptions"-->
+            <e-columns>
+              <e-column
+                field="ca"
+                headerText="CA en DT"
+                textAlign="Right"
+                width="26%"
+                [customAttributes]="customAttributes"
+              >
+             
+            </e-column>
+              <e-column
+                field="code"
+                headerText="Code"
+                width="24%"
+                [customAttributes]="customAttributes"
+              ></e-column>
+              <e-column
+                field="deno"
+                headerText="Designation"
+                width="50%"
+                [customAttributes]="customAttributes"
+              ></e-column>
+              <e-column
+              field="marg"
+              headerText="MRG"
+              textAlign="Right"
+              width="20%"
+              [customAttributes]="customAttributes"
+              >
+          
+          
+          
+          </e-column>
+            </e-columns>
+          </ejs-grid>
+        
+      </div>
+      <br *ngIf="!btnafficher">
+      <div class="row" *ngIf="!btnafficher"  >
+        <!--[searchFn]="onSearchItem"
+                    [(ngModel)]="selectedChoix"
+              (keyup.enter)="rechercheArt($event.target.value, 1)"
+              (keyup)="articles = []"
+        
+        
+        -->
+
+
+        <div [hidden]="selectedChoix === 'art' || selectedChoix === 'clt' " class="col-md-12">
+          <ng-select
+          ngselect 
+          [items]="ngSelectItems"
+          [(ngModel)]="selectedItem"
+          [bindLabel]="bindlabel"
+          [placeholder]="placeholder"
+          [searchFn]="onSearchItem"
+          (change)="changeSelectedItem()"
+        >
+        </ng-select>
+        
+        </div>
+        <div  [hidden]="!(selectedChoix === 'art') "  class="col-md-12">
+          <ng-select
+          ngselect 
+          [items]="articles"
+          [(ngModel)]="selectedItem"
+          bindLabel="design"
+          [placeholder]="placeholder"
+          [searchFn]="onSearchItem"
+          (keyup.enter)="rechercheArt($event.target.value, 1)"
+          (keyup)="articles = []"
+          (open)="articles = []"
+          (change)="changeSelectedItem()"
+        >
+        </ng-select>
+        </div>
+      <!--(keyup.enter)="rechercheClt($event.target.value, 1)"-->
+      <div  [hidden]="!(selectedChoix === 'clt') "  class="col-md-12">
+        <ng-select
+        ngselect 
+        [items]="clients"
+        [(ngModel)]="selectedItem"
+        bindLabel="deno"
+        placeholder="choisir un client"
+        [searchFn]="onSearchItemclt"
+        (change)="changeSelectedItem()"
+      >
+      </ng-select>
+      
+      </div>
+         
+    </div>
+    <br>
+
+    <div class="row" *ngIf="!btnafficher"  >
+      
+      <div class="col-md-5">
+    <button id="nouvs"   pButton type="button" label="Nouvelle saisie" (click)="nouvelleSaisie()"
+                         class="ui-button-raised ">
+                      </button>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-3">
+      <button id="apperc"   pButton type="button" label="aperçu" (click)="imprimer()"
+                           class="ui-button-raised ">
+                        </button>
+      </div>
+    <div class="col-md-2"></div>
+    </div>
+<br>
+</div>
+
+
+
+
+    
+    
+
+
+
+
+<!--     ANNEE -1         -->
+
+
+    <div class="col-md-4" style="background-color: bisque;">
+      <!--style="background-color: bisque;"-->
+      <div class="row" >
+         <span style=" margin-left: 30%;color: darkblue;font-weight: bold; font-size: 18px;">ANNEE</span> <span style="    margin-left: 10%;color: red;font-weight: bold; font-size: 18px;"> {{annee_1}}</span>
+      </div>
+      <div class="row">
+       <div class="col-md-6"> DU: 
+         <p-calendar
+         [(ngModel)]="datedeb1_1"
+         [locale]="tn"
+         [minDate]="mindate_1"
+         [maxDate]="maxDate_1"
+         [inputStyle]="{ width: '100%' }"
+         dateFormat="dd/mm/yy"
+       
+         [monthNavigator]="true"
+         [disabled]="readonly_1"
+       ></p-calendar>
+     </div>
+     <div class="col-md-6"> AU: 
+       <p-calendar
+        [(ngModel)]="datefin_1"
+        [locale]="tn"
+        [inputStyle]="{ width: '100%' }"
+        dateFormat="dd/mm/yy"
+        [minDate]="mindate_1"
+        [maxDate]="maxDate_1"
+        [monthNavigator]="true"
+        [disabled]="readonly_1"
+      ></p-calendar>
+     </div>
+      </div>
+      <br>
+      <div class="row"  >
+       
+       <p-panel header="Chiffres d'affaires par" >
+         <div class="row">
+          <div class="col-md-6">
+           <p-radioButton
+           name="group_1"
+           value="clt"
+           label="Client"
+           [(ngModel)]="selectedChoix_1"
+           (onClick)="clickClient_1()"
+           [disabled]="readonly_1"
+         ></p-radioButton>
+        </div>
+       
+          <div class="col-md-6">
+          <p-radioButton
+          (onClick)="clickArticle_1()"
+          name="group_1"
+          value="art"
+          label="Article"
+          [(ngModel)]="selectedChoix_1"
+          [disabled]="readonly_1"
+        ></p-radioButton>
+          </div>
+
+        </div>
+       
+         
+     
+        <div class="row">
+          <div class="col-md-6">
+           <p-radioButton
+           name="group_1"
+           value="four"
+           label="Fournisseur"
+           [(ngModel)]="selectedChoix_1"
+           (onClick)="clickFournisseur_1()"
+           [disabled]="readonly_1"
+         ></p-radioButton>
+           </div>
+
+      
+
+         <div class="col-md-6">
+           <p-radioButton
+           name="group_1"
+           value="vend"
+           label="Vendeur"
+           [(ngModel)]="selectedChoix_1"
+           (onClick)="clickVendeur_1()"
+           [disabled]="readonly_1"
+         ></p-radioButton>
+        </div>
+         </div>
+         <div class="row">
+           <div class="col-md-6">
+           <p-radioButton
+           name="group_1"
+           value="famil"
+           label="Famille"
+           [(ngModel)]="selectedChoix_1"
+           (onClick)="clickFamille_1()"
+           [disabled]="readonly_1"
+         ></p-radioButton>
+           </div>
+
+    
+           <div class="col-md-6">
+           <p-radioButton
+           name="group_1"
+           value="sfamil"
+           label="Sous famille"
+           [(ngModel)]="selectedChoix_1"
+           (onClick)="clicksFamille_1()"
+           [disabled]="readonly_1"
+         ></p-radioButton>
+           </div>
+
+         </div>
+         <div class="row">
+           <div class="col-md-6">
+           <p-radioButton
+           name="group_1"
+           value="typoclt"
+           label="Typologie client"
+           [(ngModel)]="selectedChoix_1"
+           (onClick)="clickTypologieclient_1()"
+           [disabled]="readonly_1"
+         ></p-radioButton>
+           </div>
+
+       
+           <div class="col-md-6">
+           <p-radioButton
+           name="group_1"
+           value="zone"
+           label="Zone"
+           [(ngModel)]="selectedChoix_1"
+           (onClick)="clickZone_1()"
+           [disabled]="readonly_1"
+         ></p-radioButton>
+           </div>
+
+         </div>
+
+         <div class="row">
+           <div class="col-md-6">
+           <p-radioButton
+           name="group_1"
+           value="sect"
+           label="Secteur"
+           [(ngModel)]="selectedChoix_1"
+           (onClick)="clickSecteur_1()"
+           [disabled]="readonly_1"
+         ></p-radioButton>
+         </div>
+           <div class="col-md-6">
+           <p-radioButton
+           name="group_1"
+           value="repres"
+           label="Representant"
+           [(ngModel)]="selectedChoix_1"
+           (onClick)="clickRepresentant_1()"
+           [disabled]="readonly_1"
+         ></p-radioButton>
+           </div>
+
+         </div>
+           </p-panel>
+         
+      </div>
+    <br>
+    <div class="row" *ngIf="btnafficher_1">
+     <div class="col-md-4" ></div>
+     <div class="col-md-4" >
+       <button id="aff"  pButton type="button" label="afficher" (click)="afficher_1()"
+                      class="ui-button-raised ">
+                   </button>
+     </div>
+     <div class="col-md-4" ></div>
+    </div>
+    <br *ngIf="btnafficher_1">
+    <div class="row" *ngIf="!btnafficher_1" >
+    
+       <ejs-grid
+         #grid_1
+          [dataSource]="items_1"
+          [allowResizing]='true' 
+          [selectedRowIndex]="0"
+         gridLines="Both"
+         width="97%"
+        
+         height="150"
+         rowHeight="30"
+         allowResizing= 'true'
+        
+       ><!-- [searchSettings]="searchOptions"-->
+         <e-columns>
+           <e-column
+             field="ca"
+             headerText="CA en DT"
+             width="26%"
+             textAlign="Right"
+             [customAttributes]="customAttributes"
+           >
+        
+         
+         </e-column>
+           <e-column
+             field="code"
+             headerText="Code"
+             width="24%"
+             [customAttributes]="customAttributes"
+           ></e-column>
+           <e-column
+             field="deno"
+             headerText="Designation"
+             width="50%"
+             [customAttributes]="customAttributes"
+           ></e-column>
+           <e-column
+           field="marg"
+           headerText="MRG"
+           width="20%"
+           textAlign="Right"
+           [customAttributes]="customAttributes"
+           >
+     
+       
+       
+       </e-column>
+         </e-columns>
+       </ejs-grid>
+     
+   </div>
+   <br *ngIf="!btnafficher_1">
+   <div class="row" *ngIf="!btnafficher_1" >
+     
+    <div [hidden]="selectedChoix_1 === 'art' || selectedChoix_1 === 'clt' " class="col-md-12">
+      <ng-select
+      ngselect 
+      [items]="ngSelectItems_1"
+      [(ngModel)]="selectedItem_1"
+      [bindLabel]="bindlabel_1"
+      [placeholder]="placeholder_1"
+      [searchFn]="onSearchItem"
+      (change)="changeSelectedItem_1()"
+    >
+    </ng-select>
+    
+    </div>
+
+    <div  [hidden]="!(selectedChoix_1 === 'art') "  class="col-md-12">
+      <ng-select
+      ngselect 
+      [items]="articles_1"
+      [(ngModel)]="selectedItem_1"
+      bindLabel="design"
+      [placeholder]="placeholder_1"
+      [searchFn]="onSearchItem"
+      (keyup.enter)="rechercheArt_1($event.target.value, 1)"
+      (keyup)="articles_1 = []"
+      (open)="articles_1 = []"
+      (change)="changeSelectedItem_1()"
+    >
+    </ng-select>
+    </div>
+
+  <div  [hidden]="!(selectedChoix_1 === 'clt') "  class="col-md-12">
+    <ng-select
+    ngselect 
+    [items]="clients_1"
+    [(ngModel)]="selectedItem_1"
+    bindLabel="deno"
+    placeholder="choisir un client"
+    [searchFn]="onSearchItemclt"
+    (open)="rechercheClt_1()"
+    (change)="changeSelectedItem_1()"
+  >
+  </ng-select>
+  
+  </div>
+      
+   
+ </div>
+
+ <br>
+
+ <div class="row" *ngIf="!btnafficher_1"  >
+   
+   <div class="col-md-5">
+ <button id="nouvs"   pButton type="button" label="Nouvelle saisie" (click)="nouvelleSaisie_1()"
+                      class="ui-button-raised ">
+                   </button>
+ </div>
+ <div class="col-md-2"></div>
+ <div class="col-md-3">
+   <button id="apperc"   pButton type="button" label="aperçu" (click)="imprimer_1()"
+                        class="ui-button-raised ">
+                     </button>
+   </div>
+ <div class="col-md-2"></div>
+ </div>
+<br>
+
+
+
+
+ </div>
+
+
+
+ <!--     ANNEE - 2         -->
+
+<div class="col-md-4" style="background-color:oldlace">
+  <!--style="background-color:oldlace"-->
+  <div class="row"  >
+     <span style=" margin-left: 30%;color: darkblue;font-weight: bold; font-size: 18px;">ANNEE</span> <span style="    margin-left: 10%;color: red;font-weight: bold; font-size: 18px;"> {{annee_2}}</span>
+  </div>
+  <div class="row">
+   <div class="col-md-6"> DU: 
+     <p-calendar
+     [(ngModel)]="datedeb1_2"
+     [locale]="tn"
+     [minDate]="mindate_2"
+     [maxDate]="maxDate_2"
+     [inputStyle]="{ width: '100%' }"
+     dateFormat="dd/mm/yy"
+   
+     [monthNavigator]="true"
+     [disabled]="readonly_2"
+   ></p-calendar>
+ </div>
+ <div class="col-md-6"> AU: 
+   <p-calendar
+    [(ngModel)]="datefin_2"
+    [locale]="tn"
+    [inputStyle]="{ width: '100%' }"
+    dateFormat="dd/mm/yy"
+    [minDate]="mindate_2"
+    [maxDate]="maxDate_2"
+    [monthNavigator]="true"
+    [disabled]="readonly_2"
+  ></p-calendar>
+ </div>
+  </div>
+  <br>
+  <div class="row"  >
+   
+   <p-panel header="Chiffres d'affaires par" >
+     <div class="row">
+      <div class="col-md-6">
+       <p-radioButton
+       name="group_2"
+       value="clt"
+       label="Client"
+       [(ngModel)]="selectedChoix_2"
+       (onClick)="clickClient_2()"
+       [disabled]="readonly_2"
+     ></p-radioButton>
+    
+
+     </div>
+     
+  
+       <div class="col-md-6">
+       <p-radioButton
+       (onClick)="clickArticle_2()"
+       name="group_2"
+       value="art"
+       label="Article"
+       [(ngModel)]="selectedChoix_2"
+       [disabled]="readonly_2"
+     ></p-radioButton>
+       </div>
+
+     </div>
+     <div class="row">
+       <div class="col-md-6">
+       <p-radioButton
+       name="group_2"
+       value="four"
+       label="Fournisseur"
+       [(ngModel)]="selectedChoix_2"
+       (onClick)="clickFournisseur_2()"
+       [disabled]="readonly_2"
+     ></p-radioButton>
+       </div>
+
+  
+
+  
+       <div class="col-md-6">
+       <p-radioButton
+       name="group_2"
+       value="vend"
+       label="Vendeur"
+       [(ngModel)]="selectedChoix_2"
+       (onClick)="clickVendeur_2()"
+       [disabled]="readonly_2"
+     ></p-radioButton>
+       </div>
+
+     </div>
+     <div class="row">
+       <div class="col-md-6">
+       <p-radioButton
+       name="group_2"
+       value="famil"
+       label="Famille"
+       [(ngModel)]="selectedChoix_2"
+       (onClick)="clickFamille_2()"
+       [disabled]="readonly_2"
+     ></p-radioButton>
+       </div>
+
+   
+       <div class="col-md-6">
+       <p-radioButton
+       name="group_2"
+       value="sfamil"
+       label="Sous famille"
+       [(ngModel)]="selectedChoix_2"
+       (onClick)="clicksFamille_2()"
+       [disabled]="readonly_2"
+     ></p-radioButton>
+       </div>
+
+     </div>
+     <div class="row">
+       <div class="col-md-6">
+       <p-radioButton
+       name="group_2"
+       value="typoclt"
+       label="Typologie client"
+       [(ngModel)]="selectedChoix_2"
+       (onClick)="clickTypologieclient_2()"
+       [disabled]="readonly_2"
+     ></p-radioButton>
+       </div>
+
+     
+       <div class="col-md-6">
+       <p-radioButton
+       name="group_2"
+       value="zone"
+       label="Zone"
+       [(ngModel)]="selectedChoix_2"
+       (onClick)="clickZone_2()"
+       [disabled]="readonly_2"
+     ></p-radioButton>
+       </div>
+
+     </div>
+
+     <div class="row">
+       <div class="col-md-6">
+       <p-radioButton
+       name="group_2"
+       value="sect"
+       label="Secteur"
+       [(ngModel)]="selectedChoix_2"
+       (onClick)="clickSecteur_2()"
+       [disabled]="readonly_2"
+     ></p-radioButton>
+       </div>
+
+   
+       <div class="col-md-6">
+       <p-radioButton
+       name="group_2"
+       value="repres"
+       label="Representant"
+       [(ngModel)]="selectedChoix_2"
+       (onClick)="clickRepresentant_2()"
+       [disabled]="readonly_2"
+     ></p-radioButton>
+       </div>
+
+     </div>
+       </p-panel>
+     
+  </div>
+<br>
+<div class="row" *ngIf="btnafficher_2">
+ <div class="col-md-4" ></div>
+ <div class="col-md-4" >
+   <button id="aff"  pButton type="button" label="afficher" (click)="afficher_2()"
+                  class="ui-button-raised ">
+               </button>
+ </div>
+ <div class="col-md-4" ></div>
+</div>
+<br *ngIf="btnafficher_2">
+<div class="row" *ngIf="!btnafficher_2" >
+
+   <ejs-grid
+     #grid_2
+      [dataSource]="items_2"
+      [allowResizing]='true' 
+      [selectedRowIndex]="0"
+     gridLines="Both"
+     width="97%"
+    
+     height="150"
+     rowHeight="30"
+    
+   ><!-- [searchSettings]="searchOptions"-->
+     <e-columns>
+       <e-column
+         field="ca"
+         headerText="CA en DT"
+         width="26%"
+         textAlign="Right"
+         [customAttributes]="customAttributes"
+       >
+      
+     
+     </e-column>
+       <e-column
+         field="code"
+         headerText="Code"
+         width="24%"
+         [customAttributes]="customAttributes"
+       ></e-column>
+       <e-column
+         field="deno"
+         headerText="Designation"
+         width="50%"
+         [customAttributes]="customAttributes"
+       ></e-column>
+       <e-column
+       field="marg"
+       headerText="MRG"
+       width="20%"
+       textAlign="Right"
+       [customAttributes]="customAttributes"
+       >
+   
+
+   </e-column>
+     </e-columns>
+   </ejs-grid>
+ 
+</div>
+<br *ngIf="!btnafficher_2">
+<div class="row" *ngIf="!btnafficher_2" >
+ 
+  <div [hidden]="selectedChoix_2 === 'art' || selectedChoix_2 === 'clt' " class="col-md-12">
+    <ng-select
+    ngselect 
+    [items]="ngSelectItems_2"
+    [(ngModel)]="selectedItem_2"
+    [bindLabel]="bindlabel_2"
+    [placeholder]="placeholder_2"
+    [searchFn]="onSearchItem"
+    (change)="changeSelectedItem_2()"
+  >
+  </ng-select>
+  
+  </div>
+
+<div  [hidden]="!(selectedChoix_2 === 'art') "  class="col-md-12">
+  <ng-select
+  ngselect 
+  [items]="articles_2"
+  [(ngModel)]="selectedItem_2"
+  bindLabel="design"
+  [placeholder]="placeholder_2"
+  [searchFn]="onSearchItem"
+  (keyup.enter)="rechercheArt_2($event.target.value, 1)"
+  (keyup)="articles_2 = []"
+  (open)="articles_2 = []"
+  (change)="changeSelectedItem_2()"
+>
+</ng-select>
+
+</div>
+
+<div  [hidden]="!(selectedChoix_2 === 'clt') "  class="col-md-12">
+  <ng-select
+  ngselect 
+  [items]="clients_2"
+  [(ngModel)]="selectedItem_2"
+  bindLabel="deno"
+  placeholder="choisir un client"
+  [searchFn]="onSearchItemclt"
+  (open)="rechercheClt_2()"
+  (change)="changeSelectedItem_2()"
+>
+</ng-select>
+
+</div>
+
+</div>
+
+<br *ngIf="!btnafficher_2">
+
+<div class="row" *ngIf="!btnafficher_2"  >
+  
+  <div class="col-md-5">
+<button id="nouvs"   pButton type="button" label="Nouvelle saisie" (click)="nouvelleSaisie_2()"
+                     class="ui-button-raised ">
+                  </button>
+</div>
+<div class="col-md-2"></div>
+<div class="col-md-3">
+  <button id="apperc"   pButton type="button" label="aperçu" (click)="imprimer_2()"
+                       class="ui-button-raised ">
+                    </button>
+  </div>
+<div class="col-md-2"></div>
+</div>
+<br>
+
+
+</div>
+
+
+  
+</div>

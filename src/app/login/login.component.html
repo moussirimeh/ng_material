@@ -1,0 +1,73 @@
+
+        <mat-card>
+            <img mat-card-image width="260px" height="300px" [src]="imgSrc">
+        </mat-card>
+
+<div class="login-page">
+  <div class="content">
+    <div class="login-form" fxFlex>
+      <div class="text-center">
+        <h2 class="app-name">GESTION COMMERCIALE</h2>
+      </div>
+      <div fxFlex fxlayout="row" fxlayout.lt-md="column">
+        <div fxFlexFill>
+          <mat-form-field
+            class="w-100"
+            (click)="clear()"
+            (keyup.enter)="onLoginUtil()"
+          >
+            <input
+              matInput
+              id="util"
+              [(ngModel)]="util"
+              placeholder="Code utilisateur"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxFlex fxlayout="row" fxlayout.lt-md="column">
+        <div fxFlexFill>
+          <mat-form-field class="w-100">
+            <input
+              #nomInput
+              matInput
+              id="nom"
+              [(ngModel)]="nom"
+              placeholder="Nom utilisateur"
+              readonly
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxFlex fxLayout="row" fxLayout.lt-md="column">
+        <div fxFlexFill>
+          <mat-form-field class="w-100" (click)="clearMDP()">
+            <input
+              matInput
+              id="mdp"
+              [(ngModel)]="mdp"
+              type="password"
+              (keyup.enter)="onLogin()"
+              placeholder="Mot de passe"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxFlex fxLayout="row" fxLayout.lt-md="column">
+        <p-messages [(value)]="msgs" class="w-100"></p-messages>
+      </div>
+      <div fxFlex fxLayout="row" fxLayout.lt-md="column">
+        <div fxFlexFill>
+          <button
+            mat-raised-button
+            color="primary"
+            class="w-100"
+            (click)="onLogin()"
+          >
+            Connexion
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

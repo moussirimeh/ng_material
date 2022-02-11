@@ -1,0 +1,368 @@
+<mat-card>
+  <mat-card-content>
+    <div style="font-size: 13px;">
+      <div class="row" style="margin-bottom: 5px;"  [ngClass]="{ disableDiv: saisieCardShow }">
+        <div class="col-md-1">
+          <label>Fournisseur:</label>
+        </div>
+        <div class="col-md-2">
+          <ng-select
+            [items]="fournisseurs"
+            bindLabel="deno"
+            bindValue="code"
+            [(ngModel)]="selectedFournisseur"
+            [searchFn]="onSearchFournisseur"
+            style="width: 240px;"
+            placeholder=""
+          >
+          </ng-select>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2"><h4>En stock</h4></div>
+        <div class="col-md-3"><h4>Trier par</h4></div>
+        <div class="col-md-2"><h4>Article</h4></div>
+        <div class="col-md-1"></div>
+      </div>
+
+      <div class="row" style="margin-bottom: 5px;"  [ngClass]="{ disableDiv: saisieCardShow }">
+        <div class="col-md-1">
+          <label>Famille:</label>
+        </div>
+        <div class="col-md-2">
+          <ng-select
+            ngselect
+            [items]="familles"
+            bindLabel="nom"
+            bindValue="code"
+            [(ngModel)]="selectedFamille"
+            [searchFn]="onSearchFamille"
+            style="width: 240px;"
+            placeholder=""
+          >
+          </ng-select>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2">
+          <p-radioButton
+            name="group1"
+            value="tout"
+            label="TOUT"
+            [(ngModel)]="stock"
+            inputId="opt1"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-3">
+          <p-radioButton
+            name="group2"
+            value="fourAndCode"
+            label="FOURNISSEUR+CODE"
+            [(ngModel)]="trier"
+            inputId="opt9"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-2">
+          <p-radioButton
+            name="group3"
+            value="tout"
+            label="TOUT"
+            [(ngModel)]="article"
+            inputId="opt4"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+
+      <div class="row" style="margin-bottom: 5px;"  [ngClass]="{ disableDiv: saisieCardShow }">
+        <div class="col-md-1">
+          <label>Sous Famille:</label>
+        </div>
+        <div class="col-md-2">
+          <ng-select
+            ngselect
+            [items]="sfamilles"
+            bindLabel="nom"
+            bindValue="code"
+            [(ngModel)]="selectedSfamille"
+            [searchFn]="onSearchSfamille"
+            style="width: 240px;"
+            placeholder=""
+          >
+          </ng-select>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2">
+          <p-radioButton
+            name="group1"
+            value="null"
+            label="STOCK NULL"
+            [(ngModel)]="stock"
+            inputId="opt2"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-3">
+          <p-radioButton
+            name="group2"
+            value="fourAndDesign"
+            label="FOURNISSEUR+DESIGNATION"
+            [(ngModel)]="trier"
+            inputId="opt8"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-2">
+          <p-radioButton
+            name="group3"
+            value="noncommande"
+            label="NON COMMANDE"
+            [(ngModel)]="article"
+            inputId="opt5"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+
+      <div class="row" style="margin-bottom: 5px;"  [ngClass]="{ disableDiv: saisieCardShow }">
+        <div class="col-md-1">
+          <label>Marque:</label>
+        </div>
+        <div class="col-md-2">
+          <ng-select
+            ngselect
+            [items]="marques"
+            bindLabel="nom"
+            bindValue="code"
+            [(ngModel)]="selectedMarque"
+            [searchFn]="onSearchMarque"
+            style="width: 240px;"
+            placeholder=""
+          >
+          </ng-select>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2">
+          <p-radioButton
+            name="group1"
+            value="disponible"
+            label="DISPONIBLE "
+            [(ngModel)]="stock"
+            inputId="opt3"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-3">
+          <p-radioButton
+            name="group2"
+            value="code"
+            label="CODE"
+            [(ngModel)]="trier"
+            inputId="opt4"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-2">
+          <p-radioButton
+            name="group3"
+            value="encommande"
+            label="En COMMANDE"
+            [(ngModel)]="article"
+            inputId="opt5"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+      <div class="row" style="margin-bottom: 5px;">
+        <div class="col-md-6"></div>
+        <div class="col-md-3"  [ngClass]="{ disableDiv: saisieCardShow }">
+          <p-radioButton
+            name="group2"
+            value="design"
+            label="DESIGNATION"
+            [(ngModel)]="trier"
+            inputId="opt5"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-1">
+          <button
+            pButton
+            type="button"
+            label="Visualiser"
+            (click)="visualiser($event)"
+            class="ui-button-raised"
+          ></button>
+        </div>
+        <div class="col-md-1">
+          <button
+            pButton
+            type="button"
+            label="=> EXCEL"
+            (click)="genererExcel($event)"
+            class="ui-button-raised"
+          ></button>
+        </div>
+        <div class="col-md-1">
+          <button
+            pButton
+            type="button"
+            label="Afficher"
+            *ngIf="!saisieCardShow"
+            (click)="valider($event)"
+            class="ui-button-raised"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+&nbsp;
+
+<mat-card [hidden]="!saisieCardShow">
+  <mat-card-content>
+    <div>
+      <div class="row" style="margin-bottom: 5px;">
+        <div class="col-md-auto">
+          <div class="ui-inputgroup">
+            <input
+              type="search"
+              size="25"
+              (keyup.enter)="applyFilterCode()"
+              placeholder="Recherche par Référence"
+              pInputText
+              [(ngModel)]="rechCode"
+              (click)="rechDesign = ''"
+              (search)="applyFilterCode()"
+            />
+            <button
+              pButton
+              icon="pi pi-search"
+              (click)="applyFilterCode()"
+            ></button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="ui-inputgroup">
+            <input
+              type="search"
+              size="35"
+              (keyup.enter)="applyFilterDesign()"
+              placeholder="Recherche par Designation"
+              pInputText
+              [(ngModel)]="rechDesign"
+              (click)="rechCode = ''"
+              (search)="applyFilterDesign()"
+            />
+            <button
+              pButton
+              icon="pi pi-search"
+              (click)="applyFilterDesign()"
+            ></button>
+          </div>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+      <div>
+        <ejs-grid
+          #grid
+          [dataSource]="catalogues"
+          [searchSettings]="searchOptions"
+          gridLines="Both"
+          [allowExcelExport]="true"
+          [selectedRowIndex]="0"
+          height="208"
+          [rowHeight]="26"
+          allowTextWrap="true"
+          [textWrapSettings]="wrapSettings"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column
+              field="code"
+              headerText="Référence"
+              width="130"
+            ></e-column>
+            <e-column
+              field="design"
+              headerText="Désignation"
+              width="160"
+            ></e-column>
+            <e-column
+              field="fournisseur"
+              headerText="Fournisseur"
+              width="120"
+            ></e-column>
+            <e-column
+              field="quantite"
+              headerText="Qte"
+              width="40"
+              textAlign="Right"
+            ></e-column>
+            <e-column
+              field="com"
+              headerText="Com"
+              width="40"
+              textAlign="Right"
+            ></e-column>
+            <e-column
+              field="prix"
+              headerText="Prix HT"
+              width="60"
+              textAlign="Right"
+            ></e-column>
+
+            <e-column
+              field="ttc"
+              headerText="TTC"
+              width="60"
+              textAlign="Right"
+            ></e-column>
+            <e-column
+              field="tva"
+              headerText="TVA"
+              width="40"
+              textAlign="Right"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <button
+            pButton
+            type="button"
+            label="Nouvelle saisie"
+            (click)="introdure()"
+            class="ui-button-raised"
+            style="margin-top: 3px; margin-bottom: -4px;"
+          ></button>
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-md-2">
+          <button
+            pButton
+            type="button"
+            label="Transferer a PROFORMAT"
+            (click)="transfererProformat($event)"
+            class="ui-button-raised"
+            style="margin-top: 3px; margin-bottom: -4px;"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+<p-dialog
+  header="Nouveau Proformat"
+  [(visible)]="displayProformat"
+  [style]="{ width: '90%', height: '100%' }"
+  [modal]="false"
+  (onShow)="showDialogMaximized(dialNvProformat)"
+  #dialNvProformat
+  (onHide)="onProformatClose()"
+>
+  <app-demande-proforma></app-demande-proforma>
+</p-dialog>

@@ -1,0 +1,564 @@
+<p-blockUI [blocked]="blockDocument"></p-blockUI>
+<div class="row">
+  <div class="col-md-2">Date début</div>
+  <div class="col-md-2">Date fin</div>
+  <div class="col-md-8"></div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <p-calendar
+      [(ngModel)]="from"
+      [locale]="tn"
+      placeholder=""
+      disabled="true"
+      readonlyInput="true"
+      [monthNavigator]="true"
+      [yearNavigator]="true"
+      yearRange="1900:2200"
+      dateFormat="dd/mm/yy"
+      [inputStyle]="{ width: '100px', height: '30px' }"
+    ></p-calendar>
+  </div>
+  <div class="col-md-2">
+    <p-calendar
+      [(ngModel)]="to"
+      [locale]="tn"
+      [minDate]="minDate"
+      readonlyInput="true"
+      [yearNavigator]="true"
+      [monthNavigator]="true"
+      yearRange="1900:2200"
+      dateFormat="dd/mm/yy"
+      (onSelect)="onselectTo($event)"
+      [inputStyle]="{ width: '100px', height: '30px' }"
+      [disabled]="!afficherShow"
+    >
+    </p-calendar>
+  </div>
+
+  <div class="col-md-1">
+    <button
+      pButton
+      type="button"
+      label="Afficher"
+      (click)="afficher()"
+      [hidden]="!afficherShow"
+      [disabled]="blockDocument"
+      class="ui-button-raised"
+    ></button>
+  </div>
+</div>
+&nbsp;
+<mat-card style="height: 260px" *ngIf="afficherClicked">
+  <mat-card-content style="margin-left: -8px">
+    <h4>Liste des recettes</h4>
+    <div [ngClass]="{ disableDiv: !allowSelection }">
+      <ejs-grid
+        #grid
+        [dataSource]="recettes"
+        (rowSelected)="rowSelected($event)"
+        [selectedRowIndex]="0"
+        gridLines="Both"
+        height="130px"
+        [rowHeight]="26"
+        (mouseup)="annulerSelection()"
+        (mousewheel)="annulerSelection()"
+        allowResizing="true"
+      >
+        <e-columns>
+          <e-column field="libelle" headerText="Libelle" width="150"></e-column>
+          <e-column field="date" headerText="Date" width="90"></e-column>
+          <e-column
+            field="montant"
+            textAlign="Right"
+            headerText="Montant"
+            width="80"
+          ></e-column>
+          <e-column field="mode" headerText="Mode" width="90"></e-column>
+          <e-column
+            field="facture"
+            headerText="Facture"
+            textAlign="Right"
+            width="90"
+          ></e-column>
+          <e-column
+            field="cheque"
+            headerText="Cheque"
+            textAlign="Right"
+            width="90"
+          ></e-column>
+          <e-column field="banque" headerText="Banque" width="90"></e-column>
+          <e-column
+            field="echeance"
+            headerText="Echeance"
+            textAlign="Right"
+            width="90"
+          ></e-column>
+          <e-column
+            field="observation"
+            headerText="Observations"
+            width="150"
+          ></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <div class="row" style="margin-top: 1%">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <button
+          pButton
+          type="button"
+          label="Ajouter"
+          (click)="ajouter()"
+          *ngIf="!ajouterDisabled"
+        ></button>
+      </div>
+      <div class="col-md-2">
+        <button
+          pButton
+          id="btSupprimer"
+          type="button"
+          label="Supprimer"
+          (click)="supprimer($event)"
+          *ngIf="!supprimerDisabled"
+        ></button>
+      </div>
+      <div class="col-md-2">
+        <button
+          pButton
+          id="btModifier"
+          type="button"
+          label="Modifier"
+          (click)="modifier($event)"
+          *ngIf="!modifierDisabled"
+        ></button>
+      </div>
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <button
+          pButton
+          id="btNvSaisie"
+          type="button"
+          label="Nouvelle Saisie"
+          (click)="nouvelleSaisie()"
+          *ngIf="!afficherShow"
+          [hidden]="ajouterClicked || modifierClicked"
+        ></button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+&nbsp;
+<div *ngIf="ajouterClicked || modifierClicked">
+  <mat-card>
+    <mat-card-content style="margin-left: -8px">
+      <h4>{{ text }}</h4>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="row">
+            <div class="col-md-3">
+              <h5>Libelle</h5>
+            </div>
+            <div class="col-md-9">
+              <!--
+              <p-dropdown
+              [filter]="true"
+              filterMatchMode="startsWith"
+              [resetFilterOnHide]="true"
+              emptyFilterMessage=""
+
+                id="libelle"
+                [options]="libelle"
+                [panelStyle]="{ width: '100%' }"
+                [readonly]="champDisabled"
+                [(ngModel)]="selectedCaisse.code"
+                [style]="{ width: '230px' }"
+              ></p-dropdown>
+              -->
+              <ng-select
+                ngselect
+                id="libelle"
+                #ngSelectLibelle
+                [items]="libelle"
+                bindLabel="label"
+                bindValue="value"
+                [disabled]="champDisabled"
+                [(ngModel)]="selectedCaisse.code"
+                (change)="moveToNextInput($event, 0)"
+                [style]="{ width: '100%' }"
+                [searchFn]="onSearchLibelle"
+              >
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="row">
+            <div class="col-md-3">
+              <h5>Date</h5>
+            </div>
+            <div class="col-md-9">
+              <!--<p-calendar
+              id="date"
+                [(ngModel)]="selectedCaisse.date"
+                [locale]="tn"
+                [minDate]="minDate"
+                [maxDate]="maxDate"
+                [yearNavigator]="true"
+                [monthNavigator]="true"
+                yearRange="1973:2999"
+                dateFormat="dd/mm/yy"
+                (onSelect)="onselect($event)"
+                (OnFocus)="$event.target.select()"
+                [disabled]="champDisabled"
+                [inputStyle]="{ width: '140px', height: '30px' }"
+              >
+              </p-calendar>-->
+
+              <p-inputMask
+                mask="99/99/9999"
+                [(ngModel)]="selectedCaisse.date"
+                id="dateEnreg"
+                #inputMaskDateEnreg
+                (change)="ov.hide()"
+                placeholder="jj/mm/aaaa"
+                slotChar="jj/mm/aaaa"
+                [style]="{ width: '100%' }"
+                (keydown.enter)="moveToNextInput($event, 1)"
+                (blur)="moveToNextInput($event, 1)"
+                [disabled]="champDisabled"
+              ></p-inputMask>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="row">
+            <div class="col-md-3">
+              <h5>Montant</h5>
+            </div>
+            <div class="col-md-6">
+              <input
+                id="montant"
+                type="text"
+                pKeyFilter="pnum"
+                pInputText
+                size="10"
+                format="n3"
+                [(ngModel)]="selectedCaisse.montant"
+                [readonly]="champDisabled"
+                (blur)="formatMontant()"
+                (keydown.enter)="moveToNextInput($event, 2)"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="row">
+            <div class="col-md-3">
+              <h5>Mode</h5>
+            </div>
+            <div class="col-md-9">
+              <!--<p-dropdown
+                id="mode"
+                [options]="mode"
+                [style]="{ 'min-width': '156px' }"
+                [readonly]="champDisabled"
+                [(ngModel)]="selectedCaisse.mode"
+                (onChange)="setTire($event)"
+              >
+              </p-dropdown>-->
+              <ng-select
+                ngselect
+                id="mode"
+                #ngSelectMode
+                [items]="mode"
+                bindLabel="label"
+                bindValue="value"
+                [disabled]="champDisabled"
+                [(ngModel)]="selectedCaisse.mode"
+                (change)="setTire($event)"
+                [style]="{ width: '100%' }"
+                [searchFn]="onSearchMode"
+              >
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="row">
+            <div class="col-md-4">
+              <h5>Facture</h5>
+            </div>
+            <div class="col-md-8">
+              <input
+              pInputText
+              id="facture"
+                type="text"
+                maxlength="5"
+                class="form-control"
+                [(ngModel)]="selectedCaisse.facture"
+                (keydown.enter)="moveToNextInput($event, 3)"
+                [readonly]="champDisabled"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top: 0.5%">
+        <div class="col-md-3">
+          <div class="row">
+            <div class="col-md-3">
+              <h5>Observation</h5>
+            </div>
+            <div class="col-md-9">
+              <input
+              id="observation"
+              pInputText
+                type="text"
+                style="width: 230px"
+                class="form-control"
+                [maxLength]="30"
+                [(ngModel)]="selectedCaisse.observat"
+                (keydown.enter)="moveToNextInput($event, 4)"
+                [readonly]="champDisabled"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row">
+            <div
+              class="col-md-2"
+              *ngIf="
+                selectedCaisse.mode == null ||
+                selectedCaisse.mode == '' ||
+                selectedCaisse.mode == 'TRAITE' ||
+                selectedCaisse.mode == 'CHEQUE'
+              "
+            >
+              <h5>N°TITRE</h5>
+            </div>
+            <div class="col-md-10" style="margin-left: -4%">
+              <input
+              pInputText
+                id="titre"
+                type="text"
+                style="width: 331px"
+                maxlength="20"
+                class="form-control"
+                [(ngModel)]="selectedCaisse.cheque"
+                (keydown.enter)="moveToNextInput($event, 5)"
+                [readonly]="champDisabled"
+                *ngIf="
+                  selectedCaisse.mode == null ||
+                  selectedCaisse.mode == '' ||
+                  selectedCaisse.mode == 'TRAITE' ||
+                  selectedCaisse.mode == 'CHEQUE'
+                "
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="row">
+            <div
+              class="col-md-3"
+              *ngIf="
+                selectedCaisse.mode == null ||
+                selectedCaisse.mode == '' ||
+                selectedCaisse.mode == 'TRAITE' ||
+                selectedCaisse.mode == 'CHEQUE'
+              "
+            >
+              <h5>Banque</h5>
+            </div>
+            <div class="col-md-9">
+              <input
+              pInputText
+                id="banque"
+                type="text"
+                class="form-control"
+                [readonly]="champDisabled"
+                [(ngModel)]="selectedCaisse.banque"
+                (keydown.enter)="moveToNextInput($event, 6)"
+                *ngIf="
+                  selectedCaisse.mode == null ||
+                  selectedCaisse.mode == '' ||
+                  selectedCaisse.mode == 'TRAITE' ||
+                  selectedCaisse.mode == 'CHEQUE'
+                "
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="row">
+            <div
+              class="col-md-4"
+              *ngIf="
+                selectedCaisse.mode == null ||
+                selectedCaisse.mode == '' ||
+                selectedCaisse.mode == 'TRAITE' ||
+                selectedCaisse.mode == 'CHEQUE'
+              "
+            >
+              <h5>Echéance</h5>
+            </div>
+            <div class="col-md-8">
+              <!--<p-calendar
+                [(ngModel)]="selectedCaisse.ech"
+                [locale]="tn"
+                [minDate]="minDate"
+                [yearNavigator]="true"
+                [monthNavigator]="true"
+                [disabled]="champDisabled"
+                yearRange="1980:2050"
+                dateFormat="dd/mm/yy"
+                (onSelect)="onselectEch($event)"
+                [inputStyle]="{ width: '100px', height: '30px' }"
+                *ngIf="
+                  selectedCaisse.mode == null ||
+                  selectedCaisse.mode == '' ||
+                  selectedCaisse.mode == 'TRAITE' ||
+                  selectedCaisse.mode == 'CHEQUE'
+                "
+              >
+              </p-calendar>-->
+              <p-inputMask
+                mask="99/99/9999"
+                [(ngModel)]="selectedCaisse.ech"
+                id="echeance"
+                #inputMaskEcheance
+                (change)="ov.hide()"
+                placeholder="jj/mm/aaaa"
+                slotChar="jj/mm/aaaa"
+                [style]="{ width: '100%' }"
+                (keydown.enter)="moveToNextInput($event, 7)"
+                (blur)="moveToNextInput($event, 7)"
+                [disabled]="champDisabled"
+                *ngIf="
+                  selectedCaisse.mode == null ||
+                  selectedCaisse.mode == '' ||
+                  selectedCaisse.mode == 'TRAITE' ||
+                  selectedCaisse.mode == 'CHEQUE'
+                "
+              ></p-inputMask>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top: 0.5%">
+        <div class="col-md-3">
+          <div class="row">
+            <div class="col-md-3">
+              <h5>CLIENT</h5>
+            </div>
+            <div class="col-md-9">
+              <ng-select
+                id="client"
+                #ngSelectClient
+                class="custom"
+                style="width: 230px"
+                [items]="clients"
+                bindLabel="deno"
+                [(ngModel)]="selectedClient"
+                (change)="setCode()"
+                (onclick)="setCode()"
+                [disabled]="champDisabled"
+                [searchFn]="onSearchClient"
+                (clear)="selectedCode='';selectedCaisse.tire=''"
+                placeholder=""
+              >
+              </ng-select>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 0.9%">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-3">
+                  <h5>CODE</h5>
+                </div>
+                <div class="col-md-8">
+                  <!--<input
+                  pInputText
+                    type="text"
+                    class="form-control"
+                    [readonly]="true"
+                    [(ngModel)]="selectedCode"
+                  />-->
+                  {{selectedCode}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="row">
+            <div
+              class="col-md-2"
+              *ngIf="
+                selectedCaisse.mode == null ||
+                selectedCaisse.mode == '' ||
+                selectedCaisse.mode == 'TRAITE' ||
+                selectedCaisse.mode == 'CHEQUE'
+              "
+            >
+              <h5>TIRE</h5>
+            </div>
+            <div class="col-md-10">
+              <input
+                id="tire"
+                pInputText
+                type="text"
+                class="form-control"
+                maxlength="25"
+                style="width: 260px"
+                [readonly]="champDisabled"
+                [(ngModel)]="selectedCaisse.tire"
+                (keydown.enter)="moveToNextInput($event, 8)"
+                *ngIf="
+                  selectedCaisse.mode == null ||
+                  selectedCaisse.mode == '' ||
+                  selectedCaisse.mode == 'TRAITE' ||
+                  selectedCaisse.mode == 'CHEQUE'
+                "
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-1">
+          <button
+            pButton
+            id="btValider"
+            type="button"
+            label="Valider"
+            (click)="valider($event)"
+          ></button>
+        </div>
+        <div class="col-md-1">
+          <button
+            pButton
+            type="button"
+            label="Annuler"
+            (click)="fermer()"
+          ></button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

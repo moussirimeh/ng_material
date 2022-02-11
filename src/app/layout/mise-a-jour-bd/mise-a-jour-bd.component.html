@@ -1,0 +1,129 @@
+<br>
+<br>
+<br>
+<p-blockUI [blocked]="blockedDocument"></p-blockUI>
+<div class="row">
+
+  <div class="col-md-3"></div>
+  <div class="col-md-6" style="font-weight: bold; font-size: 20px;"> ORDONNER LA FERMETURE  DE TOUS LES POSTES ENSUITE</div>
+  <div class="col-md-3"></div>
+</div>
+
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+
+  <div class="col-md-5"><button
+    pButton 
+    type="button"
+    id="miseAjour"
+    label="Lancer la mise à jour du stock"
+    (click)="miseAjour($event)"
+    ></button></div>
+
+
+<div class="col-md-4"></div>
+</div>
+
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+
+  <div class="col-md-5"><button
+    pButton 
+    type="button"
+    id="MajStockMort"
+    label="Détermination stock mort"
+    (click)="MajStockMort($event)"
+    ></button></div>
+
+
+<div class="col-md-4" style="font-weight: bold;font-size: 15px;">
+  <div class="row"> <div class="col-md-12">* Stock mort : stock avec Qte > 0  et non mouvementé durant</div> </div>
+  <div class="row"><div class="col-md-12">l'année courante , l'année -1 , l'année -2 et l'année -3 .</div></div>
+</div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+
+  <div class="col-md-5"><button
+    pButton 
+    type="button"
+    id="miseAjourStockProfiler"
+    label="Détermination stock profiler"
+    (click)="miseAjourStockProfiler($event)"
+    ></button></div>
+
+
+<div class="col-md-4"></div>
+</div>
+
+
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+
+  <div class="col-md-5"><button
+    pButton 
+    type="button"
+    id="stkstable"
+    label="Détermination stock Stable"
+    (click)="stockStable($event)"
+    ></button></div>
+
+
+<div class="col-md-4" style="font-weight: bold;font-size: 15px;" >
+  <div class="row"> <div class="col-md-12">* Stock stable : Rotation quantitative sur la periode du {{debutAnnDate}} </div> </div>
+  <div class="row"><div class="col-md-12"> jusqu'à {{dateCourante}} &lt;   0.31 .</div></div>
+</div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-5" *ngIf="!reqExec ">
+  <button pButton   id="inptDet" type="button" *ngIf="affDet" (click)="afficherDeterminationClientsN($event)"
+   label="Détermination des Clients de typologie N " ></button>
+  </div>
+  <div class="col-md-4"></div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-4" Style="width:88%;background-color:  #b7d8b7 ;"*ngIf="!affDet">
+      <div class="row">
+        <div class="col-md-12" style="text-align: center;"> La Determination Du  Client N</div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" style="text-align: center;">est lancée Veuillez patienter svp !</div>
+      </div>
+       
+     </div>
+    <div class="col-md-5"></div>
+</div><br>
+
+
+ <div class="row">
+ <div class="col-md-3"></div>
+ <div class="col-md-4" *ngIf="reqExec">
+  <div class="row">
+    <div class="col-md-12" style="text-align: center;"> Execution Terminee Avec Succes .</div>
+  </div>
+    
+ </div> 
+ <div class="col-md-5"></div>
+</div>
+
+
+
+
+<p-overlayPanel
+#op
+[dismissable]="false"
+[showCloseIcon]="true"
+appendTo="body"
+[style]="styleOvPanel"
+
+>
+<span> {{msg}} </span>
+</p-overlayPanel>

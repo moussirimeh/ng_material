@@ -1,0 +1,238 @@
+<p-card class="cardContainer">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-4">
+          DATE PREVUE ENTRE LE
+        </div>
+        <div class="col-md-3">
+          <p-calendar
+            [(ngModel)]="dateDebut"
+            [locale]="tn"
+            [inputStyle]="{ width: '70%' }"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            yearRange="1980:2050"
+          ></p-calendar>
+        </div>
+        <div class="col-md-2">ET</div>
+        <div class="col-md-3">
+          <p-calendar
+            [(ngModel)]="dateFin"
+            [locale]="tn"
+            [inputStyle]="{ width: '70%' }"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            yearRange="1980:2050"
+          ></p-calendar>
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6">
+          NUMERO VISITE
+        </div>
+        <div class="col-md-6">
+          <input
+            type="text"
+            pKeyFilter="pint"
+            [(ngModel)]="numVisite"
+            size="39"
+            maxlength="15"
+            pInputText
+          />
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6">
+          CLIENT
+        </div>
+        <div class="col-md-6">
+          <!--
+          <p-dropdown
+            [options]="clients"
+            optionLabel="deno"
+            [(ngModel)]="selectedClient"
+            [style]="{ 'min-width': '100%', 'max-width': '100%' }"
+          ></p-dropdown>
+        -->
+          <ng-select
+            ngselect
+            [items]="clients"
+            bindLabel="deno"
+            [(ngModel)]="selectedClient"
+            [searchFn]="onSearchClient"
+          >
+          </ng-select>
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6">
+          PROGRAMME PAR
+        </div>
+        <div class="col-md-6">
+          {{ nomUtil }}
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6">
+          PARTICIPANT
+        </div>
+        <div class="col-md-6">
+          <!--
+          <p-dropdown
+            [options]="utils"
+            [(ngModel)]="selectedParticipant"
+            optionLabel="nPUtil"
+            [style]="{ 'min-width': '100%', 'max-width': '100%' }"
+          ></p-dropdown>
+-->
+          <ng-select
+            ngselect
+            [items]="utils"
+            bindLabel="nPUtil"
+            [(ngModel)]="selectedParticipant"
+            [searchFn]="onSearchParticipant"
+          >
+          </ng-select>
+        </div>
+      </div>
+      &nbsp;
+      <div align="center">
+        <button
+          pButton
+          type="button"
+          label="AFFICHER"
+          (click)="afficher($event)"
+          class="ui-button-raised"
+        ></button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <p-panel header="VISITE NON ENREGISTRE ET DATE ENREGISTREMENT">
+        <div>
+          <p-radioButton
+            name="radioButtonGroup"
+            value="<=0"
+            label="NON DEPASSE"
+            [(ngModel)]="selectedValue"
+          ></p-radioButton>
+        </div>
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup"
+            value=">0"
+            label="DEPASSE"
+            [(ngModel)]="selectedValue"
+          ></p-radioButton>
+        </div>
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup"
+            value=">3"
+            label="DEPASSE DE PLUS DE 3 JOUES"
+            [(ngModel)]="selectedValue"
+          ></p-radioButton>
+        </div>
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup"
+            value=">7"
+            label="DEPASSE DE PLUS DE 7 JOUES"
+            [(ngModel)]="selectedValue"
+          ></p-radioButton>
+        </div>
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup"
+            value=">15"
+            label="DEPASSE DE PLUS DE 15 JOUES"
+            [(ngModel)]="selectedValue"
+          ></p-radioButton>
+        </div>
+        &nbsp;
+        <div>
+          <p-radioButton
+            name="radioButtonGroup"
+            value=""
+            label="TOUT"
+            [(ngModel)]="selectedValue"
+          ></p-radioButton>
+        </div>
+      </p-panel>
+    </div>
+  </div>
+  &nbsp;
+  <div>
+    <ejs-grid
+      #grid
+      id="grid"
+      [dataSource]="visites"
+      (mouseup)="annulerSelectionVisite()"
+      (mousewheel)="annulerSelectionVisite()"
+      (recordDoubleClick)="enregistrerVisite($event)"
+      height="220"
+      gridLines="Both"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column
+          field="numVisite"
+          headerText="NUMERO VISITE"
+          textAlign="Left"
+          width="80"
+        ></e-column>
+        <e-column
+          field="codeClt"
+          headerText="CODE CLIENT"
+          textAlign="Left"
+          width="80"
+        >
+        </e-column>
+        <e-column
+          field="denoClt"
+          headerText="CLIENT"
+          textAlign="Left"
+          width="200"
+        ></e-column>
+        <e-column
+          field="validation"
+          headerText="VALIDATION"
+          textAlign="Left"
+          width="80"
+        ></e-column>
+      </e-columns>
+    </ejs-grid>
+    <div align="center" style="color: red;">
+      <h4>Double Click pour selectionner la visite à enregistrer</h4>
+    </div>
+  </div>
+</p-card>
+<p-dialog
+  header="Enregistrement Visite"
+  (onShow)="showDialogMaximized(dialProgVisite)"
+  (onHide)="ProgVisite.initialiser()"
+  #dialProgVisite
+  [(visible)]="ProgVisite.displayProgVisite"
+  [style]="{ width: '100%', height: '100%' }"
+>
+  <app-programmation-visite></app-programmation-visite>
+</p-dialog>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

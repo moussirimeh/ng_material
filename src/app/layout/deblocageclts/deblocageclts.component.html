@@ -1,0 +1,345 @@
+<div
+  class="principale"
+  style="min-height: 650px"
+  (click)="display = false; displayFact = false"
+>
+  <div class="row">
+    <div class="col-md-3">
+      Client :&nbsp;
+      <input
+        id="codeClt"
+        type="text"
+        size="10"
+        maxlength="7"
+        (keyup.enter)="applyFilterClientParCode($event)"
+        (keyup)="ov.hide()"
+        pInputText
+        [(ngModel)]="codeClient"
+        [disabled]="afficherClicked"
+        (keydown)="
+          afficherDisable = true;
+          apercueDisable = true;
+          intialiserSelectedClient()
+        "
+        [readOnly]="true"
+      />
+    </div>
+    <div class="col-md-3">
+      <ng-select
+        ngselect
+        [items]="clients"
+        bindLabel="deno"
+        [(ngModel)]="selectedClient"
+        (click)="updateOnSelect()"
+        (keyup.enter)="updateOnSelect()"
+        [searchFn]="onSearchClient"
+        [disabled]="afficherClicked"
+        (clear)="codeClient = ''; afficherDisable = true; apercueDisable = true"
+        style="width: 60%"
+      >
+      </ng-select>
+    </div>
+    <div class="col-md-2">
+      <button
+        color="primary"
+        class="mat-raised-button mat-primary"
+        ng-reflect-color="primary"
+        (click)="afficher()"
+        *ngIf="!afficherDisable"
+      >
+        Afficher
+      </button>
+    </div>
+    <div class="col-md-2">
+      <button
+        color="primary"
+        class="mat-raised-button mat-primary"
+        ng-reflect-color="primary"
+        (click)="apercue()"
+        *ngIf="!apercueDisable"
+      >
+        Aperçu
+      </button>
+    </div>
+    <div class="col-md-2">
+      <button
+        color="primary"
+        class="mat-raised-button mat-primary"
+        ng-reflect-color="primary"
+        *ngIf="!apercueDisable"
+        (click)="deblocageNiv2($event)"
+        id="idbtnDeblocN2"
+      >
+        Débloc pour 1 B/L
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <button
+        color="primary"
+        class="mat-raised-button mat-primary"
+        ng-reflect-color="primary"
+        (click)="deblocageNiv1()"
+        *ngIf="debloc1 && afficherClicked"
+      >
+        Deblocage 1 B/L
+      </button>
+    </div>
+    <div class="col-md-6">
+      <button
+        color="primary"
+        class="mat-raised-button mat-primary"
+        ng-reflect-color="primary"
+        (click)="deblocageNiv2()"
+        *ngIf="debloc2 && afficherClicked"
+      >
+        Deblocage 1 B/L
+      </button>
+    </div>
+  </div>
+  &nbsp;
+  <div style="height: 82%" [hidden]="!afficherClicked">
+    <div style="height: 45%">
+      <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="releveClients"
+        (recordDoubleClick)="impressionFact()"
+        (mouseup)="annulerSelection()"
+        (mousewheel)="annulerSelection()"
+        [allowExcelExport]="true"
+        height="180"
+        gridLines="Both"
+        [rowHeight]="30"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          <e-column field="date" headerText="Date" textAlign="Left" width="85">
+          </e-column>
+          <e-column
+            field="piece"
+            headerText="Piece"
+            textAlign="Left"
+            width="75"
+          ></e-column>
+          <e-column
+            field="numero"
+            headerText="Numero"
+            textAlign="Left"
+            width="65"
+          ></e-column>
+          <e-column
+            field="echeance"
+            headerText="Echeance"
+            textAlign="Left"
+            width="85"
+          ></e-column>
+          <e-column
+            field="debit"
+            headerText="Debit"
+            textAlign="Right"
+            width="80"
+          ></e-column>
+          <e-column
+            field="credit"
+            headerText="Credit"
+            textAlign="Right"
+            width="80"
+          ></e-column>
+          <e-column
+            field="tire"
+            headerText="Tire"
+            textAlign="Left"
+            width="100"
+          ></e-column>
+          <e-column
+            field="libelle"
+            headerText="Libelle"
+            textAlign="Left"
+            width="200"
+          ></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+
+    &nbsp;
+    <div class="row">
+      <div class="col-md-3">
+        <div class="row">
+          <div class="col-md-6">Nombre IMP</div>
+          <div class="col-md-6">
+            <h4 align="right">{{ nbrImp }}</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">Total IMP</div>
+          <div class="col-md-6">
+            <h4 align="right">{{ totImp }}</h4>
+          </div>
+        </div>
+        &nbsp;
+        <div></div>
+        &nbsp;
+        <div></div>
+        &nbsp;
+        <div></div>
+        &nbsp;
+        <div>
+          <button
+          *ngIf="afficherClicked"
+          
+            [hidden]="releveClicked"
+            color="primary"
+            
+            class="mat-raised-button mat-primary"
+            ng-reflect-color="primary"
+            (click)="nouvelleSaisie()"
+          >
+            Nouvelle saisie
+          </button>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-md-8">Total Débit</div>
+          <div class="col-md-4">
+            <h4 align="right">{{ totDebit }}</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">Total Crédit</div>
+          <div class="col-md-4">
+            <h4 align="right">{{ totCredit }}</h4>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row">
+          <div class="col-md-8">Solde</div>
+          <div class="col-md-4">
+            <h4 align="right">{{ solde }}</h4>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row">
+          <div class="col-md-8">Total B/L Non Facturé</div>
+          <div class="col-md-4">
+            <h4 align="right">{{ totBl }}</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">Total Avoir Non Facturé</div>
+          <div class="col-md-4">
+            <h4 align="right">{{ totAvoir }}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-md-8">Total Reglements non échus</div>
+          <div class="col-md-4">
+            <h4 align="right">{{ totRegl }}</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-10">
+            <button
+              color="primary"
+              style="width: 70%"
+              class="mat-raised-button mat-primary"
+              ng-reflect-color="primary"
+              (click)="reglementsNonEchus()"
+            >
+              Voir Ces Reglements
+            </button>
+          </div>
+          <div class="col-md-1"></div>
+        </div>
+        &nbsp;
+        <div class="row">
+          <div class="col-md-8">Délais moyen de payements</div>
+          <div class="col-md-2">
+            <h4 align="right">{{ delPay }}</h4>
+          </div>
+          <div class="col-md-2">Jours</div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">Délais moyen de Reglements</div>
+          <div class="col-md-2">
+            <h4 align="right">{{ delReg }}</h4>
+          </div>
+          <div class="col-md-2">Jours</div>
+        </div>
+      </div>
+      <div class="col-md-1">
+        <button
+          color="primary"
+          class="mat-raised-button mat-primary"
+          ng-reflect-color="primary"
+          (click)="excelExport()"
+        >
+          =>EXCEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="secondaire">
+  <p-dialog
+    header="Reglements Non Echus"
+    [(visible)]="display"
+    [style]="{ width: '50%', height: '40%' }"
+  >
+    <ejs-grid
+      #gridReg
+      id="gridReg"
+      [dataSource]="regltsNonEchus"
+      height="200"
+      gridLines="Both"
+      [rowHeight]="25"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column
+          field="piece"
+          headerText="Piece"
+          textAlign="Left"
+          width="135"
+        ></e-column>
+        <e-column field="date" headerText="Date" textAlign="Left" width="135">
+        </e-column>
+        <e-column
+          field="montant"
+          headerText="Montant"
+          textAlign="Right"
+          width="135"
+        ></e-column>
+        <e-column
+          field="echeance"
+          headerText="Echeance"
+          textAlign="Left"
+          width="135"
+        ></e-column>
+      </e-columns>
+    </ejs-grid>
+  </p-dialog>
+  <p-dialog
+    header="Impression des Factures à Termes"
+    [(visible)]="displayFact"
+    [style]="{ width: '80%', height: '70%' }"
+  >
+    <app-impressionfactures></app-impressionfactures>
+  </p-dialog>
+</div>
+
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+

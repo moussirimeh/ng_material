@@ -1,0 +1,801 @@
+<div  *ngIf="ficheClient">
+<div class="row">
+  <div class="col-md-9">
+    <div class="row">
+      <div class="col-md-12">
+        <p-panel header=" Critères de recherche">
+          <div class="row">
+            <div class="col-md-9">
+          <div class="row">
+
+            <div class="col-md-6">
+              <ng-select
+                ngselect
+                [items]="clients"
+                bindLabel="deno"
+                (change)="changeClients()"
+                [(ngModel)]="selectedClient"
+                (open)="chargerClients()"
+                [searchFn]="onSearchItem"
+                style="width: 100%"
+                placeholder="Choisir un client"
+                [disabled]="disabledCriteres"
+              >
+              </ng-select>
+            </div>
+            <div class="col-md-6">
+              <ng-select
+                ngselect
+                [items]="articles"
+                bindLabel="code"
+                [(ngModel)]="selectedArticle"
+                (change)="changeArticles()"
+                (keyup.enter)="rechercheArt($event.target.value)"
+                [searchFn]="onSearchItemByCode"
+                style="width: 100%"
+                placeholder="Choisir un article"
+                [disabled]="disabledCriteres"
+              >
+              </ng-select>
+            </div>
+         
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <ng-select
+                ngselect
+                [items]="typolClient"
+                bindLabel="code"
+                (change)="changeTypolClient()"
+                [(ngModel)]="selectedTypolClient"
+                [searchFn]="onSearchItem"
+                style="width: 100%"
+                placeholder="Choisir une Typol Client"
+                [disabled]="disabledCriteres"
+              >
+              </ng-select>
+            </div>
+    
+            <div class="col-md-6">
+              <ng-select
+                ngselect
+                [items]="groupes"
+                bindLabel="deno"
+                (change)="changeGroupes()"
+                [(ngModel)]="selectedGroupe"
+                (open)="chargerGroupes()"
+                [searchFn]="onSearchItem"
+                style="width: 100%"
+                placeholder="Choisir un groupe"
+                [disabled]="disabledCriteres"
+              >
+              </ng-select>
+            </div>
+
+       
+          </div>
+         
+          <div class="row">
+            <div class="col-md-6">
+              <ng-select
+                ngselect
+                [items]="activites"
+                bindLabel="deno"
+                (change)="changeActivites()"
+                [(ngModel)]="selectedActivite"
+                (open)="chargerActivites()"
+                [searchFn]="onSearchItem"
+                style="width: 100%"
+                placeholder="Choisir une activité "
+                [disabled]="disabledCriteres"
+              >
+              </ng-select>
+            </div>
+            <div class="col-md-6">
+              <ng-select
+                ngselect
+                [items]="RevCons"
+                bindLabel="value"
+                [(ngModel)]="selectedRevCons"
+                (change)="changeRevCons()"
+                [searchFn]="onSearchItem"
+                style="width: 100%"
+                placeholder="Choisir un Cons-Rev"
+                [disabled]="disabledCriteres"
+              >
+              </ng-select>
+            </div>
+       
+          </div>
+         
+          <div class="row">
+            <div class="col-md-6">
+              <ng-select
+                ngselect
+                [items]="vendeurs"
+                bindLabel="deno"
+                [(ngModel)]="selectedVendeur"
+                (change)="changeVendeurs()"
+                (open)="chargerVendeur()"
+                [searchFn]="onSearchItem"
+                style="width: 100%"
+                placeholder="Choisir un vendeur"
+                [disabled]="disabledCriteres"
+              >
+              </ng-select>
+            </div>
+            <div class="col-md-6">
+              <ng-select
+                ngselect
+                [items]="representants"
+                bindLabel="deno"
+                (change)="changeRepresentants()"
+                [(ngModel)]="selectedRepresentant"
+                (open)="chargerRepresentants()"
+                [searchFn]="onSearchItem"
+                style="width: 100%"
+                placeholder="Choisir un  representant"
+                [disabled]="disabledCriteres"
+              >
+              </ng-select>
+            </div>
+          
+          </div>
+          <div class="row"  >
+          <div class="col-md-6">
+            <ng-select
+              ngselect
+              [items]="fournisseurs"
+              bindLabel="deno"
+              [(ngModel)]="selectedFournisseur"
+              (change)="changeFournisseurs()"
+              (open)="chargerFournisseur()"
+              [searchFn]="onSearchItem"
+              style="width: 100%"
+              placeholder="Choisir un fournisseur "
+              [disabled]="disabledCriteres"
+            >
+            </ng-select>
+          </div>
+
+          <div class="col-md-6">
+            <ng-select
+              ngselect
+              [items]="zones"
+              bindLabel="deno"
+              (change)="changeZone()"
+              [(ngModel)]="selectedZone"
+              (open)="chargerZone()"
+              [searchFn]="onSearchItem"
+              style="width: 100%"
+              placeholder="Choisir une zone"
+              [disabled]="disabledCriteres"
+            >
+            </ng-select>
+          </div>
+          
+          </div>
+          <div class="row"  >
+          <div class="col-md-6">
+            <ng-select
+              ngselect
+              [items]="sousfamilles"
+              bindLabel="nom"
+              (change)="changeSousfamilles()"
+              [(ngModel)]="selectedSousFamille"
+              (open)="chargerSousfamilles()"
+              [searchFn]="onSearchItem"
+              style="width: 100%"
+              placeholder="Choisir une Sous Famille"
+              [disabled]="disabledCriteres"
+            >
+            </ng-select>
+          </div>
+
+          <div class="col-md-6">
+            <ng-select
+              ngselect
+              [items]="familles"
+              bindLabel="nom"
+              (change)="changeFamilles()"
+              [(ngModel)]="selectedFamille"
+              (open)="chargerFamilles()"
+              [searchFn]="onSearchItem"
+              style="width: 100%"
+              placeholder="Choisir une famille"
+              [disabled]="disabledCriteres"
+            >
+            </ng-select>
+          </div>
+          </div>
+
+           </div>
+           <div class="col-md-3">
+            <p-panel header="ANNEE">
+              <div class="row">
+                <div class="col-md-4">
+                  <p-radioButton
+                    name="groupAnnees"
+                    value="{{ anneeCourante }}"
+                    label="{{ anneeCourante }}"
+                    [(ngModel)]="selectedYear"
+                    inputId="preopt1"
+                    (click)="changeDate()"
+                    [disabled]="disabledCriteres"
+                  ></p-radioButton>
+                </div>
+                <div class="col-md-4">
+                  <p-radioButton
+                    name="groupAnnees"
+                    value="{{ annee1 }}"
+                    label="{{ annee1 }}"
+                    [(ngModel)]="selectedYear"
+                    inputId="preopt2"
+                    [disabled]="disabledCriteres"
+                    (click)="changeDate()"
+                  ></p-radioButton>
+                </div>
+                <div class="col-md-4">
+                  <p-radioButton
+                    name="groupAnnees"
+                    value="{{ annee2 }}"
+                    label="{{ annee2 }}"
+                    [(ngModel)]="selectedYear"
+                    inputId="preopt3"
+                    [disabled]="disabledCriteres"
+                    (click)="changeDate()"
+                  ></p-radioButton>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">DU</div>
+                <div class="col-md-8">
+                  <p-calendar
+                    [(ngModel)]="dateDebut"
+                    [locale]="tn"
+                    [inputStyle]="{ width: '100%' }"
+                    dateFormat="dd/mm/yy"
+                    [minDate]="minDateValue"
+                    [maxDate]="maxDateValue"
+                    [disabled]="disabledCriteres"
+                  ></p-calendar>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">AU</div>
+                <div class="col-md-8">
+                  <p-calendar
+                    [(ngModel)]="dateFin"
+                    [locale]="tn"
+                    [inputStyle]="{ width: '100%' }"
+                    dateFormat="dd/mm/yy"
+                    [minDate]="minDateValue"
+                    [maxDate]="maxDateValue"
+                    [disabled]="disabledCriteres"
+                  ></p-calendar>
+                </div>
+              </div>
+            </p-panel>
+          </div>
+          </div>
+
+         
+          <div class="row"  >
+         
+            <div class="col-md-7"></div>
+            <div class="col-md-2">
+              <button
+              [hidden]="hiddenBtnAfficher"
+                pButton
+                type="button"
+                label="Initialiser"
+                (click)="initialiserTout()"
+                
+              ></button>
+            </div>
+      
+            <div class="col-md-2">
+              <button
+              id="btnafficher"
+              [hidden]="hiddenBtnAfficher"
+                pButton
+                type="button"
+                label="AFFICHER"
+                (click)="afficher($event)"
+              ></button>
+            </div>
+            <div class="col-md-1" align="right">
+              <button
+                pButton
+                type="button"
+                label="EXCEL"
+                (click)="exportExcelTout($event)"
+              ></button>
+            </div>
+          
+          </div>
+        </p-panel>
+      </div>
+    </div>
+ 
+  </div>
+
+
+  <div class="col-md-3">
+    <p-panel header="GROUPEMENT PAR">
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupedBy"
+            value="client"
+            label="Client"
+            [(ngModel)]="selectedGroupBy"
+            inputId="preopt1"
+            [disabled]="disabledCriteres"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupedBy"
+            value="article"
+            label="Article"
+            [(ngModel)]="selectedGroupBy"
+            inputId="preopt2"
+            [disabled]="disabledCriteres"
+          ></p-radioButton>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupedBy"
+            value="famille"
+            label="Famille"
+            [(ngModel)]="selectedGroupBy"
+            inputId="preopt3"
+            [disabled]="disabledCriteres"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupedBy"
+            value="activite"
+            label="Activité"
+            [(ngModel)]="selectedGroupBy"
+            inputId="preopt4"
+            [disabled]="disabledCriteres"
+          ></p-radioButton>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupedBy"
+            value="sousFamille"
+            label="Sous/Famille"
+            [(ngModel)]="selectedGroupBy"
+            inputId="preopt5"
+            [disabled]="disabledCriteres"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupedBy"
+            value="represan"
+            label="Represant"
+            [(ngModel)]="selectedGroupBy"
+            inputId="preopt6"
+            [disabled]="disabledCriteres"
+          ></p-radioButton>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupedBy"
+            value="fournisseur"
+            label="Fournisseur"
+            [(ngModel)]="selectedGroupBy"
+            inputId="preopt7"
+            [disabled]="disabledCriteres"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupedBy"
+            value="vendeur"
+            label="Vendeur"
+            [(ngModel)]="selectedGroupBy"
+            inputId="preopt8"
+            [disabled]="disabledCriteres"
+          ></p-radioButton>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupedBy"
+            value="classe"
+            label="Classe"
+            [(ngModel)]="selectedGroupBy"
+            inputId="preopt9"
+            [disabled]="disabledCriteres"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupedBy"
+            value="zone"
+            label="Zone"
+            [(ngModel)]="selectedGroupBy"
+            inputId="preopt10"
+            [disabled]="disabledCriteres"
+          ></p-radioButton>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupedBy"
+            value="revCons"
+            label="Rev/Cons"
+            [(ngModel)]="selectedGroupBy"
+            inputId="preopt11"
+            [disabled]="disabledCriteres"
+          ></p-radioButton>
+        </div>
+        <div class="col-md-6">
+          <p-radioButton
+            name="groupedBy"
+            value="groupe"
+            label="Groupe"
+            [(ngModel)]="selectedGroupBy"
+            inputId="preopt12"
+          ></p-radioButton>
+        </div>
+      </div>
+    </p-panel>
+  </div>
+</div>
+
+<div [hidden]="showDetailss" >
+  
+  
+  <div  class="row" style="font-size:20px;font-weight: bold;">
+    <div class="col-md-3">{{SommeCa}}</div>  
+    <div class="col-md-2" style="text-align: right;">{{SommeCaValue}}</div> 
+    <div class="col-md-8"></div>
+  </div>
+  <div  class="row" style="font-size:20px;font-weight: bold;">
+    <div class="col-md-3">{{SommeVa}}</div> 
+    <div class="col-md-2" style="text-align: right;">{{SommeVaValue}}</div> 
+    <div class="col-md-8"></div>
+  </div>
+  <div  class="row" style="font-size:20px;font-weight: bold;">
+    <div class="col-md-3">{{SommeMrg}}</div> 
+    <div class="col-md-2" style="text-align: right;">{{SommeMrgValue}}</div> 
+    <div class="col-md-8"></div>
+  </div>
+  <div  class="row" style="color: red;font-size:20px;font-weight: bold;">
+    <div class="col-md-12">{{notice}}</div>  
+  </div>
+  <div  class="row">
+  <div class="col-md-12" *ngIf="!buttonInitialiserVisible">
+  <ejs-grid
+  
+    #grid
+    [dataSource]="analysesCaMarges"
+    height="180"
+    gridLines="Both"
+    [rowHeight]="30"
+    (mouseup)="annulerSelection()"
+    (mousewheel)="annulerSelection()"
+    (recordDoubleClick)="afficherDetails()"
+    (rowSelected)="rowSelected($event)"
+    [allowSorting]="true"
+    [sortSettings]="sortOptionsPart"
+    gridLines="Both"
+    [allowExcelExport]="true"
+    allowResizing= 'true'
+  >
+    <e-columns>
+      <e-column field="cod" headerText="CODE" textAlign="Left" width="15%">
+      </e-column>
+      <e-column
+        field="des"
+        headerText="DESIGNATION"
+        textAlign="Left"
+        width="25%"
+        
+      ></e-column>
+      <e-column
+        field="ca"
+        headerText="CHIFFRE D'AFFAIRES"
+        headerTextAlign="left"
+        format="N3"
+        width="15%"
+        textAlign="Right"
+      >
+      </e-column>
+      <e-column
+        field="va"
+        headerTextAlign="left"
+        headerText="VALEUR A L'ACHAT"
+        format="N3"
+        width="15%"
+        textAlign="Right"
+      ></e-column>
+      <e-column field="mrg" headerTextAlign="left" headerText="MARGES" format="N3" textAlign="Right" width="10%">
+      </e-column>
+      <e-column
+        field="id"
+        headerText="PART"
+        format="N3"
+        headerTextAlign="left"
+        textAlign="Right"
+        width="10%"
+      ></e-column>
+      <!--<e-aggregates>
+        <e-aggregate>
+          <e-columns>
+            <e-column field="ca" type="sum" format="N3">
+              <ng-template #footerTemplate let-analysesCaMarges
+                >{{ analysesCaMarges.sum }}
+                </ng-template
+              >
+            </e-column>
+
+            <e-column field="va" type="sum" format="N3">
+              <ng-template #footerTemplate let-analysesCaMarges
+                >{{ analysesCaMarges.sum }}
+                </ng-template>
+            </e-column>
+            <e-column field="mrg" type="Custom" [customAggregate]="customAggregateFn" format="N3">
+              <ng-template #footerTemplate let-analysesCaMarges
+                >{{sumMrg}}
+            </ng-template>
+            </e-column>
+            </e-columns>
+            </e-aggregate>
+            </e-aggregates>-->
+    </e-columns>
+  </ejs-grid>
+</div>
+</div>
+</div>
+  <div class="row" *ngIf="!buttonInitialiserVisible">
+    <div class="col-md-12">
+      <h5>DOUBLE CLICK SUR LA LIGNE POUR VOIR LES DETAILS</h5>
+    </div>
+   
+  </div>
+</div>
+
+<div *ngIf="showDetails">
+  <ejs-grid
+    #gridDetail
+    [dataSource]="analysesCaMargesDetails"
+    height="100"
+    gridLines="Both"
+    [rowHeight]="26"
+    (mouseup)="annulerSelectionDetails()"
+    (mousewheel)="annulerSelectionDetails()"
+    [allowSorting]="true"
+    [allowMultiSorting]="true"
+    [sortSettings]="sortOptions"
+    gridLines="Both"
+    [allowExcelExport]="true"
+    (recordDoubleClick)="afficherDuplicata()"
+    allowResizing= 'true'
+  >
+    <e-columns>
+      <e-column
+        field="combine"
+        headerText="DOCUMENT"
+        textAlign="Left"
+        width="35"
+      >
+      </e-column>
+
+      <e-column
+        field="date"
+        headerText="DATE"
+        textAlign="Left"
+        width="30"
+      ></e-column>
+
+      <e-column
+        field="operateur"
+        headerText="OPERATEUR"
+        textAlign="Left"
+        width="70"
+      >
+      </e-column>
+
+      <e-column
+        field="code"
+        headerText="CODE"
+        textAlign="Left"
+        width="40"
+      ></e-column>
+      <e-column
+        field="prixArt"
+        headerText="PR VENTE"
+        headerTextAlign="left"
+        textAlign="Right"
+        width="30"
+      ></e-column>
+
+      <e-column
+        field="prix"
+        headerText="PR VENDEUR"
+        textAlign="Right"
+        headerTextAlign="left"
+        width="30"
+      >
+      </e-column>
+
+      <e-column
+        field="quantite"
+        headerText="QTE"
+        headerTextAlign="left"
+        textAlign="Right"
+        width="20"
+      ></e-column>
+
+      <e-column field="tRemise" headerText="REM" textAlign="Right" headerTextAlign="left" width="23">
+      </e-column>
+
+      <e-column
+        field="pvr"
+        headerText="PV Remise "
+        headerTextAlign="left"
+        textAlign="Right"
+        width="27"
+      ></e-column>
+
+      <e-column field="pa" headerText="PR ACHAT" headerTextAlign="left" textAlign="Right" width="27">
+      </e-column>
+      <e-column field="marge" headerText="MARGE" format="N2" headerTextAlign="left" textAlign="Right" width="25">
+      </e-column>
+    </e-columns>
+  </ejs-grid>
+
+  <div class="row">
+    <div class="col-md-7">
+      <h6>SELECTIONNER LA LIGNE PUIS DOUBLE CLICK POUR VOIR LE DOCUMENT</h6>
+    </div>
+    <div class="col-md-3" align="right">
+      <button
+      [hidden]="btnFermerDetails"
+        pButton
+        type="button"
+        label="FERMER LA FENETRE DETAILS"
+        (click)="fermerDetails()"
+      ></button>
+    </div>
+    <div class="col-md-2" align="right">
+      <button
+        pButton
+        type="button"
+        label="-->EXCEL"
+        (click)="exportExcel()"
+      ></button>
+    </div>
+  </div>
+  <p-panel header="">
+    <div class="row">
+      <div class="col-md-2"><h5>VALEUR A L'ACHAT</h5></div>
+      <div class="col-md-3"><h5>VALEUR VENTE VENDEUR</h5></div>
+      <div class="col-md-2"><h5>MONTANT REMISE</h5></div>
+      <div class="col-md-3"><h5>VALEUR A LA VENTE AVEC REMISE</h5></div>
+      <div class="col-md-2"><h5>VALEUR DE LA MARGE</h5></div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <h4>{{ totauxDetails.valAchat }}</h4>
+      </div>
+      <div class="col-md-3">
+        <h4>{{ totauxDetails.valVenteVendeur }}</h4>
+      </div>
+      <div class="col-md-2">
+        <h4>{{ totauxDetails.mtRemise }}</h4>
+      </div>
+      <div class="col-md-3">
+        <h4>{{ totauxDetails.valVenteRemise }}</h4>
+      </div>
+      <div class="col-md-2">
+        <h4>{{ totauxDetails.valMarge }}</h4>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-3"><h5>VALEUR VENTE REELLE</h5></div>
+      <div class="col-md-2"><h5>CE QUI CORRESPOND A</h5></div>
+      <div class="col-md-3"></div>
+      <div class="col-md-2"><h5>CE QUI CORRESPOND A</h5></div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-3">
+        <h4>{{ totauxDetails.valVenteReelle }}</h4>
+      </div>
+      <div class="col-md-2">
+        <h4>{{ totauxDetails.pourcCorrespondA }} %</h4>
+      </div>
+      <div class="col-md-3"></div>
+      <div class="col-md-2">
+        <h4>{{ totauxDetails.correspondA }} %</h4>
+      </div>
+    </div>
+  </p-panel>
+</div>
+
+<div class="row"  >
+  <div class="col-md-12"></div>
+</div>
+
+<div class="row"  >
+  <div class="col-md-2">
+    <button
+    [hidden]="!hiddenBtnAfficher"
+      pButton
+      type="button"
+      label="Nouvellle saisie"
+      (click)="Nouvellesaisi()"
+      
+    ></button>
+  </div>
+  <div class="col-md-10"></div>
+  </div>
+
+
+<p-dialog
+  header="Duplicata"
+  [(visible)]="displayDuplicata"
+  [style]="{ width: '80%', height: '70%' }"
+>
+  <app-duplicata></app-duplicata>
+</p-dialog>
+
+
+<p-dialog
+      header="INDICATION !"
+      [(visible)]="showConfirm"
+    
+      [style]="{ width: '70vw' }"
+     
+      [resizable]="false"
+    >
+      <div class="row">
+        <div class="col-md-12" style="font-weight: bold; font-size: 15px;">
+          Cette fonction n'est valable que pour l'année courante !
+        </div>
+      </div>
+      <p-footer>
+        <button type="button" pButton  (click)="showConfirm=false"   label="OK"></button>
+       
+      </p-footer>
+    </p-dialog>
+
+
+    <p-overlayPanel
+    #op
+    [dismissable]="false"
+    [showCloseIcon]="true"
+    appendTo="body"
+    [style]="{
+      'text-align': 'center',
+      'font-size': '14px',
+      'background-color': ' #f8b7bd'
+    }"
+  >
+    <span> {{ msg }} </span>
+  </p-overlayPanel>

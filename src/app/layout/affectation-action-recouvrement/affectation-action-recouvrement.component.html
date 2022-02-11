@@ -1,0 +1,259 @@
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <p-card>
+      <div class="row" *ngIf="false">
+        <div class="col-md-3">INITIATAIRE :</div>
+        <div class="col-md-4">
+          <ng-select
+            ngselect
+            [items]="users"
+            bindLabel="nPUtil"
+            [(ngModel)]="selectedInit"
+            style="width: 100%"
+            placeholder="INITIATAIRE"
+          >
+          </ng-select>
+        </div>
+        <div class="col-md-5"></div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-3">DESTINATAIRE :</div>
+        <div class="col-md-6">
+          <ng-select
+            #desti
+            id="desti"
+            ngselect
+            [items]="users"
+            bindLabel="nPUtil"
+            [(ngModel)]="selectedDest"
+            style="width: 100%"
+            placeholder="DESTINATAIRE"
+          >
+          </ng-select>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-3">CLIENT :</div>
+        <div class="col-md-6">
+          <!--<ng-select
+            ngselect
+            [items]="clients"
+            bindLabel="deno"
+            [(ngModel)]="selectedClient"
+            (keyup.enter)="recherche($event.target.value)"
+            (keyup)="clients = []; codeClient = ''"
+            (change)="syncCodeClient(); releves = []; showGrid = false"
+            (click)="syncCodeClient(); releves = []; showGrid = false"
+            style="width: 100%"
+            placeholder="CLIENT"
+            id="clt"
+            #clt
+          >
+          </ng-select>-->
+          <ng-select
+            id="clt"
+            #clt
+            [items]="clients"
+            bindLabel="deno"
+            [(ngModel)]="selectedClient"
+            (clear)="syncCodeClient(); releves = []; showGrid = false"
+            (change)="syncCodeClient(); releves = []; showGrid = false"
+            style="width: 100%"
+            placeholder="CLIENT"
+            [searchFn]="onSearchClient"
+          >
+          </ng-select>
+        </div>
+        <div class="col-md-2">
+          <input
+            type="text"
+            [(ngModel)]="codeClient"
+            (keyup)="
+              selectedClient = null;
+              clients = [];
+              ov.hide();
+              releves = [];
+              showGrid = false
+            "
+            (keyup.enter)="chercherClientParCode($event)"
+            pInputText
+            placeholder="Code Client"
+            style="width: 100%"
+            readonly="true"
+          />
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-3">MONTANT :</div>
+        <div class="col-md-4">
+          <input
+            type="search"
+            style="text-align: right"
+            pKeyFilter="pnum"
+            placeholder="0.000"
+            pInputText
+            (blur)="formatterMontant()"
+            [(ngModel)]="montant"
+            id="mnt"
+          />
+        </div>
+        <div class="col-md-5"></div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-3">DETAILS :</div>
+        <div class="col-md-9">
+          <textarea
+            [rows]="4"
+            [cols]="60"
+            [(ngModel)]="details"
+            [maxLength]="200"
+            pInputTextarea
+            placeholder="DETAILS"
+          ></textarea>
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-3">DATE FIN PREVUE :</div>
+        <div class="col-md-4">
+          <p-calendar
+            [(ngModel)]="dateFinPrevue"
+            [locale]="tn"
+            [inputStyle]="{ width: '100%' }"
+            dateFormat="dd/mm/yy"
+            [minDate]="dateMin"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            yearRange="1980:2050"
+          ></p-calendar>
+        </div>
+        <div class="col-md-5"></div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-2">
+          <button
+            pButton
+            type="button"
+            label="RELEVE"
+            (click)="releve(1, $event)"
+            id="relv"
+          ></button>
+        </div>
+        <div class="col-md-7"></div>
+        <div class="col-md-3" align="Right">
+          <button
+            id="enreg"
+            #enreg
+            pButton
+            type="button"
+            label="ENREGISTRER"
+            (click)="enregistrer($event)"
+          ></button>
+        </div>
+      </div>
+      &nbsp;
+      <div *ngIf="showGrid">
+        <ejs-grid
+          #grid
+          [dataSource]="releves"
+          height="210"
+          gridLines="Both"
+          [rowHeight]="30"
+          (mouseup)="annulerSelection()"
+          (mousewheel)="annulerSelection()"
+          (recordDoubleClick)="addPiece()"
+          gridLines="Both"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column
+              field="date"
+              headerText="DATE"
+              textAlign="Left"
+              width="100"
+            >
+            </e-column>
+            <e-column
+              field="piece"
+              headerText="PIECE"
+              textAlign="Left"
+              width="100"
+            >
+            </e-column>
+            <e-column
+              field="debit"
+              headerText="DEBIT"
+              textAlign="Right"
+              width="100"
+            >
+            </e-column>
+            <e-column
+              field="credit"
+              headerText="CREDIT"
+              textAlign="Right"
+              width="100"
+            >
+            </e-column> </e-columns
+        ></ejs-grid>
+      </div>
+    </p-card>
+    &nbsp;
+  </div>
+  <div class="col-md-3"></div>
+</div>
+<p-dialog
+  header="Demande de Confirmation"
+  [(visible)]="showConfirm"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+  Il y a deja une mission ouverte pour ce client - La consulter maintenant ?
+  <p-footer>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-check"
+      (click)="showMissionsRecouv($event)"
+      label="Oui"
+    ></button>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-times"
+      (click)="showConfirm = false"
+      label="Non"
+      class="ui-button-secondary"
+    ></button>
+  </p-footer>
+</p-dialog>
+
+<p-dialog
+  header="Consultation des missions de recouvrement"
+  [(visible)]="showConsultMissions"
+  [modal]="true"
+  [style]="{ width: '96vw', height: '100%' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <app-consultation-mission-recouvrement></app-consultation-mission-recouvrement>
+</p-dialog>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

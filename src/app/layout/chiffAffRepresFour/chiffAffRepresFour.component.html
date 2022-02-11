@@ -1,0 +1,188 @@
+<p-blockUI [blocked]="blockeDocument"></p-blockUI>
+<div class="cardContainer">
+  <div class="row">
+    <div class="col-md-auto"><h4>Répresantant :</h4></div>
+    <div class="col-md-3">
+      <ng-select
+        id="represans"
+        [items]="represans"
+        bindLabel="deno"
+        [style]="{ 'min-width': '300px', 'max-width': '300px' }"
+        [(ngModel)]="selectedRepresant"
+        (clear)="selectedRepresant = null"
+        [searchFn]="onSearchRepresan"
+        [disabled]="showGrid"
+      >
+      </ng-select>
+    </div>
+    <div class="col-md-2">
+      <button
+        pButton
+        type="button"
+        label="Afficher"
+        (click)="afficher(0, $event)"
+        [hidden]="showGrid"
+      ></button>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-2">
+      <button
+        pButton
+        type="button"
+        label="VISUALISER"
+        (click)="toPdf($event)"
+      ></button>
+    </div>
+    <div class="col-md-2">
+      <button
+        pButton
+        type="button"
+        label="--> EXCEL"
+        (click)="toExcel($event)"
+      ></button>
+    </div>
+  </div>
+  &nbsp;
+  <div style="height: 80%" [hidden]="!showGrid">
+    <ejs-grid
+      #grid
+      id="grid"
+      [dataSource]="caData"
+      height="400"
+      gridLines="Both"
+      [allowExcelExport]="true"
+      [rowHeight]="30"
+      allowTextWrap="true"
+      [textWrapSettings]="wrapSettings"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column
+          field="client"
+          headerText="Client"
+          textAlign="Left"
+          width="160"
+          [customAttributes]="customAttributes"
+        >
+        </e-column>
+        <e-column
+          field="ca1"
+          headerText="CA1"
+          textAlign="right"
+          headerTextAlign="left"
+          width="75"
+        ></e-column>
+        <e-column
+          field="ca2"
+          headerText="CA2"
+          textAlign="right"
+          headerTextAlign="left"
+          width="75"
+        ></e-column>
+        <e-column
+          field="ca3"
+          headerText="CA3"
+          textAlign="right"
+          headerTextAlign="left"
+          width="75"
+        ></e-column>
+        <e-column
+          field="ca4"
+          headerText="CA4"
+          textAlign="right"
+          headerTextAlign="left"
+          width="75"
+        ></e-column>
+        <e-column
+          field="ca5"
+          headerText="CA5"
+          textAlign="right"
+          headerTextAlign="left"
+          width="75"
+        ></e-column>
+        <e-column
+          field="ca6"
+          headerText="CA6"
+          textAlign="right"
+          headerTextAlign="left"
+          width="75"
+        ></e-column>
+        <e-column
+          field="ca7"
+          headerText="CA7"
+          textAlign="right"
+          headerTextAlign="left"
+          width="75"
+        ></e-column>
+        <e-column
+          field="ca8"
+          headerText="CA8"
+          textAlign="right"
+          headerTextAlign="left"
+          width="75"
+        ></e-column>
+        <e-column
+          field="ca9"
+          headerText="CA9"
+          textAlign="right"
+          headerTextAlign="left"
+          width="75"
+        ></e-column>
+        <e-column
+          field="ca10"
+          headerText="CA10"
+          textAlign="right"
+          headerTextAlign="left"
+          width="75"
+        ></e-column>
+        <e-column
+          field="ca11"
+          headerText="Autre"
+          textAlign="right"
+          headerTextAlign="left"
+          width="75"
+        ></e-column>
+        <e-column
+          field="ca12"
+          headerText="Total"
+          textAlign="right"
+          headerTextAlign="left"
+          width="80"
+        ></e-column>
+        <e-column
+          field="nbrVisite"
+          headerText="Nbr Vst"
+          textAlign="right"
+          headerTextAlign="left"
+          width="70"
+        ></e-column>
+        <e-column
+          field="representant"
+          headerText="Represantant"
+          width="105"
+        ></e-column>
+      </e-columns>
+    </ejs-grid>
+    &nbsp;
+    <div class="row">
+      <div class="col-md-2">
+        <button
+          pButton
+          type="button"
+          label="Nouvelle Saisie"
+          (click)="nouvelleSaisie()"
+        ></button>
+      </div>
+      <div class="col-md-10"></div>
+    </div>
+  </div>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

@@ -1,0 +1,293 @@
+<br>
+<br>
+<div class="row">
+ 
+  <div class="col-md-5">
+    <div class="row">
+          <div class="col-md-6"> Du : 
+                  <p-calendar 
+                                [yearNavigator]="true"
+                                [monthNavigator]="true"
+                                yearRange="2020:2999"
+                                dateFormat="dd/mm/yy "    
+                                [locale]="tn"
+                                [(ngModel)]="dat1"
+                                [disabled]="readonly"
+                                  
+                                > 
+                              </p-calendar>
+          </div>
+          <div class="col-md-6"> Au : 
+            <p-calendar 
+                          [yearNavigator]="true"
+                          [monthNavigator]="true"
+                          yearRange="2020:2999"
+                          dateFormat="dd/mm/yy "    
+                          [locale]="tn"
+                          [(ngModel)]="dat2"
+                          [disabled]="readonly"
+                            
+                          > 
+                        </p-calendar>
+    </div>
+
+    </div>
+   <br>
+  <div class="row"    >
+    
+    <div class="col-md-10" >
+      <p-card   >
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-12" style="font-size: 13px;font-weight: bold;">
+                   Niveau de perte:
+           </div>
+         </div>
+                 <div class="row">
+                      <div class="col-md-12">
+                       <p-radioButton [disabled]="readonly" name="groupname" value="1.196" [(ngModel)]="Nvperte" label="PV remisé &#60; PA +20%"></p-radioButton>
+                       
+                      </div>
+                   </div>
+
+                   <div class="row">
+                     <div class="col-md-12">
+                       <p-radioButton [disabled]="readonly" name="groupname" value="1" [(ngModel)]="Nvperte" label="PV remisé &#60; PA"></p-radioButton>
+                     </div>
+                   </div>
+        </p-card>
+      </div>
+      <div class="col-md-2"></div>                   
+    </div>     
+ </div>       
+
+  <div class="col-md-7">
+              <div class="row">
+                <div class="col-md-2">Article:</div>
+                <div class="col-md-4">
+                  <ng-select
+                  ngselect
+                  [items]="listRef"
+                  bindLabel="code"
+                  (open)="ChargerArticles()"
+                  [searchFn]="onSearchItem"
+                  (keyup.enter)="onSearchArticles($event.target.value)"
+                  (change)="changearticle()"
+                  [(ngModel)]="selectedRef"
+                  placeholder="choisir un article"
+                  [disabled]="readonly"
+                  > 
+                  </ng-select>
+
+                </div>
+
+                <div class="col-md-2">Fournisseur:</div>
+                <div class="col-md-4">
+                      <ng-select
+                      ngselect
+                      (open)="ChargerFournisseurs()"
+                      (keyup.enter)="onSearchFournisseurs($event.target.value)"
+                      [items]="listfour"
+                      bindLabel="deno"
+                      [searchFn]="onSearchFournisseur"
+                      (change)="changeFournisseur()"
+                      [(ngModel)]="selectedFour"
+                      placeholder="choisir un fournisseur"
+                      [disabled]="readonly"
+                      > 
+                      </ng-select>
+                  </div>
+                
+             </div>
+            
+          <br>
+            <div class="row">
+              <div class="col-md-2">Famille:</div>
+              <div class="col-md-4">
+                <ng-select
+                ngselect
+                (open)="ChargerFamilles()"
+                [searchFn]="onSearchFamille"
+                [items]="listfamilles"
+                bindLabel="nom"
+                (change)="changeFamilles()"
+                [(ngModel)]="selectedfamille"
+                placeholder="choisir une famille"
+                [disabled]="readonly"
+                > 
+                </ng-select>
+              </div>
+
+              <div class="col-md-2">Sous famille :</div>
+              <div class="col-md-4">
+                    <ng-select
+                    ngselect
+                    (open)="ChargerSFamilles()"
+                    bindLabel="nom"
+                    [searchFn]="onSearchSFamille"
+                    [items]="listSfamilles"
+                   
+                    (change)="changeSFamilles()"
+                    [(ngModel)]="selectedSfamille"
+                    placeholder="choisir une sous famille"
+                    [disabled]="readonly"
+                    > 
+                    </ng-select>
+                </div>
+            
+                </div>
+
+              <br>
+            <div class="row">
+              <div class="col-md-2">Representant:</div>
+            <div class="col-md-4">
+              <ng-select
+              ngselect
+              (open)="ChargerRepresentant()"
+              
+              [searchFn]="onSearchRepres"
+              [items]="listReprsen"
+              
+              bindLabel="deno"
+              (change)="changeRepresen()"
+              [(ngModel)]="selectedRep"
+              placeholder="choisir un representant"
+              [disabled]="readonly"
+              > 
+              </ng-select>
+            </div>
+            <div class="col-md-2">Vendeur:</div>
+            <div class="col-md-4">
+              <ng-select
+              ngselect
+              (open)="ChargerVendeurs()"
+              [searchFn]="onSearchVendeur"
+              [items]="listVend"
+              bindLabel="deno"
+              (change)="changeVendeur()"
+              [(ngModel)]="selectedVendeur"
+              placeholder="choisir un vendeur "
+              [disabled]="readonly"
+              > 
+              </ng-select>
+            </div>
+            </div>
+
+            <br>
+            <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-2" *ngIf="btnAffich">
+              <button  pButton type="button"  label="Initialiser" id='btnin'   (click)="initialiser()"  class="ui-button-raised" class="ui-button-info"></button>
+            </div>
+            <div class="col-md-2" *ngIf="btnAffich">
+              <button  pButton type="button"  label="Afficher" id='btnaf'   (click)="afficher($event)"  class="ui-button-raised" class="ui-button-info"></button>
+            </div>
+
+            
+            </div>
+
+
+</div>
+
+</div>
+
+<br>
+<div class="row"  >
+  <div class="col-md-12" *ngIf="affichegrid">
+  <ejs-grid #grid [dataSource]="liste" gridLines='Both' 
+  [selectedRowIndex]="0"
+  allowResizing= 'true'
+   height="280" width="100%"
+   rowHeight='30'
+    >             
+                  <e-columns>
+                      <e-column field="code"    headerText="Réf" width="15%"   [customAttributes]="customAttributes"  BackgroundColor="Gray" ></e-column>
+                      <e-column field="quantite"  textAlign="Right"   headerText="Qte" width="9%"    [customAttributes]="customAttributes">
+                      </e-column>
+                      <e-column field="combine"    headerText="Pièce" width="17%"    [customAttributes]="customAttributes"></e-column>
+                      <e-column field="achat"  format="N3" textAlign="Right"  headerText="Pr Rev" width="10%"  [customAttributes]="customAttributes">
+                        
+                      </e-column>
+                      <e-column field="prix"  format="N3" textAlign="Right" headerText="Prix vnt" width="10%"  [customAttributes]="customAttributes">  
+                           
+                  </e-column>
+                      
+                      
+                      
+                      <e-column field="tRemise"  textAlign="Right"  format="N2"  headerText="Rem" width="9%"  [customAttributes]="customAttributes">
+                        
+                      </e-column>  
+                      <e-column field="pvr" textAlign="Right" format="N3"  headerText="NET" width="11%"  [customAttributes]="customAttributes">
+                       
+                      </e-column>  
+                      <e-column field="mrg" format="N2" textAlign="Right"   headerText="mrg" width="8%"  [customAttributes]="customAttributes">
+
+
+                      </e-column>  
+                      <e-column field="vendDeno"    headerText="Vendeur" width="22%"  [customAttributes]="customAttributes"></e-column>  
+                      <e-column field="representDeno"    headerText="Representant" width="15%"  [customAttributes]="customAttributes"></e-column>  
+                      <e-column field="fourDeno"    headerText="Fournisseur" width="20%"  [customAttributes]="customAttributes"></e-column>  
+
+                    
+                    
+                    
+                    
+                    
+                    </e-columns>
+    </ejs-grid>
+  </div>
+</div> 
+
+
+<br>
+<div class="row"  >
+
+      <div class="col-md-2"  *ngIf="affichegrid">
+            <button  pButton type="button"  label="Nouvelle saisie" id='btnnvls'   (click)="nouvelleSaisie()"   class="ui-button-info"></button>
+      </div>
+      <div class="col-md-2"></div>
+      <div class="col-md-2" *ngIf="affichegrid" style="font-weight: bold;">TOTAL ACHAT :</div>
+      <div class="col-md-1" *ngIf="affichegrid" style="text-align: right; font-weight: bold;">{{this.prixAchats}}</div>
+      <div class="col-md-3"></div>
+      <div class="col-md-1"  *ngIf="affichegrid" >
+        <button  pButton type="button"  label="Apperçu"   (click)="visualiser()"  class="ui-button-raised" class="ui-button-info"></button>
+      </div>
+      <div class="col-md-1"  *ngIf="affichegrid">
+        <button  pButton type="button"  label="Excel"  id='btnexl' class="pi pi-download"  (click)="genererExcel()"   class="ui-button-info"></button>
+      </div>
+      <div class="col-md-1"></div>
+</div>
+
+
+<div class="row"  >
+
+  <div class="col-md-4"></div>
+  <div class="col-md-2" *ngIf="affichegrid" style="font-weight: bold;"> TOTAL VENTE: </div> 
+  <div class="col-md-1"  *ngIf="affichegrid" style="text-align: right;font-weight: bold;">{{this.prixVentes}}</div> 
+  <div class="col-md-3"></div>
+ 
+  <div class="col-md-2"></div>
+</div>
+
+
+<div class="row"  >
+
+  <div class="col-md-4"></div>
+  <div class="col-md-2" *ngIf="affichegrid" style="font-weight: bold;" > MARGE:</div>
+  <div class="col-md-1" *ngIf="affichegrid" style="text-align: right;font-weight: bold;" > {{this.marge}}</div> 
+  <div class="col-md-5"></div>
+</div>
+
+
+
+
+<p-overlayPanel #opp 
+[dismissable]="false"
+[showCloseIcon]="true" 
+id="opp"
+appendTo="body"  
+[style]="{'text-align': 'center', 
+        'font-size':'14px' ,
+        'background-color': ' #f8b7bd'}" >
+<span> {{msgerror}} </span>
+</p-overlayPanel>

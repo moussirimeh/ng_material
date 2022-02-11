@@ -1,0 +1,66 @@
+<mat-card>
+  <div class="titreModule">
+      <p-toast [style]="{ marginTop: '10%' }" position="top-center" key="tc"></p-toast>
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <mat-card-header>
+          <h3 align="center">
+            <mat-card-title class="titre">CHANGEMENT DE REFERENCES</mat-card-title>
+          </h3>
+        </mat-card-header>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+
+  &nbsp;
+
+  <div class="principale">
+    <div class="row" id="ancReference">
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <mat-label style="padding-bottom: 100px">Selectionnez l'ancienne référence : </mat-label>
+      </div>
+      <div class="col-md-4">
+        <ng-select
+          ngselect
+          [items]="stocks"
+          bindLabel="code"
+          [(ngModel)]="SelectedAncCode"
+          (keyup)="applyFilterArtParCode($event.target.value)"
+          style="width: 80%"
+          placeholder=""
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+
+    &nbsp;
+
+    <div id="nvReference" class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <mat-label>Saisissez la nouvelle réferénce : </mat-label>
+      </div>
+      <div class="col-md-4">
+        <input type="text" matInput style="width: 80%" [(ngModel)]="SelectedNvCode" placeholder="" />
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+
+    &nbsp;
+
+    <div class="row" id="button">
+      <div class="col-md-5"></div>
+      <div class="col-md-2">
+        <button color="primary" class="mat-raised-button mat-primary" ng-reflect-color="primary" (click)="confirm()">
+          Valider
+        </button>
+        <p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
+      </div>
+      <div class="col-md-5"></div>
+    </div>
+  </div>
+</mat-card>

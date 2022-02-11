@@ -1,0 +1,134 @@
+<br />
+<!--<div class="row">
+    <mat-card style="height: 90px; width: 78%;">  
+    <mat-card-content >
+      <div class="row">
+         <div class="col-md-3"  ><label>Introduire La Reference</label></div>
+         <div class="col-md-3" style="margin-left: -6%">
+           <ng-select
+           ngselect
+           #ngselectRef
+           [items]="listeArticles"
+           bindLabel="code"
+           (keyup.enter)="rechArticle($event.target.value)"
+           (change)="changeArticle()"
+           [(ngModel)]="selected_art"
+          style="height: 30px; min-height: 30px"
+          (clear)="btnaff=false" 
+         
+           >
+          </ng-select>
+         </div>
+
+         <div class="col-md-2"*ngIf="btnaff" ><label>Libelle</label></div>
+         <div class="col-md-3" style="margin-left: -6%" *ngIf="btnaff">
+          <input type="text"
+          style=" width: 300px;"
+          [(ngModel)]="desgin_art "
+          pInputText 
+         
+          [disabled]="readonly"/>
+         
+        </div>
+        <div class="col-md-1">
+          
+        </div>
+       
+
+        </div>
+
+    </mat-card-content>
+    </mat-card>
+</div>-->
+<div [ngClass]="{ disableDiv: disableGrid }">
+  <input
+    pInputText
+    id="rechCode"
+    (keydown.enter)="rechArticle($event.target.value)"
+    [(ngModel)]="rechCode"
+    placeholder="Recherche par Référence"
+    type="search"
+    size="20"
+  />
+  <ejs-grid
+    id="ejs1"
+    #gridStock
+    gridLines="Both"
+    width="50%"
+    [dataSource]="listeReference"
+    height="200"
+    rowHeight="20"
+    (recordDoubleClick)="afficherDetails()"
+    (onmousedown)="annulerSelection()"
+    (mouseup)="annulerSelection()"
+    (mousewheel)="annulerSelection()"
+    (dataBound)="dataBound($event)"
+    gridLines="Both"
+    allowResizing="true"
+  >
+    <e-columns>
+      <e-column field="code" headerText="Référence" width="160"></e-column>
+      <e-column field="design" headerText="Désignation" width="240"> </e-column>
+      <e-column
+        field="qteEnStock"
+        headerText="Qte En Stock"
+        width="150"
+      ></e-column>
+      <e-column field="qteInvent" headerText="Qte Invent" width="150">
+      </e-column>
+    </e-columns>
+  </ejs-grid>
+</div>
+<div
+  class="row"
+  *ngIf="btnYes && btnaff"
+  style="color: rgb(38, 0, 255); font-size: 110%; font-weight: bold"
+>
+  <div class="col-md-12"><h6>Cette Reference N-est pas Inventoire</h6></div>
+</div>
+<div
+  class="row"
+  *ngIf="btnNon && btnaff"
+  style="color: rgb(38, 0, 255); font-size: 110%; font-weight: bold"
+>
+  <div class="col-md-12"><h6>Cette Reference Est Inventoire</h6></div>
+</div>
+<div
+  class="row"
+  *ngIf="btnNon && btnaff"
+  style="color: rgb(38, 0, 255); font-size: 110%; font-weight: bold"
+>
+  <div class="col-md-12"><h6>Dans Les Emplacements Suivants :</h6></div>
+</div>
+<div class="row" *ngIf="btnNon && btnaff">
+  <div class="col-md-8">
+    <ejs-grid
+      style="width: 130%"
+      #grid
+      width="99%"
+      [dataSource]="liste"
+      height="140"
+      gridLines="Both"
+      [rowHeight]="35"
+      [hidden]="btnNon == false"
+      allowResizing="true"
+    >
+      <e-columns>
+        <e-column
+          field="combine"
+          headerText="Fiche"
+          width="85"
+          textAlign="Left"
+          BackgroundColor="Gray"
+        ></e-column>
+        <e-column
+          field="quantite"
+          headerText="Quantite"
+          width="100"
+          textAlign="Left"
+          BackgroundColor="Gray"
+        ></e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+</div>

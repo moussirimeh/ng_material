@@ -1,0 +1,163 @@
+<p-card class="cardContainer">
+  <div align="center"><h2>Liste des B/L non encore facturés</h2></div>
+  &nbsp;
+  <div class="row">
+    <div class="col-md-2">
+      <div class="row">
+        <div class="col-md-2">Du</div>
+        <div class="col-md-10">
+          <p-calendar
+            [(ngModel)]="dateDebut"
+            [locale]="tn"
+            showButtonBar="true"
+            [inputStyle]="{ width: '60%' }"
+            dateFormat="dd/mm/yy"
+          ></p-calendar>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3" *ngIf="!portail" >
+      <div class="row">
+        <div class="col-md-2">VND</div>
+        <div class="col-md-10">
+          <p-dropdown
+            [options]="vendeurs"
+            optionLabel="deno"
+            [style]="{ 'min-width': '150px', 'max-width': '150px' }"
+            [(ngModel)]="selectedVendeur"
+            [disabled]="fieldDisable"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3" *ngIf="!portail">
+      <div class="row">
+        <div class="col-md-2">ZN</div>
+        <div class="col-md-10">
+          <p-dropdown
+            [options]="zones"
+            optionLabel="deno"
+            [style]="{ 'min-width': '150px', 'max-width': '150px' }"
+            [(ngModel)]="selectedZone"
+            [disabled]="fieldDisable"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4" *ngIf="!portail">
+      <div class="row">
+        <div class="col-md-2">CLT</div>
+        <div class="col-md-10">
+          <p-dropdown
+            [options]="clients"
+            optionLabel="deno"
+            [style]="{ 'min-width': '250px', 'max-width': '250px' }"
+            [(ngModel)]="selectedClient"
+            [disabled]="fieldDisable"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+  </div>
+  &nbsp;
+  <div class="row">
+    <div class="col-md-2">
+      <div class="row">
+        <div class="col-md-2">Au</div>
+        <div class="col-md-10">
+          <p-calendar
+            [(ngModel)]="dateFin"
+            [locale]="tn"
+            showButtonBar="true"
+            [inputStyle]="{ width: '60%' }"
+            dateFormat="dd/mm/yy"
+          ></p-calendar>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <input type="text" size="3" *ngIf="!portail" [(ngModel)]="selectedVendeur.code" [disabled]="true" pInputText />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <input type="text" size="3" *ngIf="!portail" [(ngModel)]="selectedZone.code" [disabled]="true" pInputText />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-5">
+          <input type="text" size="8" *ngIf="!portail" [(ngModel)]="selectedClient.code" [disabled]="true" pInputText />
+        </div>
+        <div class="col-md-5">
+          <button pButton type="button" label="Afficher" (click)="afficher()" class="ui-button-raised"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  &nbsp;
+  <div class="row" *ngIf="!portail">
+    <div class="col-md-2"></div>
+    <div class="col-md-3">
+      <div class="row">
+        <div class="col-md-2">R/C</div>
+        <div class="col-md-10">
+          <p-dropdown
+            [options]="revCons"
+            [style]="{ 'min-width': '50px' }"
+            [(ngModel)]="selectedRevCons"
+            [disabled]="fieldDisable"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7"></div>
+  </div>
+  &nbsp;
+  <div>
+    <ejs-grid
+      #grid
+      id="grid"
+      [dataSource]="bls"
+      (mouseup)="annulerSelection()"
+      (mousewheel)="annulerSelection()"
+      (recordDoubleClick)="details()"
+      height="200"
+      gridLines="Both"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column field="operateur" *ngIf="!portail" headerText="Code" textAlign="Left" width="80"></e-column>
+        <e-column field="deno" *ngIf="!portail" headerText="Nom Client" textAlign="Left" width="200"> </e-column>
+        <e-column field="combine" headerText="N°B/L" textAlign="Left" width="80"></e-column>
+        <e-column field="date" headerText="Date" textAlign="Left" width="80"></e-column>
+        <e-column field="ref" headerText="Bon Commande" textAlign="Left" width="80"></e-column>
+        <e-column field="net" headerText="Montant" textAlign="Right" width="80"></e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+  &nbsp;
+  <div class="row">
+    <div class="col-md-6" align="center">
+      Double Click Pour Voir Le B/L En Détail
+    </div>
+    <div class="col-md-3">
+      <button pButton type="button" label="Imprimer" (click)="imprimer(1)" class="ui-button-raised"></button>
+    </div>
+    <div class="col-md-3">
+      <button pButton type="button" label="Aperçu" (click)="imprimer(0)" class="ui-button-raised"></button>
+    </div>
+  </div>
+  <p-toast [style]="{ marginTop: '10%' }" position="top-center" key="tc"></p-toast>
+  <p-dialog header="Duplicata B/L" [(visible)]="displayDupicata" [style]="{ width: '90%', height: '70%' }" [contentStyle]="{'max-height':'80vh'}">
+      <app-duplicata></app-duplicata>
+    </p-dialog>
+</p-card>

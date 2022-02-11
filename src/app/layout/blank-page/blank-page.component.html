@@ -1,0 +1,14 @@
+<h2>PrimeNG Issue Template</h2>
+<div #actualTarget></div>
+<p>Calling toggle will show the panel:</p>
+<button pButton label="Toggle Overlay" (click)="op.toggle($event, actualTarget)"></button>
+
+<p>Calling show will NOT show the panel:</p>
+
+<button type="text" pButton label="Show Overlay" (click)="op.toggle($event)"></button>
+
+<p>Even if you use an actualTarget:</p>
+<button type="text" pButton label="Custom Target" (click)="op.toggle($event, actualTarget)"></button>
+
+
+<p-overlayPanel #op  [dismissable]="true" [showCloseIcon]="true" >hi there.</p-overlayPanel>

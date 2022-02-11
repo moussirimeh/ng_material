@@ -1,0 +1,36 @@
+button {
+    width: 117%;
+}
+.e-headertext {
+    font-size: 17px;
+}
+.e-grid .e-rowcell.customcss{
+    font-size: 14px;
+}
+p-tabView {
+    width: 100%;
+    height: 100%;
+    border: transparent;
+    
+}
+ 
+ui-tabview-panels{
+    border: 0px;  
+    border: transparent;
+}
+
+
+
+:host ::ng-deep .ui-widget-content{
+    border: 0px;
+}
+
+body .ui-tabview .ui-tabview-panels {
+    background-color: #ffffff;
+    padding: 0.571em 1em;
+    border:none;
+    
+  }
+  .ng-select.custom .ng-clear-zone .ng-clear  {
+    display:none;
+}

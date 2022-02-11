@@ -1,0 +1,266 @@
+<div class="row">
+  <div class="col-md-1">
+    <p-calendar
+      [(ngModel)]="datedebut"
+      [locale]="tn"
+      [yearNavigator]="true"
+      yearRange="1973:2999"
+      [monthNavigator]="true"
+      [inputStyle]="{ width: '100%' }"
+      dateFormat="dd/mm/yy"
+      [disabled]="ngselectDisabled"
+    ></p-calendar>
+  </div>
+
+  <div class="col-md-1">
+    <p-calendar
+      [(ngModel)]="datefin"
+      [locale]="tn"
+      [yearNavigator]="true"
+      yearRange="1973:2999"
+      [monthNavigator]="true"
+      [inputStyle]="{ width: '100%' }"
+      dateFormat="dd/mm/yy"
+      [disabled]="ngselectDisabled"
+    ></p-calendar>
+  </div>
+    <div class="col-md-1">Client :</div>
+    
+    <div class="col-md-3">
+      <div class="row">
+        <div class="col-md-12">
+        <ng-select
+        ngselect
+        [items]="clients"
+        bindLabel="deno"
+        (change)="changeClients()"
+        [(ngModel)]="selectedClient"
+        [searchFn]="onSearchClient"
+        placeholder="Désignation client"
+        [disabled]="ngselectDisabled"
+        style="width: 100%;"
+      >
+      </ng-select>
+      </div>
+    </div>
+      
+      <div class="row">
+        <div class="col-md-12">
+        <ng-select
+        ngselect
+        [items]="clients"
+        bindLabel="code"
+        (change)="changeClients()"
+        [(ngModel)]="selectedClient"
+        [searchFn]="onSearchClientCode"
+        placeholder="Code client"
+        [disabled]="ngselectDisabled"
+        style="width: 100%;"
+      >
+      </ng-select>
+      </div>
+    </div>
+      </div>
+     
+
+
+    <!--    --> 
+ 
+    <div class="col-md-2">
+   
+      <div class="row" style="font-weight: bold;"><div class="col-md-12"></div> </div>
+      <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-10"  style="font-size: 13px;font-weight: bold;"><p-radioButton
+            [disabled]="ngselectDisabled"
+            name="group1"
+            value="debit"
+            label="Les Mvts de Débit"
+            [(ngModel)]="mvt"
+            inputId="opt1"
+          ></p-radioButton></div>
+        </div>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-10" style="font-size: 13px;font-weight: bold;"><p-radioButton
+            name="group1"
+            value="credit"
+            label="Les Mvts de Crédit"
+            [(ngModel)]="mvt"
+            inputId="opt2"
+            [disabled]="ngselectDisabled"
+          ></p-radioButton></div>
+        </div>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-10" style="font-size: 13px;font-weight: bold;"><p-radioButton
+            name="group1"
+            value="tout"
+            label="Tout"
+            [(ngModel)]="mvt"
+            [disabled]="ngselectDisabled"
+            inputId="opt3"
+          ></p-radioButton></div>
+        </div>
+  
+   </div>
+<div class="col-md-1">
+  <button
+  *ngIf="afficherShow"
+    pButton
+    type="button"
+    label="Afficher"
+    (click)="afficher($event)"
+    class="ui-button-raised"
+  ></button>
+</div>
+<div class="col-md-1">
+<button
+pButton
+type="button"
+label="Aperçu"
+(click)="apercu($event)"
+></button>
+</div>
+
+
+<div class="col-md-1">
+  <!--
+    *ngIf="afficherShow"
+  -->
+  <button
+  id="idexcel"
+    pButton
+    type="button"
+    label="Excel"
+    (click)="genererExcel($event)"
+    class="ui-button-raised"
+  ></button>
+</div>
+  </div>
+<br>
+
+
+
+<div class="row"  [hidden]="!showCard1">
+<div class="col-md-12">
+  <mat-card>
+    <mat-card-content>
+      <ejs-grid
+        #grid
+        [dataSource]="listeBrous"
+        gridLines="Both"
+        height="182px"
+        [rowHeight]="26"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          
+          <e-column field="apurement" headerText="Apurement" width="60"></e-column>
+          <e-column field="dateApur" headerText="Date Apur" width="60"></e-column>
+          <e-column field="compte" headerText="Code" width="55"></e-column>
+          <e-column field="cle" headerText="Deno" width="150"></e-column>
+          <e-column field="piece" headerText="Piece" width="60"></e-column>
+          <e-column field="numero" headerText="Numero" width="60"></e-column>
+          <e-column field="banque" headerText="Banque" width="50"></e-column>
+          <e-column field="date" headerText="Date" width="60"></e-column>
+          
+          <e-column
+            field="echeance"
+            headerText="Echeance"
+            width="60"
+          ></e-column>
+          <e-column
+          field="montant"
+          headerText="Debit"
+          textAlign="Right"
+          format="N3"
+          width="70"
+        ></e-column>
+          <e-column
+            field="code"
+            headerText="Credit"
+            textAlign="Right"
+            format="N3"
+            width="70"
+          ></e-column>
+       
+        
+        </e-columns>
+
+      </ejs-grid>
+<br>
+<div class="row"  >
+  <div class="col-md-5">
+      <ejs-grid
+        #grid1
+        [dataSource]="ListTotPiece"
+        gridLines="Both"
+        height="130px"
+        [rowHeight]="26"
+        width="100%"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          
+          <e-column field="piece" headerText="Pièce" width="60"></e-column>
+          <e-column field="debit"  textAlign="Right"  headerText="Débit" width="60"></e-column>
+          <e-column field="credit" textAlign="Right" headerText="Crédit" width="60"></e-column>
+        </e-columns>
+
+      </ejs-grid>
+      </div>
+      <div class="col-md-2"></div>
+      <div class="col-md-5">
+        <div class="row">
+      <div class="col-md-6" style="font-size: 16px;font-weight: bold;font-family:Arial, Helvetica, sans-serif">Total Espèce Caisse :</div>
+      <div class="col-md-3" style="font-size: 14px;font-weight: bold;font-family:Arial, Helvetica, sans-serif">{{totEspeceCaisse}}</div>
+      <div class="col-md-3"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6" style="font-size: 16px;font-weight: bold;font-family:Arial, Helvetica, sans-serif">Total Chèque Caisse :</div>
+      <div class="col-md-3" style="font-size: 14px;font-weight: bold;font-family:Arial, Helvetica, sans-serif">{{totChequeCaisse}}</div>
+      <div class="col-md-3"></div>
+    </div>
+
+    </div>
+   
+    </div>
+<br>
+    
+      <div class="row">
+        <div class="col-md-2">
+          <button
+          (click)="NouvelleSaisie()"
+          *ngIf="showNvSaisie"
+            pButton
+            type="button"
+            label="Nouvelle saisie"
+          ></button>
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-2">
+       
+        </div>
+        <div class="col-md-2">
+         
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+</div>
+
+
+
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"S
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+

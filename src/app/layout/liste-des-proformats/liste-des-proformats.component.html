@@ -1,0 +1,240 @@
+<div class="row">
+  <div class="col-md-1">
+    N° Proformat:
+  </div>
+  <div class="col-md-3">
+    <input
+      pKeyFilter="pint"
+      id="proformat"
+      style="width: 100%;"
+      (change)="verifierCombine()"
+      [disabled]="inputDisabled == true"
+      maxlength="5"
+      [(ngModel)]="combine"
+      class="form-control"
+      type="search"
+      placeholder="Saisir N° Proformat"
+      pInputText
+    />
+  </div>
+
+  <div class="col-md-2">
+    <p>Date de début :</p>
+  </div>
+  <div class="col-md-2">
+    <p-calendar
+      [locale]="tn"
+      [disabled]="dateDisabled == true"
+      [(ngModel)]="from"
+      [maxDate]="maxDate"
+      [yearNavigator]="true"
+      [monthNavigator]="true"
+      yearRange="2000:2999"
+      dateFormat="dd/mm/yy"
+      [inputStyle]="{ width: '100px' }"
+    >
+    </p-calendar>
+  </div>
+
+  <div class="col-md-1">
+    <p>Date de fin :</p>
+  </div>
+  <div class="col-md-2">
+    <p-calendar
+      [locale]="tn"
+      [disabled]="dateDisabled == true"
+      [(ngModel)]="to"
+      [maxDate]="maxDate"
+      [yearNavigator]="true"
+      [monthNavigator]="true"
+      yearRange="2000:2999"
+      dateFormat="dd/mm/yy"
+      [inputStyle]="{ width: '100px' }"
+    >
+    </p-calendar>
+  </div>
+</div>
+
+<br />
+
+<div class="row">
+  <div class="col-md-1">
+    Fournisseur:
+  </div>
+  <div class="col-md-3">
+    <ng-select
+      class="form-control"
+      ngselect
+      [disabled]="ngselectDisabled"
+      [items]="fournisseurs"
+      bindLabel="deno"
+      [(ngModel)]="SelectedFournisseur"
+      (change)="RechercherFournisseurByDeno()"
+      [searchFn]="onSearchFournisseur"
+      placeholder="Veuiller choisir un Fournisseur"
+    >
+    </ng-select>
+  </div>
+
+  <div class="col-md-2">
+    {{ codeFour }}
+  </div>
+
+  <div class="col-md-2" >
+    <button
+      id="afficher"
+      *ngIf="clickbtnaffich"
+      style="font-size: 14px;"
+      pButton
+      type="button"
+      label="Afficher"
+      (click)="Afficher($event)"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+
+<br />
+
+<div *ngIf="valide === true">
+  <div class="row" style="margin-top: 0.2%;">
+    <div class="col-md-12">
+      <ejs-grid
+        #grid
+        (mouseup)="annulerSelection()"
+        (mousewheel)="annulerSelection()"
+        (recordDoubleClick)="Doubleclick($event)"
+        [searchSettings]="searchOptions"
+        [selectedRowIndex]="0"
+        gridLines="Both"
+        (rowSelected)="rowSelected($event)"
+        width="100%"
+        [dataSource]="proformats"
+        [selectedRowIndex]="0"
+        height="200"
+        rowHeight="40"
+        [allowExcelExport]="true"
+        gridLines="Both"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          <e-column
+            field="combineProfo"
+            headerText="N PROFORMA"
+            width="190"
+            [customAttributes]="customAttributes"
+          >
+          </e-column>
+          <e-column
+            field="date"
+            headerText="DATE"
+            width="120"
+            [customAttributes]="customAttributes"
+          ></e-column>
+          <e-column
+            field="codeFrs"
+            headerText="CODE FRS"
+            width="120"
+            [customAttributes]="customAttributes"
+          ></e-column>
+          <e-column
+            field="denoFrs"
+            headerText="DENOMINATION FOURNISSEUR"
+            width="200"
+            [customAttributes]="customAttributes"
+          ></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+<br>
+  <div class="row" *ngIf="afficheClicked === true && nvlListeClicked === true">
+    <div class="col-md-5">
+      <p>
+        Selectionner une ligne puis double Click pour afficher le détail d'un
+        Proformat
+      </p>
+      
+  <div class="row">
+    <div class="col-md-3">
+      <button
+        color="primary"
+        clikcked="true"
+        style="font-size: 14px; margin-top: 1%;"
+        pButton
+        type="button"
+        label="Nouvelle Liste"
+        (click)="NvlListe()"
+        class="ui-button-raised"
+      ></button>
+    </div>
+    <div class="col-md-9"></div>
+
+
+  </div>
+    </div>
+    <div
+    class="col-md-7"
+    *ngIf="
+      afficheClicked === true &&
+      nvlListeClicked === true &&
+      this.doubleClikced === true
+    "
+  >
+    <ejs-grid
+      #grid2
+      [searchSettings]="searchOptions"
+      [selectedRowIndex]="0"
+      gridLines="Both"
+      (rowSelected)="rowSelected($event)"
+      width="700"
+      [dataSource]="DetailProformats"
+      [selectedRowIndex]="0"
+      height="160"
+      rowHeight="40"
+      [allowExcelExport]="true"
+      gridLines="Both"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column
+          field="code"
+          headerText="CODE"
+          width="220"
+          [customAttributes]="customAttributes"
+        ></e-column>
+        <e-column
+          field="design"
+          headerText="DESIGNATION"
+          width="220"
+          [customAttributes]="customAttributes"
+        >
+        </e-column>
+        <e-column
+          field="quantite"
+          headerText="QUANTITE"
+          width="120"
+          [customAttributes]="customAttributes"
+        ></e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+  </div>
+  <br />
+
+</div>
+
+<p-overlayPanel
+  #ovo
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{ ms }} </span>
+</p-overlayPanel>

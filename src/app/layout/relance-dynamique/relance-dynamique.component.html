@@ -1,0 +1,226 @@
+<br>
+<div class="row">
+    <div class="col-md-1">
+      <p>Fournisseurs:</p>
+    </div>
+    <div class="col-md-3">
+      <ng-select
+      id='four'
+      ngselect
+      [items]="fournisseurs"
+      bindLabel="deno"
+      (open)="chargerFournisseur()"
+      [(ngModel)]="SelectedFournisseur"
+      (change)="changeFournisseur($event)"
+      [searchFn]="onSearchfournisseur"
+      [disabled]="readonly"
+      >
+      </ng-select>
+    </div>
+    <div  class="col-md-2"  >
+      <label [hidden]='labeldelai == false'>Délai de livraison {{delai}}</label>
+    </div>
+    <div class="col-md-1">
+      <button id="btnaff" clikcked="true" style="width: 100%;" (click)="test($event)" pButton type="button"
+      [hidden]='readonly' label="Afficher"
+      class="ui-button-raised"></button>
+    </div>
+    <div class="col-md-5"></div>
+  </div><br>
+  <div class="row">
+    <br />
+    <ejs-grid
+      #grid
+      [dataSource]="liste"
+      [allowExcelExport]="true"
+      allowResizing="true"
+      height="390"
+      gridLines="Both"
+      allowTextWrap="true"
+      [rowHeight]="26"
+    >
+      <e-columns>
+        <e-column field="artCmd" headerText="ARTICLE" textAlign="Left" width="15">
+        </e-column>
+        <e-column
+          field="qtStk"
+          headerText="STK"
+          textAlign="center"
+          width="7"
+        ></e-column>
+        <e-column
+          field="qteReserv"
+          headerText="RES"
+          textAlign="center"
+          width="7"
+        ></e-column>
+        <e-column
+          field="qteComCl"
+          headerText="CM_CL"
+          textAlign="center"
+          width="8"
+        ></e-column>
+        <e-column
+          field="qtCom"
+          headerText="CM_FR"
+          textAlign="center"
+          width="8"
+        ></e-column>
+        <e-column
+          field="qtEquiv"
+          headerText="STK_EQ"
+          textAlign="center"
+          width="8"
+        ></e-column>
+        <e-column
+          field="qtEquivCom"
+          headerText="CM_F_EQ"
+          textAlign="center"
+          width="9"
+        ></e-column>
+        <e-column
+          field="profilStk"
+          headerText="PR_STK"
+          textAlign="center"
+          width="8"
+        ></e-column>
+        <e-column
+          field="nbrCl"
+          headerText="NB_CL"
+          textAlign="center"
+          width="7"
+        ></e-column>
+        <e-column
+          field="nbrBl"
+          headerText="NB_BL"
+          textAlign="center"
+          width="7"
+        ></e-column>
+        <e-column
+          field="qteTotal"
+          headerText="NB_PC"
+          textAlign="center"
+          width="7"
+        ></e-column>
+        <e-column
+          field="qteTotal1"
+          headerText="NB_P1"
+          textAlign="center"
+          width="7"
+        ></e-column>
+        <e-column
+          field="numDernAch"
+          headerText="NUM_AC"
+          textAlign="center"
+          width="9"
+        ></e-column>
+        <e-column
+          field="dateDernAch"
+          headerText="DAT_ACH"
+          textAlign="center"
+          width="12"
+        ></e-column>
+        <e-column
+          field="qteAchetee"
+          headerText="QT_ACH"
+          textAlign="center"
+          width="8"
+        ></e-column>
+        <e-column
+          field="qteVendue"
+          headerText="QT_VND"
+          textAlign="center"
+          width="8"
+        ></e-column>
+        <e-column
+          field="qteMin"
+          headerText="MIN"
+          textAlign="center"
+          width="7"
+        ></e-column>
+        <e-column
+          field="qteMax"
+          headerText="MAX"
+          textAlign="center"
+          width="7"
+        ></e-column>
+        <e-column
+          field="qteCmd"
+          headerText="QT_CMD"
+          textAlign="center"
+          width="8"
+        ></e-column>
+        <e-column
+          field="qteConseillee"
+          headerText="QT_CNS"
+          textAlign="center"
+          width="8"
+        ></e-column>
+        <e-column
+          field="observations"
+          headerText="OBSERVATIONS"
+          textAlign="center"
+          width="30"
+        ><ng-template #template let-liste>
+          <p style="color: red; ">
+            {{ liste.observations }}
+          </p>
+        </ng-template>
+      </e-column>
+      </e-columns>
+    </ejs-grid>
+    <br />
+  </div>
+    <div class="row">
+      <div class="col-md-2" style="max-width: 12%;">
+        <button
+         pButton
+         id="btnAjouter"
+         type="button"
+         (click)="nouvelleSaisie()"
+         label="Nouvelle Saisie"
+         class="ui-button-raised"
+         [hidden]='readonly==false'
+        ></button>
+      </div>
+      <div class="col-md-1">
+        <button
+         pButton
+         id="btnAjouter"
+         type="button"
+         label="Aperçu"
+         class="ui-button-raised"
+         (click)="Apercu()"
+         [hidden]='readonly==false'
+        ></button>
+      </div>
+      <div class="col-md-1">
+        <button
+         pButton
+         id="btnExcl"
+         (click)="Excel()"
+         type="button"
+         label="-->Excel"
+         class="ui-button-raised"
+         [hidden]='readonly==false'
+        ></button>
+      </div>
+      <div class="col-md-8"></div>
+    </div>
+
+  <p-overlayPanel
+#op
+[dismissable]="false"
+[showCloseIcon]="true"
+appendTo="body"
+[style]="{
+  'text-align': 'center',
+  'font-size': '14px',
+  'background-color': ' #f8b7bd'
+}"
+>
+<span> {{ msg }} </span>
+</p-overlayPanel>
+
+
+

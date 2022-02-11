@@ -1,0 +1,144 @@
+<div class="validation_des_visites">
+ 
+  <div class="row" style="margin-top: 1%;">
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-6">
+            <p style="margin-left: 7%;" >DATE PREVUE ENTRE LE</p>
+         </div>
+      <div class="col-md-3">
+        <p-calendar [locale]="tn" [disabled]="dateDisabled == true" [(ngModel)]="from" [maxDate]="maxDate" [yearNavigator]="true" [monthNavigator]="true"
+        yearRange="2000:2030" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px'}">
+      </p-calendar>
+      </div>
+      <div class="col-md-3"></div>
+    </div> 
+  </div>
+    <div class="col-md-8"></div>
+  </div> 
+  <div class="row">
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-2">
+            <p id="date" style="margin-left: 24%;" >ET</p>
+         </div>
+      <div class="col-md-3">
+        <p-calendar  id="date" [disabled]="dateDisabled == true" [locale]="tn" [(ngModel)]="to" [maxDate]="maxDate" [yearNavigator]="true" [monthNavigator]="true"
+        yearRange="2000:2030" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px'}">
+      </p-calendar>
+      </div>
+      <div class="col-md-3" style="margin-top: -3%;">       
+      </div>
+    </div> 
+  </div>
+    <div class="col-md-8" style="margin-top: -0.8%;margin-left: -8%;">
+     
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row">       
+        <div class="col-md-4">
+            <p  style="margin-left: 24%;" >PROGRAMME PAR</p>
+         </div>
+         
+      <div class="col-md-5">
+        <ng-select
+        ngselect
+        [items]="personnes"
+        [disabled]="ngselectDisabled"
+        bindLabel="nPUtil"
+        [(ngModel)]="SelectedPersonne"
+        [searchFn]="onSearchPersonnes"
+        placeholder="Veuiller Saisir la Personne"
+      >
+      </ng-select> 
+      </div>
+      <div class="col-md-3"></div>
+    </div> 
+  </div>
+    <div class="col-md-6"></div>
+  </div>
+  <div class="row">
+    <div class="col-md-1" *ngIf="btnAfficher">
+      <button id="afficher" clikcked="true" style="font-size: 14px;"
+          pButton type="button" label="AFFICHER" (click)="AfficherVisites($event)" class="ui-button-raised ">        
+          </button>
+    </div>
+    <div class="col-md-4" >
+    </div>
+    <div class="col-md-6" ></div>
+  </div>
+  <div *ngIf="valide === true">
+  <div class="row" style="margin-top: 1.5%;">
+    <div class="col-md-12">
+      <ejs-grid 
+      #grid
+      [searchSettings]="searchOptions" [selectedRowIndex]="0"  gridLines='Both'
+              (rowSelected)="rowSelected()"  width="100%" 
+              [dataSource]="visites"
+              [selectedRowIndex]="0"
+              height="240"
+              rowHeight='40'
+              [allowExcelExport]='true'
+              gridLines='Both'   
+              (onmousedown)="annulerSelection()"
+              (mouseup)="annulerSelection()"
+               (mousewheel)="annulerSelection()"
+               allowResizing= 'true'
+      >
+     
+      <e-columns>
+          <e-column field="numVisite" headerText="num_visite" width="110" [customAttributes]="customAttributes"  ></e-column>
+          <e-column field="codeClt" headerText="Code clt " width="100" [customAttributes]="customAttributes" ></e-column>
+          <e-column field="denoClt" headerText="Libelle Client" width="200" [customAttributes]="customAttributes" ></e-column>
+          <e-column field="date" headerText="Dt/Hr Prévue" width="160" [customAttributes]="customAttributes"></e-column>
+          <e-column field="heureFinPrevue" headerText="Hr fin prevue" width="120"[customAttributes]="customAttributes"></e-column>
+          <e-column field="codeProgrammeePar"  headerText="Progrm par" width="120"[customAttributes]="customAttributes" ></e-column>
+          <e-column field="codePart1"  headerText="Partcp 1" width="100" [customAttributes]="customAttributes"></e-column>
+          <e-column field="codePart2"  headerText="Partcp 2" width="100" [customAttributes]="customAttributes"></e-column>
+          <e-column field="codePart3"  headerText="Partcp 3" width="100"[customAttributes]="customAttributes" ></e-column>
+
+        </e-columns>
+    </ejs-grid>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 0.5%;">
+    <div class="col-md-2" >
+      <button  clikcked="true" style="font-size: 14px;width: 76%;"
+      pButton type="button" (click)="introdure()" label="NOUVELLE SAISIE"  class="ui-button-raised ">        
+      </button>
+    </div> 
+    <div class="col-md-1"></div>
+    <div class="col-md-3"   *ngIf="validerShow">
+      <button  clikcked="true" style="font-size: 14px;width: 85%;" id="valide"
+          pButton type="button" label="VALIDER LA VISITE SELECTIONNEE" (click)="Valider($event)" class="ui-button-raised ">        
+          </button>
+    </div>
+    <div class="col-md-2" >
+    </div>
+    <div class="col-md-3" *ngIf="supprimerShow">
+      <button  clikcked="true" style="font-size: 14px;width: 90%;" id="suprimer"
+          pButton type="button" label="SUPPRIMER LA VISITE SELECTIONNEE" (click)="supprimer($event)" class="ui-button-raised ">        
+          </button>
+    </div>
+    <div class="col-md-1">
+    </div>
+  </div>
+</div>
+  <p-overlayPanel
+  #ovo
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{ms}} </span>
+</p-overlayPanel>
+</div>

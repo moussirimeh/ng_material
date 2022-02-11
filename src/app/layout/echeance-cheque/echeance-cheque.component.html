@@ -1,0 +1,80 @@
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-2">Date début</div>
+  <div class="col-md-2">Date fin</div>
+  <div class="col-md-5"></div>
+</div>
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-2">
+    <p-calendar [locale]="tn" [disabled]="dateDisabled == true" [(ngModel)]="from" [yearNavigator]="true" [monthNavigator]="true"
+        yearRange="2000:2030" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px'}">
+      </p-calendar>
+  </div>
+  <div class="col-md-2">
+    <p-calendar  id="date" [disabled]="dateDisabled == true" [locale]="tn" [(ngModel)]="to" [yearNavigator]="true" [monthNavigator]="true"
+        yearRange="2000:2030" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px'}">
+      </p-calendar>
+  </div>
+
+  <div class="col-md-1">
+    <button id="afficher" clikcked="true" style="font-size: 14px;" *ngIf="dateDisabled == false"
+          pButton type="button" label="AFFICHER" (click)="AfficherCheques($event)" class="ui-button-raised ">        
+          </button>
+  </div>
+</div>
+&nbsp;
+  <div *ngIf="valide === true">
+  <div class="row" style="margin-top: 1.5%;">
+    <div class="col-md-12">
+      <ejs-grid 
+      #grid
+              width="100%" 
+              [dataSource]="cheques"
+              height="400"
+              rowHeight='40'
+              gridLines='Both' 
+              allowResizing= 'true'  
+      >
+     
+      <e-columns>
+          <e-column field="cheque" headerText="N° Chèque" width="150"></e-column>
+          <e-column field="banque" headerText="Banque" width="150"></e-column>
+          <e-column field="date" headerText="Date" textAlign="center" width="150"></e-column>
+          <e-column field="montant" headerText="Montant" textAlign="Right" width="150"></e-column>
+          <e-column field="ech" headerText="Échéance" textAlign="center" width="150"></e-column>
+          <e-column field="observat" headerText="Observation"></e-column>
+
+        </e-columns>
+    </ejs-grid>
+    </div>
+  </div>
+  <br/>
+      <div class="row">
+        <div class="col-md-2">
+        <button clikcked="true" style="font-size: 14px;width: 76%;" pButton type="button" (click)="introdure()"
+          label="Nouvelle Saisie" class="ui-button-raised center">
+        </button>
+        </div>
+        <div class="col-md-4" >  </div>
+        <div class="col-md-2">
+          <button  color="primary"  clikcked="true" style="font-size: 14px;width: 100%;"
+          pButton type="button" label="Apercu" (click)="imprimer($event)"class="ui-button-raised center">        
+          </button>
+        </div>
+      </div>
+
+</div>
+  <p-overlayPanel
+  #ovo
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{ms}} </span>
+</p-overlayPanel>

@@ -1,0 +1,91 @@
+
+   <br>
+   <br>
+
+<div class="row">
+                          
+                      <div class="col-md-2" style="font-weight: bold; font-size: 18px;">  Le numero:  </div>
+                      <div class="col-md-3">   <input type="search" id="num" pKeyFilter="pint"  pInputText (change)="verifierNumero()"  (keyup.enter)="getByNumero($event)"   [(ngModel)]="numero" [readonly]="readonly" placeholder="saisir un numéro" />
+                        </div>
+                        
+                        <div *ngIf="afficherClicked" class="col-md-7" >
+                          <div class="row" [class.disabled-content]="!editEnable">
+                              <div class="col-md-1"   style="font-weight: bold; font-size: 18px; ">  Etat:  </div>
+                              <div class="col-md-4"   style="font-weight: bold; font-size: 18px; color: red;">   {{this.etat}} </div>
+                              <div class="col-md-7"></div>
+                            </div> 
+                        </div>
+ 
+  <div *ngIf="afficherClicked">
+   <div [class.disabled-content]="!editEnable">
+    <br>
+        <div class="row">
+                  <p-panel   header="En-tete B/S "  >
+                    <div class="row">
+                                <div class="col-md-1">Date:</div>
+                                <div class="col-md-2"> 
+                                  
+                                  <input type="search"  pInputText   [(ngModel)]="this.elivraison.dated" [readonly]="readonly" />
+                                
+                                  </div>
+                                  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                                  <div class="col-md-1">Livreur: </div>
+                                  <div class="col-md-2"> 
+                                    <input type="search"  pInputText  [(ngModel)]="this.SelectedLivreur.nom" [readonly]="readonly" />
+                                    </div>
+                                    &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                                  <div class="col-md-2">Numero du camion:</div>
+                                  <div class="col-md-2">
+                                          <input type="search"  pInputText  [(ngModel)]="this.elivraison.camuion" [readonly]="readonly"/>
+                                  </div>
+                                      
+                                                      
+                     </div>
+                  </p-panel>
+         </div>
+  
+                <br>
+                <p-panel  header=" Details B/S ">
+                    <ejs-grid #grid [dataSource]="RecBonSorties" gridLines='Both'
+                     height="280" width="100%"
+                     allowResizing= 'true'
+                      >               
+                                    <e-columns>
+                                        <e-column field="piece"      headerText="Pièce" width="10%" [customAttributes]="customAttributes"  BackgroundColor="Gray" ></e-column>
+                                        <e-column field="date"       headerText="Date " width="12%" [customAttributes]="customAttributes"></e-column>
+                                        <e-column field="codeclt"    headerText="Code client " width="12%" [customAttributes]="customAttributes"></e-column>
+                                        <e-column field="nomclt"     headerText="Nom client" width="22%" [customAttributes]="customAttributes"></e-column>
+                                       
+                                        <e-column field="net"        headerText="Net" width="10%"  [customAttributes]="customAttributes">
+                                        <ng-template #template let-RecBonSorties>
+                                          <p style="text-align: right; ">{{RecBonSorties.net}}</p>
+                                      </ng-template></e-column>
+                                        <e-column field="vendeur"    headerText="Vendeur" width="19%" [customAttributes]="customAttributes"></e-column>
+                                        <e-column field="observlivr" headerText="Observation de livreur" width="18%"  [customAttributes]="customAttributes"></e-column>   
+                                    </e-columns>
+                      </ejs-grid>
+                    </p-panel>
+                    <br>
+
+
+       </div>
+ </div>
+
+          <p-toast key='ds' [style]="{ marginTop: '280px', width:'80%' }" position="top-center">  
+          </p-toast>
+
+          <p-overlayPanel #op appendTo="body" [dismissable]='false'  [showCloseIcon]="true"  [style]="{'text-align': 'center', 'font-size':'14px' ,'background-color': ' #f8b7bd'}" >
+            <span style="width: 138%;"> {{msgerror}} </span>
+        </p-overlayPanel> 
+
+        
+          
+        <div class="row" *ngIf="afficherCl">   
+                
+              <div class="col-md-" >
+                        <button pButton type="button" class="ui-button-raised" (click)="nouvelleSaisie()" label="Nouvelle saisie"></button>
+              </div>
+              <div class="col-md-9"></div>
+          
+          
+        </div>

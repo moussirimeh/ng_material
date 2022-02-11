@@ -1,0 +1,35 @@
+<div style="margin-top: 2%;">
+   <div class="row">
+     <div class="col-md-4"></div>
+     <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-3">
+          <p>N° ACHAT</p>
+        </div>
+        <div class="col-md-5">
+          <input type="search" id="numero" (change)="verifierNumero()" (keyup.enter)="Imprimer($event)" pKeyFilter="num" maxlength="5" style="width: 100%;" placeholder="Saisir num d'achat" [(ngModel)]="nmAchat" pInputText />
+        </div>
+        <div class="col-md-4">
+          <button  id="visualiser" clikcked="true" style="font-size: 14px;" pButton type="button" label="Visualiser"
+                    (click)="Imprimer($event)" class="ui-button-raised ">
+          </button>
+        </div>
+        
+      </div>
+     </div>
+     <div class="col-md-4"></div>
+   </div>
+   <p-overlayPanel
+   #ovo
+   [dismissable]="false"
+   [showCloseIcon]="true"
+   appendTo="body"
+   [style]="{
+     'text-align': 'center',
+     'font-size': '14px',
+     'background-color': ' #f8b7bd'
+   }"
+ >
+   <span> {{ms}} </span>
+ </p-overlayPanel>
+</div>

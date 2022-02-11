@@ -1,0 +1,10 @@
+
+  .ui-inputtext {
+    height: 80%;
+  }
+  .ng-select.ng-select-single ::ng-deep .ng-select-container {
+    height: 27px;
+  }
+  .ng-select ::ng-deep .ng-select-container {
+    min-height: 0px;
+  }

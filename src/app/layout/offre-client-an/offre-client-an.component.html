@@ -1,0 +1,102 @@
+<div><br>
+<ejs-grid
+      #grid
+      [dataSource]="clients"
+      [allowExcelExport]="true"
+      allowResizing= 'true'
+      height="390"
+      gridLines="Both"
+      allowTextWrap="true"
+      [rowHeight]="26"
+    >
+      <e-columns>
+        <e-column
+          field="codeClt"
+          headerText="CODE CLT"
+          textAlign="Left"
+          width="8"
+        >
+        </e-column>
+        <e-column
+          field="denoClt"
+          headerText="DENO CLT"
+          textAlign="Left"
+          width="23"
+        ></e-column>
+        <e-column
+          field="ca2"
+          headerText="CA AN_2"
+          textAlign="right"
+          width="8"
+        ></e-column>
+        <e-column
+          field="off2"
+          headerText="OFR AN_2"
+          textAlign="right"
+          width="8"
+        ></e-column>
+        <e-column
+          field="st2"
+          headerText="STF AN_2"
+          textAlign="right"
+          width="8"
+        ></e-column>
+        <e-column
+          field="ca1"
+          headerText="CA AN_1"
+          textAlign="right"
+          width="8"
+        ></e-column>
+        <e-column
+          field="off1"
+          headerText="OFR AN_1"
+          textAlign="right"
+          width="8"
+        ></e-column>
+        <e-column
+          field="st1"
+          headerText="STF AN_1"
+          textAlign="right"
+          width="8"
+        ></e-column>
+        <e-column
+          field="ca"
+          headerText="CA AN_C"
+          textAlign="right"
+          width="8"
+        ></e-column>
+        <e-column
+          field="offr"
+          headerText="OFR AN_C"
+          textAlign="right"
+          width="8"
+        ></e-column>
+        <e-column
+          field="st"
+          headerText="STF AN_C"
+          textAlign="right"
+          width="8"
+        ></e-column>
+        <e-column
+          field="typeClt"
+          headerText="TYPE"
+          textAlign="right"
+          width="7"
+        ></e-column>
+      </e-columns>
+    </ejs-grid>
+    <br>
+    <div class="row">
+      <div class="col-md-10"></div>
+      <div class="col-md-2">
+            <button
+              pButton
+              type="button"
+              label="--> EXCEL"
+              (click)="excelExport()"
+              class="ui-button-raised"
+              style="margin: auto;"
+            ></button>
+          </div>
+    </div>  
+  </div>

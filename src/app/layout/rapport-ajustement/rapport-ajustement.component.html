@@ -1,0 +1,119 @@
+<br>
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+     <div class="col-md-3">
+       Du : 
+       <p-calendar 
+                      [yearNavigator]="true"
+                      [monthNavigator]="true"
+                      yearRange="1990:2999"
+                      dateFormat="dd/mm/yy "    
+                      [locale]="tn"
+                      [(ngModel)]="dat1"
+                      [disabled]="readonly"
+                       
+                      > 
+                    </p-calendar>
+     </div>
+     <div class="col-md-1">
+           Référence : 
+     </div>
+     <div class="col-md-2">
+           <ng-select
+              ngselect
+             (open)="ChargerArticles()"
+              (keyup.enter)="onSearchArticles($event.target.value)"
+              [items]="listRef"
+              bindLabel="code"
+              (change)="changearticle()"
+              [searchFn]="onSearchItem"
+              [(ngModel)]="selectedRef"
+              placeholder="choisir une réference"
+              [disabled]="readonly"
+              > 
+              </ng-select>
+
+     </div>
+
+</div>
+<br>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-3">
+
+    Au : 
+    <p-calendar 
+                   [yearNavigator]="true"
+                   [monthNavigator]="true"
+                   yearRange="1990:2999"
+                   dateFormat="dd/mm/yy "    
+                   [locale]="tn"
+                   [(ngModel)]="dat2"
+                   [disabled]="readonly"
+                    
+                   > 
+                 </p-calendar>
+  </div>
+  <div class="col-md-2"></div>
+  <!--icon="pi pi-download"-->
+  <div class="col-md-1">  <button [hidden]="affichegrid" pButton type="button"  label="Afficher" id='btnaffch'   (click)="afficher($event)"  class="ui-button-raised" class="ui-button-info"></button></div>
+</div>
+<br>
+<div class="row"  >
+  <div class="col-md-12" *ngIf="affichegrid">
+  <ejs-grid #grid [dataSource]="liste" gridLines='Both' 
+  [selectedRowIndex]="0"
+  allowResizing= 'true'
+   height="310" width="100%"
+   rowHeight='31'
+   allowResizing= 'true'
+    >             
+                  <e-columns>
+                      <e-column field="numero"    headerText="Code MVT" width="13%"   [customAttributes]="customAttributes"  BackgroundColor="Gray" ></e-column>
+                      <e-column field="date"    headerText="Date" width="11%"    [customAttributes]="customAttributes"></e-column>
+                      <e-column field="code"    headerText="Référence" width="15%"    [customAttributes]="customAttributes"></e-column>
+                      <e-column field="design"    headerText="Désignation" width="25%"  [customAttributes]="customAttributes"></e-column>
+                      <e-column field="quantite"    headerText="Quantité" width="8%"  [customAttributes]="customAttributes">  
+                            <ng-template #template let-liste>
+                              <div style="text-align: right;">{{liste.quantite}}</div>
+                          </ng-template>
+                  </e-column>
+                      
+                      
+                      
+                      <e-column field="sortieLib"    headerText="Argumentation" width="22%"  [customAttributes]="customAttributes"></e-column>  
+                    </e-columns>
+    </ejs-grid>
+  </div>
+</div> 
+
+    <br>
+    <div class="row">
+      
+      <div class="col-md-2" *ngIf="btnNouvelSaisie">  <button  pButton type="button"  label="Nouvelle saisie"   (click)="nouvelleSaisie()"   class="ui-button-info"></button></div>
+
+      <div class="col-md-3"></div>
+  <!--icon="pi pi-download"-->
+  <div class="col-md-1" *ngIf="btnNouvelSaisie">  <button  pButton type="button"  label="Apperçu"   (click)="visualiser()"   class="ui-button-info"></button></div>
+   
+    <div class="col-md-3"></div>
+
+    <div class="col-md-1" *ngIf="btnNouvelSaisie">  <button  pButton type="button"  label="Excel"   (click)="genererExcel()"   class="ui-button-info"></button></div>
+ 
+ 
+ 
+  </div>
+   
+
+
+  <p-overlayPanel #opp 
+        [dismissable]="false"
+        [showCloseIcon]="true" 
+        id="opp"
+        appendTo="body"  
+        [style]="{'text-align': 'center', 
+                'font-size':'14px' ,
+                'background-color': ' #f8b7bd'}" >
+        <span> {{msgerror}} </span>
+ </p-overlayPanel>

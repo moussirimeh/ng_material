@@ -1,0 +1,264 @@
+<div class="row">
+  <div class="col-md-1">Début: </div>
+  <div class="col-md-2">
+    
+    <p-calendar
+      [(ngModel)]="datedebut"
+      [locale]="tn"
+      [yearNavigator]="true"
+      yearRange="1973:2999"
+      [monthNavigator]="true"
+      [inputStyle]="{ width: '100%' }"
+      dateFormat="dd/mm/yy"
+      [disabled]="ngselectDisabled"
+    ></p-calendar>
+  </div>
+
+
+    <div class="col-md-1">Pièce :</div>
+    <div class="col-md-3">
+      <ng-select
+        ngselect
+        [items]="pieces"
+        bindLabel="label"
+        (change)="changePieces()"
+        [(ngModel)]="selectedPiece"
+        [searchFn]="onSearchPiece"
+        [disabled]="ngselectDisabled"
+        style="width: 100%;"
+      >
+      </ng-select>
+    </div>
+
+
+    <!--    --> 
+ 
+    <div class="col-md-3">
+   
+      <div class="row"  style="font-size: 14px;font-weight: bold;"><div class="col-md-12">Type Client:</div> </div>
+      <div class="row">
+          <div class="col-md-3"></div>
+          <div class="col-md-9"  style="font-size: 13px;font-weight: bold;"><p-radioButton
+            [disabled]="ngselectDisabled"
+            name="group1"
+            value="terme"
+            label="Terme uniquement"
+            [(ngModel)]="mvt"
+            inputId="opt1"
+          ></p-radioButton></div>
+        </div>
+        <div class="row">
+          <div class="col-md-3"></div>
+          <div class="col-md-9" style="font-size: 13px;font-weight: bold;"><p-radioButton
+            name="group1"
+            value="comptant"
+            label="Comptant uniquement"
+            [(ngModel)]="mvt"
+            inputId="opt2"
+            [disabled]="ngselectDisabled"
+          ></p-radioButton></div>
+        </div>
+        <div class="row">
+          <div class="col-md-3"></div>
+          <div class="col-md-9" style="font-size: 13px;font-weight: bold;"><p-radioButton
+            name="group1"
+            value="tout"
+            label="Tout"
+            [(ngModel)]="mvt"
+            [disabled]="ngselectDisabled"
+            inputId="opt3"
+          ></p-radioButton></div>
+        </div>
+  
+   </div>
+   <div class="col-md-2">
+   
+    <div class="row" style="font-size: 14px;font-weight: bold;"><div class="col-md-12">Apurement :</div> </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10"  style="font-size: 13px;font-weight: bold;"><p-radioButton
+          [disabled]="ngselectDisabled"
+          name="group2"
+          value="Apure"
+          label="Apuré"
+          [(ngModel)]="apurement"
+          inputId="opt11"
+        ></p-radioButton></div>
+      </div>
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10" style="font-size: 13px;font-weight: bold;"><p-radioButton
+          name="group2"
+          value="NonApure"
+          label="Non Apuré"
+          [(ngModel)]="apurement"
+          inputId="opt21"
+          [disabled]="ngselectDisabled"
+        ></p-radioButton></div>
+      </div>
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10" style="font-size: 13px;font-weight: bold;"><p-radioButton
+          name="group2"
+          value="tout"
+          label="Tout"
+          [(ngModel)]="apurement"
+          [disabled]="ngselectDisabled"
+          inputId="opt31"
+        ></p-radioButton></div>
+      </div>
+
+ </div>
+  </div>
+
+<div class="row">
+  <div class="col-md-1">Fin : </div>
+ 
+  <div class="col-md-2">
+    <p-calendar
+      [(ngModel)]="datefin"
+      [locale]="tn"
+      [yearNavigator]="true"
+      yearRange="1973:2999"
+      [monthNavigator]="true"
+      [inputStyle]="{ width: '100%' }"
+      dateFormat="dd/mm/yy"
+      [disabled]="ngselectDisabled"
+    ></p-calendar>
+  </div>
+    <div class="col-md-1">Vendeur :</div>
+    <div class="col-md-3">
+      <ng-select
+        ngselect
+        [items]="vendeurs"
+        bindLabel="deno"
+        (change)="changeVendeurs()"
+        [(ngModel)]="selectedVendeur"
+        [searchFn]="onSearchVendeur"
+        [disabled]="ngselectDisabled"
+        style="width: 100%;"
+      >
+      </ng-select>
+    </div>
+
+
+    <!--    --> 
+ 
+<div class="col-md-1"></div> 
+<div class="col-md-1">
+  <button
+  *ngIf="afficherShow"
+    pButton
+    type="button"
+    label="Afficher"
+    (click)="afficher($event)"
+    class="ui-button-raised"
+  ></button>
+</div>
+<div class="col-md-1">
+  <!--
+    *ngIf="afficherShow"
+  -->
+  <button
+  id="idexcel"
+    pButton
+    type="button"
+    label="Excel"
+    (click)="genererExcel($event)"
+    class="ui-button-raised"
+  ></button>
+</div>
+<div class="col-md-1">
+  <button
+    pButton
+    type="button"
+    label="Aperçu"
+    (click)="apercu($event)"
+  ></button>
+</div>
+  </div>
+<br>
+<!--
+  
+-->
+<div class="row" *ngIf="showCard1" >
+<div class="col-md-12">
+  <mat-card>
+    <mat-card-content>
+      <ejs-grid
+        #grid
+        [dataSource]="listeBrous"
+        gridLines="Both"
+        height="150px"
+        rowHeight="30"
+        
+        allowResizing= 'true'
+      >
+        <e-columns>
+          
+          <e-column field="type" headerText="Typ_Clt" width="40"></e-column>
+          <e-column field="piece" headerText="Piece" width="40"></e-column>
+          <e-column field="numero" headerText="Numéro" width="40"></e-column>
+          <e-column field="date" headerText="Date" width="40"></e-column>
+          <e-column field="codeClt" headerText="Code_Clt" width="40"></e-column>
+          <e-column field="NomClient" headerText="NomClient" width="60"></e-column>
+          <e-column field="montant" headerText="Montant" textAlign="Right"  headerTextAlign="left" width="40"  format="N3" ></e-column>
+          <e-column field="apurement" headerText="Apur" width="30"></e-column>
+          <e-column field="echeance" headerText="Echéance" width="40"></e-column>
+          <e-column field="libelle" headerText="Libelle" width="60"></e-column>
+         
+        
+        </e-columns>
+
+      </ejs-grid>
+<br>
+<div class="row">
+  <div class="col-md-1" ></div>
+  <div class="col-md-3" style="font-size: 18px;font-weight: bold;font-family:Arial, Helvetica, sans-serif">
+    Nombre de pièces affichées : 
+  </div>
+  <div class="col-md-1" style="font-size: 18px;font-weight: bold;font-family:Arial, Helvetica, sans-serif">{{totPieces}}</div>
+  <div class="col-md-2"></div>
+  <div class="col-md-1" style="font-size: 18px;font-weight: bold;font-family:Arial, Helvetica, sans-serif">
+   Total : 
+  </div>
+  <div class="col-md-2" style="font-size: 18px;font-weight: bold;font-family:Arial, Helvetica, sans-serif">{{totalDebit}}</div>
+  <div class="col-md-2" ></div>
+</div>
+
+    <br>
+      <div class="row">
+        <div class="col-md-2">
+          <button
+          (click)="NouvelleSaisie()"
+          *ngIf="showNvSaisie"
+            pButton
+            type="button"
+            label="Nouvelle saisie"
+          ></button>
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-2">
+        
+        </div>
+        <div class="col-md-2">
+         
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+</div>
+
+
+
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"S
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>
+

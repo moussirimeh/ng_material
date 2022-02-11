@@ -1,0 +1,87 @@
+<p-blockUI [blocked]="blockedDocument"></p-blockUI>
+<div></div>
+&nbsp;
+<div></div>
+&nbsp;
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    <div class="row">
+      <div class="col-md-3">
+        <p
+          [hidden]="!authorisationPrix"
+          style="font-size: 16px; font-weight: bold"
+        >
+          Vendeur :
+        </p>
+      </div>
+      <div class="col-md-9">
+        <ng-select
+          ngselect
+          id="vendeur"
+          [items]="vendeurs"
+          bindLabel="deno"
+          [(ngModel)]="selectedVendeur"
+          [searchFn]="onSearchVendeur"
+          placeholder="Veuiller choisir un Vendeur"
+          [hidden]="!authorisationPrix"
+        >
+        </ng-select>
+      </div>
+    </div>
+    &nbsp;
+    <div></div>
+    &nbsp;
+    <div class="row">
+      <div class="col-md-3">
+        <p
+          [hidden]="!authorisationPrix"
+          style="font-size: 16px; font-weight: bold"
+        >
+          Article :
+        </p>
+      </div>
+      <div class="col-md-9">
+        <ng-select
+          ngselect
+          id="article"
+          [items]="articles"
+          bindLabel="code"
+          [(ngModel)]="selectedArticle"
+          (keyup.enter)="onSearchArtParCode($event.target.value)"
+          placeholder="Veuiller choisir un article"
+          [hidden]="!authorisationPrix"
+        >
+        </ng-select>
+      </div>
+    </div>
+    &nbsp;
+    <div></div>
+    &nbsp;
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <button
+          pButton
+          id="valider"
+          type="button"
+          label="Valider"
+          class="ui-button-raised"
+          (click)="valider($event)"
+        ></button>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

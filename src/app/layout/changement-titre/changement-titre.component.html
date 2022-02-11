@@ -1,0 +1,510 @@
+<div class="row" style="padding-bottom: 1%;">
+  <div class="col-md-8">
+    <mat-card>
+      <mat-card-content >
+        <div class="row">
+          <div class="col-md-1"  style="max-width : 14%; padding-bottom: 1%;"><label>Du:</label></div>
+          <div class="col-md-2" style="max-width: 20%; padding-bottom: 1%;" >
+            <p-calendar
+             id="date1"
+             [inputStyle]="{'width':'100%'}"
+             [disabled]="readonly"
+             [minDate]="minDate"
+             [(ngModel)]="datedebut"
+             dateFormat="dd/mm/yy"
+             [monthNavigator]="true"
+             [yearNavigator]="true"
+             [locale]="tn"
+             yearRange="1973:2999">
+            </p-calendar>
+          </div>
+           <div class="col-md-1" style="max-width : 14%; padding-bottom: 1%;"><label>Au:</label></div>
+           <div class="col-md-2" style="max-width: 20%; padding-bottom: 1%;">
+             <p-calendar 
+              id="date2"
+              [inputStyle]="{'width':'100%'}"
+              [disabled]="readonly"
+              [minDate]="minDate"
+              [(ngModel)]="datefin"
+              dateFormat="dd/mm/yy"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              [locale]="tn"
+              yearRange="2011:2999">
+             </p-calendar>
+            </div>
+        </div>
+        <div class="row">
+           <div class="col-md-1" style="max-width: 14%; padding-bottom: 1%;">Client:</div>
+           <div class="col-md-3" >
+             <ng-select
+             ngselect
+             [items]="clients"
+             bindLabel="deno"
+             bindValue="code"
+             (open)="chargerClient()"
+             [(ngModel)]="SelectedClients"
+             (change)="changeClients()"
+             [searchFn]="onSearchClients"
+             [disabled]="readonly"
+             (clear)="SelectedClients=''"
+             >
+             </ng-select>
+            </div>
+            <div class="col-md-2" style="max-width: 15%; padding-bottom: 1%;">Type de piéce:</div>
+           <div class="col-md-2" >
+             <ng-select
+             ngselect
+             [items]="typePiece"
+             bindLabel="type"
+             bindValue="id"
+             [(ngModel)]="Selectedtype"
+             [disabled]="readonly"
+             >
+             </ng-select>
+            </div>
+            <div class="col-md-1" style="max-width: 14%; padding-bottom: 1%;">Montant:</div>
+            <div class="col-md-1" style="max-width: 13%; padding-bottom: 1%;">
+              <input
+              pInputText
+              class="form-control"
+               type="text"
+               id="montant"
+               pKeyFilter="num"
+               [(ngModel)]="pMontant"
+              />
+           </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6"></div>
+          <div class="col-md-1" style="max-width: 11%; padding-left: 0.2%;">
+            <button
+             pButton
+             id="btnAjouter"
+             (click)="Initialiser()"
+             type="button"
+             label="Initialiser"
+             class="ui-button-raised"
+            ></button>
+          </div>
+          <div class="col-md-1" style="padding-left: 0.2%;">
+            <button
+             pButton
+             id="btnAjouter"
+             (click)="Afficher()"
+             type="button"
+             label="Afficher"
+             class="ui-button-raised"
+             [hidden]="btnaff==true"
+            ></button>
+          </div>
+          <div class="col-md-4" style="max-width: 28%;">
+            <button
+             pButton
+             id="btnAjouter"
+             (click)="SeRapprocher()"
+             type="button"
+             label="Se Rapprocher du montant"
+             class="ui-button-raised"
+            ></button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-md-3" *ngIf="btntri">
+    <mat-card class="col-md-12">
+      <mat-card-content class="col-md-12" style="margin-top: -30px; margin-left: -8px; width: 100%;">
+        <h4>TRI PAR</h4>
+        <div class="row">
+          <div class="row p-field-radiobutton" style="max-height: 12%;">
+            <div class="col-md-1">
+              <p-radioButton 
+                (onClick)="tribyMontant()"
+                name="trie" 
+                value="mnt" 
+                [(ngModel)]="trie" >
+               </p-radioButton>
+            </div>
+            <div class="col-md-2">
+               <label>Montant</label>
+             </div>
+         </div>
+         <div class="row p-field-radiobutton" style="max-height: 12%;">
+          <div class="col-md-1">
+            <p-radioButton 
+              (onClick)="tribyDateEnreg()"
+              name="trie" 
+              value="datenrg" 
+              [(ngModel)]="trie" >
+             </p-radioButton>
+          </div>
+          <div class="col-md-1">
+             <label>DateEnreg</label>
+           </div>
+       </div>
+        </div>
+        <div class="row">
+          <div class="row p-field-radiobutton" style="max-height: 12%;">
+           <div class="col-md-1">
+             <p-radioButton 
+               (onClick)="tribyDateEch()"
+               name="trie" 
+               value="datech" 
+               [(ngModel)]="trie" >
+              </p-radioButton>
+           </div>
+           <div class="col-md-1">
+              <label>DateEch</label>
+            </div>
+        </div>
+
+          <div class="row p-field-radiobutton" style="max-height: 12%;">
+           <div class="col-md-1">
+             <p-radioButton 
+               (onClick)="tribyClient()"
+               name="trie" 
+               value="clt" 
+               [(ngModel)]="trie" >
+              </p-radioButton>
+           </div>
+           <div class="col-md-1">
+              <label>Client</label>
+            </div>
+        </div>
+         </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+ 
+</div>
+
+<div [ngClass]="{ disableDiv: disableGrid }">
+<div class="row" >
+  <div class="row" style="margin-left: 0.1% ;" >
+    <ejs-grid id="ejs1" #grid width="99%" [selectionSettings]='selectionOptions'   [searchSettings]="searchOptions" height="180" [dataSource]="listeTitre" 
+     (rowSelected)="rowSelected($event)" (rowDeselected)="annulerSelection()"
+     gridLines="Both" style="border-bottom-width: 5%;" allowResizing= 'true'  >
+     <e-columns>
+      <e-column field="select" type='checkbox' width='20'></e-column>
+       <e-column field="piece" headerText="Piéce" width="45"  headerTextAlign="left">
+       </e-column>
+       <e-column field="numero" headerText="Numero" width="50"  headerTextAlign="left">
+        <ng-template #template let-listeTitre>
+          <p style="text-align: right; margin: auto; ">
+            {{ listeTitre.numero }}
+          </p>
+        </ng-template>
+       </e-column>
+       <e-column field="montant" headerText="Montant" width="50"  headerTextAlign="left">
+        <ng-template #template let-listeTitre>
+          <p style="text-align: right; margin: auto; ">
+            {{ listeTitre.montant }}
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column field="date" headerText="Date" width="50"  headerTextAlign="left">
+      </e-column>
+      <e-column field="ech" headerText="Ech" width="50"  headerTextAlign="left">
+      </e-column>
+      <e-column field="bnqclt" headerText="Bnq Clt" width="45"  headerTextAlign="left">
+      </e-column>
+      <e-column field="caisse" headerText="Caisse" width="45"  headerTextAlign="left">
+      </e-column>
+      <e-column field="observ" headerText="Observation" width="80"  headerTextAlign="left">
+      </e-column>
+      <e-column field="client" headerText="Client" width="55"  headerTextAlign="left">
+        <ng-template #template let-listeTitre>
+          <p style="text-align: right; margin: auto; ">
+            {{ listeTitre.client }}
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column field="tire" headerText="Tiré" width="80"  headerTextAlign="left">
+      </e-column>
+     </e-columns>
+    </ejs-grid>
+</div>
+</div>
+</div><br>
+<div class="row" *ngIf="btndbclick">
+    <div class="col-md-8"></div>
+    <div class="col-md-2" style="max-width: 9%;">
+      <button
+       pButton
+       id="btnabnd"
+       (click)="Abondonner()"
+       type="button"
+       label="Abondonner"
+       class="ui-button-raised"
+      ></button>
+    </div>
+    <div class="col-md-2" style="max-width: 11%;" >
+      <button
+       pButton
+       id="btnAnn"
+       (click)="AnnulerTitre($event)"
+       type="button"
+       label="Annuler Titre"
+       class="ui-button-raised"
+      ></button>
+    </div>
+    <div class="col-md-2" style="max-width: 13%; padding-left: 0.0%;">
+      <button
+       pButton
+       id="btnremp"
+       (click)="RemplacerTitre($event)"
+       type="button"
+       label="Remplacer Titre"
+       class="ui-button-raised"
+      ></button>
+    </div>
+</div><br>
+
+<div class="row" *ngIf="btnrmpl">
+  <mat-card class="col-md-12">
+    <mat-card-content class="col-md-12" style="margin-top: -30px; margin-left: -8px; width: 100%;">
+      <h4>Titre de Remplacement </h4>
+      <div class="row">
+        <div class="col-md-1" >
+          <div class="row">
+            <div class="col-md-1" ><label>Piéce</label></div>
+          </div>
+          <div class="row" style="padding-bottom: 2%;">
+            <ng-select
+               ngselect
+               [items]="listepiece"
+               bindLabel="type"
+               bindValue="value"
+               [(ngModel)]="Rdpiece1"
+               >
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-1" style ="max-width:13%;">
+          <div class="row" >
+            <div class="col-md-1" style ="max-width: 10.8%;"><label [hidden]="Rdpiece1 =='ESPECE'">Numero</label></div>
+          </div>
+          <div class="row" style="padding-bottom: 2%;">
+          <input
+          pInputText
+          type="text"
+          [(ngModel)]="numero1"
+          pKeyFilter="num"
+          
+          [hidden]="Rdpiece1 =='ESPECE'"
+         />
+        </div>
+        </div>
+        <div class="col-md-1" style ="max-width: 13%;">
+          <div class="row">
+            <div class="col-md-1" style ="max-width: 13%;"><label>Montant</label></div>
+          </div>
+          <div class="row" style="padding-bottom: 2%;">
+          <input
+          pInputText
+          type="text"
+          [(ngModel)]="montant1"
+          pKeyFilter="num"
+          
+         /></div>
+        </div>
+        <div class="col-md-1" >
+          <div class="row">
+            <div class="col-md-1" ><label>DateEnreg</label></div>
+          </div>
+          <div class="row" style="padding-bottom: 2%;">
+          <p-calendar
+          id="dateenrg"
+          [inputStyle]="{'width':'100%'}"
+          
+          [minDate]="minDate"
+          [(ngModel)]="dateerg1"
+          dateFormat="dd/mm/yy"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [locale]="tn"
+          yearRange="1973:2999">
+         </p-calendar>
+        </div>
+        </div>
+        <div class="col-md-1">
+          <div class="row">
+            <div class="col-md-1" ><label [hidden]="Rdpiece1 =='ESPECE'">DateEch</label></div>
+          </div>
+          <div class="row" style="padding-bottom: 2%;">
+          <p-calendar
+          id="dateenrg"
+          [inputStyle]="{'width':'100%'}"
+          
+          [minDate]="minDate"
+          [(ngModel)]="dateechang1"
+          dateFormat="dd/mm/yy"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [locale]="tn"
+          yearRange="1973:2999"
+          [hidden]="Rdpiece1 =='ESPECE'">
+         </p-calendar>
+        </div>
+        </div>
+        <div class="col-md-1" style ="max-width: 13%;">
+          <div class="row">
+            <div class="col-md-2" style="max-width: 13%;"><label [hidden]="Rdpiece1 =='ESPECE'">Banque</label></div>
+          </div>
+          <div class="row" style="padding-bottom: 2%;">
+          <input
+          pInputText
+          type="text"
+          [(ngModel)]="banque1"
+         
+          [hidden]="Rdpiece1 =='ESPECE'"
+         />
+        </div>
+        </div>
+        <div class="col-md-1" style ="max-width: 13%;">
+          <div class="row">
+            <div class="col-md-2" style="max-width: 13%;"><label [hidden]="Rdpiece1 =='ESPECE'">Tire</label></div>
+          </div>
+          <div class="row" style="padding-bottom: 2%;">
+          <input 
+          pInputText
+          type="text"
+          [(ngModel)]="tire1"
+         
+          [hidden]="Rdpiece1 =='ESPECE'"
+         /></div>
+        </div>
+        <div class="col-md-4" style ="max-width: 20%;">
+          <div class="row">
+            <div class="col-md-2" style="max-width: 10.8%;"><label>Observation</label></div>
+          </div>
+          <div class="row" style="padding-bottom: 2%;">
+            <div class="col-md-8">
+          <input
+          pInputText
+          type="text"
+          [(ngModel)]="observ1"
+          
+          
+         /></div>
+         <div class="col-md-2">
+          <button
+           pButton
+           type="button"
+           pDeletetableRow
+           icon="pi pi-trash"
+           class="ui-button-danger"
+           (click)="Supprimer1()"
+           
+           ></button>
+         </div>
+         <div class="col-md-2">
+          <button
+           pButton
+           id="btniconajout"
+           type="button"
+           icon="pi pi-check"
+           class="ui-button-info"
+           (click)="Ajouter1($event)"
+           [hidden]="btnajout"
+           ></button>
+         </div>
+         </div>
+        </div>
+      
+      </div>
+      <div></div>
+    </mat-card-content>
+  </mat-card> 
+</div>
+<div class="row" *ngIf="btnrmpl">
+  <mat-card class="col-md-12">
+    <mat-card-content class="col-md-12" style="margin-top: -30px; margin-left: -8px; width: 100%;">
+      <h4>Liste des piéces de remplacement</h4>
+        <div class="row">
+         <div class="col-md-1">Piéce</div>
+         <div class="col-md-1">Numero</div>
+         <div class="col-md-1">Montant</div>
+         <div class="col-md-1">DateEnreg</div>
+         <div class="col-md-1">DateEch</div>
+         <div class="col-md-1">Banque</div>
+         <div class="col-md-1">Client</div>
+         <div class="col-md-2">Tire</div>
+         <div class="col-md-2">Observation</div>
+        </div>
+        <div  *ngFor="let item of listeRemplacerTitre1">
+          <div class="row" >
+            <div class="col-md-1">{{item.piece}}</div>
+            <div class="col-md-1">{{item.numero}}</div>
+            <div class="col-md-1">{{item.montant}}</div>
+            <div class="col-md-1">{{item.date}}</div>
+            <div class="col-md-1">{{item.ech}}</div>
+            <div class="col-md-1">{{item.bnqclt}}</div>
+            <div class="col-md-1">{{item.client}}</div>
+            <div class="col-md-2">{{item.tire}}</div>
+            <div class="col-md-2">{{item.observ}}</div>
+           </div>
+        </div>
+      <div class="row">
+        <div class="col-md-10"></div>
+        <div class="col-md-1" style="max-width: 12%;">
+          <button
+           pButton
+           id="btnAjouter"
+           (click)="AnnulerRemplacement()"
+           type="button"
+           label="Annuler"
+           class="ui-button-raised"
+           [hidden]="btnannRemp==false"
+          ></button>
+        </div>
+        <div class="col-md-1" style="padding-left: 0.2%; max-width: 8%;">
+          <button
+           pButton
+           id="btnAjouter"
+           (click)="ValiderRemplacement()"
+           type="button"
+           label="Valider"
+           class="ui-button-raised"
+           [hidden]="btnvalid==false"
+          ></button>
+        </div>
+      </div>
+  </mat-card-content>
+  </mat-card>
+</div>
+
+<p-overlayPanel
+#op
+[dismissable]="false"
+[showCloseIcon]="true"
+appendTo="body"
+[style]="{
+  'text-align': 'center',
+  'font-size': '14px',
+  'background-color': ' #f8b7bd'
+}"
+>
+<span> {{ msg }} </span>
+</p-overlayPanel>
+<p-dialog
+  header="Information"
+  [(visible)]="showdialog"
+  [modal]="true"
+  [style]="{ width: '50%' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+Cette Piéce est appurée veuillez annuler l'appurement 
+  <p-footer>
+    <button
+      type="button"
+      pButton
+      (click)="closedialog()"
+      label="Ok"
+      class="ui-button-secondary"
+    ></button>
+  </p-footer>
+</p-dialog>

@@ -1,0 +1,37 @@
+.ng-select .ng-select-container .ng-value-container .ng-input>input {
+  size: 8px;
+}
+.pRight {
+  margin-top: 0%;
+  margin-bottom: 0.2rem;
+}
+
+.ui-inputtext {
+  margin: 0;
+  outline: medium none;
+  padding: 0.25em;
+  font-weight: normal;
+}
+body .ui-inputtext {
+  font-size: 14px;
+  color: #333333;
+  background: #ffffff;
+  padding: -6.571em;
+  border: 1px solid #a6a6a6;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 0.8;
+  color: #212529;
+  text-align: left;
+  background-color: #fff;
+}
+

@@ -1,0 +1,165 @@
+
+
+<br>
+<br>
+<br>
+<br>
+  <div class="row">
+    <div class="row" class="col-md-4">
+
+       <div class="row" class="col-md-12">
+       <div class="row p-field-radiobutton p-label-active" >
+        <div class="col-md-1">
+          <p-radioButton 
+            name="radio" 
+            value="1"
+            [disabled]="readonly"
+            [(ngModel)]="selectedradio"
+          
+            >
+           </p-radioButton>
+        </div>
+        <div class="col-md-7">
+           <label>Période Actuelle</label>
+         </div>
+         <div class="col-md-4"  >
+          <button
+           pButton
+           id="btnAfficher"
+           type="button"
+           label="Afficher"
+           (click)="afficher()"
+          
+           [hidden]="btnaff"
+          ></button>
+         </div>
+         </div>
+  
+      </div>
+
+      <div class="row" class="col-md-12"  >
+        <div class="row p-field-radiobutton p-label-active">
+         <div class="col-md-1">
+           <p-radioButton 
+             name="radio" 
+             value="2" 
+             [disabled]="readonly"
+             [(ngModel)]="selectedradio" 
+             >
+            </p-radioButton>
+         </div>
+         <div class="col-md-7">
+            <label>Période ancienne</label>
+          </div>
+         
+          </div>
+          <div class="col-md-4" *ngIf="selectedradio === '2'">
+            <div class="row">
+              <div class="col-md-3">
+                <label>Du</label>
+
+              </div>
+              <div class="col-md-3">
+                <p-calendar  [(ngModel)]="datedebut" dateFormat="dd/mm/yy" [monthNavigator]="true" [yearNavigator]="true"
+                yearRange="2000:2999"[inputStyle]="{ width: '100px' }"  [locale]="tn" [minDate]="minDate"[disabled]="readonly"></p-calendar>
+              </div>
+            </div>
+            <div class="row ">
+              <div class="col-md-3">
+                <label>Au</label>
+              </div>
+              <div class="col-md-3">
+                <p-calendar [(ngModel)]="datefin"  [minDate]="minDate" [yearNavigator]="true" [monthNavigator]="true"
+                yearRange="2000:2999" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px' }"  [locale]="tn"[disabled]="readonly">
+                </p-calendar>
+              </div>
+            </div>
+
+          </div>
+       </div>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+
+  <div class="row" class="col-md-8">
+
+     <div class="row" >
+     
+     <div class="row" class="col-md-12">
+      <ejs-grid id="ejs1" #grid width="99%"  [allowExcelExport]="true" 
+      [dataSource]="listeHistActuelle" [searchSettings]="searchOptions" [selectedRowIndex]="0" height="240"  
+        rowHeight="20" 
+       gridLines="Both">
+       <e-columns>
+         <e-column field="du" headerText="DU" width="60"  headerTextAlign="left">
+         </e-column>
+         <e-column field="au" headerText="AU" width="60"  headerTextAlign="left">
+         </e-column>
+         <e-column field="zone" headerText="Zone" width="110"  headerTextAlign="left">
+          
+        </e-column>
+        <e-column field="solde_debut" headerText="Solde_deb" width="70" headerTextAlign="left" textAlign="Right">
+       
+        </e-column>
+        <e-column field="solde_fin" headerText="Solde_Fin" width="70"  headerTextAlign="left" textAlign="Right">
+      
+        </e-column>
+        <e-column field="pourcentage" headerText="Pourcentage" width="80" headerTextAlign="left" textAlign="Right">
+       
+        </e-column>
+    
+       </e-columns>
+      </ejs-grid>
+    </div>
+     </div>
+    
+    
+   
+
+     <br>
+     <div class="row" class="col-md-4"*ngIf="btnaff">  
+      <div class="row">
+        <div class="col-md-8">
+          <button
+          pButton
+          id="btnAjouter"
+          type="button"
+          (click)="nouvelleSaisie()"
+          label="Nouvelle Saisie"
+       
+         ></button>
+       </div>
+       
+       <div class="col-md-4">
+       <button pButton type="button" label="Excel" (click)="gererExcel()"  >
+       </button>
+       </div>
+      </div>
+
+     </div>
+
+
+
+
+  </div>
+
+
+
+
+
+
+</div>
+
+

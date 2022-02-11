@@ -1,0 +1,37 @@
+
+
+<br>
+<br>
+<br>
+
+
+
+   
+    
+          <div class="row">
+
+           <div class="col-md-4"></div>
+           <div class="col-md-1" style="font-weight: bold;">Numero :</div>
+           <div class="col-md-2">  <input type="search" (change)="verifierNumero()" autofocus  (keyup.enter)="afficher($event)" pInputText pKeyFilter="pint" maxlength="30" id="num"   (keyup.enter)="getByNumero($event)"   [(ngModel)]="numero" [readonly]="readonly"  placeholder="saisir un numéro" /></div>
+           <div class="col-md-2">  <p-button label="Visualiser" styleClass="ui-button-info" (click)="afficher($event)"></p-button></div>
+           <div class="col-md-3"></div>
+         
+         
+          </div>
+
+     
+
+
+
+
+          
+              <p-toast key="d" [style]="{ marginTop: '290px', width: '30%' }" position="top-center"> 
+            </p-toast>
+            <p-toast key="j" [style]="{ marginTop: '290px', width: '30%' }" position="top-center"> 
+            </p-toast>
+            <p-toast key="tc" [style]="{ marginTop: '290px', width: '30%' }" position="top-center"> 
+            </p-toast>
+
+            <p-overlayPanel #op appendTo="body" [dismissable]='false'  [showCloseIcon]="true"  [style]="{'text-align': 'center', 'font-size':'14px' ,'background-color': ' #f8b7bd'}" >
+              <span style="width: 138%;"> {{msgerror}} </span>
+          </p-overlayPanel> 

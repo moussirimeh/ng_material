@@ -1,0 +1,58 @@
+<p-card class="cardContainer" #cardContainer>
+  &nbsp;
+  <p-blockUI class="ui-blockui" [blocked]="blocked"></p-blockUI>
+  <p-progressSpinner class="center" *ngIf="blocked"></p-progressSpinner>
+  <p-panel *ngIf="panelVisible">
+    <div>
+      <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="factures"
+        height="170"
+        gridLines="Both"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          <e-column
+            field="code"
+            headerText="CLIENT"
+            textAlign="Left"
+            width="85"
+          >
+          </e-column>
+          <e-column
+            field="deno"
+            headerText="NOM DE CLIENT"
+            width="200"
+          ></e-column>
+          <e-column
+            field="ref"
+            headerText="COMMANDE"
+            textAlign="Left"
+            width="120"
+          ></e-column>
+          <e-column
+            type="checkbox"
+            headerText="Calculer? (O/N)"
+            width="40"
+          ></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    &nbsp;
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <button
+          color="primary"
+          class="mat-raised-button mat-primary"
+          ng-reflect-color="primary"
+          (click)="calculer()"
+        >
+          Calculer
+        </button>
+      </div>
+    </div>
+  </p-panel>
+</p-card>

@@ -1,0 +1,219 @@
+<p-blockUI [blocked]="blockedDocument"></p-blockUI>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+        <div>
+          <button
+          pButton
+          type="button"
+          id="btAfficher"
+          [label]="label"
+          
+          (click)="MettreAjour($event)"
+          class="ui-button-raised"
+        ></button>
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <div>
+          <button
+          pButton
+          type="button"
+          id="btAfftabbord"
+          label="Afficher le tableau de bord financier"
+          (click)="afficher($event)"
+          class="ui-button-raised"
+        ></button>
+        </div>
+      </div>
+      <div class="col-md-1"></div>
+</div>
+<br>
+
+<div *ngIf="btn1">
+<div class="row"  >
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+  <p-table [value]="liste" dataKey="rang"  >
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Rubrique</th>
+            <th>{{val1}}</th>
+            <th>{{val2}}</th>
+            <th>{{val3}}</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item >
+        <tr>
+          <td>  {{ item.rubrique}}</td>
+            <td pEditableColumn>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input pInputText type="search" pKeyFilter="num" (keydown.enter)="blurVal(item,$event)"   [(ngModel)]="item.val1" (blur)="blurVal(item,$event)" >
+                    </ng-template>
+                    <ng-template pTemplate="output" >
+                        {{item.val1}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td pEditableColumn>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input pInputText type="search" pKeyFilter="num" (keydown.enter)="blurVal(item,$event)"  (blur)="blurVal(item,$event)" [(ngModel)]="item.val2" >
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{item.val2}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td pEditableColumn>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input pInputText type="search" pKeyFilter="num" (keydown.enter)="blurVal(item,$event)" [(ngModel)]="item.val3"  (blur)="blurVal(item,$event)">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{item.val3}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+        </tr>
+    </ng-template>
+</p-table></div>
+<div class="col-md-1"></div>
+ </div>
+ <br>
+ <div class="row">
+    <div class="col-md-9"></div>
+    <div class="col-md-1">
+        <div>
+          <button
+          pButton
+          type="button"
+          id="btAnn"
+          label="Annuler "
+          
+          (click)="MettreAjour($event)"
+          class="ui-button-raised"
+        ></button>
+        </div>
+      </div>
+
+      <div class="col-md-1">
+        <div>
+          <button
+          pButton
+          type="button"
+          id="btnValider"
+          label="Valider"
+          (click)="valider($event)"
+          class="ui-button-raised"
+        ></button>
+        </div>
+      </div>
+      <div class="col-md-1"></div>
+     
+</div>
+</div>
+
+<div *ngIf="btn2">
+  <div class="row"  >
+    <div class="col-md-2"></div>
+     <div class="col-md-8">
+      <ejs-grid
+      #grid
+      gridLines="Both"
+      width="98%"
+      [dataSource]="liste2"
+      height="240"
+      rowHeight="40"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column
+          field="rubrique"
+          headerText="Rubrique"
+        ></e-column>
+
+        <e-column
+          field="val1"
+          [headerText]="banque1.deno"
+          format="N3"
+          textAlign="Right"
+        ></e-column>
+        <e-column
+          field="val2"
+          format="N3"
+          textAlign="Right"
+          [headerText]="banque2.deno"
+        ></e-column>
+        <e-column
+          field="val3"
+          [headerText]="banque3.deno"
+          format="N3"
+          textAlign="Right"
+        ></e-column>
+
+        <e-column
+          field="total"
+          headerText="Total"
+          format="N3"
+          textAlign="Right"
+        ></e-column>
+
+      </e-columns>
+        
+          </ejs-grid>
+     </div>
+     <div class="col-md-2"></div>
+  </div>
+  <br>
+  <div class="row"  >
+    <div class="col-md-2"></div>
+     <div class="col-md-8">
+      <ejs-grid
+      #grid
+      gridLines="Both"
+      width="98%"
+      [dataSource]="liste3"
+      height="200"
+      rowHeight="40"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column
+          field="rubrique"
+          headerText="Rubrique"
+        ></e-column>
+
+        <e-column
+        headerText="Val1"
+          field="val1"
+          format="N3"
+          textAlign="Right"
+        ></e-column>
+      
+      </e-columns>
+        
+          </ejs-grid>
+     </div>
+     <div class="col-md-2"></div>
+  </div>
+  </div>
+  <br>
+  <div class="row" *ngIf="btn2">
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+        <div>
+          <button
+          pButton
+          type="button"
+          id="btvisualiser"
+          label="Previsualiser le tableau de bord financier"
+          
+          (click)="visualiser()"
+          class="ui-button-raised"
+        ></button>
+        </div>
+      </div>
+      </div>

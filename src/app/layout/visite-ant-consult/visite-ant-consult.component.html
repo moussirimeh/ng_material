@@ -1,0 +1,983 @@
+<div class="cardContainer">
+  <div class="row">
+    <div class="col-md-3">
+      <h2 *ngIf="false" align="center" style="color: red">{{ titre }}</h2>
+
+      <div
+        style="margin-bottom: 5px"
+        align="center"
+        *ngIf="enregVisite || consultVisite"
+      >
+        VISITE NUMERO {{ numVisite }}
+      </div>
+
+      <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-6">
+          <button
+            pButton
+            type="button"
+            label="ANCIEN CLIENT"
+            *ngIf="ancShow && !enregVisite && !consultVisite"
+            class="ui-button-raised"
+            (click)="ancClient()"
+          ></button>
+        </div>
+        <div class="col-md-6" align="right">
+          <button
+            pButton
+            type="button"
+            label="NOUVEAU CLT"
+            *ngIf="nouvShow && !enregVisite && !consultVisite"
+            class="ui-button-raised"
+            (click)="nvClient()"
+          ></button>
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-3">CLIENT</div>
+
+        <div class="col-md-9">
+          <input
+            type="text"
+            id="client"
+            size="30"
+            maxlength="30"
+            [disabled]="!nouvClicked"
+            pInputText
+            *ngIf="!ancClicked"
+            [(ngModel)]="selectedClient.deno"
+          />
+          <ng-select
+            ngselect
+            id="client"
+            *ngIf="ancClicked"
+            [items]="clients"
+            bindLabel="deno"
+            [(ngModel)]="selectedClient"
+            (click)="onClientSelect()"
+            (keyup.enter)="onClientSelect()"
+            [searchFn]="onSearchClient"
+            (clear)="nvlSaisie()"
+          >
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-3">ADRESSE</div>
+        <div class="col-md-9">
+          <input
+            type="text"
+            [disabled]="!nouvClicked"
+            size="30"
+            maxlength="50"
+            pInputText
+            [(ngModel)]="selectedClient.adresse"
+          />
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-3">TEL</div>
+        <div class="col-md-9">
+          <input
+            type="text"
+            [disabled]="!nouvClicked"
+            size="30"
+            maxlength="20"
+            pInputText
+            [(ngModel)]="selectedClient.tel"
+          />
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-3">FAX</div>
+        <div class="col-md-9">
+          <input
+            type="text"
+            [disabled]="!nouvClicked"
+            size="30"
+            maxlength="20"
+            pInputText
+            [(ngModel)]="selectedClient.fax"
+          />
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-3">E-MAIL</div>
+        <div class="col-md-9">
+          <input
+            type="text"
+            size="30"
+            [disabled]="!nouvClicked"
+            maxlength="30"
+            pInputText
+            [(ngModel)]="selectedClient.eMail"
+          />
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-3">RESPONS.</div>
+        <div class="col-md-9">
+          <input
+            type="text"
+            size="30"
+            [disabled]="!nouvClicked"
+            maxlength="20"
+            pInputText
+            [(ngModel)]="selectedClient.respon"
+          />
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-3">FONCTION</div>
+        <div class="col-md-9">
+          <input
+            type="text"
+            size="30"
+            [disabled]="!nouvClicked"
+            maxlength="20"
+            pInputText
+            [(ngModel)]="selectedClient.fonction1"
+          />
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-4">VST PRV LE</div>
+        <div class="col-md-8">
+          <p-calendar
+            [disabled]="enregVisite || consultVisite"
+            [(ngModel)]="datePrevue"
+            [locale]="tn"
+            [inputStyle]="{ width: '60%' }"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            yearRange="1980:2050"
+          ></p-calendar>
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-1">DE</div>
+        <div class="col-md-4">
+          <p-calendar
+            [disabled]="enregVisite || consultVisite"
+            [(ngModel)]="hDebut"
+            [inputStyle]="{ width: '70%' }"
+            [timeOnly]="true"
+          ></p-calendar>
+        </div>
+        <div class="col-md-1">A</div>
+        <div class="col-md-4">
+          <p-calendar
+            [disabled]="enregVisite || consultVisite"
+            [(ngModel)]="hFin"
+            [inputStyle]="{ width: '70%' }"
+            [timeOnly]="true"
+          ></p-calendar>
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-5">PROG. PAR</div>
+        <div class="col-md-7">
+          {{ nomUtil }}
+        </div>
+      </div>
+
+      <div
+        class="row"
+        *ngIf="(enregVisite || consultVisite) && showElementsForConsult"
+        style="margin-bottom: 5px"
+      >
+        <div class="col-md-4">VISITE REALISEE LE</div>
+        <div class="col-md-8">
+          <p-calendar
+            [(ngModel)]="dateReelle"
+            [disabled]="disableDateReelle"
+            [locale]="tn"
+            [inputStyle]="{ width: '60%' }"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            yearRange="1980:2050"
+          ></p-calendar>
+        </div>
+      </div>
+
+      <div
+        class="row"
+        *ngIf="(enregVisite || consultVisite) && showElementsForConsult"
+        style="margin-bottom: 5px"
+      >
+        <div class="col-md-1">DE</div>
+        <div class="col-md-5">
+          <p-calendar
+            [(ngModel)]="hReelleDebut"
+            [disabled]="disableDateReelle"
+            [inputStyle]="{ width: '50%' }"
+            [timeOnly]="true"
+          ></p-calendar>
+        </div>
+        <div class="col-md-1">A</div>
+        <div class="col-md-5">
+          <p-calendar
+            [(ngModel)]="hReelleFin"
+            [disabled]="disableDateReelle"
+            [inputStyle]="{ width: '50%' }"
+            [timeOnly]="true"
+          ></p-calendar>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div>
+        <h5 style="color: blue">VISITES ANTERIEURES</h5>
+        <ejs-grid
+          #gridVisitesAnt
+          id="gridVisitesAnt"
+          (mouseup)="annulerSelectionVisite()"
+          (mousewheel)="annulerSelectionVisite()"
+          [dataSource]="visites"
+          height="125"
+          gridLines="Both"
+          [rowHeight]="25"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column
+              field="numVisite"
+              headerText="N°VST"
+              textAlign="Left"
+              width="50"
+            ></e-column>
+            <e-column
+              field="datePrevue"
+              headerText="Date Prévue"
+              textAlign="Left"
+              width="95"
+            >
+            </e-column>
+            <e-column
+              field="dateReelle"
+              headerText="Date Réelle"
+              textAlign="Left"
+              width="95"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+        <div>
+          <div *ngIf="!gridVisitesButtonEnable || consultVisite">&nbsp;</div>
+          <div class="row">
+            <div class="col-md-4">
+              <button
+                pButton
+                *ngIf="gridVisitesButtonEnable && !consultVisite"
+                type="button"
+                label="Voir La Visite Sélectionnée"
+                class="ui-button-raised"
+                (click)="voirVisiteSelect()"
+              ></button>
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h5 style="color: blue">RELEVE FINANCIER</h5>
+        <ejs-grid
+          #gridReleve
+          id="gridReleve"
+          [dataSource]="visitesReleves"
+          (mouseup)="annulerSelectionReleve()"
+          (mousewheel)="annulerSelectionReleve()"
+          (recordDoubleClick)="ajouterObjet(3)"
+          height="125"
+          gridLines="Both"
+          [rowHeight]="25"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column
+              field="date"
+              headerText="DATE"
+              textAlign="Left"
+              width="84"
+              [customAttributes]="customAttributes"
+            ></e-column>
+            <e-column
+              field="piece"
+              headerText="PIECE"
+              textAlign="Left"
+              width="75"
+              [customAttributes]="customAttributes"
+            >
+            </e-column>
+            <e-column
+              field="numero"
+              headerText="N°"
+              textAlign="Left"
+              width="62"
+              [customAttributes]="customAttributes"
+            ></e-column>
+            <e-column
+              field="debit"
+              headerText="Debit"
+              textAlign="Right"
+              width="79"
+              [customAttributes]="customAttributes"
+            ></e-column>
+            <e-column
+              field="credit"
+              headerText="Credit"
+              textAlign="Right"
+              width="79"
+              [customAttributes]="customAttributes"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+        <div class="row">
+          <div class="col-md-4">
+            <button
+              pButton
+              id="btVoirFacture"
+              *ngIf="gridRelevesButtonEnable && !consultVisite"
+              type="button"
+              label="Voir La Fre Sélectionnée"
+              class="ui-button-raised"
+              (click)="voirFacture($event)"
+            ></button>
+          </div>
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-4"><h5 style="color: red">TOTAUX</h5></div>
+              <div class="col-md-4">
+                <h5 align="right" style="color: red">{{ totDebitReleves }}</h5>
+              </div>
+              <div class="col-md-4">
+                <h5 align="right" style="color: red">{{ totCreditReleves }}</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4"><h5 style="color: red">SOLDE</h5></div>
+              <div class="col-md-4">
+                <h5 align="right" style="color: red">{{ soldeReleves }}</h5>
+              </div>
+              <div class="col-md-4"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <h5 style="color: blue">LES PARTICIPANTS</h5>
+          </div>
+
+          <div class="col-md-3" *ngIf="enregVisite || consultVisite">
+            <h5 style="color: blue">PRESENCE</h5>
+          </div>
+          <div class="col-md-3" *ngIf="!enregVisite && !consultVisite">
+            <p-dropdown
+              id="participants"
+              [options]="utils"
+              [(ngModel)]="selectedParticipant"
+              (onChange)="onParticipantSelect()"
+              optionLabel="nPUtil"
+              [style]="{ 'min-width': '180px', 'max-width': '180px' }"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <input
+              type="text"
+              disabled="true"
+              [(ngModel)]="this.participant1"
+              (select)="supprimerParticipant(1)"
+              size="12"
+              maxlength="20"
+              pInputText
+            />
+          </div>
+
+          <div class="col-md-3">
+            <p-checkbox
+              *ngIf="enregVisite || consultVisite"
+              [disabled]="disableCheckedPar1"
+              [(ngModel)]="checkedPar1"
+              binary="true"
+            ></p-checkbox>
+          </div>
+          <div class="col-md-3"></div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <input
+              type="text"
+              disabled="true"
+              [(ngModel)]="participant2"
+              (select)="supprimerParticipant(2)"
+              size="12"
+              maxlength="20"
+              pInputText
+            />
+          </div>
+
+          <div class="col-md-3">
+            <p-checkbox
+              *ngIf="enregVisite || consultVisite"
+              [disabled]="disableCheckedPar2"
+              [(ngModel)]="checkedPar2"
+              binary="true"
+            ></p-checkbox>
+          </div>
+          <div class="col-md-3"></div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <input
+              type="text"
+              disabled="true"
+              [(ngModel)]="participant3"
+              (select)="supprimerParticipant(3)"
+              size="12"
+              maxlength="20"
+              pInputText
+            />
+          </div>
+
+          <div class="col-md-4">
+            <p-checkbox
+              *ngIf="enregVisite || consultVisite"
+              [disabled]="disableCheckedPar3"
+              [(ngModel)]="checkedPar3"
+              binary="true"
+            ></p-checkbox>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="row">
+          <div class="col-md-6">
+            <h5 style="color: blue">OBJET DE LA VISITE</h5>
+          </div>
+          <div class="col-md-6">
+            <button
+              pButton
+              *ngIf="!enregVisite && !consultVisite"
+              type="button"
+              label="REINTIALISER"
+              (click)="reintialiser()"
+              class="ui-button-raised"
+            ></button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2"><h5 style="color: blue">OFR</h5></div>
+          <div class="col-md-6">{{ ofr }}</div>
+          <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-2"><h5 style="color: blue">CMD</h5></div>
+          <div class="col-md-6">{{ cmd }}</div>
+          <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-2"><h5 style="color: blue">FIN</h5></div>
+          <div class="col-md-6">{{ fin }}</div>
+          <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <h5 style="color: blue" (dblclick)="autreDblClick()">AUTRE</h5>
+          </div>
+          <div class="col-md-6">{{ autre }}</div>
+          <div class="col-md-4">
+            <p-dropdown
+              [options]="autresList"
+              optionLabel="name"
+              [(ngModel)]="selectedAutre"
+              (onChange)="onAutreSelect()"
+              *ngIf="showAutreListe"
+              [style]="{ 'min-width': '100%', 'max-width': '100%' }"
+            ></p-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div>
+        <h5 style="color: blue">OFFRES ANTERIEURES</h5>
+        <ejs-grid
+          #gridOffresAnt
+          id="gridOffresAnt"
+          (mouseup)="annulerSelectionOffre()"
+          (mousewheel)="annulerSelectionOffre()"
+          (recordDoubleClick)="ajouterObjet(1)"
+          [dataSource]="visitesOffres"
+          height="125"
+          gridLines="Both"
+          [rowHeight]="25"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column
+              field="numDev"
+              headerText="N°DEV"
+              textAlign="Left"
+              width="65"
+            ></e-column>
+            <e-column
+              field="date"
+              headerText="DATE"
+              textAlign="Left"
+              width="75"
+            >
+            </e-column>
+            <e-column
+              field="mtDev"
+              headerText="MT DEV"
+              textAlign="Right"
+              width="90"
+            ></e-column>
+            <e-column
+              field="mtSatisf"
+              headerText="MT SATISF"
+              textAlign="Right"
+              width="90"
+            ></e-column>
+            <e-column
+              field="prc"
+              headerText="PRC"
+              textAlign="Right"
+              width="55"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+        <div class="row">
+          <div class="col-md-3">
+            <button
+              pButton
+              *ngIf="gridOffresButtonEnable && !consultVisite"
+              type="button"
+              label="Voir L'Ofr Sélectionnée"
+              class="ui-button-raised"
+            ></button>
+          </div>
+
+          <div class="col-md-1"><h5 style="color: red">TOTAUX</h5></div>
+
+          <div class="col-md-3">
+            <h5 align="right" style="color: red">{{ totMtDevOffres }}</h5>
+          </div>
+
+          <div class="col-md-3">
+            <h5 align="right" style="color: red">{{ totmtSatisfOffres }}</h5>
+          </div>
+
+          <div class="col-md-1">
+            <h5 align="right" style="color: red">{{ moyPrcOffres }}</h5>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h5 style="color: blue">COMMANDES EN COURS</h5>
+        <ejs-grid
+          #gridCommandes
+          id="gridCommandes"
+          (mouseup)="annulerSelectionCommande()"
+          (mousewheel)="annulerSelectionCommande()"
+          (recordDoubleClick)="ajouterObjet(2)"
+          [dataSource]="visitesCommandes"
+          height="125"
+          gridLines="Both"
+          [rowHeight]="25"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column
+              field="numCmd"
+              headerText="N°CMD"
+              textAlign="Left"
+              width="60"
+            ></e-column>
+            <e-column
+              field="cmdClt"
+              headerText="CMD CLT"
+              textAlign="Left"
+              width="75"
+            ></e-column>
+            <e-column
+              field="date"
+              headerText="DATE"
+              textAlign="Left"
+              width="75"
+            >
+            </e-column>
+            <e-column
+              field="mtCmd"
+              headerText="MT CMD"
+              textAlign="Right"
+              width="70"
+            ></e-column>
+            <e-column
+              field="mtReal"
+              headerText="MT REAL"
+              textAlign="Right"
+              width="70"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+        <div class="row">
+          <div class="col-md-3">
+            <button
+              pButton
+              *ngIf="gridCommandesButtonEnable && !consultVisite"
+              type="button"
+              label="Voir La Cde Sélectionnée"
+              class="ui-button-raised"
+            ></button>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-2"><h5 style="color: red">TOTAUX</h5></div>
+          <div class="col-md-3">
+            <h5 align="right" style="color: red">{{ totCmdCommandes }}</h5>
+          </div>
+          <div class="col-md-3">
+            <h5 align="right" style="color: red">{{ totRealCommandes }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <button
+        pButton
+        type="button"
+        (click)="supprimerVisite()"
+        *ngIf="enregVisite && !disableDateReelle"
+        label="SUPPRIMER LA VISITE"
+        class="ui-button-raised"
+      ></button>
+    </div>
+    <div class="col-md-4">
+      <button
+        pButton
+        id="btValider"
+        type="button"
+        *ngIf="!enregVisite && !consultVisite"
+        label="VALIDER LA PROGRAMMATION"
+        (click)="validerProgrammation($event)"
+        class="ui-button-raised"
+      ></button>
+    </div>
+    <div class="col-md-4">
+      <button
+        pButton
+        type="button"
+        *ngIf="enregVisite && !disableDateReelle"
+        (click)="validerDateEtPresence()"
+        label="VALIDER LA DATE ET LES PRESENCES"
+        class="ui-button-raised"
+      ></button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4" *ngIf="disableDateReelle && showElementsForConsult">
+      <h5>LES SUJETS TRAITES</h5>
+      <ejs-grid
+        #gridSujetsTraites
+        id="gridSujetsTraites"
+        [dataSource]="visitesSujetTraite"
+        [selectedRowIndex]="selectedIndexSujetTraite"
+        (rowSelected)="consulterSujet()"
+        height="125"
+        gridLines="Both"
+        [rowHeight]="25"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          <e-column
+            field="rubrique"
+            headerText="SUJET"
+            textAlign="Left"
+            width="150"
+          ></e-column>
+          <e-column field="date" headerText="DATE" textAlign="Left" width="150">
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <div
+      class="col-md-4"
+      *ngIf="(sujetSelectionne || consultVisite) && showElementsForConsult"
+    >
+      <h5> {{descriptionDiscussion}} </h5>
+      <textarea
+        id="discussions"
+        *ngIf="discussExist"
+        [rows]="7"
+        [disabled]="consultVisite"
+        [(ngModel)]="discussion"
+        [cols]="54"
+        pInputTextarea
+      ></textarea>
+    </div>
+    <div class="col-md-4" *ngIf="disableDateReelle && !consultVisite">
+      <h5>LISTE DES SUJETS</h5>
+      <ejs-grid
+        #gridSujets
+        id="gridSujets"
+        (mouseup)="annulerSelectionSujets()"
+        (mousewheel)="annulerSelectionSujets()"
+        (recordDoubleClick)="ajouterSujet($event)"
+        [dataSource]="visitesSujets"
+        height="125"
+        gridLines="Both"
+        [rowHeight]="25"
+        allowResizing= 'true'
+      >
+        <e-columns>
+          <e-column
+            field="rubrique"
+            headerText="SUJET"
+            textAlign="Left"
+            width="100"
+          ></e-column>
+          <e-column
+            field="nPUtil"
+            headerText="RESPONSABLE"
+            textAlign="Left"
+            width="200"
+          >
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+
+  <div
+    class="row"
+    *ngIf="(sujetSelectionne || consultVisite) && showElementsForConsult && discussExist"
+  >
+    <div class="col-md-3"><h5>CE TEXTE SERA TRANSMIS A</h5></div>
+    <div class="col-md-3"><h5>DELAI</h5></div>
+    <div class="col-md-3">
+      <p-dropdown
+        *ngIf="!consultVisite"
+        [options]="utils"
+        optionLabel="nPUtil"
+        [(ngModel)]="selectedDestinataire"
+        (onChange)="onDestinataireSelect()"
+        [style]="{ 'min-width': '180px', 'max-width': '180px' }"
+      ></p-dropdown>
+    </div>
+    <div class="col-md-3" *ngIf="showReponse"><h5>REPONSE</h5></div>
+  </div>
+
+  <div
+    class="row"
+    *ngIf="(sujetSelectionne || consultVisite) && showElementsForConsult && discussExist"
+  >
+    <div class="col-md-3">
+      <div>
+        <input
+          type="text"
+          *ngIf="showDest1"
+          [(ngModel)]="destinataire1"
+          [disabled]="true"
+          size="25"
+          maxlength="20"
+          pInputText
+        />
+      </div>
+
+      <div>
+        <input
+          type="text"
+          *ngIf="showDest2"
+          (select)="supprimerDestinataire(2)"
+          [(ngModel)]="destinataire2"
+          [disabled]="true"
+          size="25"
+          maxlength="20"
+          pInputText
+        />
+      </div>
+
+      <div>
+        <input
+          type="text"
+          *ngIf="showDest3"
+          (select)="supprimerDestinataire(3)"
+          [(ngModel)]="destinataire3"
+          [disabled]="true"
+          size="25"
+          maxlength="20"
+          pInputText
+        />
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div>
+        <input
+          type="text"
+          *ngIf="showDest1"
+          [disabled]="delai1Disable"
+          [(ngModel)]="delai1"
+          size="5"
+          maxlength="3"
+          pInputText
+        />
+      </div>
+
+      <div>
+        <input
+          type="text"
+          *ngIf="showDest2"
+          [disabled]="delai2Disable"
+          [(ngModel)]="delai2"
+          size="5"
+          maxlength="3"
+          pInputText
+        />
+      </div>
+
+      <div>
+        <input
+          type="text"
+          *ngIf="showDest3"
+          [disabled]="delai3Disable"
+          [(ngModel)]="delai3"
+          size="5"
+          maxlength="3"
+          pInputText
+        />
+      </div>
+    </div>
+    <div class="col-md-3" *ngIf="consultVisite" align="left">
+      <div>
+        <button
+          pButton
+          *ngIf="showDest1"
+          type="button"
+          (click)="lireReponse(1,$event)"
+          label="LIRE LA REPONSE"
+          class="ui-button-raised"
+        ></button>
+      </div>
+
+      <div>
+        <button
+          pButton
+          *ngIf="showDest2"
+          type="button"
+          (click)="lireReponse(2,$event)"
+          label="LIRE LA REPONSE"
+          class="ui-button-raised"
+        ></button>
+      </div>
+
+      <div>
+        <button
+          pButton
+          *ngIf="showDest3"
+          type="button"
+          (click)="lireReponse(3,$event)"
+          label="LIRE LA REPONSE"
+          class="ui-button-raised"
+        ></button>
+      </div>
+    </div>
+    <div class="col-md-3" *ngIf="showReponse">
+      <textarea
+        [rows]="5"
+        [disabled]="consultVisite"
+        [(ngModel)]="reponse"
+        [cols]="40"
+        pInputTextarea
+      ></textarea>
+    </div>
+  </div>
+
+  <div align="center" [hidden]="!sujetSelectionne">
+    <button
+      pButton
+      type="button"
+      id="btValiderTravaux"
+      (click)="validerTravauxEtTransferts($event)"
+      label="VALIDER LES TRAVAUX ET LES TRANSFERTS"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <!--
+<p-toast
+  position="center"
+  key="c"
+  (onClose)="onReject()"
+  [modal]="false"
+  [baseZIndex]="5000"
+>
+  <ng-template let-message pTemplate="message">
+    <div style="text-align: center;">
+      <i class="pi pi-exclamation-triangle" style="font-size: 3em;"></i>
+      <h3>{{ message.summary }}</h3>
+      <p>{{ message.detail }}</p>
+    </div>
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-6">
+        <button
+          type="button"
+          pButton
+          (click)="onConfirm()"
+          label="Oui"
+          class="ui-button-success"
+        ></button>
+      </div>
+      <div class="ui-g-6">
+        <button
+          type="button"
+          pButton
+          (click)="onReject()"
+          label="Non"
+          class="ui-button-secondary"
+        ></button>
+      </div>
+    </div>
+  </ng-template>
+</p-toast>
+-->
+  <p-dialog
+    header="Impression des Factures à Termes"
+    [(visible)]="displayFact"
+    [style]="{ width: '80%', height: '70%' }"
+  >
+    <app-impressionfactures></app-impressionfactures>
+  </p-dialog>
+  <p-overlayPanel
+    #ov
+    [dismissable]="false"
+    [showCloseIcon]="true"
+    appendTo="body"
+    [style]="styleOvPanel"
+  >
+    <span> {{ msgs }} </span>
+  </p-overlayPanel>
+</div>

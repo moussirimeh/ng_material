@@ -1,0 +1,365 @@
+<p-blockUI [blocked]="blockedDocument"></p-blockUI>
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <mat-card>
+      <mat-card-content style="margin-top: -30px; margin-left: -8px;">
+        <h4>COMMANDE FOURNISSEUR</h4>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-2"><label>Situation:</label></div>
+              <div class="col-md-10">{{ situation }}</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="row" style="margin-top: 1px;">
+              <div class="col-md-2"><label>M. &nbsp;</label></div>
+              <div class="col-md-10">
+                <input
+                  type="text"
+                  size="40"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="deno"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <div class="row">
+              <div class="col-md-9">
+                <label>Numero :</label>
+              </div>
+              <div class="col-md-3">
+                <input
+                  id="num"
+                  type="search"
+                  maxlength="5"
+                  size="6"
+                  pInputText
+                  pKeyFilter="pint"
+                  [(ngModel)]="numero"
+                  (keyup.enter)="valid_prof_num($event)"
+                  (keypress)="ov.hide()"
+                  (keydown.backspace)="onBackspaceKeydown()"
+                  [(ngModel)]="numero"
+                  [disabled]="blockedDocument"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-2"><label>Date:&nbsp;</label></div>
+              <div class="col-md-8">
+                <input
+                  type="text"
+                  size="11"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="date"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="row">
+              <div class="col-md-4">
+                <label>Fournisseur:</label>
+              </div>
+
+              <div class="col-md-8">
+                <input
+                  type="text"
+                  size="8"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="codeFour"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-3"><label>Devise:</label></div>
+              <div class="col-md-7">
+                <input
+                  type="text"
+                  size="5"
+                  maxlength="3"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="devise"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="row" style="margin-top: 2px;">
+              <div class="col-md-2"><label>Ville :</label></div>
+              <div class="col-md-10">
+                <input
+                  type="text"
+                  size="40"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="adresse"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-3">
+                <label>Transporteur:</label>
+              </div>
+
+              <div class="col-md-9">
+                <input
+                  type="text"
+                  size="8"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="codeTransp"
+                />
+                <input
+                  type="text"
+                  size="37"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="denoTransp"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-2"></div>
+
+          <div class="col-md-4">
+            <div class="row" style="margin-top: 1px;">
+              <div class="col-md-2"><label>Adresse:</label></div>
+              <div class="col-md-10">
+                <input
+                  type="text"
+                  size="40"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="ville"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-3">
+                <label>Mode de paiement:</label>
+              </div>
+
+              <div class="col-md-9">
+                <input
+                  type="text"
+                  size="8"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="codeModeP"
+                />
+                <input
+                  type="text"
+                  size="37"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="denoModeP"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-2"></div>
+
+          <div class="col-md-4">
+            <div class="row" style="margin-top: 2px;">
+              <div class="col-md-2"><label>Banque:</label></div>
+              <div class="col-md-10">
+                <input
+                  type="text"
+                  size="4"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="codeBNQ"
+                />
+                <input
+                  type="text"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="denoBNQ"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-3"><label>Mode de livraison:</label></div>
+              <div class="col-md-9">
+                <input
+                  type="text"
+                  size="8"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="codeModeL"
+                />
+                <input
+                  type="text"
+                  size="37"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="denoModeL"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-4">
+            <div class="row" style="margin-top: 2px;">
+              <div class="col-md-2"><label>Livraison:</label></div>
+              <div class="col-md-10">
+                <input
+                  type="text"
+                  readonly="true"
+                  pInputText
+                  [(ngModel)]="date_liv"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <mat-card *ngIf="cardShow">
+    <mat-card-content style="margin-top: -30px; margin-left: -8px;">
+      <h4>COMMANDE</h4>
+      <div class="row">
+        <div class="col-md-10">
+          <div id="GridParent">
+            <ejs-grid
+              #gridCommande
+              [dataSource]="commande"
+              gridLines="Both"
+              height="250px"
+              [rowHeight]="25"
+              allowResizing= 'true'
+            >
+              <e-columns>
+                <e-column
+                  field="rang"
+                  headerText="N"
+                  isPrimaryKey="true"
+                  width="20"
+                ></e-column>
+                <e-column
+                  field="artcmd"
+                  headerText="CODE"
+                  [allowEditing]="false"
+                  width="50"
+                ></e-column>
+                <e-column
+                  field="design"
+                  headerText="Designation"
+                  width="60"
+                ></e-column>
+                <e-column field="qtecmd" headerText="Quantité" width="40">
+                </e-column>
+                <e-column field="prcmd" headerText="Prix HT" width="40">
+                </e-column>
+                <e-column
+                  field="livcmd"
+                  headerText="livré"
+                  width="40"
+                ></e-column>
+                <e-column
+                  headerText="A Livré"
+                  [valueAccessor]="alivre"
+                  [allowEditing]="false"
+                  width="40"
+                ></e-column>
+                <e-column
+                  field="arttotal"
+                  headerText="Total art"
+                  width="40"
+                ></e-column>
+              </e-columns>
+            </ejs-grid>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="row"><label>Montant/Devise</label></div>
+          <div class="row">
+            <input
+              type="text"
+              size="12"
+              pInputText
+              pKeyFilter="int"
+              [(ngModel)]="md_cmd"
+              readonly="true"
+            />
+          </div>
+          <div class="row"><label>Montant en DT</label></div>
+          <div class="row">
+            <input
+              type="text"
+              size="12"
+              pInputText
+              pKeyFilter="int"
+              [(ngModel)]="tot_cmd"
+            />
+          </div>
+          <div class="row mt-3"></div>
+          <div class="row mt-3"></div>
+          <div class="row mt-3"></div>
+          <div class="row">
+            <button
+              pButton
+              type="button"
+              label="Confirmer"
+              class="ui-button-raised"
+              (click)="confirmer()"
+            ></button>
+          </div>
+          <div class="row mt-3"></div>
+          <div class="row">
+            <button
+              pButton
+              type="button"
+              label="Annuler"
+              class="ui-button-raised"
+              (click)="annuler()"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

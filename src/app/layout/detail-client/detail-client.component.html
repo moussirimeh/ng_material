@@ -1,0 +1,294 @@
+<div class="row">
+  <div class="col-md-4" >
+    <div class="row" style="margin-bottom: 1%;">
+      <div class="col-md-2" >Zone:</div>
+      <div class="col-md-8"  style="margin-bottom: 1%;">
+        <ng-select
+          ngselect
+          [items]="listeZones"
+          bindLabel="deno"
+          bindValue="code"
+          [(ngModel)]="SelectedZones"
+          (open)="chargerZone()"
+          (change)="changeZones()"
+          [searchFn]="onSearchZones"
+          [disabled]="readonly"
+          style="height: 30px; min-height: 30px"
+          (clear)="SelectedZones=''"
+        >
+        </ng-select>
+        
+      </div>
+      <div class="col-md-2" ></div>
+  </div>
+  <div class="row" style="margin-bottom: 1%;">
+    <div class="col-md-2" >Groupe:</div>
+    <div class="col-md-8" style="margin-bottom: 1%;">
+      <ng-select
+              ngselect
+              [items]="listegroupe"
+              bindLabel="deno"
+              bindValue="code"
+              (open)="chargerGroupe()"
+              [(ngModel)]="Selectedgroupe"
+              (change)="changeGroupe()"
+              [searchFn]="onSearchGroupe"
+              [disabled]="readonly"
+              style="height: 30px; min-height: 30px"
+              (clear)="Selectedgroupe=''"
+            >
+      </ng-select>
+      
+    </div>
+    <div class="col-md-2" ></div>
+</div>
+<div class="row" style="margin-bottom: 1%;">
+  <div class="col-md-2" >TVA(Contient):</div>
+  <div class="col-md-8">
+    <input
+    type="text"
+    pInputText
+    [(ngModel)]="tva"
+    [disabled]="readonly"
+   />
+    
+  </div>
+  <div class="col-md-2" ></div>
+</div>
+  </div>
+  <div class="col-md-4" >
+    <div class="col-md-12" >
+      <mat-card>
+        <mat-card-content style="margin-top: -30px; margin-left: -8px;">
+          <h4>Selection par</h4>
+          
+            <div class="row p-field-radiobutton p-label-active">
+               <div class="col-md-1">
+                 <p-radioButton 
+                   name="typerech" 
+                   value="1"
+                   [(ngModel)]="radiobtn" 
+                   [disabled]="readonly"
+                   >
+                  </p-radioButton>
+               </div>
+               <div class="col-md-4">
+                  <label >Nom Client</label>
+              </div>
+              <div class="col-md-7">
+                <ng-select
+              ngselect
+              [items]="clients"
+              bindLabel="deno"
+              (open)="chargerClient()"
+              [(ngModel)]="SelectedClients"
+              (change)="changeClients()"
+              [searchFn]="onSearchClients"
+              [disabled]="readonly"
+              style="height: 30px; min-height: 30px"
+              (clear)="SelectedClients=''"
+              [hidden]="radiobtn=='2'"
+            >
+            </ng-select>
+              </div>
+
+            </div>
+  
+            <div class="row p-field-radiobutton p-label-active">
+               <div class="col-md-1">
+                 <p-radioButton 
+                   name="typerech" 
+                   value="2"
+                   [(ngModel)]="radiobtn" 
+                   [disabled]="readonly"
+                   >
+                  </p-radioButton>
+               </div>
+               <div class="col-md-4">
+                  <label >Code client</label>
+              </div>
+              <div class="col-md-7">
+                <ng-select
+              ngselect
+              [items]="clients"
+              bindLabel="code"
+              (open)="chargerClient()"
+              [(ngModel)]="SelectedClients"
+              (change)="changeClients()"
+              [searchFn]="onSearchClients"
+              [disabled]="readonly"
+              style="height: 30px; min-height: 30px"
+              (clear)="SelectedClients=''"
+              [hidden]="radiobtn=='1'"
+            >
+            </ng-select>
+              </div>
+            </div>
+  
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div class="col-md-4" >
+    <div class="row" style="margin-bottom: 1%;">
+      <div class="col-md-4" >CIN Gerant (Contient):</div>
+      <div class="col-md-6">
+        <input
+        type="text"
+        pInputText
+        [(ngModel)]="Cingerant"
+        [disabled]="readonly"
+       />
+        
+      </div>
+      <div class="col-md-2" ></div>
+    </div>
+    <div class="row" style="margin-bottom: 1%;">
+      <div class="col-md-4" >Nom Gerant (Contient):</div>
+      <div class="col-md-6">
+        <input
+        type="text"
+        pInputText
+        [(ngModel)]="nomgerant"
+        [disabled]="readonly"
+       />
+        
+      </div>
+      <div class="col-md-2" ></div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-10"></div>
+    <div class="col-md-1">
+      <button
+       pButton
+       id="btnAfficher"
+       (click)="Afficher($event)"
+       type="button"
+       label="Afficher"
+       class="ui-button-raised"
+       [hidden]='btnaff'
+      ></button>
+    </div>
+    <div class="col-md-1" >
+      <button
+       pButton
+       id="btnInitialiser"
+       (click)="Initialiser()"
+       type="button"
+       label="Initialiser"
+       class="ui-button-raised"
+       [hidden]='btnaff'
+      ></button>
+    </div>
+</div>
+<br>
+<div class="row" *ngIf="btnaff">
+  <ejs-grid id="ejs1" #grid [searchSettings]="searchOptions" [dataSource]="liste" [selectedRowIndex]="0" gridLines="Both"
+   (rowSelected)="rowSelected($event)" width="100%" [selectedRowIndex]="0" [allowExcelExport]="true" height="240"
+   rowHeight="40" (onmousedown)="annulerSelection()"
+   (mouseup)="annulerSelection()" (mousewheel)="annulerSelection()" gridLines="Both" style="border-bottom-width: 5%;">
+   <e-columns>
+     <e-column field="0" headerText="code_client" width="130"  headerTextAlign="center">
+     </e-column>
+     <e-column field="1" headerText="Nom_client" width="250"  headerTextAlign="center">
+     </e-column>
+    <e-column field="2" headerText="Nom_gerant" width="250"  headerTextAlign="center">
+    </e-column>
+    <e-column field="3" headerText="Cin_gerant" width="130"  headerTextAlign="center">
+    </e-column>
+    <e-column field="4" headerText="code_tva" width="200"  headerTextAlign="center">
+    </e-column>
+    <e-column field="5" headerText="CA_A_3" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="6" headerText="IMP_C_A_3" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="7" headerText="IMP_T_A_3" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="8" headerText="CA_A_2" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="9" headerText="IMP_C_A_2" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="10" headerText="IMP_T_A_2" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="11" headerText="CA_A_1" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="12" headerText="IMP_C_A_1" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="13" headerText="IMP_T_A_1" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="14" headerText="CA_A_C" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="15" headerText="IMP_C_A_C" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="16" headerText="IMP_T_A_C" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="17" headerText="Object" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="18" headerText="Creance" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="19" headerText="Reg_non_ech" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="20" headerText="BL_non_fact" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="21" headerText="Retard" width="100"  headerTextAlign="center">
+    </e-column>
+    <e-column field="22" headerText="Marge_a_c" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="23" headerText="Marge_a_1" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="24" headerText="Remise" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="25" headerText="Mode_reg" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="26" headerText="Plafond_gbl" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="27" headerText="Plafond_mois" width="150"  headerTextAlign="center">
+    </e-column>
+    <e-column field="28" headerText="Zone" width="250"  headerTextAlign="center">
+    </e-column>
+    <e-column field="29" headerText="Ville" width="200"  headerTextAlign="center">
+    </e-column>
+    <e-column field="30" headerText="Groupe" width="100"  headerTextAlign="center">
+    </e-column>
+   </e-columns>
+  </ejs-grid>
+</div>
+<br>
+
+<div class="row" *ngIf="btnaff">
+  <div class="col-md-2" style="max-width:12%;" >
+    <button
+    pButton
+    type="button"
+    label="Nouvelle Saisie"
+    class="ui-button-raised"
+    (click)="NouvelleListe()"
+   ></button>
+  </div>
+  <div class="col-md-8"></div>
+  <div class="col-md-2">
+    <button
+    pButton
+    type="button"
+    label="-->Excel"
+    class="ui-button-raised"
+    (click)="excelExport()"
+   ></button>
+  </div>
+</div>
+
+<p-overlayPanel
+#op
+[dismissable]="false"
+[showCloseIcon]="true"
+appendTo="body"
+[style]="{
+  'text-align': 'center',
+  'font-size': '14px',
+  'background-color': ' #f8b7bd'
+}"
+>
+<span> {{ msg }} </span>
+</p-overlayPanel>

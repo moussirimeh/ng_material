@@ -1,0 +1,51 @@
+<div>
+  &nbsp;
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-2">
+      Journées du :
+    </div>
+    <div class="col-md-2">
+      <p-calendar
+        [(ngModel)]="dateDebut"
+        [locale]="tn"
+        [inputStyle]="{ width: '100%' }"
+        dateFormat="dd/mm/yy"
+        [monthNavigator]="true"
+        [yearNavigator]="true"
+        yearRange="1980:2050"
+      ></p-calendar>
+    </div>
+    <div class="col-md-2">
+      <button
+        pButton
+        id="apercu"
+        type="button"
+        label="Visualiser"
+        (click)="imprimer(0,$event)"
+      ></button>
+    </div>
+    <div class="col-md-2">
+      <!--<button
+        pButton
+        id="apercu"
+        type="button"
+        label="Imprimer"
+        (click)="imprimer(1,$event)"
+      ></button>-->
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>
+<!--<div id="printablePdfContainer">
+  <iframe id="printablePdf" #iframe width="100%" height="100%"></iframe>
+</div>-->
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

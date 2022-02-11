@@ -1,0 +1,192 @@
+<div class="row" style="padding-bottom: 0.3%;">
+  <div class="col-md-1" style="max-width: 15%; padding-bottom: 0.3%;" >Client:</div>
+    <div class="col-md-3" style="  padding-bottom: 0.3%;"  >
+      <ng-select
+              ngselect
+              [items]="clients"
+              bindLabel="deno"
+              bindValue="code"
+              (open)="chargerClient()"
+              [(ngModel)]="SelectedClients"
+              (change)="changeClients()"
+              [searchFn]="onSearchClients"
+              [disabled]="readonly"
+              style="height: 30px; min-height: 30px"
+              (clear)="SelectedClients=''"
+            >
+            </ng-select>
+    </div>
+    <div class="col-md-1"  >Representant:</div>
+    <div class="col-md-3" style="max-width: 50%;">
+      <ng-select
+        ngselect
+        [items]="listeRepresan"
+        bindLabel="deno"
+        bindValue="code"
+        (open)="chargerRepresan()"
+        [(ngModel)]="SelectedRepresan"
+        (change)="changeRepresan()"
+        style="height: 30px; min-height: 30px"
+        [searchFn]="onSearchRepresan"
+        [disabled]="readonly"
+        (clear)="SelectedRepresan=''"
+      >
+      </ng-select>
+    </div>
+    <div class="col-md-2" style="max-width: 8.5%;" >A partir de :</div>
+    <div class="col-md-2" style="max-width: 20%;" >
+      <p-calendar
+      id="date1"
+      [disabled]="readonly"
+      [minDate]="minDate"
+      [(ngModel)]="datedebut"
+      dateFormat="dd/mm/yy"
+      [monthNavigator]="true"
+      [yearNavigator]="true"
+      [locale]="tn"
+      yearRange="1973:2999">
+     </p-calendar>
+    </div>
+    </div>
+<div class="row">
+  <div class="col-md-9"></div>
+    <div class="col-md-1">
+      <button
+       pButton
+       id="btnAfficher"
+       (click)="Afficher()"
+       type="button"
+       label="Afficher"
+       class="ui-button-raised"
+       [hidden]='disabledbtn==true'
+      ></button>
+    </div>
+    <div class="col-md-1">
+      <button
+       pButton
+       id="btnInitialiser"
+       (click)="Initialiser()"
+       type="button"
+       label="Initialiser"
+       class="ui-button-raised"
+       [hidden]='disabledbtn==true'
+      ></button>
+    </div>
+    <div class="col-md-1">
+      <button
+       pButton
+       id="btnExcl"
+       (click)="Excel()"
+       type="button"
+       label="-->Excel"
+       class="ui-button-raised"
+      ></button>
+    </div>
+</div><br>
+<div class="row">
+  <ejs-grid id="ejs1" #grid [searchSettings]="searchOptions" [dataSource]="listeTablevisit" [selectedRowIndex]="0" gridLines="Both"
+  width="99%" [selectedRowIndex]="0" [allowExcelExport]="true" height="340"
+   rowHeight="40"  gridLines="Both" style="border-bottom-width: 5%;">
+   <e-columns>
+     <e-column field="designClt" headerText="Design_clt" width="90"  headerTextAlign="center">
+     </e-column>
+    <e-column field="repClt" headerText="Rep_clt" width="70"  headerTextAlign="center">
+    </e-column>
+    <e-column field="nbVisit" headerText="Nbvisit" width="60"  headerTextAlign="center">
+      <ng-template #template let-listeTablevisit>
+        <p style="text-align: right; margin: auto; ">
+          {{ listeTablevisit.nbVisit }}
+        </p>
+      </ng-template>
+    </e-column>
+    <e-column field="nbOfr" headerText="NbOfr" width="50"  headerTextAlign="center">
+      <ng-template #template let-listeTablevisit>
+        <p style="text-align: right; margin: auto; ">
+          {{ listeTablevisit.nbOfr }}
+        </p>
+      </ng-template>
+    </e-column>
+    <e-column field="valOfr" headerText="ValOfr" width="55"  headerTextAlign="center">
+      <ng-template #template let-listeTablevisit>
+        <p style="text-align: right; margin: auto; ">
+          {{ listeTablevisit.valOfr }}
+        </p>
+      </ng-template>
+    </e-column>
+    <e-column field="valsatisf" headerText="ValStf" width="50"  headerTextAlign="center">
+      <ng-template #template let-listeTablevisit>
+        <p style="text-align: right; margin: auto; ">
+          {{ listeTablevisit.valsatisf }}
+        </p>
+      </ng-template>
+    </e-column>
+    <e-column field="objectif" headerText="Objectif" width="60"  headerTextAlign="center">
+      <ng-template #template let-listeTablevisit>
+        <p style="text-align: right; margin: auto; ">
+          {{ listeTablevisit.objectif }}
+        </p>
+      </ng-template>
+    </e-column>
+    <e-column field="caAnC" headerText="Ca_an_c" width="60"  headerTextAlign="center">
+      <ng-template #template let-listeTablevisit>
+        <p style="text-align: right; margin: auto; ">
+          {{ listeTablevisit.caAnC }}
+        </p>
+      </ng-template>
+    </e-column>
+    <e-column field="caAn1" headerText="Ca_an_1" width="60"  headerTextAlign="center">
+      <ng-template #template let-listeTablevisit>
+        <p style="text-align: right; margin: auto; ">
+          {{ listeTablevisit.caAn1 }}
+        </p>
+      </ng-template>
+    </e-column>
+    <e-column field="caAn2" headerText="Ca_an_2" width="60"  headerTextAlign="center">
+      <ng-template #template let-listeTablevisit>
+        <p style="text-align: right; margin: auto; ">
+          {{ listeTablevisit.caAn2 }}
+        </p>
+      </ng-template>
+    </e-column>
+    <e-column field="creance" headerText="Creance" width="60"  headerTextAlign="center">
+      <ng-template #template let-listeTablevisit>
+        <p style="text-align: right; margin: auto; ">
+          {{ listeTablevisit.creance }}
+        </p>
+      </ng-template>
+    </e-column>
+    <e-column field="retard" headerText="Retard" width="60"  headerTextAlign="center">
+      <ng-template #template let-listeTablevisit>
+        <p style="text-align: right; margin: auto; ">
+          {{ listeTablevisit.retard }}
+        </p>
+      </ng-template>
+    </e-column>
+   </e-columns>
+  </ejs-grid>
+</div><br>
+<div class="row">
+  <div class="col-md-2" style="max-width: 12%;">
+    <button
+     pButton
+     id="btnAjouter"
+     type="button"
+     (click)="nouvelleSaisie()"
+     label="Nouvelle Saisie"
+     class="ui-button-raised"
+     [hidden]='disabledbtn==false'
+    ></button>
+  </div>
+  <div class="col-md-1">
+    <button
+     pButton
+     id="btnAjouter"
+     type="button"
+     label="Aperçu"
+     class="ui-button-raised"
+     (click)="Apercu()"
+     [hidden]='disabledbtn==false'
+    ></button>
+  </div>
+  <div class="col-md-9"></div>
+</div>

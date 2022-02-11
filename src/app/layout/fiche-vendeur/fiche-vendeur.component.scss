@@ -1,0 +1,38 @@
+.e-headertext {
+    font-size: 15px;
+}
+.e-grid .e-rowcell.customcss{
+    font-size: 14px;
+    color: black;
+}
+
+
+.e-grid-min-height .e-summarycell {
+    line-height: normal;
+    padding: 12px 8px;
+}
+
+.e-grid .e-summarycell {
+    border-style: solid;
+    border-width: 1px 0 0;
+    font-size: 13px;
+    font-weight: bold;
+    height: auto;
+    line-height: 18px;
+    padding: 8px 21px;
+    white-space: normal;
+    word-wrap: break-word;
+    color: black;
+}
+
+
+p-panel{
+    width: 100%;
+}
+p {
+    margin-top: 20%;
+    margin-bottom: 1rem;
+  }
+  span{
+      font-weight: bold;
+  }

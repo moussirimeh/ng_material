@@ -1,0 +1,174 @@
+<p-card class="cardContainer">
+  <div class="principale" [ngClass]="{ disableDiv: progressVisible }">
+    &nbsp;
+    <div class="row" style="height: 30px;" *ngIf="relve">
+      <div class="col-md-1">
+        <p-checkbox [(ngModel)]="dateChecked" binary="true"></p-checkbox>
+        &nbsp; Date
+      </div>
+      <div class="col-md-4">
+        <p-calendar
+          [(ngModel)]="date"
+          dateFormat="dd/mm/yy"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          yearRange="1980:2050"
+          showButtonBar="true"
+          *ngIf="dateChecked"
+          [locale]="tn"
+        ></p-calendar>
+      </div>
+      <div class="col-md-6"></div>
+    </div>
+    &nbsp;
+    <div class="row" *ngIf="relve">
+      <div class="col-md-1">Client :</div>
+      <div class="col-md-8">
+        <ng-select
+          ngselect
+          [items]="clients"
+          bindLabel="deno"
+          [(ngModel)]="selectedClient"
+          [disabled]="afficherClicked"
+          style="width: 60%;"
+          [searchFn]="onSearchClient"
+        >
+        </ng-select>
+        <div class="col-md-2"></div>
+      </div>
+    </div>
+    &nbsp;
+    <div class="row">
+      <div class="col-md-auto">
+        <p-checkbox
+          [(ngModel)]="numChecked"
+          binary="true"
+          [disabled]="numDisable"
+        ></p-checkbox>
+        &nbsp; Numéros entre :
+      </div>
+      <div class="col-md-1">
+        <input
+          pInputText
+          id="num1"
+          size="5"
+          maxlength="5"
+          minlength="5"
+          [(ngModel)]="numero1"
+          [disabled]="numDisable"
+          (keyup.enter)="focusNextInput(0)"
+          (keypress)="ov.hide()"
+        />
+      </div>
+      <div class="col-md-auto">
+        et
+      </div>
+      <div class="col-md-1">
+        <input
+        id="num2"
+          pInputText
+          size="5"
+          maxlength="5"
+          minlength="5"
+          [(ngModel)]="numero2"
+          [disabled]="numDisable"
+          (keypress)="ov.hide()"
+          (keyup.enter)="focusNextInput(1)"
+        />
+      </div>
+      <div class="col-md-3"></div>
+      <div class="col-md-4">
+        <button
+        id="btAfficher"
+          color="primary"
+          class="mat-raised-button mat-primary"
+          ng-reflect-color="primary"
+          (click)="afficher()"
+          *ngIf="relve"
+        >
+          Afficher
+        </button>
+      </div>
+    </div>
+    &nbsp;
+    <div>
+      <p-panel header="Liste des factures">
+        <div style="height: 45%;">
+          <ejs-grid
+            #grid
+            id="grid"
+            [dataSource]="factures"
+            height="180"
+            (mouseup)="annulerSelection()"
+            (mousewheel)="annulerSelection()"
+            gridLines="Both"
+            [rowHeight]="30"
+            allowResizing= 'true'
+          >
+            <e-columns>
+              <e-column
+                field="numero"
+                headerText="Numero"
+                textAlign="Left"
+                width="80"
+              >
+              </e-column>
+              <e-column
+                field="date"
+                headerText="Date"
+                textAlign="Left"
+                width="80"
+              ></e-column>
+              <e-column
+                field="operateur"
+                headerText="Client"
+                textAlign="Left"
+                width="80"
+              ></e-column>
+              <e-column
+                field="deno"
+                headerText="Nom Client"
+                textAlign="Left"
+                width="200"
+              ></e-column>
+              <e-column
+                field="net"
+                headerText="Montant"
+                textAlign="Right"
+                width="80"
+              ></e-column>
+            </e-columns>
+          </ejs-grid>
+          &nbsp;
+          <div class="row">
+            <div class="col-md-10"></div>
+            <div class="col-md-2">
+              <button
+              id="apercu"
+                color="primary"
+                class="mat-raised-button mat-primary"
+                ng-reflect-color="primary"
+                (click)="imprimer($event)"
+              >
+                Visualiser
+              </button>
+            </div>
+          </div>
+        </div>
+      </p-panel>
+    </div>
+  </div>
+  <p-progressBar
+    [value]="progressValue"
+    *ngIf="progressVisible"
+  ></p-progressBar>
+</p-card>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

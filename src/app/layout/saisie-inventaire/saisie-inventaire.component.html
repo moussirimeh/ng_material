@@ -1,0 +1,216 @@
+<div [ngClass]="{ disableDiv: disableGrid }">
+  <input
+    pInputText
+    id="rechCode"
+    (keydown.enter)="rechArticle($event.target.value)"
+    [(ngModel)]="rechCode"
+    placeholder="Recherche par Référence"
+    type="search"
+    size="20"
+  />
+  <ejs-grid
+      id="ejs1"
+      #grid
+      gridLines="Both"
+      width="50%"
+      [dataSource]="listeReference"
+      height="200"
+      rowHeight="20"
+      (recordDoubleClick)="ajouterArt()"
+      (onmousedown)="annulerSelection()"
+      (mouseup)="annulerSelection()"
+      (mousewheel)="annulerSelection()"
+      (dataBound)="dataBound($event)"
+      gridLines="Both"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column
+          field="code"
+          headerText="Référence"
+          width="160"
+        ></e-column>
+        <e-column
+          field="design"
+          headerText="Désignation"
+          width="240"
+        >
+        </e-column>
+      </e-columns>
+    </ejs-grid>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <div class="row" style="margin-bottom: 1%" [hidden]="!disableGrid">
+      <div class="col-md-2" style="max-width: 15%">Référence :</div>
+      <div class="col-md-6">
+        {{SelectedRef.code}}
+       <!-- <input
+          type="text"
+          pInputText
+          [(ngModel)]="SelectedRef.code"
+          [readOnly]="true"
+        />
+        <ng-select
+      ngselect
+      #ngSelectRef
+      [items]="listeReference"
+      (keyup.enter)="rechArticle($event.target.value)"
+      bindLabel="code"
+      [searchable]="true"
+      bindvalue="code"
+      [(ngModel)]="SelectedRef"
+      (change)="changeReference()"
+      [searchFn]="onSearchReference"
+      [disabled]="readonly"
+      (clear)="btnaff=false ; btnNon=false ; btnYes = false ; libelle=''"
+
+      >
+      </ng-select>
+        <p-autoComplete
+          [(ngModel)]="rechCode"
+          [suggestions]="listeReference"
+          (keyup.enter)="fliterByCode($event)"
+          [dropdown]="true"
+          field="code"
+          (click)="fliterByCode($event)"
+          (onSelect)="selectArt($event)"
+        ></p-autoComplete>-->
+      </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 1%" [hidden]="!disableGrid">
+      <div class="col-md-2" style="max-width: 15%">Libelle :</div>
+      <div class="col-md-6">
+        {{SelectedRef.design}}
+        <!--<input
+          type="text"
+          pInputText
+          [(ngModel)]="SelectedRef.design"
+          [readOnly]="true"
+          
+          style="height: 30px; min-height: 30px; width: 100%"
+        />-->
+      </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 1%" [hidden]="!btnaff">
+      <div class="col-md-2" style="max-width: 15%">Emplacement :</div>
+      <div class="col-md-4">
+        <input
+          id="inputemp"
+          type="text"
+          pInputText
+          (keydown.enter)="PassQt()"
+          [disabled]="readonly"
+          [(ngModel)]="emplacement"
+          maxlength="6"
+          style="height: 30px; min-height: 30px; width: 30%"
+        />
+      </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 1%" *ngIf="btnaff">
+      <div class="col-md-2" style="max-width: 15%">Quantité :</div>
+      <div class="col-md-4" >
+        <input
+          id="inputqte"
+          type="text"
+          pInputText
+          (focus)="$event.target.select()"
+          (keydown.enter)="Passvalid()"
+          [disabled]="readonly"
+          [(ngModel)]="qte"
+          pKeyFilter="pnum"
+          style="height: 30px; min-height: 30px; width: 30%"
+        />
+      </div>
+      <div class="col-md-1">
+        <button
+          pButton
+          id="btn"
+          type="button"
+          label="Valider"
+          class="ui-button-raised"
+          (click)="valider()"
+          [hidden]="btnvalid"
+        ></button>
+      </div>
+      <div class="col-md-1">
+        <button
+          pButton
+          id="btn"
+          type="button"
+          label="Annuler"
+          class="ui-button-raised"
+          (click)="initialiser()"
+          [hidden]="btnvalid"
+        ></button>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="btnNon">
+      <div class="col-md-6">
+        <label style="color: red">Cette référence n'est pas inventorie </label>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="btnYes">
+      <div class="col-md-6">
+        <label
+          >Cette référence est inventorie dans les Emplacements suivants
+          :</label
+        >
+      </div>
+    </div>
+
+    <div class="row" *ngIf="btnYes">
+      <ejs-grid
+        id="ejs1"
+        #grid1
+        [searchSettings]="searchOptions"
+        [dataSource]="liste"
+        [selectedRowIndex]="0"
+        gridLines="Both"
+        width="100%"
+        [selectedRowIndex]="0"
+        height="100%"
+        rowHeight="40"
+        [allowExcelExport]="true"
+        gridLines="Both"
+        allowResizing="true"
+      >
+        <e-columns>
+          <e-column
+            field="combine"
+            headerText="Emplacement"
+            width="40%"
+            headerTextAlign="center"
+          >
+          </e-column>
+          <e-column
+            field="quantite"
+            headerText="Quantité"
+            width="50%"
+            headerTextAlign="center"
+          >
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+</div>
+
+<p-overlayPanel
+  #op
+  appendTo="body"
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span style="width: 138%"> {{ msg }} </span>
+</p-overlayPanel>

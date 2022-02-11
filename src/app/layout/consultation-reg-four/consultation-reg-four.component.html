@@ -1,0 +1,148 @@
+<div class="row"  >
+    
+  <div class="col-md-12" >
+                    <p-fieldset legend=""   >
+                            <div class="row">
+                                <div class="col-md-1">Début :</div>
+                                <div class="col-md-2">
+                                    <p-calendar 
+                                    [locale]="tn"
+                                    [(ngModel)]="datedebut"
+                                    [yearNavigator]="true"
+                                    [monthNavigator]="true"
+                                    yearRange="2017:2999"
+                                    dateFormat="dd/mm/yy "   
+                                    [disabled]="readOnly" 
+                                    
+                                    > 
+                                  </p-calendar>
+
+                                  
+                                </div>
+                                <div class="col-md-1">Fin :</div>
+                                <div class="col-md-2">
+                                    <p-calendar 
+                                    [locale]="tn"
+                                    [(ngModel)]="datefin"
+                                    [yearNavigator]="true"
+                                    [monthNavigator]="true"
+                                    yearRange="2017:2999"
+                                    dateFormat="dd/mm/yy " 
+                                    [disabled]="readOnly"   
+                                    
+                                    > 
+                                  </p-calendar>
+
+                                  
+                                </div>
+                                <div class="col-md-1">Fournisseur:</div>
+                                <div class="col-md-1">  {{codeFour}}  </div>
+                                <div class="col-md-2">   <ng-select
+                                  ngselect
+                                  id="frns" 
+                                  [items]="fournisseurs"                              
+                                  bindLabel="deno"                        
+                                  placeholder="choisir un fournisseur"
+                                  [searchFn]="onSearchFournisseur"
+                                  [(ngModel)]="selectedFournisseur"
+                                  (change)="changeFournisseur()"
+                                  [disabled]="readOnly">
+                              </ng-select>
+                            </div>  
+                            <div class="col-md-1" >  </div>                  
+                         </div>
+                         
+                         <div class="row" >
+                            <div class="col-md-2"  >
+                              <p-fieldset  legend="Reglement"  >
+                               <div class="row"> <p-radioButton name="group1" value="O" [(ngModel)]="ReglementValue" label="Reglé" [disabled]="readOnly"></p-radioButton></div> 
+                               <div class="row"> <p-radioButton name="group1" value="N" [(ngModel)]="ReglementValue" label="Non Reglé" [disabled]="readOnly"></p-radioButton></div>
+                               <div class="row"> <p-radioButton name="group1" value="" [(ngModel)]="ReglementValue" label="Tout" [disabled]="readOnly"></p-radioButton></div>
+                              </p-fieldset>
+                            </div>
+                            <div class="col-md-1"></div>
+                            <div class="col-md-2">
+                              <p-fieldset legend="Reception">
+                                <div class="row"> <p-radioButton name="group2" value="O" [(ngModel)]="ReceptionValue" label="Reçu" [disabled]="readOnly"></p-radioButton></div>
+                                <div class="row"> <p-radioButton name="group2" value="N" [(ngModel)]="ReceptionValue" label="Non Reçu" [disabled]="readOnly"></p-radioButton></div>
+                                <div class="row"> <p-radioButton name="group2" value="" [(ngModel)]="ReceptionValue" label="Tout" [disabled]="readOnly"></p-radioButton></div>
+                              </p-fieldset>
+                            </div>
+                            <div class="col-md-3"></div>
+                            <div class="col-md-1" *ngIf="this.visibleBtnAfficher"><br> <br><br> <p-button class="center"  (click)="init()" id="init" label="initialiser" styleClass="ui-button-info" ></p-button>
+                            </div>
+                            <div class="col-md-1" *ngIf="this.visibleBtnAfficher"><br> <br><br> <p-button class="center"  (click)="afficher($event)" id="affb" label="afficher" styleClass="ui-button-info" ></p-button>
+                            </div>
+                            <div class="col-md-2"></div>
+                         </div>
+                    </p-fieldset>
+</div>
+</div>
+
+<div>
+  <br>
+  <div class="row"  >
+      
+    <div class="col-md-12" *ngIf="affichergrid" >
+                      
+                              <div class="row">
+                                
+                                  <ejs-grid #grid [dataSource]="liste" gridLines='Both'
+                                  height="300" width="99%"
+                                 
+                                  allowResizing= "true"
+                                  rowHeight='30'
+                                 
+                                 
+                                  >               
+                                         <e-columns   >
+                                           <e-column field="denofour"      headerText="Fournisseur"  width="15%"  [customAttributes]="customAttributes"  BackgroundColor="Gray" ></e-column>
+                                           <e-column field="numeroAch0"        headerText="Numéro"   width="11%"    [customAttributes]="customAttributes"></e-column>
+                                           <e-column field="dateAch0"    headerText="Date fre" width="10%"  [customAttributes]="customAttributes"></e-column>
+                                           <e-column field="echeanceAch0"      headerText="Echéance" width="10%"  [customAttributes]="customAttributes"></e-column>
+                                           <e-column field="dat_reglAch0"     headerText="Date regl" width="10%" [customAttributes]="customAttributes"></e-column>   
+                                           <e-column field="banque"      headerText="Banque" width="15%" [customAttributes]="customAttributes"></e-column>
+
+                                           <e-column field="netAch0"    headerText="Mnt en dinars" width="12%"   [customAttributes]="customAttributes">
+                                            <ng-template #template let-liste>
+                                              <div style="text-align: right;">{{liste.netAch0}}</div>
+                                          </ng-template>
+                                        </e-column>  
+
+                                           <e-column field="mntDeviseAch0"    headerText="Mnt Devise" width="12%"   [customAttributes]="customAttributes">
+                                            <ng-template #template let-liste>
+                                              <div style="text-align: right;">{{liste.mntDeviseAch0}}</div>
+                                          </ng-template>
+                                        </e-column>  
+
+                                           <e-column field="deviseAch0"       headerText="Devise" width="8%" [customAttributes]="customAttributes"></e-column>                                    
+                                           <e-column field="retard"        headerText="Retard" width="9%" [customAttributes]="customAttributes"></e-column> 
+                                           <e-column field="regle"    headerText="Reglé" width="9%" [customAttributes]="customAttributes"></e-column> 
+                                           <e-column field="recu"    headerText="Recu" width="9%" [customAttributes]="customAttributes"></e-column> 
+                                          </e-columns>
+                                  </ejs-grid>
+  
+  
+
+                                </div>
+  
+                               
+                    
+  </div>
+  </div>
+<br>
+  <div class="row">
+      <div class="col-md-2" *ngIf="btnnvlsaisie"><p-button class="center"  (click)="NouvelleSaisie()" id="aff" label="Nouvelle saisie" styleClass="ui-button-info" ></p-button></div>
+      <div class="col-md-3"></div>
+      <div class="col-md-2" *ngIf="btnnvlsaisie"><p-button class="center"  (click)="visualiser()" id="aff" label="aperçu" styleClass="ui-button-info" ></p-button></div>
+      <div class="col-md-3"></div>
+      <div class="col-md-2"*ngIf="btnnvlsaisie"> <p-button class="center"  (click)="genererExcel()" id="aff" label="Excel" styleClass="ui-button-info" ></p-button></div>
+
+
+  </div>
+
+
+
+  <p-overlayPanel [dismissable]="false"  #op appendTo="body" [showCloseIcon]="true" [style]="{'text-align': 'center', 'background-color': '#f8b7bd'}" >
+    <span>{{ msgerror}}  </span> 
+</p-overlayPanel>

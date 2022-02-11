@@ -1,0 +1,108 @@
+<br /> <br />
+
+<div class="row">
+  <div class="col-md-1">
+    <p style="font-size: 16px; font-weight: bold;">Fournisseurs</p>
+  </div>
+  <div class="col-md-4">
+    <ng-select
+      ngselect
+      [items]="fournisseurs"
+      bindLabel="deno"
+      [(ngModel)]="SelectedFournisseur"
+      (change)="changeFournisseur()"
+      [searchFn]="onSearchFournisseur"
+      [disabled]="readonly"
+      placeholder="Veuiller choisir un fournisseur"
+    >
+    </ng-select>
+  </div>
+  <div class="col-md-1"></div>
+  <div class="col-md-1" *ngIf="btnaffich">
+    <button id="btnaffich"  style="font-size: 14px;" pButton type="button" label="Afficher"
+                  (click)="Afficher($event)" class="ui-button-raised ">
+      </button>
+  </div>
+  <div class="col-md-1" >
+    <button id="excel"  style="font-size: 14px;" pButton type="button" label="Excel"
+                  (click)=" genererExcel($event)" class="ui-button-raised ">
+                </button>
+  </div>
+ 
+  <div class="col-md-4"></div>
+</div>
+
+<br>
+
+<div class="row" style="margin-top: 0.5%;" *ngIf="affichgrid === true">
+  <div class="col-md-12">
+    <!-- <ng-template #template let-achats>
+                      <div style="text-align: right;">{{achats.quantiteMouve}}</div>
+                  </ng-template>-->
+    <ejs-grid 
+               #grid 
+                gridLines='Both'  width="100%"
+                [dataSource]="deficits" height="330"  [rowHeight]="33"  gridLines='Both' allowResizing= 'true'>
+                <e-columns>
+                  <e-column field="code" headerText="Code" width="130"
+                    [customAttributes]="customAttributes"></e-column>
+                  <e-column field="commande" headerText="Commande" width="90" [customAttributes]="customAttributes">
+                  </e-column>
+                  <e-column field="date" headerText="Date " width="140"
+                    [customAttributes]="customAttributes"></e-column>
+                  <e-column field="operateur" headerText="Opérateur" width="80" [customAttributes]="customAttributes">
+                   
+                  </e-column>
+                  <e-column field="deno" headerText="Dénomination" width="250" [customAttributes]="customAttributes">
+                       
+                   
+                  
+                  </e-column>
+                  <e-column field="debit" headerText="Débit" width="120"
+                    [customAttributes]="customAttributes"></e-column>
+                    <e-column field="credit" headerText="Crédit" width="120"
+                    [customAttributes]="customAttributes"></e-column>
+                  
+                
+                </e-columns>
+              </ejs-grid>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-2">
+    <button *ngIf="btnNvlSais"  id="btnNvlsaisie"  style="font-size: 14px;" pButton type="button" label="Nouvelle saisie"
+                  (click)="NouvelleSaisie($event)" class="ui-button-raised ">
+      </button>
+  </div>
+  <div class="col-md-10"></div>
+
+
+ 
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p-overlayPanel
+  #ovo
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{msg}} </span>
+</p-overlayPanel>

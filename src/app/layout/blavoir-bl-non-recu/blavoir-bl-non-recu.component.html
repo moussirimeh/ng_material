@@ -1,0 +1,390 @@
+<div class="row">
+  <div class="col-md-2" style="max-width: 11%;">
+    <p>Date de début :</p>
+  </div>
+  <div class="col-md-2">
+    <p-calendar
+    [locale]="tn"
+    [disabled]="dateDisabled == true"
+    [(ngModel)]="from"
+    [maxDate]="maxDate"
+    [yearNavigator]="true"
+    [monthNavigator]="true"
+    yearRange="2000:2999"
+    dateFormat="dd/mm/yy"
+    [inputStyle]="{ width: '100px' }"
+  >
+  </p-calendar>
+  </div>
+  <div class="col-md-3" style="max-width: 9%;">
+    <p>Date de fin :</p>
+  </div>
+  
+  <div class="col-md-2">
+    <p-calendar
+        [locale]="tn"
+        [disabled]="dateDisabled == true"
+        [(ngModel)]="to"
+        [maxDate]="maxDate"
+        [yearNavigator]="true"
+        [monthNavigator]="true"
+        yearRange="2000:2999"
+        dateFormat="dd/mm/yy"
+        [inputStyle]="{ width: '100px' }"
+      >
+      </p-calendar>
+  </div>
+  <div class="col-md-1" >
+    <button
+      id="afficher"
+      style="font-size: 14px;"
+      pButton
+      type="button"
+      label="Afficher"
+      (click)="Afficher($event)"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-3"></div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-10" >
+      <div  class="row" style="color: red; font-size: 110%; font-weight: bold;">
+        <div class="col-md-3" > <h6>B/L Avoir Non Reçus</h6></div>
+      </div>
+     <ejs-grid
+      #grid     
+      [dataSource]="datasourceGrid"
+      [allowExcelExport]="true"
+      (dataBound)="selectFirstIndxGridObservNull($event)"
+      allowResizing= 'true'
+      height="130"
+      gridLines="Both"
+      allowTextWrap="true"
+      [rowHeight]="25"
+      allowResizing= 'true'
+     >
+      <e-columns>
+        <e-column
+        field="combine" headerText="Piéce"textAlign="Left" width="15" > </e-column>
+        <e-column
+        field="date" headerText="Date" textAlign="Left"  width="20" ></e-column>
+       
+        <e-column
+        field="denoClt" headerText="Nom Client" textAlign="Left" width="27" ></e-column>
+        <e-column
+        field="denoVend" headerText="Vendeur"textAlign="Left" width="30" > </e-column>
+        <e-column
+        field="net" headerText="Net " textAlign="Right" width="15" ></e-column>
+      </e-columns>
+     </ejs-grid>
+    </div>
+  
+  <div class="col-md-2"><br>
+      <div class="row"  *ngIf="affichBTn==true">
+      
+      </div>
+      <div class="row" *ngIf="affichBTn==true">
+       <div class="col-md-1"style="max-width: 33%;">Type</div>
+       <div class="col-md-8" >
+        <ng-select
+        ngselect     
+        [searchFn]="onSearchDeno"
+        autofocus
+        (change)="changeTypeObservNull($event)"
+        [items]="typeItems"
+        bindLabel="deno"
+        bindValue="id"
+        style="height: 30px; min-height: 30px"
+        [(ngModel)]="typeObservNull">
+       </ng-select>
+        </div> 
+      </div>
+      <div class="row" *ngIf="affichBTn==true">
+       <div class="col-md-1"style="max-width: 28%;">Numero</div>
+       <div class="col-md-8">
+        <input type="text" 
+        id="rechdocObservNull"
+        (change)="verifierNumero()"
+        (keyup.enter)="afficheritemeObservNull($event)"
+        [(ngModel)]="NumeroObservNull"
+        size="14"
+        pInputText  />
+        </div>
+      </div>
+      <div class="row" *ngIf="affichBTn==true">
+        <div class="col-md-4"> </div>
+        <div class="col-md-3">
+        <button
+        pButton
+        type="button"
+        (click)="afficheritemeObservNull($event)"
+        label="Afficher"
+        class="ui-button-raised"
+        style="font-size: 14px;"
+        ></button>
+       </div>
+       <div class="col-md-5"> </div>
+      </div> <br>
+
+      <div class="row">
+        <div class="col-md-1"> </div> 
+        <div class="col-md-2">
+         <button
+          pButton
+          type="button"
+          id="btn"
+          label="Apercu"
+          class="ui-button-raised"
+          style="margin: auto;"
+          (click)="ApercuobservNull($event)"
+         ></button>
+        </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="col-md-2" >
+          <button
+           pButton
+           type="button"
+           (click)="gererExcelobsNull()" 
+           label="Excel"
+           class="ui-button-raised"
+           style="margin: auto;"
+          ></button>
+         </div> 
+         </div>
+
+      
+
+
+
+         <div class="row">
+          <div class="col-md-1"> </div> 
+         <div class="col-md-2" style="margin-right: -4%;" *ngIf="affichBTn==true&&societeChamem==false">Total: </div>&nbsp;&nbsp;&nbsp;
+          <div class="col-md-2">{{somlisteObservNull}} </div> 
+          <div class="col-md-7" ></div>
+        </div>
+  </div></div>
+  
+  
+  <div class="row">
+    <div class="col-md-10" >
+      <div  class="row" style="color: red; font-size: 110%; font-weight: bold;">
+      <div class="col-md-3" > <h6>B/L Avoir Reçus</h6></div>
+      </div>
+     <ejs-grid
+      #grid2
+      (recordDoubleClick)="doubleclickGridObservL($event)"
+      (rowSelected)="rowSelectedDocument_GridObservL($event)"
+      (dataBound)="selectFirstIndxGridObservL($event)"
+      [dataSource]="datasourceGrid1"
+      [allowExcelExport]="true"
+      allowResizing= 'true'
+      height="130"
+      gridLines="Both"
+      allowTextWrap="true"
+      [rowHeight]="25"
+      allowResizing= 'true'
+     >
+     <e-columns>
+      <e-column
+      field="combine" headerText="Piéce"textAlign="Left" width="15"  > </e-column>
+      <e-column
+      field="date" headerText="Date" textAlign="Left" width="20"></e-column>
+     
+      <e-column
+      field="denoClt" headerText="Nom Client" textAlign="Left" width="27" ></e-column>
+      <e-column
+      field="denoVend" headerText="Vendeur"textAlign="Left" width="30" > </e-column>
+      <e-column
+      field="net" headerText="Net " textAlign="Right" width="18" ></e-column>
+    </e-columns>
+     </ejs-grid>
+    </div>
+  
+  <div class="col-md-2"><br>
+    
+      <div class="row"  *ngIf="affichBTn==true" >
+     
+      </div>
+      <div class="row" *ngIf="affichBTn==true">
+       <div class="col-md-1"style="max-width: 33%;">Type</div>
+       <div class="col-md-8">
+        <ng-select
+        ngselect
+        id="Rech doc"
+        [searchFn]="onSearchDeno"
+        style="height: 30px; min-height: 30px"
+        (change)="changeTypeObservL()"
+        [items]="typeItems"
+        bindLabel="deno"
+        bindValue="id"
+        style="height: 30px; min-height: 30px"
+        [(ngModel)]="typeObservL">
+       </ng-select>
+        </div> 
+      </div>
+      <div class="row" *ngIf="affichBTn==true">
+       <div class="col-md-1"style="max-width: 28%;">Numero</div>
+       <div class="col-md-8">
+        <input type="text" 
+        size="14"
+        id="rechdocObservL"
+        [(ngModel)]="NumeroObservL"
+        (change)="verifierNumeroL()"
+        (keyup.enter)="afficheritemeObservL($event)"
+        pInputText  />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4"> </div>
+        <div class="col-md-3"  *ngIf="affichBTn==true" >
+        <button
+        pButton
+        type="button"
+        (click)="afficheritemeObservL($event)"
+        label="Afficher"
+        textAlign="Center"
+        class="ui-button-raised"
+        style="margin: auto;"
+        ></button>
+       </div>
+       <div class="col-md-5"> </div>
+      </div> <br>
+
+      <div class="row">
+        <div class="col-md-1"> </div> 
+        <div class="col-md-2">
+         <button
+          pButton
+          type="button"
+          (click)="ApercuobservL($event)"
+          label="Apercu"
+          class="ui-button-raised"
+          style="margin: auto;"
+         ></button>
+        </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="col-md-2" >
+          <button
+           pButton
+           type="button"
+           label="Excel"
+           (click)="gererExcelobsl()" 
+           class="ui-button-raised"
+           style="margin: auto;"
+          ></button>
+         </div> 
+         </div>
+         
+         <div class="row">
+          <div class="col-md-1"> </div> 
+         <div class="col-md-2"style="margin-right: -4%;" *ngIf="affichBTn==true&&societeChamem==false" >Total: </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         <div class="col-md-2">{{somlisteObservL}} </div> 
+          
+          <div class="col-md-7"> </div> 
+        </div>
+        </div><br>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="row" *ngIf="societeChamem==false">
+    
+    <div class="col-md-10">
+      <div  class="row" style="color: red; font-size: 110%; font-weight: bold; margin-left: -1%; ">
+        <div class="col-md-5" > <h6>B/LAvoir Reçus Mais NON Facturable </h6></div>
+      </div>
+     <ejs-grid
+      #grid3
+    
+      (rowSelected)="rowSelectedDocument_GridObservS($event)"
+      [dataSource]="datasourceGrid2"
+      (dataBound)="selectFirstIndxGridObservS($event)"
+      [allowExcelExport]="true"
+      allowResizing= 'true'
+      height="130"
+      gridLines="Both"
+      allowTextWrap="true"
+      [rowHeight]="25"
+      allowResizing= 'true'
+      
+     >
+     <e-columns>
+      <e-column
+      field="combine" headerText="Piéce"textAlign="Left" width="15" > </e-column>
+      <e-column
+      field="date" headerText="Date" textAlign="Left"  width="20" ></e-column>
+     
+      <e-column
+      field="denoClt" headerText="Nom Client" textAlign="Left" width="27" ></e-column>
+      <e-column
+      field="denoVend" headerText="Vendeur"textAlign="Left" width="30" > </e-column>
+      <e-column
+      field="net" headerText="Net " textAlign="Right" width="15" ></e-column>
+    </e-columns>
+     </ejs-grid>
+     <div class="row">
+      <div class="col-md-4"></div> 
+    </div>
+    </div>
+  
+  <div class="col-md-2">
+    
+      <br> <br>
+      <div class="row">
+      <div class="col-md-1"></div>
+      <div class="col-md-2">
+        <button
+         pButton
+         type="button"
+         (click)="ApercuobservS($event)"
+         label="Apercu"
+         class="ui-button-raised"
+        
+        ></button>
+      </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      
+      <div class="col-md-2">
+         <button
+          pButton
+          type="button"
+          (click)="gererExcelobsS()" 
+          label="Excel"
+          class="ui-button-raised"
+         ></button>
+        </div> 
+        </div>
+      
+     
+
+         <div class="row">
+          <div class="col-md-1"> </div> 
+          <div class="col-md-2" style="margin-right: -4%;" *ngIf="affichBTn==true" >Total: </div>&nbsp;&nbsp;&nbsp;
+          <div class="col-md-2">{{somlisteObservS}}</div> 
+         
+          <div class="col-md-7" ></div>
+        </div>
+        </div>
+        </div>
+  
+  <p-overlayPanel #op appendTo="body" [dismissable]='false'  
+    [showCloseIcon]="true"
+    [style]="{'text-align': 'center', 'font-size':'14px' ,'background-color': ' #f8b7bd'}" >
+    <span style="width: 138%;"> {{msg}} </span>
+  </p-overlayPanel> 
+  

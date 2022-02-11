@@ -1,0 +1,178 @@
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-2">
+        <h3 style="color: #1611d2;">Feuille de Caisse du:</h3>
+      </div>
+      <div class="col-md-1">
+        <p-calendar
+          [(ngModel)]="dateFeuille"
+          [locale]="tn"
+          [maxDate]="maxDate"
+          [yearNavigator]="true"
+          [monthNavigator]="true"
+          yearRange="1900:2200"
+          dateFormat="dd/mm/yy"
+          [inputStyle]="{ width: '100px', height: '30px' }"
+        >
+        </p-calendar>
+      </div>
+
+      <div class="col-md-1">
+        <button
+          pButton
+          type="button"
+          label="Afficher"
+          (click)="afficher()"
+          *ngIf="afficherShow"
+          class="ui-button-raised"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <mat-card style="height: 250px;" *ngIf="afficherClicked">
+      <mat-card-content style="margin-top: -30px; margin-left: -8px;">
+        <h4>Feuille de caisse</h4>
+        <ejs-grid
+          #grid
+          [dataSource]="feuille"
+          gridLines="Both"
+          height="180px"
+          [rowHeight]="26"
+          allowResizing= 'true'
+        >
+          <e-columns>
+            <e-column
+              field="libelle"
+              headerText="Libelle"
+              width="140"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="date"
+              headerText="Date"
+              width="80"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="montant"
+              headerText="Montant"
+              width="80"
+              textAlign="Right"
+            ></e-column>
+            <e-column
+              field="mode"
+              headerText="Mode"
+              width="70"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="facture"
+              headerText="Facture"
+              width="70"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="cheque"
+              headerText="Cheque"
+              width="90"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="banque"
+              headerText="Banque"
+              width="70"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="echeance"
+              headerText="Echeance"
+              width="80"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="observation"
+              headerText="Observations"
+              width="160"
+              textAlign="Left"
+            ></e-column>
+          </e-columns>
+        </ejs-grid>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex>
+    <mat-card *ngIf="afficherClicked">
+      <mat-card-content style="font-family: -webkit-pictograph;">
+        <div class="col-md-3">
+          <div class="row">
+            <div class="col-md-6">
+              Total Recettes:
+            </div>
+            <div class="col-md-3">{{ totalRecettes }}</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="row">
+            <div class="col-md-6">
+              Total Dépenses:
+            </div>
+            <div class="col-md-3">
+              {{ totalDepenses }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-md-2">
+              Solde Caisse:
+            </div>
+            <div class="col-md-2">
+              {{ solde }}
+            </div>
+
+            <div class="col-md-2">
+              Espèce:
+            </div>
+            <div class="col-md-2">{{ espece }}</div>
+
+            <div class="col-md-2">
+              Chèque:
+            </div>
+            <div class="col-md-2">
+              {{ cheque }}
+            </div>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-2">
+            <button
+              pButton
+              type="button"
+              label="Valider"
+              (click)="valider()"
+              *ngIf="validershow"
+            ></button>
+          </div>
+          <div class="col-md-2">
+            <button
+              pButton
+              type="button"
+              label="Visualiser"
+              (click)="apercue()"
+            ></button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>

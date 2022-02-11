@@ -1,0 +1,115 @@
+
+
+
+    
+          <div class="row">
+            
+            <div class="col-md-2" style="font-weight: bold; font-size: 18px;">  Le numero:  </div>
+              <div class="col-md-2">   <input type="search" id='num' autofocus pInputText (change)="verifierNumero()"  (keyup.enter)="getByNumero($event)"   [(ngModel)]="numero" [readonly]="readonly" placeholder="saisir un numéro" />              
+              </div>                 
+          </div> 
+             
+    <br>          
+ <div *ngIf="afficherClicked">
+    <div [class.disabled-content]="!editEnable">
+                <div class="row">
+                      <p-panel   header="En-tete B/S "  >
+                        <div class="row">
+                                    <div class="col-md-1">Date:</div>
+                                    <div class="col-md-2">
+                                      <input type="search"  pInputText    [(ngModel)]="this.dateDOuvert" [readonly]="readonly"  />
+                                      <!-- (change)="changeLivreur()"-->
+                                    </div>
+                                      <div class="col-md-1">Livreur: </div>
+                                      <div class="col-md-3"><ng-select id='liv'
+                                        ngselect
+                                        [items]="livreurs"
+                                        bindLabel="nom"
+                                        [(ngModel)]="SelectedLivreur"
+                                        (change)="changeLivreur()"
+                                        (clear)="clearLivreur()"
+                                        [clearable]="clearv"
+                                        (search)="searchLivreur()"
+                                       
+                                        
+                                        
+                                        [searchFn]="onSearch"
+                                        placeholder="choisir un livreur"
+                                        
+                                      >
+                                      </ng-select></div>
+                                      <div class="col-md-2">Numero du camion:</div>
+                                      <div class="col-md-2"><input type="search" id='cam'   (search)="clickevnt()" (close)="clickevnt()"  pInputText 
+                                                            [(ngModel)]="this.elivraison.camuion" placeholder="saisir numéro du camion"  />
+                                                             
+                                                            </div>
+                        </div>
+                      </p-panel>
+                </div>
+
+
+
+              
+              
+               <div class="row">
+                      <p-panel   header=" Details B/S ">    
+                            <div class="row" class fxFlexFill fxLayoutAlign="center center" >       
+                                   <ejs-grid #grid [dataSource]="RecBonSorties" gridLines='Both'
+                                             [selectedRowIndex]="0"
+                                             allowResizing= 'true'
+                                             (rowSelected)="rowSelected()"
+                                              height="150" width="98%"
+                                              rowHeight='30'
+                                               >     
+                                          <e-columns>
+                                              <e-column field="piece"      headerText="Pièce" width="12%" [customAttributes]="customAttributes"  ></e-column>
+                                              <e-column field="date"       headerText="Date " width="13%" [customAttributes]="customAttributes"></e-column>
+                                              <e-column field="codeclt"    headerText="Code client " width="13%" [customAttributes]="customAttributes"></e-column>
+                                              <e-column field="nomclt"     headerText="Nom client" width="25%" [customAttributes]="customAttributes"></e-column>
+                                          
+                                              <e-column field="net"        headerText="Net"   width="12%" [customAttributes]="customAttributes">
+                                                <ng-template #template let-RecBonSorties>
+                                                  <div style="text-align: right;">{{RecBonSorties.net}}</div>
+                                              </ng-template>
+
+                                              </e-column>
+                                              <e-column field="vendeur"    headerText="Vendeur" width="18%" [customAttributes]="customAttributes"></e-column>
+                                              <e-column field="observlivr" headerText="Observation de livreur" width="23%" [customAttributes]="customAttributes"></e-column>
+                                              
+                                          </e-columns>
+                                     </ejs-grid>
+                              </div>
+                              <br>
+                              <div class="row"> 
+                                <div class="col-md-1"></div>
+                                    <div class="col-md-3"*ngIf="visible" >
+                                      <div [class.disabled-content]="!editEnable"  style="color:rgb(212, 71, 99);" >
+                                      <button pButton type="button"  style="background-color:rgb(212, 71, 99);" id="sup"  (click)="Supprimer($event)" label="Annuler la livraison"></button>
+                                    </div>
+                                    </div>
+                                    </div>
+                            </p-panel>
+                  </div>
+                            
+                      <br>
+                      <div class="row">
+                        
+                        <div class="col-md-1">
+                            <button pButton type="button" class="ui-button-raised" (click)="Valider($event)" label="Valider"></button>
+                          </div>
+                          <div class="col-md-1"></div>
+                          <div class="col-md-1">
+                            <button pButton type="button" class="ui-button-raised" (click)="anuulerModif()" label="Annuler"></button>
+                          </div>
+                          </div>
+
+   </div>
+ </div>
+
+
+
+                
+
+                <p-overlayPanel #op appendTo="body" [dismissable]="false" [showCloseIcon]="true"  [style]="{'text-align': 'center', 'font-size':'12px' , 'background-color': '#f8b7bd'}" >
+                  <span> {{msgerror}} </span>
+              </p-overlayPanel>

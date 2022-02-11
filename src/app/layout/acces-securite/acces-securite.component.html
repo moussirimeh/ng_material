@@ -1,0 +1,250 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-4">
+        <p>UTILISATEUR</p>
+      </div>
+      <div class="col-md-4">
+        <ng-select
+          ngselect
+          id="user"
+          [items]="listeUsers"
+          bindLabel="codeUtil"
+          (open)="chargerUsers()"
+          placeholder="choisir un code utilisateur"
+          [(ngModel)]="selectedUser"
+          (change)="changeUser()"
+          [searchFn]="onSearchUser"
+          [disabled]="readonly"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <p>DATE DEBUT</p>
+      </div>
+      <div class="col-md-4">
+        <p-calendar
+          id="date"
+          [disabled]="readonly"
+          [minDate]="minDate"
+          [(ngModel)]="datedebut"
+          dateFormat="dd/mm/yy"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [locale]="tn"
+          yearRange="2011:2999"
+        ></p-calendar>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <p>DATE FIN</p>
+      </div>
+      <div class="col-md-4">
+        <p-calendar
+          id="date"
+          [disabled]="readonly"
+          [(ngModel)]="datefin"
+          dateFormat="dd/mm/yy"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [locale]="tn"
+          yearRange="2000:2999"
+        ></p-calendar>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <p>OPERATION(Contient)</p>
+      </div>
+      <div class="col-md-8">
+        <input
+          class="form-control"
+          [readOnly]="readonly"
+          type="search"
+          placeholder="saisir l'operation"
+          style="width: 100%;"
+          pInputText
+          [(ngModel)]="operation"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <p>PARAMETRE(Contient)</p>
+      </div>
+      <div class="col-md-8">
+        <input
+          class="form-control"
+          [readOnly]="readonly"
+          type="search"
+          placeholder="saisir le paramètre"
+          style="width: 100%;"
+          pInputText
+          [(ngModel)]="parametre"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <mat-card style="width: 80%;">
+      <mat-card-content>
+        <div div class="row">
+          <div class="col-md-8">
+            <h4 class="first">TRI PAR</h4>
+            <div
+              class="ui-g"
+              style="width: 150px; margin-bottom: 10px; font-size: 13px;"
+            >
+              <div class="ui-g-12">
+                <p-radioButton
+                  
+                  (onClick)="chageTrieUser()"
+                  name="group1"
+                  value="utlst"
+                  label="UTILISATEUR"
+                  [(ngModel)]="trie"
+                  inputId="opt1"
+                ></p-radioButton>
+              </div>
+              <div class="ui-g-12">
+                <p-radioButton
+                  
+                  (onClick)="chageTrieDate()"
+                  name="group1"
+                  value="date"
+                  label="DATE"
+                  [(ngModel)]="trie"
+                  inputId="opt2"
+                ></p-radioButton>
+              </div>
+              <div class="ui-g-12">
+                <p-radioButton
+                  
+                  (onClick)="chageTrieOpert()"
+                  name="group1"
+                  value="opert"
+                  label="OPERATION "
+                  [(ngModel)]="trie"
+                  inputId="opt3"
+                ></p-radioButton>
+              </div>
+              <div class="ui-g-12">
+                <p-radioButton
+                  
+                  (onClick)="chageTrieParam()"
+                  name="group1"
+                  value="param"
+                  label="PARAMETRE"
+                  [(ngModel)]="trie"
+                  inputId="opt4"
+                ></p-radioButton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-md-1" >
+    <button id="init" [hidden]='hidden' style="margin-top: 80%;" pButton type="button" label="initialiser"
+                  (click)="init()" class="ui-button-raised ">
+                </button>
+  </div>
+  <div class="col-md-1"  >
+    <p-button [hidden]='hidden'
+      label="Afficher"
+      (click)="Afficher($event)"
+      id="affiche"
+      style="margin-top: 80%;"
+    ></p-button>
+  </div>
+
+<!--  [hidden]='hidden' -->
+  <div class="col-md-1"  >
+    <p-button
+      label="Excel"
+      (click)="excel($event)"
+      id="excel"
+      style="margin-top: 80%;"
+    ></p-button>
+  </div>
+
+ 
+</div>
+
+<div class="row" *ngIf="valide === true" style="margin-top: 1%;">
+  <div class="col-md-12">
+    <ejs-grid
+      #grid
+      gridLines="Both"
+      width="98%"
+      [dataSource]="acces"
+      height="280"
+      rowHeight="40"
+      allowResizing= 'true'
+    >
+      <e-columns>
+        <e-column
+          field="mCodeUt"
+          headerText="UTILIS"
+         
+          [customAttributes]="customAttributes"
+        ></e-column>
+        <e-column
+          field="date"
+          headerText="DATE ET TEMPS"
+          
+          [customAttributes]="customAttributes"
+        ></e-column>
+        <e-column
+          field="mCodeOp"
+          headerText="OPERATION"
+          
+          [customAttributes]="customAttributes"
+        ></e-column>
+        <e-column
+          field="mParam"
+          headerText="PARAMETRE"
+         
+          [customAttributes]="customAttributes"
+        ></e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+</div>
+<br/>
+
+<div class="row" *ngIf="btnNouvelleSaisie === true">
+  <div class="col-md-3">
+    <p-button
+      label="Nouvelle saisie"
+      (click)="NouvelleSaisie($event)"
+      id="affiche"
+      
+    ></p-button>
+  </div>
+  <div class="col-md-10"></div>
+</div>
+
+
+
+
+<p-overlayPanel
+  #ovo
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="{
+    'text-align': 'center',
+    'font-size': '14px',
+    'background-color': ' #f8b7bd'
+  }"
+>
+  <span> {{ ms }} </span>
+</p-overlayPanel>

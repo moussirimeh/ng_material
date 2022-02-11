@@ -1,0 +1,6 @@
+<p-overlayPanel #op>
+    Content
+</p-overlayPanel>
+&nbsp;
+<button type="text" pButton label="Custom Target" (click)="op.show($event, actualTarget)"></button>
+<div #actualTarget>actualTarget</div>

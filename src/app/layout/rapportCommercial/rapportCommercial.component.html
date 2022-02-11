@@ -1,0 +1,484 @@
+<p-card class="cardContainer">
+  <div class="row">
+    <div class="col-md-2"><h4>Répresantant :</h4></div>
+    <div class="col-md-4">
+      <p-dropdown
+      id="representant"
+        [options]="represans"
+        optionLabel="deno"
+        [style]="{ 'min-width': '300px', 'max-width': '300px' }"
+        [(ngModel)]="selectedRepresant"
+        [disabled]="enableSelectRepresant"
+      ></p-dropdown>
+    </div>
+    <div class="col-md-3">
+      <p-dropdown
+      id="mois"
+        [options]="months"
+        optionLabel="label"
+        [style]="{ 'min-width': '150px', 'max-width': '150px' }"
+        [(ngModel)]="selectedMonth"
+      ></p-dropdown>
+    </div>
+    <div class="col-md-3">
+      <button
+        color="primary"
+        class="mat-raised-button mat-primary"
+        ng-reflect-color="primary"
+        (click)="afficher($event)"
+      >
+        Afficher
+      </button>
+    </div>
+  </div>
+  &nbsp;
+  <div *ngIf="afficherClicked">
+    <div><!--[class.disabled-content]="!editEnable"-->
+      <div class="row">
+        <div class="col-md-6">
+          <p-panel header="Ventes et Evolution / Objectifs ">
+            <div class="row">
+              <div class="col-md-6">
+                <h4>CA {{ annee_1 }} :</h4>
+              </div>
+              <div class="col-md-6">
+                <h4 align="right">{{ rapCom.ca1 }} DT</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h4>CA {{ annee }} :</h4>
+              </div>
+              <div class="col-md-6">
+                <h4 align="right">{{ rapCom.ca }} DT</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6"><h4>Variation :</h4></div>
+              <div class="col-md-6">
+                <h4 align="right">{{ variationCa }} %</h4>
+              </div>
+            </div>
+            &nbsp;
+            <div class="row">
+              <div class="col-md-6">
+                <h4>CA YTD {{ annee_1 }} :</h4>
+              </div>
+              <div class="col-md-6">
+                <h4 align="right">{{ rapCom.caYtd1 }} DT</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h4>CA YTD {{ annee }} :</h4>
+              </div>
+              <div class="col-md-6">
+                <h4 align="right">{{ rapCom.caYtd }} DT</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6"><h4>Variation :</h4></div>
+              <div class="col-md-6">
+                <h4 align="right">{{ variationCaYtd }} %</h4>
+              </div>
+            </div>
+            &nbsp;
+            <div align="center">
+              On est a {{ objectifPourc }} % par rapport à notre objectif
+              initial.
+            </div>
+            &nbsp;
+            <div class="row">
+              &nbsp;&nbsp;&nbsp;
+              <div class="col-md-3.5"><h4>Commentaires :</h4></div>
+              &nbsp;
+              <div class="col-md-8.5">
+                <textarea
+                  [rows]="5"
+                  [cols]="60"
+                  maxlength="500"
+                  [(ngModel)]="rapCom.commentairesVentes"
+                  pInputTextarea
+                  [readonly]="!editEnable"
+                ></textarea>
+              </div>
+            </div>
+          </p-panel>
+        </div>
+        <div class="col-md-6">
+          <p-panel header="Suivi de paiments ">
+            <div class="row">
+              <div class="col-md-4"><h4>Créances Totales au</h4></div>
+              <div class="col-md-4">
+                <h4>{{ dateFin }} :</h4>
+              </div>
+              <div class="col-md-4">
+                <h4 align="right">{{ rapCom.creanceTotal }} DT</h4>
+              </div>
+            </div>
+            &nbsp;
+            <div class="row">
+              <div class="col-md-3"><h4>Retards 1-30 :</h4></div>
+              <div class="col-md-3">
+                <h4 align="right">{{ rapCom.retard130 }} DT</h4>
+              </div>
+              <div class="col-md-3"><h4>Impayés :</h4></div>
+              <div class="col-md-3">
+                <h4 align="right">{{ rapCom.impayes }} DT</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><h4>Retards 31-60 :</h4></div>
+              <div class="col-md-3">
+                <h4 align="right">{{ rapCom.retard3160 }} DT</h4>
+              </div>
+              <div class="col-md-3"><h4>Retards :</h4></div>
+              <div class="col-md-3">
+                <h4 align="right">{{ rapCom.retardTotal }} DT</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><h4>Retards 61-90 :</h4></div>
+              <div class="col-md-3">
+                <h4 align="right">{{ rapCom.retard6190 }} DT</h4>
+              </div>
+              <div class="col-md-3"><h4>Taux de retard :</h4></div>
+              <div class="col-md-3">
+                <h4 align="right">{{ retardsPourc }} %</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><h4>Retards > 90 :</h4></div>
+              <div class="col-md-3">
+                <h4 align="right">{{ rapCom.retard91 }} DT</h4>
+              </div>
+              <div class="col-md-6"></div>
+            </div>
+            &nbsp;
+            <div class="row">
+              &nbsp;&nbsp;&nbsp;
+              <div class="col-md-3.5"><h4>Commentaires :</h4></div>
+              &nbsp;
+              <div class="col-md-8.5">
+                <textarea
+                  [rows]="5"
+                  [cols]="60"
+                  maxlength="500"
+                  pInputTextarea
+                  [(ngModel)]="rapCom.commentairePaiments"
+                  [readonly]="!editEnable"
+                ></textarea>
+              </div>
+            </div>
+          </p-panel>
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6">
+          <p-panel header="Evaluation et suivi CA Clients / Zone ">
+            <div>
+              <ejs-grid
+                #gridZone
+                id="gridZone"
+                [dataSource]="zones"
+                height="200"
+                gridLines="Both"
+                [rowHeight]="25"
+                allowResizing= 'true'
+              >
+                <e-columns>
+                  <e-column
+                    field="zone"
+                    headerText="Zone"
+                    textAlign="Left"
+                    width="140"
+                  ></e-column>
+                  <e-column
+                    field="ca1"
+                    headerText="CA_1"
+                    textAlign="Right"
+                    width="140"
+                  >
+                  </e-column>
+                  <e-column
+                    field="ca"
+                    headerText="CA"
+                    textAlign="Right"
+                    width="140"
+                  ></e-column>
+                  <e-column
+                    field="variation"
+                    headerText="Variation"
+                    textAlign="Right"
+                    width="120"
+                  ></e-column>
+                </e-columns>
+              </ejs-grid>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><h4>Totaux :</h4></div>
+              <div class="col-md-3">
+                <h4 align="right">{{ totalCa1Zone }} DT</h4>
+              </div>
+              <div class="col-md-3">
+                <h4 align="right">{{ totalCaZone }} DT</h4>
+              </div>
+              <div class="col-md-3">
+                <h4 align="right">{{ zonePourc }} %</h4>
+              </div>
+            </div>
+            &nbsp;
+            <div class="row">
+              &nbsp;&nbsp;&nbsp;
+              <div class="col-md-3.5"><h4>Commentaires :</h4></div>
+              &nbsp;
+              <div class="col-md-8.5">
+                <textarea
+                  [rows]="5"
+                  maxlength="500"
+                  [cols]="60"
+                  pInputTextarea
+                  [(ngModel)]="rapCom.commentaireZone"
+                  [readonly]="!editEnable"
+                ></textarea>
+              </div>
+            </div>
+          </p-panel>
+        </div>
+        <div class="col-md-6">
+          <p-panel header="Evaluation et suivi CA Clients Prospects ">
+            <div>
+              <textarea
+                [rows]="10"
+                [cols]="80"
+                maxlength="500"
+                pInputTextarea
+                [(ngModel)]="rapCom.suiviCaClientsProspects"
+                [readonly]="!editEnable"
+              ></textarea>
+            </div>
+          </p-panel>
+        </div>
+      </div>
+      &nbsp;
+      <div>
+        <p-panel header="Evaluation et suivi CA Clients Noyaux ">
+          <div>
+            <ejs-grid
+              #gridNoyaux
+              id="gridNoyaux"
+              [dataSource]="noyaux"
+              height="200"
+              gridLines="Both"
+              [rowHeight]="25"
+              allowResizing= 'true'
+            >
+              <e-columns>
+                <e-column
+                  field="codeClient"
+                  headerText="Code Client"
+                  textAlign="Left"
+                  width="70"
+                ></e-column>
+                <e-column
+                  field="client"
+                  headerText="Client"
+                  textAlign="Left"
+                  width="250"
+                ></e-column>
+                <e-column
+                  field="ca1"
+                  headerText="CA_1"
+                  textAlign="Right"
+                  width="120"
+                >
+                </e-column>
+                <e-column
+                  field="ca"
+                  headerText="CA"
+                  textAlign="Right"
+                  width="120"
+                ></e-column>
+                <e-column
+                  field="variation"
+                  headerText="Variation"
+                  textAlign="Right"
+                  width="100"
+                ></e-column>
+              </e-columns>
+            </ejs-grid>
+          </div>
+          <div class="row">
+            <div class="col-md-6"><h4>Totaux :</h4></div>
+            <div class="col-md-2">
+              <h4 align="right">{{ totalCa1Noyaux }} DT</h4>
+            </div>
+            <div class="col-md-2">
+              <h4 align="right">{{ totalCaNoyaux }} DT</h4>
+            </div>
+            <div class="col-md-2">
+              <h4 align="right">{{ noyauxPourc }} %</h4>
+            </div>
+          </div>
+          &nbsp;
+          <div class="row">
+            &nbsp;&nbsp;&nbsp;
+            <div class="col-md-3.5"><h4>Commentaires :</h4></div>
+            &nbsp;
+            <div class="col-md-8.5">
+              <textarea
+                [rows]="2"
+                [cols]="150"
+                maxlength="500"
+                pInputTextarea
+                [(ngModel)]="rapCom.commentairesClientsNoyaux"
+                [readonly]="!editEnable"
+              ></textarea>
+            </div>
+          </div>
+        </p-panel>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6">
+          <p-panel header="Affaires significatives / symboliques-gagneés">
+            <div>
+              <textarea
+                [rows]="10"
+                [cols]="80"
+                maxlength="500"
+                pInputTextarea
+                [(ngModel)]="rapCom.affairesGagnees"
+                [readonly]="!editEnable"
+              ></textarea>
+            </div>
+          </p-panel>
+        </div>
+        <div class="col-md-6">
+          <p-panel header="Affaires significatives / symboliques-perdues">
+            <div>
+              <textarea
+                [rows]="10"
+                [cols]="80"
+                maxlength="500"
+                pInputTextarea
+                [(ngModel)]="rapCom.affairesPerdues"
+                [readonly]="!editEnable"
+                ></textarea>
+            </div>
+          </p-panel>
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6">
+          <p-panel header="Affaires significatives en cours de négociation">
+            <div>
+              <textarea
+                [rows]="10"
+                [cols]="80"
+                maxlength="500"
+                pInputTextarea
+                [(ngModel)]="rapCom.affairesEncours"
+                [readonly]="!editEnable"
+              ></textarea>
+            </div>
+          </p-panel>
+        </div>
+        <div class="col-md-6">
+          <p-panel header="Actions en cours ou à planifier ">
+            <div>
+              <textarea
+                [rows]="10"
+                [cols]="80"
+                maxlength="500"
+                pInputTextarea
+                [(ngModel)]="rapCom.actionsEncours"
+                [readonly]="!editEnable"
+              ></textarea>
+            </div>
+          </p-panel>
+        </div>
+      </div>
+      &nbsp;
+      <div class="row">
+        <div class="col-md-6">
+          <p-panel header="Info Concurrence ">
+            <div>
+              <textarea
+                [rows]="10"
+                [cols]="80"
+                maxlength="500"
+                pInputTextarea
+                [(ngModel)]="rapCom.infosConcurrence"
+                [readonly]="!editEnable"
+              ></textarea>
+            </div>
+          </p-panel>
+        </div>
+        <div class="col-md-6">
+          <p-panel header="Idées - Besoins - Infos diverses ">
+            <div>
+              <textarea
+                [rows]="10"
+                [cols]="80"
+                maxlength="500"
+                pInputTextarea
+                [(ngModel)]="rapCom.ideesBesoins"
+                [readonly]="!editEnable"
+              ></textarea>
+            </div>
+          </p-panel>
+        </div>
+      </div>
+    </div>
+    &nbsp;
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-1">
+        <button
+          color="primary"
+          class="mat-raised-button mat-primary"
+          ng-reflect-color="primary"
+          *ngIf="enregistrerVisible"
+          (click)="enregistrer()"
+        >
+          Enregistrer
+        </button>
+      </div>
+      <div class="col-md-1">
+        <button
+          color="primary"
+          class="mat-raised-button mat-primary"
+          ng-reflect-color="primary"
+          *ngIf="apercueVisible"
+          (click)="apercue()"
+        >
+          Visualiser
+        </button>
+      </div>
+      <div class="col-md-1">
+        <button
+          color="primary"
+          class="mat-raised-button mat-primary"
+          ng-reflect-color="primary"
+          *ngIf="validerVisible"
+          (click)="valider()"
+        >
+          Valider
+        </button>
+      </div>
+      <div class="col-md-5"></div>
+    </div>
+  </div>
+</p-card>
+<p-overlayPanel
+  #ov
+  [dismissable]="false"
+  [showCloseIcon]="true"
+  appendTo="body"
+  [style]="styleOvPanel"
+>
+  <span> {{ msgs }} </span>
+</p-overlayPanel>

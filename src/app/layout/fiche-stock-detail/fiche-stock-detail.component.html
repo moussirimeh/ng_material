@@ -1,0 +1,1262 @@
+<div class="row">
+  <div class="col-md-7">
+    <!-- les criteres de recherche -->
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <input
+            matInput
+            (click)="Onkey($event.target.value)"
+            (keyup.enter)="applyFilterArtParCode($event.target.value)"
+            [(ngModel)]="refRechercher"
+            (keyup.enter)="ajouterArt()"
+            placeholder="Recherche par Référence"
+            type="search"
+            [disabled]="disableGrid"
+          />
+          <button
+            mat-button
+            *ngIf="refRechercher"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="refRechercher = ''; applyFilterArtParCode('')"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field style="width: 70%">
+          <input
+            matInput
+            (click)="Onkey2($event.target.value)"
+            (keyup.enter)="applyFilterArtParDes($event.target.value)"
+            [(ngModel)]="desRechercher"
+            (keyup.enter)="ajouterArt()"
+            placeholder="Recherche par Désignation"
+            type="search"
+            [disabled]="disableGrid"
+          />
+          <button
+            mat-button
+            *ngIf="desRechercher"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="desRechercher = ''; applyFilterArtParCode('')"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </div>
+    <!-- grid 1-->
+    <div [ngClass]="{ disableDiv: disableGrid }">
+      <div class="row" *ngIf="ref == true" style="margin-bottom: 1%">
+        <ejs-grid
+          id="ejs1"
+          #grid
+          [searchSettings]="searchOptions"
+          [selectedRowIndex]="0"
+          gridLines="Both"
+          (rowSelected)="rowSelected($event)"
+          width="99%"
+          [dataSource]="stocks"
+          [selectedRowIndex]="0"
+          height="200"
+          rowHeight="30"
+          (recordDoubleClick)="ajouterArt()"
+          (onmousedown)="annulerSelection()"
+          (mouseup)="annulerSelection()"
+          (mousewheel)="annulerSelection()"
+          gridLines="Both"
+          style="border-bottom-width: 5%"
+          allowResizing="true"
+        >
+          <e-columns>
+            <e-column
+              field="code"
+              headerText="Référence"
+              width="160"
+              [customAttributes]="customAttributes"
+              headerTextAlign="center"
+            ></e-column>
+            <e-column
+              field="design"
+              headerText="Désignation"
+              width="200"
+              [customAttributes]="customAttributes"
+              headerTextAlign="center"
+            >
+              <ng-template #template let-stocks>
+                <p style="text-align: left; margin: auto">
+                  {{ stocks.design }}
+                </p>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="prix"
+              headerText="Prix"
+              width="80"
+              [customAttributes]="customAttributes"
+              headerTextAlign="center"
+            >
+              <ng-template #template let-stocks>
+                <p style="text-align: right; margin: auto">
+                  {{ stocks.prix }}
+                </p>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="quantite"
+              headerText="Stk"
+              width="70"
+              [customAttributes]="customAttributes"
+              textAlign="Right"
+            ></e-column>
+            <e-column
+              field="equivalence"
+              headerText="Eqv"
+              width="80"
+              [customAttributes]="customAttributes"
+              headerTextAlign="center"
+            >
+              <ng-template #template let-stocks>
+                <p
+                  style="
+                    color: red;
+                    font-weight: bold;
+                    text-align: left;
+                    margin-top: 17px;
+                  "
+                >
+                  {{ stocks.equivalence }}
+                </p>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="qteenstock"
+              headerText="StkStbl"
+              width="80"
+              [customAttributes]="customAttributes"
+              headerTextAlign="center"
+            >
+              <ng-template #template let-stocks>
+                <p
+                  style="
+                    color: brown;
+                    font-weight: bold;
+                    text-align: left;
+                    margin: auto;
+                  "
+                >
+                  {{ stocks.qteenstock }}
+                </p>
+              </ng-template>
+            </e-column>
+            <e-column
+              field="taxe"
+              headerText="StkMort"
+              width="80"
+              [customAttributes]="customAttributes"
+            >
+              <ng-template #template let-stocks>
+                <p
+                  style="
+                    color: brown;
+                    font-weight: bold;
+                    text-align: left;
+                    margin-top: 17px;
+                  "
+                >
+                  {{ stocks.taxe }}
+                </p>
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+    <!-- boutton voir detail-->
+    <div class="row">
+      <div class="col-md-3">
+        <button
+          *ngIf="modifierShow == true && disableGrid == false"
+          clikcked="true"
+          style="font-size: 13px"
+          pButton
+          type="button"
+          label="Voir detail"
+          (click)="afficher()"
+          class="ui-button-raised"
+        ></button>
+      </div>
+      <div class="col-md-9"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <button
+          *ngIf="disableGrid == true"
+          clikcked="true"
+          style="font-size: 13px"
+          pButton
+          type="button"
+          label="Nouvelle Saisie"
+          (click)="nouvelsaisie()"
+          class="ui-button-raised"
+        ></button>
+      </div>
+      <div class="col-md-9"></div>
+    </div>
+    <!--grid2-->
+    <div class="row" style="height: 250px">
+      <p-tabView
+        (onChange)="handleChange($event)"
+        [hidden]="detail == false || ajouterClicked == false"
+      >
+        <p-tabPanel header="Mvmt année courante">
+          <div class="row">
+            <ejs-grid
+              style="width: 100%"
+              [searchSettings]="searchOptions"
+              (rowSelected)="rowSelected()"
+              width="100%"
+              [dataSource]="this.mouves"
+              height="140"
+              gridLines="Both"
+              [rowHeight]="35"
+            >
+              <e-columns>
+                <e-column
+                  field="date"
+                  headerText="Date"
+                  width="50"
+                  textAlign="Left"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="document"
+                  headerText="document"
+                  width="65"
+                  textAlign="Left"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="deno"
+                  headerText="dénomination"
+                  width="70"
+                  textAlign="Left"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="prix"
+                  headerText="prix"
+                  width="45"
+                  textAlign="Right"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="entree"
+                  headerText="entree"
+                  width="40"
+                  textAlign="Right"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="sortie"
+                  headerText="sortie"
+                  width="40"
+                  textAlign="Right"
+                  BackgroundColor="Gray"
+                ></e-column>
+              </e-columns>
+            </ejs-grid>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="Mvmt année -1">
+          <div class="row">
+            <ejs-grid
+              style="width: 100%"
+              [searchSettings]="searchOptions"
+              width="100%"
+              [dataSource]="this.mouves1"
+              height="140"
+              gridLines="Both"
+              [rowHeight]="35"
+            >
+              <e-columns>
+                <e-column
+                  field="date"
+                  headerText="Date"
+                  width="50"
+                  textAlign="Left"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="document"
+                  headerText="document"
+                  width="65"
+                  textAlign="Left"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="deno"
+                  headerText="dénomination"
+                  width="70"
+                  textAlign="Left"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="prix"
+                  headerText="prix"
+                  width="45"
+                  textAlign="Right"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="entree"
+                  headerText="entree"
+                  width="40"
+                  textAlign="Right"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="sortie"
+                  headerText="sortie"
+                  width="40"
+                  textAlign="Right"
+                  BackgroundColor="Gray"
+                ></e-column>
+              </e-columns>
+            </ejs-grid>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="Mvmt année -2">
+          <div class="row">
+            <ejs-grid
+              style="width: 100%"
+              [searchSettings]="searchOptions"
+              width="100%"
+              [dataSource]="this.mouves2"
+              height="140"
+              gridLines="Both"
+              [rowHeight]="35"
+            >
+              <e-columns>
+                <e-column
+                  field="date"
+                  headerText="Date"
+                  width="50"
+                  textAlign="Left"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="document"
+                  headerText="document"
+                  width="65"
+                  textAlign="Left"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="deno"
+                  headerText="dénomination"
+                  width="70"
+                  textAlign="Left"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="prix"
+                  headerText="prix"
+                  width="45"
+                  textAlign="Right"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="entree"
+                  headerText="entree"
+                  width="40"
+                  textAlign="Right"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="sortie"
+                  headerText="sortie"
+                  width="40"
+                  textAlign="Right"
+                  BackgroundColor="Gray"
+                ></e-column>
+              </e-columns>
+            </ejs-grid>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="Marque">
+          <div class="row">
+            <ejs-grid
+              style="width: 100%"
+              [searchSettings]="searchOptions"
+              width="100%"
+              [dataSource]="this.marques"
+              height="140"
+              gridLines="Both"
+              [rowHeight]="35"
+            >
+              <e-columns>
+                <e-column
+                  field="nom"
+                  headerText="nom"
+                  width="50"
+                  textAlign="Left"
+                  BackgroundColor="Gray"
+                ></e-column>
+              </e-columns>
+            </ejs-grid>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="Equivalences">
+          <div class="row">
+            <ejs-grid
+              #gridequiv
+              style="width: 100%"
+              [searchSettings]="searchOptions"
+              width="100%"
+              [dataSource]="this.res1"
+              height="140"
+              gridLines="Both"
+              [rowHeight]="35"
+            >
+              <e-columns>
+                <e-column
+                  field="code"
+                  headerText="code"
+                  width="80"
+                  textAlign="Left"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="design"
+                  headerText="designation"
+                  width="65"
+                  textAlign="Left"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="prix"
+                  headerText="prix"
+                  width="40"
+                  textAlign="Right"
+                  BackgroundColor="Gray"
+                ></e-column>
+                <e-column
+                  field="quantite"
+                  headerText="quantite"
+                  width="40"
+                  textAlign="Right"
+                  BackgroundColor="Gray"
+                ></e-column>
+              </e-columns>
+            </ejs-grid>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+  </div>
+  <!-- identification/ voir totaux-->
+  <div class="col-md-5">
+    <div
+      class="row"
+      *ngIf="detail == true && ajouterClicked == true"
+      style="height: 50%"
+    >
+      <p-tabView>
+        <div>
+          <div class="row">
+            <div class="col-md-1" style="max-width: 10%">
+              <p class="p">FOURN</p>
+            </div>
+            <div class="col-md-7" style="margin-top: 0.2%">
+              <input
+                class="form-control"
+                type="text"
+                style="width: 100%; color: red; height: 80%"
+                pInputText
+                [(ngModel)]="fournisseurs.deno"
+                [readonly]="readonly"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-1" style="max-width: 10%">
+              <p class="p">FAM</p>
+            </div>
+            <div class="col-md-7" style="margin-top: 0.2%">
+              <input
+                class="form-control"
+                type="text"
+                style="width: 100%; color: red; height: 80%"
+                pInputText
+                [readonly]="readonly"
+                [(ngModel)]="familles.nom"
+              />
+            </div>
+            <div class="col-md-4"></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-1" style="max-width: 10%">
+              <p class="p">S/FAM</p>
+            </div>
+            <div class="col-md-7" style="margin-top: 0.2%">
+              <input
+                class="form-control"
+                type="text"
+                style="width: 100%; color: red; height: 80%"
+                pInputText
+                [readonly]="readonly"
+                [(ngModel)]="sfamilles.nom"
+              />
+            </div>
+            <div class="col-md-2" style="max-width: 15%">
+              <p class="p">QT_CM_FRS</p>
+            </div>
+            <div class="col-md-2" style="margin-top: 0.2%; max-width: 15%">
+              <input
+                class="form-control"
+                type="text"
+                style="width: 100%; color: red; height: 80%"
+                pInputText
+                [readonly]="readonly"
+                [(ngModel)]="qteCmdFrs"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <p class="p" style="width: 100%">1ER_ARV_PRV</p>
+            </div>
+            <div class="col-md-3" style="margin-top: 0.2%">
+              <input
+                class="form-control"
+                type="text"
+                style="width: 100%; color: red; height: 80%"
+                pInputText
+                [readonly]="readonly"
+                [(ngModel)]="arvPrvLe"
+              />
+            </div>
+            <div class="col-md-1">
+              <p class="p">TVA</p>
+            </div>
+            <div class="col-md-2">
+              <input
+                class="form-control"
+                type="text"
+                style="width: 100%; color: red; height: 80%"
+                pInputText
+                [readonly]="readonly"
+                [ngModel]="selectedstock.tva"
+              />
+            </div>
+            <div class="col-md-2">
+              <p class="p">QT_CM_CLT</p>
+            </div>
+            <div class="col-md-2" style="margin-top: 0.2%">
+              <input
+                class="form-control"
+                type="text"
+                style="width: 100%; color: red; height: 80%"
+                pInputText
+                [readonly]="readonly"
+                [(ngModel)]="qteCmdClt"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <p class="p">PRIX_TTC</p>
+            </div>
+            <div class="col-md-3">
+              <input
+                class="form-control"
+                type="text"
+                style="width: 100%; color: red; height: 80%"
+                pInputText
+                [readonly]="readonly"
+                [ngModel]="ttc"
+              />
+            </div>
+            <div class="col-md-2" *ngIf="menu == true">
+              <p class="p">DR_PR_AC</p>
+            </div>
+            <div class="col-md-3" *ngIf="menu == true">
+              <input
+                class="form-control"
+                type="text"
+                style="width: 100%; color: red; height: 80%"
+                pInputText
+                [readonly]="readonly"
+                [ngModel]="selectedstock.achatP"
+              />
+            </div>
+            <div class="col-md-2" *ngIf="menu == true">
+              <input
+                class="form-control"
+                type="text"
+                style="width: 100%; color: red; height: 80%"
+                pInputText
+                [readonly]="readonly"
+                [ngModel]="selectedstock.devise"
+              />
+            </div>
+          </div>
+
+          <div class="row" *ngIf="menu == true">
+            <div class="col-md-2">
+              <p class="p">PR_AC_PN</p>
+            </div>
+            <div class="col-md-3" style="margin-top: 0.2%">
+              <input
+                class="form-control"
+                type="text"
+                style="width: 100%; color: red; height: 80%"
+                pInputText
+                [readonly]="readonly"
+                [ngModel]="prixAchatPond"
+              />
+            </div>
+            <div class="col-md-2">
+              <p class="p">DR_DT_AC</p>
+            </div>
+            <div class="col-md-3" style="margin-top: 0.2%">
+              <input
+                class="form-control"
+                type="text"
+                style="width: 100%; color: red; height: 80%"
+                pInputText
+                [readonly]="readonly"
+                [ngModel]="selectedstock.achatD"
+              />
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+          <div class="row" *ngIf="menu == true">
+            <div class="col-md-3">
+              <p class="p">VAL_STK_ACHAT</p>
+            </div>
+            <div class="col-md-3">
+              <p style="color: red">{{ vl_stk_ach }}</p>
+            </div>
+            <div class="col-md-3">
+              <p class="p">VAL_STK_VENTE</p>
+            </div>
+            <div class="col-md-3">
+              <p style="color: red">{{ vl_stk_v }}</p>
+            </div>
+          </div>
+          <br />
+          <div class="row" *ngIf="menu == true">
+            <div class="col-md-3">
+              <p class="p">MARGE A 0%</p>
+            </div>
+            <div class="col-md-3">
+              <p style="color: red">{{ Marge0 }}</p>
+            </div>
+            <div class="col-md-3">
+              <p class="p">MARGE A 15%</p>
+            </div>
+            <div class="col-md-3">
+              <p style="color: red">{{ Marge15 }}</p>
+            </div>
+          </div>
+        </div>
+      </p-tabView>
+    </div>
+
+    <div class="row" *ngIf="detail == true && ajouterClicked == true">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <button
+            clikcked="true"
+            *ngIf="
+              mouves2Clickek === true ||
+              mouves1Clickek === true ||
+              mouvesClickek === true
+            "
+            style="font-size: 14px"
+            pButton
+            type="button"
+            label="Voir Totaux"
+            (click)="afficherTot()"
+            class="ui-button-raised"
+          ></button>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+      <div style="padding: 3%" *ngIf="VoirTotaux == true">
+        <div class="row">
+          <div class="col-md-4">
+            <p class="p" style="margin-left: 10%">INVENT</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              class="form-control"
+              type="text"
+              style="width: 100%"
+              pInputText
+              [(ngModel)]="invent"
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-5"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <p class="p" style="margin-left: 10%">ACHAT</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              class="form-control"
+              type="text"
+              style="width: 100%"
+              [(ngModel)]="achat"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-2">
+            <p class="p">AV/F</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              class="form-control"
+              type="text"
+              style="width: 100%"
+              [(ngModel)]="av_f"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <p class="p" style="margin-left: 10%">AV B/L</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              class="form-control"
+              type="text"
+              style="width: 100%"
+              [(ngModel)]="av_b_l"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-2">
+            <p class="p">B/L</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              class="form-control"
+              type="text"
+              style="width: 100%"
+              [(ngModel)]="b_l"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <p class="p" style="margin-left: 10%">AV CPT</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              class="form-control"
+              type="text"
+              style="width: 100%"
+              [(ngModel)]="av_cpt"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-2">
+            <p class="p" style="width: 115%">FRE CPT</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              class="form-control"
+              type="text"
+              style="width: 100%"
+              [(ngModel)]="fre_cpt"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <p class="p" style="margin-left: 10%">REG+</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              class="form-control"
+              type="text"
+              style="width: 100%"
+              [(ngModel)]="reg_plus"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-2">
+            <p class="p">REG-</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              class="form-control"
+              type="text"
+              style="width: 100%"
+              [(ngModel)]="reg_moin"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <p class="p" style="margin-left: 10%">ENTREE</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              class="form-control"
+              type="text"
+              style="width: 100%"
+              [(ngModel)]="entreesom"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+          <div class="col-md-2">
+            <p class="p">SORTIE</p>
+          </div>
+          <div class="col-md-3">
+            <input
+              class="form-control"
+              type="text"
+              style="width: 100%"
+              [(ngModel)]="sortiesom"
+              pInputText
+              [readonly]="readonly"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--les 4 boutons-->
+
+<div class="row" style="width: 100%">
+  <div class="col-md-2">
+    <button
+      clikcked="true"
+      style="width: 100%"
+      pButton
+      type="button"
+      [hidden]="modifierShow == false"
+      label="Details Mvts A_c"
+      (click)="showDialog()"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-2">
+    <button
+      clikcked="true"
+      style="width: 100%"
+      pButton
+      type="button"
+      [hidden]="modifierShow == false"
+      label="Offres Client Envoyées"
+      (click)="etatOffreEnv()"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-2">
+    <button
+      clikcked="true"
+      style="width: 100%"
+      pButton
+      type="button"
+      [hidden]="modifierShow == false"
+      label="Commandes client "
+      (click)="etatCmdClt()"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-2">
+    <button
+      clikcked="true"
+      style="width: 100%"
+      pButton
+      type="button"
+      [hidden]="modifierShow == false"
+      label="Commandes Four"
+      (click)="cmdFrs()"
+      class="ui-button-raised"
+    ></button>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+
+<!--Dialog ref detail -->
+<p-dialog
+  header="Ref_Detail"
+  [(visible)]="showConfirm"
+  [modal]="true"
+  [style]="{ width: '80%', heigth: '100%' }"
+  [positionTop]="10"
+  [baseZIndex]="1000000"
+  [draggable]="true"
+  [resizable]="false"
+  (onHide)="closeDialog()"
+>
+  <div class="row">
+    <div class="col-md-2">
+      <button
+        clikcked="true"
+        pButton
+        type="button"
+        label="Inventaires"
+        class="ui-button-raised"
+        style="width: 100%"
+        (click)="afficherInventaire()"
+      ></button>
+    </div>
+    <div class="col-md-10" *ngIf="btnInventaire == true">
+      <ejs-grid
+        id="ejs1"
+        #grid0
+        [searchSettings]="searchOptions"
+        gridLines="Both"
+        width="100%"
+        [dataSource]="listInventaire"
+        height="70"
+        rowHeight="20"
+        text-align="center"
+      >
+        <e-columns>
+          <e-column
+            field="date"
+            headerText="Date"
+            headerTextAlign="center"
+          ></e-column>
+          <e-column
+            field="combine"
+            headerText="Document"
+            headerTextAlign="center"
+            width="20%"
+          ></e-column>
+          <e-column field="deno" headerText="" width="40%"></e-column>
+          <e-column field="Prix" headerText="Prix" headerTextAlign="center">
+            <ng-template #template let-listInventaire>
+              <p style="text-align: right">
+                {{ listInventaire.prix }}
+              </p>
+            </ng-template>
+          </e-column>
+          <e-column field="qte" headerText="Quantité" headerTextAlign="center">
+            <ng-template #template let-listInventaire>
+              <p style="text-align: right">
+                {{ listInventaire.quantite }}
+              </p>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-2">
+      <button
+        clikcked="true"
+        pButton
+        type="button"
+        label="Ventes au Comptant"
+        class="ui-button-raised"
+        style="width: 100%"
+        (click)="afficherVentesAuComptant()"
+      ></button>
+    </div>
+    <div class="col-md-10" *ngIf="btnVenteAucomptant == true">
+      <ejs-grid
+        #grid1
+        [searchSettings]="searchOptions"
+        [dataSource]="listVentesAuComptant"
+        gridLines="Both"
+        width="100%"
+        height="70"
+        rowHeight="20"
+      >
+        <e-columns>
+          <e-column field="date" headerText="Date" headerTextAlign="center">
+          </e-column>
+          <e-column
+            field="combine"
+            headerText="Document"
+            headerTextAlign="center"
+            width="20%"
+          >
+          </e-column>
+          <e-column
+            field="deno"
+            headerText="Dénomination"
+            width="40%"
+            headerTextAlign="center"
+          >
+          </e-column>
+          <e-column headerText="Prix" headerTextAlign="center">
+            <ng-template #template let-listVentesAuComptant>
+              <p style="text-align: right">
+                {{ listVentesAuComptant.prix }}
+              </p>
+            </ng-template>
+          </e-column>
+          <e-column
+            field="quantite"
+            headerText="Quantité"
+            headerTextAlign="center"
+          >
+            <ng-template #template let-listVentesAuComptant>
+              <p style="text-align: right">
+                {{ listVentesAuComptant.quantite }}
+              </p>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-2">
+      <button
+        clikcked="true"
+        pButton
+        type="button"
+        label="Ventes à terme"
+        class="ui-button-raised"
+        style="width: 100%"
+        (click)="afficherVenteATerme()"
+      ></button>
+    </div>
+    <div class="col-md-10" *ngIf="btnVenteAtemre == true">
+      <ejs-grid
+        #grid2
+        [searchSettings]="searchOptions"
+        [dataSource]="listVentesATerme"
+        gridLines="Both"
+        width="100%"
+        height="70"
+        rowHeight="20"
+        headerTextAlign="center"
+      >
+        <e-columns>
+          <e-column field="date" headerText="Date" headerTextAlign="center">
+          </e-column>
+          <e-column
+            field="combine"
+            headerText="Document"
+            headerTextAlign="center"
+            width="20%"
+          >
+          </e-column>
+          <e-column
+            field="deno"
+            headerText="Dénomination"
+            width="40%"
+            headerTextAlign="center"
+          >
+          </e-column>
+          <e-column headerText="Prix" headerTextAlign="center">
+            <ng-template #template let-listVentesATerme>
+              <p style="text-align: right">
+                {{ listVentesATerme.prix }}
+              </p>
+            </ng-template>
+          </e-column>
+          <e-column
+            field="quantite"
+            headerText="Quantité"
+            headerTextAlign="center"
+          >
+            <ng-template #template let-listVentesATerme>
+              <p style="text-align: right">
+                {{ listVentesATerme.quantite }}
+              </p>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-2">
+      <button
+        clikcked="true"
+        pButton
+        type="button"
+        label="Achats"
+        class="ui-button-raised"
+        style="width: 100%"
+        (click)="afficheAchats()"
+      ></button>
+    </div>
+    <div class="col-md-10" *ngIf="btnAchat == true">
+      <ejs-grid
+        id="ejs1"
+        #grid3
+        [searchSettings]="searchOptions"
+        gridLines="Both"
+        width="100%"
+        [dataSource]="listAchats"
+        height="70"
+        rowHeight="20"
+      >
+        <e-columns>
+          <e-column
+            field="date"
+            headerText="Date"
+            headerTextAlign="center"
+          ></e-column>
+          <e-column
+            field="combine"
+            headerText="Document"
+            headerTextAlign="center"
+            width="20%"
+          ></e-column>
+          <e-column
+            field="deno"
+            headerText="Dénomination"
+            width="40%"
+            headerTextAlign="center"
+          ></e-column>
+          <e-column field="Prix" headerText="Prix" headerTextAlign="center">
+            <ng-template #template let-listAchats>
+              <p style="text-align: right">
+                {{ listAchats.prix }}
+              </p>
+            </ng-template>
+          </e-column>
+          <e-column field="qte" headerText="Quantité" headerTextAlign="center">
+            <ng-template #template let-listAchats>
+              <p style="text-align: right">
+                {{ listAchats.quantite }}
+              </p>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-2">
+      <button
+        clikcked="true"
+        pButton
+        type="button"
+        label="Ajustements"
+        class="ui-button-raised"
+        style="width: 100%"
+        (click)="afficherAjustements()"
+      ></button>
+    </div>
+    <div class="col-md-10" *ngIf="btnAjustement == true">
+      <ejs-grid
+        id="ejs1"
+        #grid4
+        [searchSettings]="searchOptions"
+        gridLines="Both"
+        width="100%"
+        [dataSource]="listeAjustements"
+        height="70"
+        rowHeight="20"
+      >
+        <e-columns>
+          <e-column
+            field="date"
+            headerText="Date"
+            headerTextAlign="center"
+          ></e-column>
+          <e-column
+            field="combine"
+            headerText="Document"
+            headerTextAlign="center"
+            width="20%"
+          ></e-column>
+          <e-column
+            field="deno"
+            headerText="Observation"
+            width="40%"
+            headerTextAlign="center"
+          ></e-column>
+          <e-column field="Prix" headerText="Prix" headerTextAlign="center">
+            <ng-template #template let-listeAjustements>
+              <p style="text-align: right">
+                {{ listeAjustements.prix }}
+              </p>
+            </ng-template>
+          </e-column>
+          <e-column field="qte" headerText="Quantité" headerTextAlign="center">
+            <ng-template #template let-listeAjustements>
+              <p style="text-align: right">
+                {{ listeAjustements.quantite }}
+              </p>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+  <br />
+</p-dialog>
+
+<p-dialog
+  header="etat Offres Envoyées"
+  #dialDetail
+  (onHide)="close()"
+  (onShow)="showDialogMaximized(dialDetail)"
+  [contentStyle]="{ 'min-height': '1000px' }"
+  [style]="{ height: '130vh' }"
+  [(visible)]="visible"
+>
+  <app-etat-offre-envoye></app-etat-offre-envoye>
+</p-dialog>
+
+<p-dialog
+  header="Etat Commandes Client"
+  #dialDetail1
+  (onHide)="close()"
+  (onShow)="showDialogMaximized(dialDetail1)"
+  [contentStyle]="{ 'min-height': '1000px' }"
+  [style]="{ height: '130vh' }"
+  [(visible)]="visible1"
+>
+  <app-etat-commande-client></app-etat-commande-client>
+</p-dialog>
+
+<p-dialog
+  header="CMDs FRS non Soldees"
+  #dialDetail2
+  (onHide)="close()"
+  (onShow)="showDialogMaximized(dialDetail2)"
+  [contentStyle]="{ 'min-height': '1000px' }"
+  [style]="{ height: '130vh' }"
+  [(visible)]="visible2"
+>
+  <app-cmds-frs-non-soldees></app-cmds-frs-non-soldees>
+</p-dialog>

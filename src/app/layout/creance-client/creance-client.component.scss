@@ -1,0 +1,57 @@
+.labelc{
+    font-weight: bold;
+    font-size: 14px;
+}
+.footerTemplate{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.e-grid .e-summarycell {
+    border-style: solid;
+    border-width: 1px 0 0;
+    font-size: 13px;
+    font-weight: 500;
+    height: auto;
+    line-height: 18px;
+    padding: 8px 21px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+.ng-select.ng-select-single ::ng-deep .ng-select-container {
+    height: 30px;
+    width: 146%;
+    margin-left: -38%;
+   
+  }
+  .ng-select ::ng-deep .ng-select-container {
+    min-height: 30px;
+    width: 146%;
+    margin-left: -38%;
+  }
+
+
+
+
+
+
+.e-grid th{
+    background-color:whitesmoke;
+    color :black;
+    font-size: 13px;
+  }
+
+  .e-grid .e-rowcell {
+    font-size: 11px !important;
+    padding: initial !important;
+  }
+  .e-grid th{
+  
+    padding: 0!important;
+  }
+  
+  .row {
+      margin-bottom: -14px;
+      font-size: 11px;
+      font-weight: bold;
+    }

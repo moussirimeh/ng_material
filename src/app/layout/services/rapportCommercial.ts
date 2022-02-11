@@ -1,0 +1,30 @@
+export class RapportCommercial {
+  id: string;
+  numRapport: string;
+  codeRep: string;
+  dateEnreg: string;
+  mois: string;
+  ca1: string;
+  ca: string;
+  caYtd1: string;
+  caYtd: string;
+  creanceTotal: string;
+  retardTotal: string;
+  retard130: string;
+  retard3160: string;
+  retard6190: string;
+  retard91: string;
+  impayes: string;
+  commentairesVentes: string;
+  commentairePaiments: string;
+  commentaireZone: string;
+  suiviCaClientsProspects: string;
+  commentairesClientsNoyaux: string;
+  affairesGagnees: string;
+  affairesPerdues: string;
+  affairesEncours: string;
+  actionsEncours: string;
+  infosConcurrence: string;
+  ideesBesoins: string;
+  valide: string;
+}
